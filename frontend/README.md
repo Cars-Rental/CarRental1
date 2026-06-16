@@ -1,36 +1,211 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚗 Car Rental & Marketplace - Frontend
 
-## Getting Started
+Modern, scalable, and production-ready frontend application for a **Car Rental & Marketplace** platform built with **Next.js 16**, **React 19**, and **TypeScript**.
 
-First, run the development server:
+---
+
+## 🚀 Tech Stack
+
+### Core
+
+* Next.js 16 (App Router)
+* React 19
+* TypeScript
+
+### UI
+
+* Tailwind CSS v4
+* shadcn/ui
+* Framer Motion
+* Lucide React
+* React Icons
+
+### State Management
+
+* Redux Toolkit
+* React Query
+
+### Forms & Validation
+
+* React Hook Form
+* Zod
+
+### API
+
+* Axios
+
+### Internationalization
+
+* next-intl
+
+### Notifications
+
+* Sonner
+
+---
+
+# ✨ Features
+
+* 🔐 Authentication & Authorization
+* 🌍 Multi-language (Arabic / English)
+* 🌙 Dark / Light Theme
+* 🚗 Car Rental
+* 💰 Car Marketplace
+* 📅 Booking Management
+* ❤️ Wishlist
+* ⭐ Reviews & Ratings
+* 📱 Responsive Design
+* 📊 Admin Dashboard
+* 🚘 Owner Dashboard
+
+---
+
+# 📂 Project Structure
+
+```text
+src
+│
+├── app
+├── assets
+├── components
+│   ├── common
+│   ├── layout
+│   ├── shared
+│   └── ui
+│
+├── config
+├── features
+├── hooks
+├── i18n
+├── lib
+├── messages
+├── providers
+├── services
+├── store
+├── styles
+├── types
+└── utils
+```
+
+---
+
+# ⚙️ Getting Started
+
+## Clone Repository
+
+```bash
+git clone https://github.com/Cars-Rental/CarRental1.git
+```
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+## Configure Environment
+
+Create a `.env.local` file.
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000/api
+```
+
+## Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# 🌐 Localization
 
-To learn more about Next.js, take a look at the following resources:
+Supported languages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* 🇪🇬 Arabic
+* 🇺🇸 English
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Localization powered by **next-intl**.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 🏗️ Architecture
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project follows a **Feature-Based Architecture**.
+
+* Reusable Components
+* Clean Architecture
+* Separation of Concerns
+* Scalable Folder Structure
+
+---
+
+# 🌳 Git Workflow
+
+```text
+main
+│
+└── develop
+    │
+    ├── feature/theme
+    ├── feature/auth
+    ├── feature/home
+    ├── feature/cars
+    ├── feature/booking
+    ├── feature/dashboard
+```
+
+---
+
+# 📌 Branch Strategy
+
+| Branch      | Purpose               |
+| ----------- | --------------------- |
+| `main`      | Production-ready code |
+| `develop`   | Integration branch    |
+| `feature/*` | Feature development   |
+
+---
+
+# 📋 Code Standards
+
+* TypeScript Strict Mode
+* Feature-Based Architecture
+* ESLint
+* Prettier
+* Responsive Design
+* Reusable Components
+* Clean Code Principles
+
+---
+
+# 📦 Main Libraries
+
+| Library         | Purpose              |
+| --------------- | -------------------- |
+| Axios           | API Requests         |
+| React Query     | Server State         |
+| Redux Toolkit   | Global State         |
+| React Hook Form | Forms                |
+| Zod             | Validation           |
+| next-intl       | Internationalization |
+| Sonner          | Toast Notifications  |
+| Framer Motion   | Animations           |
+| Lucide React    | UI Icons             |
+
+---
+
+# 👨‍💻 Team
+
+Frontend Team
+
+NTI Full Stack Graduation Project
+
+2026
