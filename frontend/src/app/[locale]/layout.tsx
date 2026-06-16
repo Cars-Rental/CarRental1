@@ -35,6 +35,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={direction}
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body>
