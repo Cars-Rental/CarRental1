@@ -4,13 +4,16 @@ import { Provider } from "react-redux";
 import { Toaster } from "sonner";
 import { store } from "@/store/store";
 import { ReactQueryProvider } from "./react-query-provider";
+import { ThemeProvider } from "./theme-provider";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <ReactQueryProvider>
-        {children}
-        <Toaster richColors position="top-center" />
+        <ThemeProvider>
+          {children}
+          <Toaster richColors position="top-center" />
+        </ThemeProvider>
       </ReactQueryProvider>
     </Provider>
   );
