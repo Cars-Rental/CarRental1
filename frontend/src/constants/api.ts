@@ -1,11 +1,22 @@
 export const API_ENDPOINTS = {
-  AUTH: "/auth",
+  AUTH: {
+    LOGIN: "/auth/login",
+    REGISTER: "/auth/register",
+    LOGOUT: "/auth/logout",
+    REFRESH: "/auth/refresh",
+    ME: "/auth/me",
+  },
 
-  LOGIN: "/auth/login",
-  REGISTER: "/auth/register",
-  LOGOUT: "/auth/logout",
+  CARS: {
+    ROOT: "/cars",
+    DETAILS: (id: string) => `/cars/${id}`,
+  },
 
-  CARS: "/cars",
-  BOOKINGS: "/bookings",
-  USERS: "/users",
+  BOOKINGS: {
+    ROOT: "/bookings",
+  },
+
+  USERS: {
+    PROFILE: "/users/profile",
+  },
 } as const;
