@@ -1,12 +1,14 @@
+import { API_ENDPOINTS } from "@/constants";
 import { axiosInstance } from "@/services";
-import { API_ENDPOINTS } from "@/constants/api";
-import type { RegisterRequest, AuthResponse } from "../types";
+import type { ApiResponse } from "@/types";
 
-export async function register(data: RegisterRequest) {
-  const response = await axiosInstance.post<AuthResponse>(
+import type { AuthData, RegisterRequest } from "../types";
+
+export async function register(data: RegisterRequest): Promise<AuthData> {
+  const response = await axiosInstance.post<ApiResponse<AuthData>>(
     API_ENDPOINTS.AUTH.REGISTER,
     data
   );
 
-  return response.data;
+  return response.data.data;
 }

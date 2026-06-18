@@ -31,7 +31,13 @@ export interface RegisterRequest {
   role: Exclude<UserRole, "admin">;
 }
 
-export interface AuthResponse {
+export interface AuthData {
   user: AuthUser;
-  tokens: AuthTokens;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshTokenData {
+  accessToken: string;
+  refreshToken: string;
 }

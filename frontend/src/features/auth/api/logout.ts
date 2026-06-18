@@ -1,10 +1,11 @@
+import { API_ENDPOINTS } from "@/constants";
 import { axiosInstance } from "@/services";
-import { API_ENDPOINTS } from "@/constants/api";
+import type { ApiResponse } from "@/types";
 
-export async function logout() {
-  const response = await axiosInstance.post(
+export async function logout(): Promise<null> {
+  const response = await axiosInstance.post<ApiResponse<null>>(
     API_ENDPOINTS.AUTH.LOGOUT
   );
 
-  return response.data;
+  return response.data.data;
 }

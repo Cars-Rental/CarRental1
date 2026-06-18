@@ -1,10 +1,13 @@
+import { API_ENDPOINTS } from "@/constants";
 import { axiosInstance } from "@/services";
-import { API_ENDPOINTS } from "@/constants/api";
+import type { ApiResponse } from "@/types";
 
-export async function refreshToken() {
-  const response = await axiosInstance.post(
+import type { RefreshTokenData } from "../types";
+
+export async function refreshToken(): Promise<RefreshTokenData> {
+  const response = await axiosInstance.post<ApiResponse<RefreshTokenData>>(
     API_ENDPOINTS.AUTH.REFRESH
   );
 
-  return response.data;
+  return response.data.data;
 }
