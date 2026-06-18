@@ -4,7 +4,7 @@ import type { ApiResponse } from "@/types";
 
 import { AuthData, LoginRequest } from "../types";
 
-export async function login(data: LoginRequest): Promise<AuthData> {
+export async function loginApi(data: LoginRequest): Promise<AuthData> {
     const response = await axiosInstance.post<ApiResponse<AuthData>>(
         API_ENDPOINTS.AUTH.LOGIN,
         data

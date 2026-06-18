@@ -4,7 +4,7 @@ import type { ApiResponse } from "@/types";
 
 import type { RefreshTokenData } from "../types";
 
-export async function refreshToken(): Promise<RefreshTokenData> {
+export async function refreshTokenApi(): Promise<RefreshTokenData> {
   const response = await axiosInstance.post<ApiResponse<RefreshTokenData>>(
     API_ENDPOINTS.AUTH.REFRESH
   );

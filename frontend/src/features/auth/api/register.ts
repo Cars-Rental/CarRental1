@@ -4,7 +4,7 @@ import type { ApiResponse } from "@/types";
 
 import type { AuthData, RegisterRequest } from "../types";
 
-export async function register(data: RegisterRequest): Promise<AuthData> {
+export async function registerApi(data: RegisterRequest): Promise<AuthData> {
   const response = await axiosInstance.post<ApiResponse<AuthData>>(
     API_ENDPOINTS.AUTH.REGISTER,
     data

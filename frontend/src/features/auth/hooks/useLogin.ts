@@ -1,17 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
-import { useAppDispatch } from "@/store/hooks";
+import { toast } from "sonner";
 
-import { login } from "../api";
+import { useAppDispatch } from "@/store/hooks";
+import { loginApi } from "../api";
 import { loginSuccess } from "../store";
+import { tokenStorage } from "../utils";
 
 export function useLogin() {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-    return useMutation({
-        mutationFn: login,
+  return useMutation({
+    mutationFn: loginApi,
 
-        onSuccess: (data) => {
-            dispatch(loginSuccess(data.user));
-        }
-    })
+    onSuccess: (data) => {
+      tokenStorage.setTokens(data.accessToken, data.refreshToken);
+      dispatch(loginSuccess(data.user));
+      toast.success("Login successful");
+    },
+
+    onError: () => {
+      toast.error("Invalid email or password");
+    },
+  });
 }
