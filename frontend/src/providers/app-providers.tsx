@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { store } from "@/store/store";
 import { ReactQueryProvider } from "./react-query-provider";
 import { ThemeProvider } from "./theme-provider";
+import "@/services";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
