@@ -38,7 +38,6 @@ export const userSchema = new mongoose.Schema(
     confirmPassword: {
       type: String,
       trim: true,
-      required: true,
       minLength: 3,
       maxLength: 40,
     },
