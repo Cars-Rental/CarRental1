@@ -17,13 +17,23 @@ export const carSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
-    carimage: [String],
+    carimage: [
+      {
+        secure_url: {
+          type: String,
+          required: true,
+        },
+        public_id: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     isavailable: {
       type: String,
       enum: ["avilable", "regestred"],

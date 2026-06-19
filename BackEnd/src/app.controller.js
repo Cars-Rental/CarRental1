@@ -16,6 +16,7 @@ const bootstrap = (app, express) => {
   app.use(cors({ origin: "http://localhost:3000", credentials: true }));
   app.use(limiter);
   app.use("/auth", authroute);
+  app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
   app.use(globalErrorhandling);
   ConnectDB();

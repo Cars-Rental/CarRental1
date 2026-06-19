@@ -33,7 +33,7 @@ export const login = async (req, res, next) => {
     });
   }
   const accessToken = jwt.sign({ id: loginuser._id }, process.env.SECRET_KEY, {
-    expiresIn: "15m",
+    expiresIn: "7d",
   });
 
   const refreshToken = jwt.sign({ id: loginuser._id }, process.env.SECRET_KEY, {
