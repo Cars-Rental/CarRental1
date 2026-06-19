@@ -33,17 +33,25 @@ export const login = async (req, res, next) => {
     });
   }
   const accessToken = jwt.sign({ id: loginuser._id }, process.env.SECRET_KEY, {
-    expiresIn: "15m",
+    expiresIn: "7d",
   });
 
-  const refreskToken = jwt.sign({ id: loginuser._id }, process.env.SECRET_KEY, {
+  const refreshToken = jwt.sign({ id: loginuser._id }, process.env.SECRET_KEY, {
     expiresIn: "1d",
   });
   res.status(200).json({
-    message: "user login successfully",
-    loginuser,
-    accessToken,
-    refreskToken,
+    success: true,
+    message: "Login successful",
+    data: {
+      user: {
+        id: loginuser._id,
+        userName: loginuser.userName,
+        email: loginuser.email,
+        role: loginuser.role.toLowerCase(),
+      },
+      accessToken,
+      refreshToken,
+    },
   });
 };
 

@@ -5,6 +5,8 @@ import * as authvalidation from "../auth/auth.validation.js";
 import { emailExist } from "../../middleware/userExist.js";
 import passport from './passport.config.js';
 import { googleRedirect, getProfile, logout } from './auth.controller.js';
+// import upload from "./../../middleware/multer.middleware.js";
+
 const router = express.Router();
 
 
@@ -26,5 +28,11 @@ router.post(
     auth.register,
 );
 router.post("/login", validation(authvalidation.login), auth.login);
-
+// router.post("/uploads", upload.single("image"), (req, res, next) => {
+//   console.log("file uploaded");
+//   return res.status(200).json({
+//     message: "File uploaded successfully",
+//     file: req.file,
+//   });
+// });
 export default router;
