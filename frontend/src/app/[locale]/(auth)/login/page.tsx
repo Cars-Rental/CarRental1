@@ -1,8 +1,15 @@
+import { AuthLayout, LoginForm } from "@/features/auth/components";
 
-function page() {
+export default function LoginPage() {
   return (
-    <div>page</div>
-  )
+    <AuthLayout
+      title="مرحبًا بك مجددًا"
+      subtitle="سجل دخولك لإدارة حسابك وحجوزاتك"
+      visualTitle="استأجر عربيتك بأمان وثقة"
+      visualDescription="منصة Rento تساعدك في تأجير السيارات بسهولة داخل مصر مع تجربة آمنة وسريعة."
+      visualSide="right"
+    >
+      <LoginForm />
+    </AuthLayout>
+  );
 }
-
-export default page
