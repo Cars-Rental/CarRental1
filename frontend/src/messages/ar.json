@@ -2,5 +2,39 @@
   "HomePage": {
     "title": "منصة تأجير وبيع السيارات",
     "description": "احجز أو اعرض سيارتك بسهولة"
+  },
+  "Auth": {
+    "trustedCars": "سيارات موثوقة ومفحوصة بدقة",
+    "bestPrices": "أفضل الأسعار وشفافية كاملة",
+    "support": "دعم فني متاح على مدار الساعة",
+    "copyright": "جميع الحقوق محفوظة.",
+    "register": {
+      "fullName": "الاسم بالكامل",
+      "fullNamePlaceholder": "أدخل الاسم بالكامل",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "example@rento.com",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "passwordPlaceholder": "********",
+      "terms": "أوافق على الشروط والأحكام وسياسة الخصوصية",
+      "submit": "إنشاء حساب",
+      "submitting": "جاري إنشاء الحساب...",
+      "alreadyHaveAccount": "لديك حساب بالفعل؟",
+      "login": "تسجيل الدخول",
+      "role": {
+        "user": "مستأجر",
+        "trader": "تاجر سيارات"
+      },
+      "validation": {
+        "userNameMin": "يجب أن يكون الاسم 3 أحرف على الأقل",
+        "userNameMax": "الاسم طويل جدًا",
+        "emailInvalid": "برجاء إدخال بريد إلكتروني صحيح",
+        "phoneInvalid": "رقم الهاتف المصري غير صحيح",
+        "passwordMin": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+        "passwordsNotMatch": "كلمتا المرور غير متطابقتين"
+      }
+    }
   }
 }

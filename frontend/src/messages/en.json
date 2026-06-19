@@ -2,5 +2,39 @@
   "HomePage": {
     "title": "Car Rental & Marketplace",
     "description": "Book or list your car easily"
+  },
+  "Auth": {
+    "trustedCars": "Trusted & inspected vehicles",
+    "bestPrices": "Best prices with full transparency",
+    "support": "24/7 customer support",
+    "copyright": "All rights reserved.",
+    "register": {
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email address",
+      "emailPlaceholder": "example@rento.com",
+      "phone": "Phone number",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordPlaceholder": "********",
+      "terms": "I agree to the Terms & Conditions and Privacy Policy",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login",
+      "role": {
+        "user": "Customer",
+        "trader": "Car Dealer"
+      },
+      "validation": {
+        "userNameMin": "Name must be at least 3 characters",
+        "userNameMax": "Name is too long",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneInvalid": "Invalid Egyptian phone number",
+        "passwordMin": "Password must be at least 8 characters",
+        "passwordsNotMatch": "Passwords do not match"
+      }
+    }
   }
 }
