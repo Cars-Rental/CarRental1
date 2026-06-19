@@ -6,9 +6,10 @@ export const auth = (req, res, next) => {
     return res.status(401).json({ message: "No token provided" });
   const token = authorization.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SIGNATURE);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded;
-    req.userID = decoded.id;
+    req.userid = decoded.id;
+    req.userid = decoded;
     next();
   } catch (error) {
     return res
