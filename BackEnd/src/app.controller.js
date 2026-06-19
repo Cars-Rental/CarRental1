@@ -1,5 +1,6 @@
 import ConnectDB from "./DB/db.connection.js";
 import authroute from "../src/modules/auth/auth.route.js";
+import adminRoute from "../src/modules/admin/admin.route.js";
 import { globalErrorhandling } from "./utlis/response/error.response.js";
 import carsroute from "../src/modules/car/car.route.js";
 import cors from "cors";
@@ -15,7 +16,7 @@ const bootstrap = (app, express) => {
   app.use(cors({ origin: "http://localhost:3000", credentials: true }));
   app.use(limiter);
   app.use("/auth", authroute);
-  app.use("/cars", carsroute);
+  app.use("/admin", adminRoute);
   app.use(globalErrorhandling);
   ConnectDB();
 };
