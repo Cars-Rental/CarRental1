@@ -8,3 +8,5 @@ export * from "./ForgotPasswordForm";
 export * from "./VerifyEmailForm";
 export * from "./ResetPasswordForm";
 export * from "./RoleSelector";
+export * from "./RegisterVisualContent";
+export * from "./LoginVisualContent";

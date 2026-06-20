@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
+import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { Geist, Geist_Mono, Cairo, Noto_Serif } from "next/font/google";
 import { getMessages } from "next-intl/server";
 import { AppProviders } from "@/providers/app-providers";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Car Rental",
+  description: "Car Rental & Marketplace Platform",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

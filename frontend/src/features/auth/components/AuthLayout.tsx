@@ -5,8 +5,7 @@ interface AuthLayoutProps {
   children: React.ReactNode;
   title: string;
   subtitle: string;
-  visualTitle: string;
-  visualDescription: string;
+  visualContent?: React.ReactNode;
   visualSide?: "left" | "right";
 }
 
@@ -14,12 +13,13 @@ export function AuthLayout({
   children,
   title,
   subtitle,
-  visualTitle,
-  visualDescription,
+  visualContent,
   visualSide = "left",
 }: AuthLayoutProps) {
   const visual = (
-    <AuthVisualPanel title={visualTitle} description={visualDescription} />
+    <AuthVisualPanel>
+      {visualContent}
+    </AuthVisualPanel>
   );
 
   const card = (
