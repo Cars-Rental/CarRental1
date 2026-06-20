@@ -33,25 +33,25 @@ export function CarCard({ car, locale, mode }: CarCardProps) {
       dir={isRTL ? "rtl" : "ltr"}
     >
       {/* Car Image with Badge */}
-      <div className="relative h-48 w-full bg-slate-50 dark:bg-slate-900/60 select-none overflow-hidden">
+      <div className="relative h-48 w-full overflow-hidden select-none bg-slate-50 dark:bg-slate-900/60">
         <Image
           src={car.image}
           alt={car.name}
           fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority
         />
 
         {/* Availability Badge */}
-        <span className="absolute top-4 start-4 z-10 flex items-center gap-1 bg-[#0d9e8f]/10 dark:bg-[#0d9e8f]/20 text-[#0d9e8f] text-[10px] font-bold py-1 px-2.5 rounded-full border border-[#0d9e8f]/20">
+        <span className="absolute top-4 start-4 flex items-center gap-1 bg-[#0d9e8f]/10 dark:bg-[#0d9e8f]/20 text-[#0d9e8f] text-[10px] font-bold py-1 px-2.5 rounded-full border border-[#0d9e8f]/20">
           <span className="w-1.5 h-1.5 rounded-full bg-[#0d9e8f] animate-pulse" />
           {t("badgeAvailable")}
         </span>
 
         {/* Premium Badge if rating is high */}
         {car.rating >= 4.8 && (
-          <span className="absolute top-4 end-4 z-10 flex items-center gap-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold py-1 px-2.5 rounded-full border border-amber-500/20">
+          <span className="absolute top-4 end-4 flex items-center gap-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold py-1 px-2.5 rounded-full border border-amber-500/20">
             <Sparkles className="size-3" />
             {t("badgePremium")}
           </span>
