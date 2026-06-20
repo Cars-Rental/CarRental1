@@ -6,8 +6,8 @@ export default function ResetPasswordPage() {
     <AuthLayout
       title="إعادة تعيين كلمة المرور"
       subtitle="قم بإدخال كلمة المرور الجديدة الخاصة بك."
-      visualTitle="أمانك وراحتك في كل رحلة"
-      visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
+      // visualTitle="أمانك وراحتك في كل رحلة"
+      // visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
       visualSide="right"
     >
       <ResetPasswordForm />

@@ -27,7 +27,7 @@ function Input({
         type={type}
         data-slot="input"
         className={cn(
-          "h-12 w-full rounded-xl border border-input bg-transparent text-base transition-all outline-none",
+          "h-12 w-full rounded-md border border-input bg-transparent text-base transition-all outline-none",
           startIcon && "ps-11",
           endIcon && "pe-11",
           "px-4 py-2 placeholder:text-muted-foreground",

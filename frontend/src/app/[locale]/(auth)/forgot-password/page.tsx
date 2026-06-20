@@ -6,8 +6,8 @@ export default function ForgotPasswordPage() {
     <AuthLayout
       title="نسيت كلمة المرور؟"
       subtitle="أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور."
-      visualTitle="Rento Egypt"
-      visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
+      // visualTitle="Rento Egypt"
+      // visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
       visualSide="right"
     >
       <ForgotPasswordForm />
