@@ -38,6 +38,7 @@ export default async function LocaleLayout({
       lang={locale}
       dir={direction}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} ${cairo.variable} ${notoSerif.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning>
