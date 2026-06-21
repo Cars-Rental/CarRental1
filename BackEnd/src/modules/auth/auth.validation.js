@@ -19,7 +19,7 @@ export const register = joi.object({
       new RegExp(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\w)(?!.* ).{8,16}$/),
     )
     .required(),
-  confirmPassword: joi.string().valid(joi.ref("password")).required(),
+  confirmPassword: joi.string().valid(joi.ref("password")),
 });
 
 export const login = joi.object({
