@@ -41,10 +41,92 @@
     },
     "login": {
       "title": "Discover the road with safety and ease",
-      "description":"Whether you're planning a leisure trip or a business trip, we offer you a wide range of new and reliable cars with competitive prices in the heart of Cairo.",
+      "description": "Whether you're planning a leisure trip or a business trip, we offer you a wide range of new and reliable cars with competitive prices in the heart of Cairo.",
       "title1": "Welcome back",
-      "subtitle": "Log in to your account to manage your reservations"
-
+      "subtitle": "Login to manage your account and bookings",
+      "carsCount": "+500",
+      "carsDesc": "Available cars",
+      "reviewspercentage": "%98",
+      "reviewsDesc": "Customer reviews",
+      "copyright": "All rights reserved.",
+      "email": "Email address",
+      "emailPlaceholder": "example@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "********",
+      "forgotPassword": "Forgot password?",
+      "rememberMe": "Remember me on this device",
+      "submit": "Login",
+      "submitting": "Logging in...",
+      "or": "or",
+      "loginWithGoogle": "Google",
+      "loginWithFacebook": "Facebook",
+      "dontHaveAccount": "Don't have an account?",
+      "createAccount": "Create a new account",
+      "validation": {
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "Password must be at least 8 characters"
+      }
+    },
+    "forgotPassword": {
+      "title": "Forgot password?",
+      "subtitle": "Enter your email and we will send you a reset link",
+      "description": "Recover your account securely and continue your journey with Rento without any hassle.",
+      "email": "Email address",
+      "emailPlaceholder": "example@email.com",
+      "submit": "Send reset link",
+      "submitting": "Sending...",
+      "rememberPassword": "Remembered your password?",
+      "login": "Login",
+      "securityTitle": "Security & Trust",
+      "securityDescription": "We ensure a secure account recovery process to keep your personal information and account protected.",
+      "copyright": "All rights reserved.",
+      "validation": {
+        "emailInvalid": "Please enter a valid email address"
+      }
+    },
+    "verifyEmail": {
+      "title": "Welcome to the future of car rentals in Egypt",
+      "title1": "Verify your email",
+      "description": "We are committed to providing you with a hassle-free and secure experience. Please verify your account to start your journey with us.",
+      "subtitle": "Enjoy a safe holiday, manage your account, and continue your journey with Rento.",
+      "copyright": "All rights reserved.",
+      "sentTo": "Verification code sent to",
+      "otpPlaceholder": "000000",
+      "submit": "Verify email",
+      "submitting": "Verifying...",
+      "notReceived": "Didn't receive the code?",
+      "resend": "Resend code",
+      "resendIn": "Resend code in {seconds}s",
+      "validation": {
+        "otpLength": "Verification code must be 6 digits",
+        "otpNumbers": "Verification code must contain numbers only"
+      }
+    },
+    "resetPassword": {
+      "title": "Your safety and comfort on every trip",
+      "formTitle": "Reset password",
+      "subtitle": "Create a new strong password for your account",
+      "description": "We are here to help you recover your account quickly and easily. Set a strong password to ensure the security of your personal information and account.",
+      "password": "New password",
+      "confirmPassword": "Confirm new password",
+      "passwordPlaceholder": "********",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "copyright": "All rights reserved.",
+      "encryptionTitle": "Full encryption",
+      "encryptionDescription": "Your data is protected with modern security standards.",
+      "speedTitle": "Fast update",
+      "speedDescription": "Your password is updated instantly across your account.",
+      "requirementsTitle": "Password must contain:",
+      "requirementMin": "At least 8 characters",
+      "requirementUpperLower": "At least one uppercase and one lowercase letter",
+      "backToLogin": "Back to login",
+      "validation": {
+        "passwordMin": "Password must be at least 8 characters",
+        "passwordUppercase": "Password must contain at least one uppercase letter",
+        "passwordLowercase": "Password must contain at least one lowercase letter",
+        "passwordsNotMatch": "Passwords do not match"
+      }
     }
   }
 }
