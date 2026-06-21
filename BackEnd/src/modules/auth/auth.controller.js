@@ -54,3 +54,27 @@ export const login = async (req, res, next) => {
     },
   });
 };
+
+
+
+export const googleRedirect = (req, res) => {
+  res.redirect('/auth/profile');
+};
+
+export const getProfile = (req, res) => {
+  res.send(`
+        <h2>✅ Welcome ${req.user.displayName}</h2>
+        <a href="/auth/logout">🚪 Logout</a>
+    `);
+};
+
+export const logout = (req, res) => {
+  req.logout((err) => {
+    if (err) return res.redirect('/');
+
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.redirect('/');
+    });
+  });
+};
