@@ -1,12 +1,18 @@
-import { AuthLayout, LoginForm } from "@/features/auth/components";
+import {
+  AuthLayout,
+  LoginForm,
+  LoginVisualContent,
+} from "@/features/auth/components";
+import { getTranslations } from "next-intl/server";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const t = await getTranslations("Auth.login");
+
   return (
     <AuthLayout
-      title="مرحبًا بك مجددًا"
-      subtitle="سجل دخولك لإدارة حسابك وحجوزاتك"
-      visualTitle="استأجر عربيتك بأمان وثقة"
-      visualDescription="منصة Rento تساعدك في تأجير السيارات بسهولة داخل مصر مع تجربة آمنة وسريعة."
+      title={t("title1")}
+      subtitle={t("subtitle")}
+      visualContent={<LoginVisualContent />}
       visualSide="right"
     >
       <LoginForm />

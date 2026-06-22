@@ -4,11 +4,14 @@
     "description": "Book or list your car easily"
   },
   "Auth": {
-    "trustedCars": "Trusted & inspected vehicles",
-    "bestPrices": "Best prices with full transparency",
-    "support": "24/7 customer support",
-    "copyright": "All rights reserved.",
     "register": {
+      "title": "Biggest car rental platform in Egypt",
+      "title1": "Create a new account",
+      "subtitle": "Create your account to start your journey with us",
+      "trustedCars": "Trusted & inspected vehicles",
+      "bestPrices": "Best prices with full transparency",
+      "support": "24/7 customer support",
+      "copyright": "All rights reserved.",
       "fullName": "Full name",
       "fullNamePlaceholder": "Enter your full name",
       "email": "Email address",
@@ -35,6 +38,13 @@
         "passwordMin": "Password must be at least 8 characters",
         "passwordsNotMatch": "Passwords do not match"
       }
+    },
+    "login": {
+      "title": "Discover the road with safety and ease",
+      "description":"Whether you're planning a leisure trip or a business trip, we offer you a wide range of new and reliable cars with competitive prices in the heart of Cairo.",
+      "title1": "Welcome back",
+      "subtitle": "Log in to your account to manage your reservations"
+
     }
   },
   "Landing": {

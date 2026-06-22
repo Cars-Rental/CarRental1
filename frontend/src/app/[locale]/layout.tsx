@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { Geist, Geist_Mono, Cairo, Noto_Serif } from "next/font/google";
 import { getMessages } from "next-intl/server";
@@ -7,12 +9,26 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+export const metadata: Metadata = {
+  title: "Car Rental",
+  description: "Car Rental & Marketplace Platform",
+};
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-const cairo = Cairo({ variable: "--font-cairo", subsets: ["arabic", "latin"] });
+
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+});
+
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
   variable: "--font-noto-serif",
