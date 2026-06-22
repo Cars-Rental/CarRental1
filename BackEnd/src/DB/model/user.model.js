@@ -40,9 +40,6 @@ export const userSchema = new mongoose.Schema(
     confirmPassword: {
       type: String,
       trim: true,
-      required: function () {
-        return this.provider !== 'google';
-      },
       minLength: 3,
       maxLength: 40,
     },
@@ -50,8 +47,9 @@ export const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    provider:   { type: String , default: 'local' },   
-    providerId: { type: String },   
+    provider: { type: String, default: 'local' },
+    providerId: { type: String },
+
   },
   { timestamps: true },
 );

@@ -1,6 +1,7 @@
 import ConnectDB from "./DB/db.connection.js";
 import authroute from "../src/modules/auth/auth.route.js";
 import adminRoute from "../src/modules/admin/admin.route.js";
+import orderroute from "./modules/order/order.route.js";
 import { globalErrorhandling } from "./utlis/response/error.response.js";
 import session from 'express-session';
 import passport from "passport";
@@ -41,6 +42,7 @@ const bootstrap = (app, express) => {
   app.use("/auth", authroute);
   app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
+  app.use("/orders", orderroute);
   app.use(globalErrorhandling);
 
   ConnectDB();
