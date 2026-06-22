@@ -21,4 +21,7 @@ router.post("/login", validation(authvalidation.login), auth.login);
 //     file: req.file,
 //   });
 // });
+
+router.post("/refresh-token", auth.refreshToken);
+router.post("/verifyemail/:id", auth.VerifyEmail);
 export default router;
