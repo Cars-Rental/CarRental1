@@ -1,8 +1,22 @@
+import { getTranslations } from "next-intl/server";
 
-function page() {
+import {
+  AuthLayout,
+  RegisterForm,
+  RegisterVisualContent,
+} from "@/features/auth/components";
+
+export default async function RegisterPage() {
+  const t = await getTranslations("Auth.register");
+  
   return (
-    <div>page</div>
-  )
+    <AuthLayout
+      title={t("title1")}
+      subtitle={t("subtitle")}
+      visualContent={<RegisterVisualContent />}
+      visualSide="right"
+    >
+      <RegisterForm />
+    </AuthLayout>
+  );
 }
-
-export default page

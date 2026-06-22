@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
+import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cairo, Noto_Serif } from "next/font/google";
 import { getMessages } from "next-intl/server";
 import { AppProviders } from "@/providers/app-providers";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import { Navbar } from "@/components/shared/Navbar";
+import { Footer } from "@/components/shared/Footer";
+
+export const metadata: Metadata = {
+  title: "Car Rental",
+  description: "Car Rental & Marketplace Platform",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +24,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+});
+
+const notoSerif = Noto_Serif({
+  subsets: ["latin"],
+  variable: "--font-noto-serif",
+  display: "swap",
+});
+
 export default async function LocaleLayout({
   children,
   params,
@@ -23,12 +43,10 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-
   const messages = await getMessages();
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
+
   const direction = locale === "ar" ? "rtl" : "ltr";
 
   return (
@@ -36,11 +54,16 @@ export default async function LocaleLayout({
       lang={locale}
       dir={direction}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${geistMono.variable} ${cairo.variable} ${notoSerif.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <AppProviders>{children}</AppProviders>
+          <AppProviders key={locale}>
+            <Navbar locale={locale} />
+            <main className="pt-16">{children}</main>
+            <Footer locale={locale} />
+          </AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,8 +1,21 @@
+import {
+  AuthLayout,
+  LoginForm,
+  LoginVisualContent,
+} from "@/features/auth/components";
+import { getTranslations } from "next-intl/server";
 
-function page() {
+export default async function LoginPage() {
+  const t = await getTranslations("Auth.login");
+
   return (
-    <div>page</div>
-  )
+    <AuthLayout
+      title={t("title1")}
+      subtitle={t("subtitle")}
+      visualContent={<LoginVisualContent />}
+      visualSide="right"
+    >
+      <LoginForm />
+    </AuthLayout>
+  );
 }
-
-export default page
