@@ -76,7 +76,7 @@ export const createOrder = async (req, res, next) => {
       startDate: { $lte: end },
       endDate: { $gte: start },
     });
-    console.log(overlappingOrder)
+    
     if (overlappingOrder) {
       return res.status(409).json({success: false,message: "Car is already booked for the selected dates",data: null,});
     }
