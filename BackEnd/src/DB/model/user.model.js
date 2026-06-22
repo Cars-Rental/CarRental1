@@ -23,6 +23,12 @@ export const userSchema = new mongoose.Schema(
       enum: ["Male", "Female"],
       default: "Male",
     },
+    otp: {
+      type: String,
+    },
+    otpExpires: {
+      type: Date,
+    },
     password: {
       type: String,
       trim: true,

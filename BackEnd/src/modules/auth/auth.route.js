@@ -6,6 +6,7 @@ import { emailExist } from "../../middleware/userExist.js";
 import passport from './passport.config.js';
 import { googleRedirect, getProfile, logout } from './auth.controller.js';
 // import upload from "./../../middleware/multer.middleware.js";
+import { auth as verifyToken } from "../../middleware/verifyToken.js";
 
 const router = express.Router();
 
@@ -35,4 +36,10 @@ router.post("/login", validation(authvalidation.login), auth.login);
 //     file: req.file,
 //   });
 // });
+
+router.post("/refresh-token", auth.refreshToken);
+router.post("/verifyemail/:id", auth.VerifyEmail);
+router.patch("/updatepassword", verifyToken, auth.updatePassword);
+router.post("/reset-password", auth.resetpassword);
+router.post("/forgot-password", auth.forgotPassword);
 export default router;
