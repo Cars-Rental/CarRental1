@@ -4,6 +4,7 @@ import validation from "../../middleware/validation.middleware.js";
 import * as authvalidation from "../auth/auth.validation.js";
 import { emailExist } from "../../middleware/userExist.js";
 // import upload from "./../../middleware/multer.middleware.js";
+import { auth as verifyToken } from "../../middleware/verifyToken.js";
 
 const router = express.Router();
 
@@ -24,5 +25,7 @@ router.post("/login", validation(authvalidation.login), auth.login);
 
 router.post("/refresh-token", auth.refreshToken);
 router.post("/verifyemail/:id", auth.VerifyEmail);
-router.patch("/updatepassword/:id", auth.updatePasswordtonewONe);
+router.patch("/updatepassword", verifyToken, auth.updatePassword);
+router.post("/reset-password", auth.resetpassword);
+router.post("/forgot-password", auth.forgotPassword);
 export default router;
