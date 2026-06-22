@@ -104,8 +104,10 @@
     },
     "resetPassword": {
       "title": "Your safety and comfort on every trip",
+      "title1": "Reset password",
       "formTitle": "Reset password",
       "subtitle": "Create a new strong password for your account",
+      "subtitle1": "Confirm your new password.",
       "description": "We are here to help you recover your account quickly and easily. Set a strong password to ensure the security of your personal information and account.",
       "password": "New password",
       "confirmPassword": "Confirm new password",

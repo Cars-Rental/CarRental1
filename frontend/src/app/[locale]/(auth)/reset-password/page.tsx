@@ -1,14 +1,18 @@
+import { getTranslations } from "next-intl/server";
+
 import {
   AuthLayout,
   ResetPasswordForm,
   ResetPasswordVisualContent,
 } from "@/features/auth/components";
-export default function ResetPasswordPage() {
-  
+
+export default async function ResetPasswordPage() {
+    const t = await getTranslations("Auth.resetPassword");
+
   return (
     <AuthLayout
-      title="إعادة تعيين كلمة المرور"
-      subtitle="قم بإدخال كلمة المرور الجديدة الخاصة بك."
+      title={t("title1")}
+      subtitle= {t("subtitle1")}
       visualSide="right"
       visualContent={<ResetPasswordVisualContent />}
     >
