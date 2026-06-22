@@ -1,14 +1,20 @@
-import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import { VerifyEmailForm } from "@/features/auth/components/VerifyEmailForm";
+import { getTranslations } from "next-intl/server";
 
-export default function VerifyEmailPage() {
+import {
+  VerifyEmailVisualContent,
+  AuthLayout,
+  VerifyEmailForm,
+} from "@/features/auth/components";
+
+export default async function VerifyEmailPage() {
+    const t = await getTranslations("Auth.verifyEmail");
+
   return (
     <AuthLayout
-      title="تأكيد البريد الإلكتروني"
-      subtitle="لقد أرسلنا رمز التأكيد إلى بريدك الإلكتروني"
-      visualTitle="أمانك ينتهي باستقبال تأجير السيارات في مصر"
-      visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
+      title={t("title1")}
+      subtitle={t("subtitle")}
       visualSide="right"
+      visualContent={<VerifyEmailVisualContent />}
     >
       <VerifyEmailForm />
     </AuthLayout>

@@ -1,14 +1,15 @@
-import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import { ForgotPasswordForm } from "@/features/auth/components/ForgotPasswordForm";
+import { AuthLayout, ForgotPasswordForm, ForgotVisualContent } from "@/features/auth/components";
+import { getTranslations } from "next-intl/server";
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage() {
+    const t = await getTranslations("Auth.forgotPassword");
+
   return (
     <AuthLayout
-      title="نسيت كلمة المرور؟"
-      subtitle="أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور."
-      // visualTitle="Rento Egypt"
-      // visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
+      title={t("title")}
+      subtitle={t("subtitle")}
       visualSide="right"
+      visualContent={<ForgotVisualContent />}
     >
       <ForgotPasswordForm />
     </AuthLayout>

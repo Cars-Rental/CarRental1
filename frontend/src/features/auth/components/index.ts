@@ -10,3 +10,6 @@ export * from "./ResetPasswordForm";
 export * from "./RoleSelector";
 export * from "./RegisterVisualContent";
 export * from "./LoginVisualContent";
+export * from "./ForgotVisualContent";
+export * from "./VerifyEmailVisualContent";
+export * from "./ResetPasswordVisualCotent";

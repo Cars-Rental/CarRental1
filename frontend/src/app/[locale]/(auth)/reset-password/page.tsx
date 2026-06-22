@@ -1,14 +1,20 @@
-import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import { ResetPasswordForm } from "@/features/auth/components/ResetPasswordForm";
+import { getTranslations } from "next-intl/server";
 
-export default function ResetPasswordPage() {
+import {
+  AuthLayout,
+  ResetPasswordForm,
+  ResetPasswordVisualContent,
+} from "@/features/auth/components";
+
+export default async function ResetPasswordPage() {
+    const t = await getTranslations("Auth.resetPassword");
+
   return (
     <AuthLayout
-      title="إعادة تعيين كلمة المرور"
-      subtitle="قم بإدخال كلمة المرور الجديدة الخاصة بك."
-      // visualTitle="أمانك وراحتك في كل رحلة"
-      // visualDescription="استأجر سيارتك بسهولة، أمان، وثقة في أي وقت."
+      title={t("title1")}
+      subtitle= {t("subtitle1")}
       visualSide="right"
+      visualContent={<ResetPasswordVisualContent />}
     >
       <ResetPasswordForm />
     </AuthLayout>

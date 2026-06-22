@@ -31,6 +31,29 @@ export interface RegisterRequest {
   role: Exclude<UserRole, "admin">;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export type VerifyEmailType = "register" | "reset";
+
+export interface VerifyEmailRequest {
+  email: string;
+  otp: string;
+  type: VerifyEmailType;
+}
+
+export interface ResendCodeRequest {
+  email: string;
+  type: VerifyEmailType;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface AuthData {
   user: AuthUser;
   accessToken: string;
