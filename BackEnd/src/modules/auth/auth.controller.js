@@ -178,6 +178,27 @@ export const VerifyEmail = async (req, res, next) => {
     data: null,
   });
 };
-export const updatePassword = async (req, res, next) => {};
+
+export const updatePasswordtonewONe = async (req, res, next) => {
+  const { id } = req.params;
+  const { password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
+  const user = await userModel.findByIdAndUpdate(
+    id,
+    { password: hashedPassword },
+    { new: true },
+  );
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Password updated successfully",
+    data: user,
+  });
+};
 
 export const resetpassword = async (req, res, next) => {};
