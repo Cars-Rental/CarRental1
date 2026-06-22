@@ -46,5 +46,80 @@
       "subtitle": "Log in to your account to manage your reservations"
 
     }
+  },
+  "Landing": {
+    "hero": {
+      "title": "Rent Your Perfect Car\nWith Absolute Ease in Egypt",
+      "subtitle": "Choose from hundreds of available cars all over Egypt at competitive prices and exceptional service.",
+      "cityLabel": "City",
+      "cityPlaceholder": "Cairo",
+      "dateLabel": "Date",
+      "datePlaceholder": "Choose Date",
+      "typeLabel": "Car Type",
+      "typePlaceholder": "Family",
+      "searchBtn": "Search for your car"
+    },
+    "stats": {
+      "happyClients": "Active Users",
+      "carsAvailable": "Cars Available",
+      "branches": "Certified Branches"
+    },
+    "howItWorks": {
+      "title": "How Rento Works?",
+      "searchTitle": "Search",
+      "searchDesc": "Choose from categories of cars in your city easily with one click.",
+      "bookTitle": "Book",
+      "bookDesc": "Enter your details, choose the appropriate time, and secure your booking with full safety.",
+      "driveTitle": "Drive",
+      "driveDesc": "Pick up keys from the dealer's location or request delivery to you and start your journey."
+    },
+    "featured": {
+      "titleRent": "Featured Cars",
+      "subtitleRent": "Latest models available for booking now",
+      "titleBuy": "Cars for Sale",
+      "subtitleBuy": "Explore premium vehicles available for purchase",
+      "showAll": "Show All",
+      "seats": "Seats",
+      "bags": "Bags",
+      "automatic": "Automatic",
+      "manual": "Manual",
+      "perDay": "day",
+      "egp": "EGP",
+      "bookNow": "Book Now",
+      "buyNow": "Buy Now",
+      "badgeAvailable": "Available",
+      "badgePremium": "Premium"
+    },
+    "whyUs": {
+      "title": "Why Thousands Choose Rento?",
+      "subtitle": "We don't just offer car rentals; we provide a reliable and enjoyable driving experience, taking care of every detail to guarantee your comfort and safety on every trip.",
+      "check1": "More than 50 pickup points across the country",
+      "check2": "A diverse fleet to suit all budgets",
+      "check3": "Home delivery or airport pickup option",
+      "safeTitle": "Full Safety",
+      "safeDesc": "Comprehensive insurance coverage on all accidents and damages for all cars.",
+      "easyTitle": "Ease & Speed",
+      "easyDesc": "Book your perfect car in less than two minutes via app or website.",
+      "priceTitle": "Best Prices",
+      "priceDesc": "Complete transparency in pricing without any hidden fees or charges.",
+      "supportTitle": "24/7 Support",
+      "supportDesc": "Our customer service team is ready to assist you at any time."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about our services",
+      "q1": "What documents are required for rental?",
+      "a1": "You need a valid driver's license, national ID (or passport for tourists), and a security deposit (which is fully refundable).",
+      "q2": "Is airport car delivery service available?",
+      "a2": "Yes, we offer airport delivery services at Cairo, Alexandria, and other airports. Simply select your terminal during booking.",
+      "q3": "How is the security deposit refunded?",
+      "a3": "The deposit is refunded to your card or cash depending on your initial payment method within 3-5 business days after returning the car safely."
+    },
+    "footer": {
+      "desc": "Egypt's leading car rental & sales platform. Find the best cars at the best prices across all of Egypt.",
+      "contactUs": "Contact Us",
+      "downloadText": "Download the app now for a 10% discount on your first booking",
+      "copyright": "Made with love in Egypt | © {year} Rento. All rights reserved."
+    }
   }
 }
