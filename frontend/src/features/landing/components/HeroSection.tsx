@@ -1,19 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { MapPin, Calendar, Car, Search } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
+import { useRouter } from "@/i18n/navigation";
 
-interface HeroSectionProps {
-  locale: string;
-}
-
-export function HeroSection({ locale }: HeroSectionProps) {
+export function HeroSection() {
+  const router = useRouter();
   const t = useTranslations("Landing.hero");
   const { isRTL } = useDirection();
-  const router = useRouter();
   const [form, setForm] = useState({
     location: "Cairo",
     date: "",
@@ -25,7 +22,7 @@ export function HeroSection({ locale }: HeroSectionProps) {
     if (form.location) params.set("city", form.location);
     if (form.date) params.set("date", form.date);
     if (form.carType) params.set("type", form.carType);
-    router.push(`/${locale}/cars?${params.toString()}`);
+    router.push(`/cars?${params.toString()}`);
   };
 
   return (
@@ -48,7 +45,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
         {/* Title */}
         <h1
           className="text-white font-extrabold leading-tight mb-6 drop-shadow-md text-3xl sm:text-4xl md:text-5xl lg:text-6xl whitespace-pre-line"
-          style={{ fontFamily: isRTL ? "var(--font-cairo)" : "var(--font-sans)" }}
+          style={{
+            fontFamily: isRTL ? "var(--font-cairo)" : "var(--font-sans)",
+          }}
         >
           {t("title")}
         </h1>
@@ -61,7 +60,6 @@ export function HeroSection({ locale }: HeroSectionProps) {
         {/* Floating Search Container */}
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/40 rounded-3xl p-4 shadow-2xl md:flex md:items-center md:gap-4 md:divide-x md:divide-slate-200/50 dark:md:divide-slate-800/50 md:rtl:divide-x-reverse">
-            
             {/* City Field */}
             <div className="flex-1 flex items-center gap-3 p-3 text-start">
               <MapPin className="text-[var(--primary)] size-5 shrink-0" />
@@ -72,7 +70,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
                 <input
                   type="text"
                   value={form.location}
-                  onChange={(e) => setForm({ ...form, location: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, location: e.target.value })
+                  }
                   placeholder={t("cityPlaceholder")}
                   className="w-full bg-transparent border-none text-slate-800 dark:text-slate-100 font-medium text-sm focus:outline-none placeholder:text-slate-400"
                 />
@@ -104,19 +104,33 @@ export function HeroSection({ locale }: HeroSectionProps) {
                 </label>
                 <select
                   value={form.carType}
-                  onChange={(e) => setForm({ ...form, carType: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, carType: e.target.value })
+                  }
                   className="w-full bg-transparent border-none text-slate-800 dark:text-slate-100 font-medium text-sm focus:outline-none focus:ring-0 cursor-pointer"
                 >
-                  <option value="family" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+                  <option
+                    value="family"
+                    className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
+                  >
                     {isRTL ? "عائلية" : "Family"}
                   </option>
-                  <option value="economy" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+                  <option
+                    value="economy"
+                    className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
+                  >
                     {isRTL ? "اقتصادية" : "Economy"}
                   </option>
-                  <option value="luxury" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+                  <option
+                    value="luxury"
+                    className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
+                  >
                     {isRTL ? "فاخرة" : "Luxury"}
                   </option>
-                  <option value="suv" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+                  <option
+                    value="suv"
+                    className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
+                  >
                     {isRTL ? "SUV" : "SUV"}
                   </option>
                 </select>
@@ -133,7 +147,6 @@ export function HeroSection({ locale }: HeroSectionProps) {
                 <span>{t("searchBtn")}</span>
               </button>
             </div>
-
           </div>
         </div>
       </div>

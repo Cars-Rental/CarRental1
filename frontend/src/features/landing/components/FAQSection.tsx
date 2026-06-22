@@ -9,11 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { useDirection } from "@/lib";
 
-interface FAQSectionProps {
-  locale: string;
-}
-
-export function FAQSection({ locale }: FAQSectionProps) {
+export function FAQSection() {
   const t = useTranslations("Landing.faq");
   const { isRTL } = useDirection();
 
@@ -36,7 +32,10 @@ export function FAQSection({ locale }: FAQSectionProps) {
   ];
 
   return (
-    <section className="py-20 bg-white dark:bg-slate-900" dir={isRTL ? "rtl" : "ltr"}>
+    <section
+      className="py-20 bg-white dark:bg-slate-900"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <div className="container-main">
         {/* Title */}
         <div className="text-center mb-16">
@@ -61,7 +60,7 @@ export function FAQSection({ locale }: FAQSectionProps) {
                 <AccordionTrigger className="text-slate-800 dark:text-slate-100 font-bold text-sm sm:text-base border-none hover:no-underline py-4 flex justify-between items-center w-full focus:outline-none">
                   <span className="text-start">{faq.question}</span>
                 </AccordionTrigger>
-                
+
                 <AccordionContent className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed pt-2 pb-4 border-t border-slate-100 dark:border-slate-800/40">
                   {faq.answer}
                 </AccordionContent>

@@ -1,22 +1,20 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { CheckCircle2, Shield, Gauge, Banknote, Headphones } from "lucide-react";
+import {
+  CheckCircle2,
+  Shield,
+  Gauge,
+  Banknote,
+  Headphones,
+} from "lucide-react";
 import { useDirection } from "@/lib";
 
-interface WhyChooseUsProps {
-  locale: string;
-}
-
-export function WhyChooseUs({ locale }: WhyChooseUsProps) {
+export function WhyChooseUs() {
   const t = useTranslations("Landing.whyUs");
   const { isRTL } = useDirection();
 
-  const checklist = [
-    t("check1"),
-    t("check2"),
-    t("check3"),
-  ];
+  const checklist = [t("check1"), t("check2"), t("check3")];
 
   const features = [
     {
@@ -46,10 +44,12 @@ export function WhyChooseUs({ locale }: WhyChooseUsProps) {
   ];
 
   return (
-    <section className="py-20 bg-slate-50 dark:bg-slate-900/30" dir={isRTL ? "rtl" : "ltr"}>
+    <section
+      className="py-20 bg-slate-50 dark:bg-slate-900/30"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <div className="container-main">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-          
           {/* Left Column: Text & Checklist */}
           <div className="space-y-6 text-start">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 leading-tight">
@@ -90,11 +90,13 @@ export function WhyChooseUs({ locale }: WhyChooseUsProps) {
                     <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
                       {feat.title}
                     </h3>
-                    <div className={`p-2 rounded-xl shrink-0 ${
-                      feat.isSpecial 
-                        ? "bg-[#0d9e8f] text-white" 
-                        : "bg-slate-200/60 dark:bg-slate-700/60 text-[var(--primary)]"
-                    }`}>
+                    <div
+                      className={`p-2 rounded-xl shrink-0 ${
+                        feat.isSpecial
+                          ? "bg-[#0d9e8f] text-white"
+                          : "bg-slate-200/60 dark:bg-slate-700/60 text-[var(--primary)]"
+                      }`}
+                    >
                       <Icon className="size-5" />
                     </div>
                   </div>
@@ -105,7 +107,6 @@ export function WhyChooseUs({ locale }: WhyChooseUsProps) {
               );
             })}
           </div>
-
         </div>
       </div>
     </section>

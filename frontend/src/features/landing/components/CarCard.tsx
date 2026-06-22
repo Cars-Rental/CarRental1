@@ -9,16 +9,16 @@ import {
   Settings,
 } from "lucide-react";
 import type { Car } from "../types/landing.types";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
 
 interface CarCardProps {
   car: Car;
-  locale: string;
   mode: "rent" | "buy";
 }
 
-export function CarCard({ car, locale, mode }: CarCardProps) {
+export function CarCard({ car, mode }: CarCardProps) {
+  const locale = useLocale();
   const t = useTranslations("Landing.featured");
   const { isRTL } = useDirection();
 

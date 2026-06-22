@@ -8,12 +8,9 @@ import { Menu, X, Sun, Moon, Globe } from "lucide-react";
 import { useTheme } from "next-themes";
 import { NAV_LINKS } from "@/features/landing/constants/landing.constants";
 import { useDirection } from "@/lib";
+import { useLocale } from "next-intl";
 
-interface NavbarProps {
-  locale: string;
-}
-
-export function Navbar({ locale }: NavbarProps) {
+export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -21,6 +18,7 @@ export function Navbar({ locale }: NavbarProps) {
   const router = useRouter();
   const { isRTL } = useDirection();
   const { theme, setTheme } = useTheme();
+  const locale = useLocale();
 
   useEffect(() => setMounted(true), []);
 
@@ -58,11 +56,11 @@ export function Navbar({ locale }: NavbarProps) {
       }`}
       dir={isRTL ? "rtl" : "ltr"}
     >
-      <nav className="container-main flex items-center justify-between">
+      <nav className="container flex items-center justify-between mx-auto">
         {/* Logo */}
         <Link href={`/${locale}`} className="flex items-center gap-2 shrink-0">
           <Image
-            src="/assets/images/logos/logo.png"
+            src="/assets/images/logos/logo-small.png"
             alt="DriveEase"
             width={120}
             height={36}

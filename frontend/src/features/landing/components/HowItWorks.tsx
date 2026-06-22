@@ -4,11 +4,7 @@ import { useTranslations } from "next-intl";
 import { Search, Calendar, Key } from "lucide-react";
 import { useDirection } from "@/lib";
 
-interface HowItWorksProps {
-  locale: string;
-}
-
-export function HowItWorks({ locale }: HowItWorksProps) {
+export function HowItWorks() {
   const t = useTranslations("Landing.howItWorks");
   const { isRTL } = useDirection();
 
@@ -31,7 +27,10 @@ export function HowItWorks({ locale }: HowItWorksProps) {
   ];
 
   return (
-    <section className="py-20 bg-slate-50 dark:bg-slate-900/40" dir={isRTL ? "rtl" : "ltr"}>
+    <section
+      className="py-20 bg-slate-50 dark:bg-slate-900/40"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <div className="container-main text-center">
         {/* Title */}
         <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
@@ -44,7 +43,10 @@ export function HowItWorks({ locale }: HowItWorksProps) {
           {steps.map((step, idx) => {
             const Icon = step.icon;
             return (
-              <div key={idx} className="flex flex-col items-center text-center px-4 group">
+              <div
+                key={idx}
+                className="flex flex-col items-center text-center px-4 group"
+              >
                 {/* Circular Icon Container */}
                 <div className="w-16 h-16 rounded-full bg-cyan-50 dark:bg-slate-800 border-2 border-cyan-100 dark:border-slate-700 flex items-center justify-center text-[var(--primary)] mb-6 shadow-sm group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white group-hover:border-[var(--primary)] transition-all duration-300">
                   <Icon className="size-6 transition-colors duration-300" />
