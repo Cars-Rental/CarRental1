@@ -20,6 +20,8 @@ export const register = joi.object({
     )
     .required(),
   confirmPassword: joi.string().valid(joi.ref("password")),
+  role: joi.string(),
+  gender: joi.string(),
 });
 
 export const login = joi.object({
