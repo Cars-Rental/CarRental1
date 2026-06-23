@@ -1,5 +1,7 @@
 export const ROUTES = {
   HOME: "/",
+  ABOUT: "/about",
+  CONTACT: "/contact",
 
   AUTH: {
     LOGIN: "/login",
@@ -8,9 +10,10 @@ export const ROUTES = {
     RESET_PASSWORD: "/reset-password",
   },
 
-
   CARS: {
     ROOT: "/cars",
+    RENT: "/cars/rent",
+    SALE: "/cars/sale",
     DETAILS: (id: string) => `/cars/${id}`,
   },
 
@@ -24,8 +27,9 @@ export const ROUTES = {
     BOOKINGS: "/dashboard/bookings",
     USERS: "/dashboard/users",
   },
-  
+
   FAVORITES: "/favorites",
 
   NOT_FOUND: "/not-found",
+  FOOTER: {},
 } as const;

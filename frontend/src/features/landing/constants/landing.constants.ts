@@ -7,11 +7,14 @@ import type {
   FooterSection,
 } from "../types/landing.types";
 
+import { ROUTES } from "@/config/routes";
+const { CARS, HOME, ABOUT, CONTACT } = ROUTES;
 export const NAV_LINKS: NavLink[] = [
-  { label: "Home", labelAr: "الرئيسية", href: "/" },
-  { label: "Rent a Car", labelAr: "السيارات", href: "/cars" },
-  { label: "About Us", labelAr: "من نحن", href: "/about" },
-  { label: "Contact", labelAr: "تواصل معنا", href: "/contact" },
+  { label: "Home", labelAr: "الرئيسية", href: HOME },
+  { label: "Rent Cars", labelAr: "إيجار السيارات", href: CARS.RENT },
+  { label: "Buy Cars", labelAr: "بيع السيارات", href: CARS.SALE },
+  { label: "About Us", labelAr: "من نحن", href: ABOUT },
+  { label: "Contact", labelAr: "تواصل معنا", href: CONTACT },
 ];
 
 export const STATS: Stat[] = [
@@ -62,7 +65,8 @@ export const HOW_IT_WORKS: HowItWorksStep[] = [
     titleAr: "ابحث",
     description:
       "Choose from categories of cars in your city easily with one click.",
-    descriptionAr: "اختر من بين فئات السيارات في مدينتك بكل سهولة وبضغطة واحدة.",
+    descriptionAr:
+      "اختر من بين فئات السيارات في مدينتك بكل سهولة وبضغطة واحدة.",
     icon: "Search",
   },
   {
@@ -80,7 +84,8 @@ export const HOW_IT_WORKS: HowItWorksStep[] = [
     titleAr: "اقود",
     description:
       "Pick up keys from the dealer's location or request delivery to you and start your journey.",
-    descriptionAr: "استلم مفاتيحك من موقع التاجر أو اطلب توصيلها إليك وابدأ رحلتك.",
+    descriptionAr:
+      "استلم مفاتيحك من موقع التاجر أو اطلب توصيلها إليك وابدأ رحلتك.",
     icon: "Key",
   },
 ];
@@ -193,7 +198,11 @@ export const FOOTER_SECTIONS: FooterSection[] = [
     title: "Legal",
     titleAr: "قانوني",
     links: [
-      { label: "Terms & Conditions", labelAr: "الشروط والأحكام", href: "/terms" },
+      {
+        label: "Terms & Conditions",
+        labelAr: "الشروط والأحكام",
+        href: "/terms",
+      },
       { label: "Privacy Policy", labelAr: "سياسة الخصوصية", href: "/privacy" },
       { label: "FAQ", labelAr: "الأسئلة الشائعة", href: "/faq" },
     ],

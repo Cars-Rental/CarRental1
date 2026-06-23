@@ -3,11 +3,7 @@
 import { STATS } from "../constants/landing.constants";
 import { useDirection } from "@/lib";
 
-interface StatsSectionProps {
-  locale: string;
-}
-
-export function StatsSection({ locale }: StatsSectionProps) {
+export function StatsSection() {
   const { isRTL } = useDirection();
 
   return (

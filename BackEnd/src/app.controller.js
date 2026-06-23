@@ -2,13 +2,15 @@ import ConnectDB from "./DB/db.connection.js";
 import authroute from "../src/modules/auth/auth.route.js";
 import adminRoute from "../src/modules/admin/admin.route.js";
 import reviewRoute from "../src/modules/review/review.route.js";
+import orderroute from "./modules/order/order.route.js";
 import { globalErrorhandling } from "./utlis/response/error.response.js";
-import session from 'express-session';
+import session from "express-session";
 import passport from "passport";
-import './modules/auth/passport.config.js';
+import cors from "cors";
+import "./modules/auth/passport.config.js";
 
 import carsroute from "../src/modules/car/car.route.js";
-import cors from "cors";
+
 import ratelimit from "express-rate-limit";
 const limiter = ratelimit({
   windowMs: 20 * 60 * 1000,
@@ -17,32 +19,35 @@ const limiter = ratelimit({
 });
 
 const bootstrap = (app, express) => {
-
-  app.use(cors());
   app.use(express.json());
-
-  app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true
-  }));
+  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+  app.use(
+    session({
+      secret: "your_secret_key",
+      resave: false,
+      saveUninitialized: true,
+    }),
+  );
 
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.get('/', (req, res) => {
+  app.get("/", (req, res) => {
     res.send(`
         <h2> Car Rental App</h2>
         <a href="/auth/google"> Sin With Google</a>
     `);
   });
 
-  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
   app.use(limiter);
   app.use("/auth", authroute);
   app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
+<<<<<<< HEAD
   app.use("/review", reviewRoute);
+=======
+  app.use("/orders", orderroute);
+>>>>>>> 1dbcd1e0761b63de9a7597b13e853aa48055331e
   app.use(globalErrorhandling);
 
   ConnectDB();
