@@ -2,13 +2,11 @@
 
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  setMode,
-  selectRentState,
-} from "@/features/cars/store";
+import { setMode, selectRentState } from "@/features/cars/store";
 import { useRentCars } from "@/features/cars/hooks/useRentCars";
 import { MarketplaceLayout } from "@/features/cars/components/MarketplaceLayout";
-import { CarCard } from "@/features/cars/components/CarCard";
+// import { CarCard } from "@/features/cars/components/CarCard";
+import { CarCard } from "@/components/shared/CarCard";
 import type { GetCarsParams } from "@/features/cars/types/cars-filter.types";
 
 export default function RentCarsPage() {
@@ -25,7 +23,8 @@ export default function RentCarsPage() {
     search: search || undefined,
     brands: filters.brands.length > 0 ? filters.brands : undefined,
     priceMin: filters.priceRange.min > 0 ? filters.priceRange.min : undefined,
-    priceMax: filters.priceRange.max < 10000 ? filters.priceRange.max : undefined,
+    priceMax:
+      filters.priceRange.max < 10000 ? filters.priceRange.max : undefined,
     yearMin: filters.yearRange.min > 2020 ? filters.yearRange.min : undefined,
     yearMax: filters.yearRange.max < 2025 ? filters.yearRange.max : undefined,
     transmission: filters.transmission || undefined,

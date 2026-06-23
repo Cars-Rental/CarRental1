@@ -1,7 +1,12 @@
 "use client";
 
 import React from "react";
-import { ArrowUpDown, ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
+  SlidersHorizontal,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -50,7 +55,7 @@ export function MarketplaceLayout({
   ];
 
   const activeSortLabel = t(
-    sortOptions.find((opt) => opt.value === sortBy)?.labelKey || "sortNewest"
+    sortOptions.find((opt) => opt.value === sortBy)?.labelKey || "sortNewest",
   );
 
   const handleSortChange = (value: string) => {
@@ -116,8 +121,14 @@ export function MarketplaceLayout({
                 </div>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-lg">
-              <DropdownMenuRadioGroup value={sortBy} onValueChange={handleSortChange}>
+            <DropdownMenuContent
+              align="end"
+              className="w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-lg"
+            >
+              <DropdownMenuRadioGroup
+                value={sortBy}
+                onValueChange={handleSortChange}
+              >
                 {sortOptions.map((opt) => (
                   <DropdownMenuRadioItem
                     key={opt.value}
@@ -136,7 +147,7 @@ export function MarketplaceLayout({
       {/* Main Grid Structure */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         {/* Desktop Sidebar (visible on large screen) */}
-        <div className="hidden lg:block lg:col-span-1 sticky top-24">
+        <div className="hidden lg:block lg:col-span-1 sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 scrollbar-track-transparent pr-1">
           <FiltersSidebar />
         </div>
 
@@ -213,7 +224,11 @@ export function MarketplaceLayout({
                 className="size-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-650 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
                 aria-label="Previous Page"
               >
-                {isRTL ? <ChevronRight className="size-5" /> : <ChevronLeft className="size-5" />}
+                {isRTL ? (
+                  <ChevronRight className="size-5" />
+                ) : (
+                  <ChevronLeft className="size-5" />
+                )}
               </button>
 
               {/* Page numbers */}
@@ -242,7 +257,11 @@ export function MarketplaceLayout({
                 className="size-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-650 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
                 aria-label="Next Page"
               >
-                {isRTL ? <ChevronLeft className="size-5" /> : <ChevronRight className="size-5" />}
+                {isRTL ? (
+                  <ChevronLeft className="size-5" />
+                ) : (
+                  <ChevronRight className="size-5" />
+                )}
               </button>
             </div>
           )}
