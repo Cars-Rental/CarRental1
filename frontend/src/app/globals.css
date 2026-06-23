@@ -492,3 +492,10 @@ html[lang="en"] {
     color: var(--text-secondary);
   }
 }
+
+
+@media (min-width: 96rem) {
+    .container {
+        max-width: 90%;
+    }
+}
