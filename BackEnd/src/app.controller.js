@@ -43,11 +43,8 @@ const bootstrap = (app, express) => {
   app.use("/auth", authroute);
   app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
-<<<<<<< HEAD
   app.use("/review", reviewRoute);
-=======
   app.use("/orders", orderroute);
->>>>>>> 1dbcd1e0761b63de9a7597b13e853aa48055331e
   app.use(globalErrorhandling);
 
   ConnectDB();
