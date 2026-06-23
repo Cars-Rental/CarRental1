@@ -5,12 +5,9 @@ import { emailEvent } from "../../utlis/events/email.event.js";
 import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
-  const { userName, email, password, phone } = req.body;
-
+  const { userName, email, password, phone, role, gender } = req.body;
   const hashedpassword = await bcrypt.hash(password, Number(process.env.SALT));
-
   const otp = customAlphabet("0123456789", 6)();
-
   const user = await userModel.create({
     userName,
     email,
@@ -18,30 +15,25 @@ export const register = async (req, res, next) => {
     phone,
     otp,
     otpExpires: new Date(Date.now() + 10 * 60 * 1000),
+    role,
+    gender,
   });
-
   emailEvent.emit("sendConfirmationEmail", {
     email,
     otp,
   });
-
   return res.status(201).json({
     success: true,
     message: "User registered successfully",
     data: {
-      id: user._id,
-      userName: user.userName,
-      email: user.email,
-      phone: user.phone,
+      user,
     },
   });
 };
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
-
   const user = await userModel.findOne({ email });
-
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -278,5 +270,27 @@ export const updatePassword = async (req, res, next) => {
   return res.status(200).json({
     success: true,
     message: "Password updated successfully",
+  });
+};
+
+export const googleRedirect = (req, res) => {
+  res.redirect("/auth/profile");
+};
+
+export const getProfile = (req, res) => {
+  res.send(`
+        <h2>✅ Welcome ${req.user.displayName}</h2>
+        <a href="/auth/logout">🚪 Logout</a>
+    `);
+};
+
+export const logout = (req, res) => {
+  req.logout((err) => {
+    if (err) return res.redirect("/");
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid");
+      res.redirect("/");
+    });
   });
 };
