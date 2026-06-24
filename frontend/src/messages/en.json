@@ -267,5 +267,73 @@
     "prev": "Prev",
     "next": "Next",
     "page": "Page"
+  },
+  "About": {
+    "eyebrow": "About Rento",
+    "title": "Egypt’s modern car rental and marketplace platform",
+    "description": "Rento connects customers with trusted car owners and dealers, making renting and buying cars easier, safer, and more transparent.",
+    "cards": {
+      "title": "Why Choose Rento?",
+      "trust": {
+        "title": "Trusted Experience",
+        "desc": "Verified cars, clear pricing, and a smooth booking journey."
+      },
+      "cars": {
+        "title": "Rent & Buy",
+        "desc": "Find cars for short-term rental or purchase from one platform."
+      },
+      "users": {
+        "title": "Built for Egypt",
+        "desc": "Designed for Egyptian cities, customers, and local car dealers."
+      }
+    },
+    "mission": {
+      "title": "Our Mission",
+      "subtitle": "Driving the future of mobility in Egypt",
+      "desc1": "We believe that renting or buying a car should be as simple as booking a flight. No more hidden fees, complicated paperwork, or unreliable dealers.",
+      "desc2": "By building a transparent, digital-first marketplace, we are empowering thousands of Egyptians to find their perfect ride with confidence and ease."
+    },
+    "stats": {
+      "users": "10k+",
+      "usersLabel": "Happy Customers",
+      "cars": "500+",
+      "carsLabel": "Vehicles Available",
+      "cities": "15+",
+      "citiesLabel": "Cities Covered"
+    },
+    "cta": {
+      "title": "Ready to hit the road?",
+      "desc": "Join thousands of users who have found their perfect car on Rento.",
+      "buttonRent": "Browse Cars for Rent",
+      "buttonBuy": "Browse Cars for Sale"
+    }
+  },
+  "Contact": {
+    "eyebrow": "Contact Us",
+    "title": "We’re here to help you",
+    "description": "Have a question about renting, selling, or listing a car? Send us a message and our team will contact you.",
+    "info": {
+      "phone": { "title": "Phone", "value": "+20 100 000 0000" },
+      "email": { "title": "Email", "value": "info@rento.com" },
+      "address": { "title": "Address", "value": "Cairo, Egypt" }
+    },
+    "form": {
+      "name": "Your name",
+      "email": "Email address",
+      "message": "Your message",
+      "submit": "Send message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "How fast do you respond?",
+      "a1": "Our team typically responds within 2-4 hours during regular business hours.",
+      "q2": "Do you have physical offices?",
+      "a2": "Yes, our main headquarters is in Cairo, but our services cover major cities across Egypt.",
+      "q3": "Can I contact you on WhatsApp?",
+      "a3": "Absolutely! You can reach out to our support number via WhatsApp for quicker assistance."
+    },
+    "social": {
+      "title": "Follow Us"
+    }
   }
 }
