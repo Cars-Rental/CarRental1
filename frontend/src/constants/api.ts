@@ -13,7 +13,14 @@ export const API_ENDPOINTS = {
 
   CARS: {
     ROOT: "/cars",
+    RENT: "/cars/rent",
+    SALE: "/cars/sale",
     DETAILS: (id: string) => `/cars/${id}`,
+  },
+
+  cars: {
+    carRent: "/cars/rent",
+    carSale: "/cars/sale",
   },
 
   BOOKINGS: {

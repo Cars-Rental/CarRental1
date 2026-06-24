@@ -3,33 +3,36 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CarCard } from "./CarCard";
-import {
-  FEATURED_RENTAL_CARS,
-  FEATURED_BUY_CARS,
-} from "../constants/landing.constants";
-import { useDirection } from "@/lib";
+import { CarCard } from "@/components/shared/CarCard";
 
+import { MOCK_RENT_CARS } from "@/constants/car-card-mock-data";
+
+import { useDirection } from "@/lib";
+import { ROUTES } from "@/config/routes";
 interface FeaturedCarsProps {
-  mode: "rent" | "buy";
+  mode: "rent" | "sale";
 }
 
 export function FeaturedCars({ mode }: FeaturedCarsProps) {
+  const { CARS } = ROUTES;
+
   const locale = useLocale();
   const t = useTranslations("Landing.featured");
   const { isRTL } = useDirection();
-  const cars = mode === "rent" ? FEATURED_RENTAL_CARS : FEATURED_BUY_CARS;
+  // const cars = mode === "rent" ? FEATURED_RENTAL_CARS : FEATURED_BUY_CARS;
+  const cars = MOCK_RENT_CARS.slice(3, 6);
 
   const title = mode === "rent" ? t("titleRent") : t("titleBuy");
   const subtitle = mode === "rent" ? t("subtitleRent") : t("subtitleBuy");
-  const targetLink = mode === "rent" ? `/${locale}/cars` : `/${locale}/buy`;
+  const targetLink =
+    mode === "rent" ? `/${locale}${CARS.RENT}` : `/${locale}${CARS.SALE}`;
 
   return (
     <section
       className="py-20 bg-white dark:bg-slate-900"
       dir={isRTL ? "rtl" : "ltr"}
     >
-      <div className="container-main">
+      <div className="container mx-auto">
         {/* Header Grid */}
         <div className="flex items-end justify-between mb-10">
           <div>

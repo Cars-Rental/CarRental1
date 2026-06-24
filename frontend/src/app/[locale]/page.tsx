@@ -14,7 +14,7 @@ export default async function HomePage() {
       <StatsSection />
       <HowItWorks />
       <FeaturedCars mode="rent" />
-      <FeaturedCars mode="buy" />
+      <FeaturedCars mode="sale" />
       <WhyChooseUs />
       <FAQSection />
     </>
