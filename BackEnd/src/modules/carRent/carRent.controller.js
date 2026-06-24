@@ -1,17 +1,55 @@
-import { carModel } from "../../DB/model/car.model.js";
+import { carModel } from "../../DB/model/carRent.model.js";
 import cloudinary from "../../utlis/cloudinary/cloudinary.js";
+
+const POPULATE_OWNER = "userName email phone role";
 
 export const addcar = async (req, res, next) => {
   try {
-    const { carbrand, carname, carprice } = req.body;
+    const {
+      carbrand,
+      carmodel,
+      year,
+      location,
+      carname,
+      carprice,
+      distance,
+      fuel,
+      seatCount,
+      Body_Type,
+      Transmission,
+    } = req.body;
+
+    const ownerId = req.user?.id || req.user?._id;
+
+    if (!ownerId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user not found",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Car image is required",
+      });
+    }
 
     const uploadedImage = await cloudinary.uploader.upload(req.file.path);
 
     const addedcar = await carModel.create({
       carbrand,
+      carmodel,
+      year,
+      location,
       carname,
       carprice,
-      owner: req.user.id,
+      distance,
+      fuel,
+      seatCount,
+      Body_Type,
+      Transmission,
+      owner: ownerId,
       carimage: [
         {
           secure_url: uploadedImage.secure_url,
@@ -20,12 +58,12 @@ export const addcar = async (req, res, next) => {
       ],
     });
 
-    await addedcar.populate("owner", "userName email role phone");
+    const populatedCar = await addedcar.populate("owner", POPULATE_OWNER);
 
     return res.status(201).json({
       success: true,
       message: "Car added successfully",
-      data: addedcar,
+      data: populatedCar,
     });
   } catch (error) {
     next(error);
@@ -42,6 +80,13 @@ export const deletecar = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: "Car not found",
+      });
+    }
+
+    if (car.owner.toString() !== (req.user?.id || req.user?._id)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to delete this car",
       });
     }
 
@@ -70,13 +115,18 @@ export const getallcar = async (req, res, next) => {
 
     const totalCars = await carModel.countDocuments();
 
-    const cars = await carModel.find().skip(skip).limit(limit);
+    const cars = await carModel
+      .find()
+      .populate("owner", POPULATE_OWNER)
+      .skip(skip)
+      .limit(limit);
 
     return res.status(200).json({
       success: true,
-      message: "All cars",
+      message: "All cars fetched successfully",
       totalCars,
-      page,
+      totalPages: Math.ceil(totalCars / limit),
+      currentPage: page,
       limit,
       data: cars,
     });
@@ -88,7 +138,20 @@ export const getallcar = async (req, res, next) => {
 export const updatecar = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { carbrand, carname, carprice } = req.body;
+
+    const {
+      carbrand,
+      carmodel,
+      year,
+      location,
+      carname,
+      carprice,
+      distance,
+      fuel,
+      seatCount,
+      Body_Type,
+      Transmission,
+    } = req.body;
 
     const car = await carModel.findById(id);
 
@@ -96,6 +159,12 @@ export const updatecar = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: "Car not found",
+      });
+    }
+    if (car.owner.toString() !== (req.user?.id || req.user?._id)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to update this car",
       });
     }
 
@@ -118,19 +187,29 @@ export const updatecar = async (req, res, next) => {
       ];
     }
 
-    const updatedcar = await carModel.findByIdAndUpdate(
-      id,
-      {
-        carbrand,
-        carname,
-        carprice,
-        carimage: imageData,
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+    const updatedcar = await carModel
+      .findByIdAndUpdate(
+        id,
+        {
+          carbrand,
+          carmodel,
+          year,
+          location,
+          carname,
+          carprice,
+          distance,
+          fuel,
+          seatCount,
+          Body_Type,
+          Transmission,
+          carimage: imageData,
+        },
+        {
+          new: true,
+          runValidators: true,
+        },
+      )
+      .populate("owner", POPULATE_OWNER);
 
     return res.status(200).json({
       success: true,
@@ -146,7 +225,7 @@ export const getbyid = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const car = await carModel.findById(id);
+    const car = await carModel.findById(id).populate("owner", POPULATE_OWNER);
 
     if (!car) {
       return res.status(404).json({
