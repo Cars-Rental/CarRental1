@@ -6,8 +6,11 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
   const { userName, email, password, phone, role, gender } = req.body;
+
   const hashedpassword = await bcrypt.hash(password, Number(process.env.SALT));
+
   const otp = customAlphabet("0123456789", 6)();
+
   const user = await userModel.create({
     userName,
     email,
@@ -18,22 +21,35 @@ export const register = async (req, res, next) => {
     role,
     gender,
   });
+
   emailEvent.emit("sendConfirmationEmail", {
     email,
     otp,
   });
+
   return res.status(201).json({
     success: true,
-    message: "User registered successfully",
+    message:
+      "User registered successfully. Verification code has been sent to your email.",
     data: {
-      user,
+      user: {
+        id: user._id,
+        userName: user.userName,
+        email: user.email,
+        phone: user.phone,
+        gender: user.gender,
+        role: user.role,
+        confirmEmail: user.confirmEmail,
+      },
     },
   });
 };
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
+
   const user = await userModel.findOne({ email });
+
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -58,9 +74,9 @@ export const login = async (req, res, next) => {
   }
 
   const accessToken = jwt.sign(
-    { id: user._id },
+    { id: user._id, role: user.role },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" },
+    { expiresIn: "7d" },
   );
 
   const refreshToken = jwt.sign(
@@ -71,13 +87,16 @@ export const login = async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "Login successful",
+    message: "Login successful.",
     data: {
       user: {
         id: user._id,
         userName: user.userName,
         email: user.email,
+        phone: user.phone,
+        gender: user.gender,
         role: user.role.toLowerCase(),
+        confirmEmail: user.confirmEmail,
       },
       accessToken,
       refreshToken,
@@ -136,10 +155,9 @@ export const refreshToken = async (req, res, next) => {
 };
 
 export const VerifyEmail = async (req, res, next) => {
-  const { id } = req.params;
-  const { otp } = req.body;
+  const { email, otp } = req.body;
 
-  const user = await userModel.findById(id);
+  const user = await userModel.findOne({ email });
 
   if (!user) {
     return res.status(404).json({
@@ -155,7 +173,7 @@ export const VerifyEmail = async (req, res, next) => {
     });
   }
 
-  if (!user.otp || user.otp !== otp) {
+  if (user.otp !== otp) {
     return res.status(400).json({
       success: false,
       message: "Invalid OTP",
@@ -177,7 +195,8 @@ export const VerifyEmail = async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "Email verified successfully",
+    message: "Email verified successfully.",
+    data: null,
   });
 };
 
@@ -207,11 +226,12 @@ export const forgotPassword = async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "OTP sent to email",
+    message: "Verification code has been sent to your email.",
+    data: null,
   });
 };
 export const resetpassword = async (req, res, next) => {
-  const { email, otp, newPassword } = req.body;
+  const { email, otp } = req.body;
 
   const user = await userModel.findOne({ email });
 
@@ -236,30 +256,21 @@ export const resetpassword = async (req, res, next) => {
     });
   }
 
-  user.password = await bcrypt.hash(newPassword, Number(process.env.SALT));
-
-  user.otp = null;
-  user.otpExpires = null;
-
-  await user.save();
-
   return res.status(200).json({
     success: true,
-    message: "Password reset successfully",
+    message: "Reset code verified successfully.",
+    data: null,
   });
 };
 export const updatePassword = async (req, res, next) => {
   const userId = req.user.id;
   const { password } = req.body;
-
   const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
-
   const user = await userModel.findByIdAndUpdate(
     userId,
     { password: hashedPassword },
     { new: true },
   );
-
   if (!user) {
     return res.status(404).json({
       success: false,

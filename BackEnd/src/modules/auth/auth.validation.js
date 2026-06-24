@@ -41,8 +41,7 @@ export const register = joi.object({
     .required()
     .messages({
       "string.pattern.base":
-        "Password must be 8-16 chars, include upper, lower, number",
-      "string.empty": "Password is required",
+        "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number.",
       "any.required": "Password is required",
     }),
 

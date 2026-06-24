@@ -7,8 +7,8 @@ import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 import "./modules/auth/passport.config.js";
-
-import carsroute from "../src/modules/car/car.route.js";
+import carbuy from "./modules/CarBuy/carbuy.route.js";
+import carsroute from "./modules/carRent/carRent.route.js";
 
 import ratelimit from "express-rate-limit";
 const limiter = ratelimit({
@@ -43,6 +43,7 @@ const bootstrap = (app, express) => {
   app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
   app.use("/orders", orderroute);
+  app.use("/carbuy", carbuy);
   app.use(globalErrorhandling);
 
   ConnectDB();
