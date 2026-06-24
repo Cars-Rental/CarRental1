@@ -1,7 +1,9 @@
-/uploads
-.env*
-/node_modules
-
-BackEnd/.env
-node_modules/
+# Environment files
 .env
+.env*
+
+# Node modules
+node_modules/
+
+# Uploads
+uploads/
