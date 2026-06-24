@@ -5,6 +5,8 @@ export const QUERY_KEYS = {
 
   CARS: {
     ALL: ["cars"] as const,
+    RENT: ["cars", "rent"] as const,
+    SALE: ["cars", "sale"] as const,
     DETAILS: (id: string) => ["cars", id] as const,
   },
 

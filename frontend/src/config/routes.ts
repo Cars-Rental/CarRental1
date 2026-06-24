@@ -12,8 +12,8 @@ export const ROUTES = {
 
   CARS: {
     ROOT: "/cars",
-    RENT: "/cars/rent",
-    SALE: "/cars/sale",
+    RENT: "/cars/carRent",
+    SALE: "/cars/carSale",
     DETAILS: (id: string) => `/cars/${id}`,
   },
 
