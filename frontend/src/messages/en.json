@@ -200,13 +200,12 @@
       "a3": "The deposit is refunded to your card or cash depending on your initial payment method within 3-5 business days after returning the car safely."
     },
     "footer": {
-      "desc": "Egypt's leading car rental & sales platform. Find the best cars at the best prices across all of Egypt.",
+      "desc": "Egypt's leading car rental & sales platform. Find the best cars at the prices across all of Egypt.",
       "contactUs": "Contact Us",
       "downloadText": "Download the app now for a 10% discount on your first booking",
       "copyright": "Made with love in Egypt | © {year} Rento. All rights reserved."
     }
   },
-<<<<<<< HEAD
   "Cars": {
     "rentTitle": "Cars For Rent",
     "saleTitle": "Cars For Sale",
@@ -269,8 +268,6 @@
     "next": "Next",
     "page": "Page"
   },
-=======
->>>>>>> f9d050913c03ae40f685bbab5752988b8d723aac
   "About": {
     "eyebrow": "About Rento",
     "title": "Egypt’s modern car rental and marketplace platform",
