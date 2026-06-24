@@ -37,6 +37,7 @@ export const carSchema = new mongoose.Schema(
     isavailable: {
       type: String,
       enum: ["avilable", "regestred"],
+       default:"avilable"
     },
   },
   { timestamps: true },
