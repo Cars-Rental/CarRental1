@@ -1,52 +1,107 @@
 import mongoose from "mongoose";
 import { reviewModel } from "../../DB/model/review.model.js";
 
-
-// get all reviews 
+// Get all reviews
 export const getAllReviews = async (req, res, next) => {
     try {
-        const reviews = await reviewModel.find();
-        res.status(200).json({ message: "all reviews", data: reviews });
+        const reviews = await reviewModel
+            .find()
+            .populate("userId", "userName email phone gender role");
+
+        res.status(200).json({
+            success: true,
+            message: "All reviews retrieved successfully",
+            data: reviews,
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 
-// get reviews by id to car
-export const getReviewById = async (req,res,next) =>{
-    try{
-        const {id} = req.params;
-        const reviews = await reviewModel.find({carId:id});
-        res.status(200).json({message:"reviews by id",data:reviews});
-    }catch(error){
+// Get reviews by car id
+export const getReviewById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const reviews = await reviewModel
+            .find({ carId: id })
+            .populate("userId", "name email");
+
+        res.status(200).json({
+            success: true,
+            message: "Reviews retrieved successfully",
+            data: reviews,
+        });
+    } catch (error) {
         next(error);
     }
-}
+};
 
-
-// create review 
+// Create review
 export const createReview = async (req, res, next) => {
     try {
         const { userId, carId, comment, rating } = req.body;
+
         const review = await reviewModel.create({
             userId,
             carId,
             comment,
             rating,
         });
-        res.status(200).json({ message: "review added", review });
+
+        const populatedReview = await reviewModel
+            .findById(review._id)
+            .populate("userId", "name email");
+
+        res.status(201).json({
+            success: true,
+            message: "Review added successfully",
+            data: populatedReview,
+        });
     } catch (error) {
         next(error);
     }
 };
 
-// delete review 
+// Delete review
 export const deleteReview = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const review = await reviewModel.findByIdAndDelete(id);
-        res.status(200).json({ message: "review deleted", review });
+
+        const review = await reviewModel
+            .findByIdAndDelete(id)
+            .populate("userId", "name email");
+
+        res.status(200).json({
+            success: true,
+            message: "Review deleted successfully",
+            data: review,
+        });
     } catch (error) {
         next(error);
     }
 };
+
+
+
+
+// {
+//   "success": true,
+//   "message": "All reviews retrieved successfully",
+//   "data": [
+//     {
+//       "_id": "686...",
+//       "comment": "Very good car",
+//       "rating": 5,
+//       "carId": "685...",
+//       "userId": {
+//         "_id": "684...",
+//         "userName": "Youssef",
+//         "email": "youssef@gmail.com",
+//         "phone": "01012345678",
+//         "gender": "Male",
+//         "role": "User"
+//       }
+//     }
+//   ]
+// }
