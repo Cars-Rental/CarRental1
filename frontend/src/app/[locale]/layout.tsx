@@ -60,9 +60,9 @@ export default async function LocaleLayout({
       <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <AppProviders key={locale}>
-            <Navbar locale={locale} />
+            <Navbar />
             <main className="pt-16">{children}</main>
-            <Footer locale={locale} />
+            <Footer />
           </AppProviders>
         </NextIntlClientProvider>
       </body>

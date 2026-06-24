@@ -32,7 +32,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
       className="py-20 bg-white dark:bg-slate-900"
       dir={isRTL ? "rtl" : "ltr"}
     >
-      <div className="container-main">
+      <div className="container mx-auto">
         {/* Header Grid */}
         <div className="flex items-end justify-between mb-10">
           <div>

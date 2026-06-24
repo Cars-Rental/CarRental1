@@ -1,4 +1,9 @@
-import type { Transmission, FuelType, BodyType, MarketplaceCar } from "./cars.types";
+import type {
+  Transmission,
+  FuelType,
+  BodyType,
+  MarketplaceCar,
+} from "./cars.types";
 
 export type SortOption =
   | "newest"
@@ -30,6 +35,12 @@ export interface CarsFilterState {
 
 export interface GetCarsParams {
   search?: string;
+  brands?: string[];
+  priceMin?: number;
+  priceMax?: number;
+  yearMin?: number;
+  yearMax?: number;
+  transmission?: Transmission | "";
   fuelType?: FuelType | "";
   bodyType?: BodyType | "";
   seats?: number;
