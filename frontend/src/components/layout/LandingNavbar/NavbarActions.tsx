@@ -6,6 +6,7 @@ import {
 import { AuthButtons } from "./AuthButtons";
 import { useAppSelector } from "@/store/hooks";
 import { ProfileDropdown } from "@/features/auth/components";
+import { NavbarActionsSkeleton } from "./NavbarActionsSkeleton";
 
 export function NavbarActions() {
   const {user, isLoading} = useAppSelector((state) => state.auth);
@@ -14,7 +15,7 @@ export function NavbarActions() {
     <div className="flex items-center gap-2.5">
       <ThemeToggle />
       <LanguageToggle />
-      {isLoading ? null : user ? <ProfileDropdown /> : <AuthButtons />}
+      {isLoading ? <NavbarActionsSkeleton /> : user ? <ProfileDropdown /> : <AuthButtons />}
     </div>
   );
 }

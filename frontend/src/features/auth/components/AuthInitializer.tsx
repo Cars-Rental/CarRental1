@@ -15,11 +15,11 @@ export function AuthInitializer() {
 
       if (!accessToken) {
         dispatch(logout());
+        dispatch(setLoading(false));
         return;
       }
 
       try {
-        dispatch(setLoading(true));
         const user = await getMeApi();
         dispatch(loginSuccess(user));
       } catch {

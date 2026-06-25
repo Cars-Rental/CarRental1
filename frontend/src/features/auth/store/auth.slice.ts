@@ -10,7 +10,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
 };
 
 const authSlice = createSlice({
@@ -22,11 +22,13 @@ const authSlice = createSlice({
     loginSuccess(state, action: PayloadAction<AuthUser>) {
       state.user = action.payload;
       state.isAuthenticated = true;
+      state.isLoading = false;
     },
 
     logout(state) {
       state.user = null;
       state.isAuthenticated = false;
+      state.isLoading = false;
     },
 
     setLoading(state, action: PayloadAction<boolean>) {
