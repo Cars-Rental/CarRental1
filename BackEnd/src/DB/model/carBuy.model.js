@@ -15,7 +15,6 @@ export const carbuySchema = new mongoose.Schema(
     year: {
       type: Number,
       required: true,
-      trim: true,
     },
     location: {
       type: String,
@@ -106,9 +105,30 @@ export const carbuySchema = new mongoose.Schema(
         },
       },
     ],
+
+    quantity: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 1,
+    },
+
+    status: {
+      type: String,
+      enum: ["available", "sold"],
+      default: "available",
+    },
   },
 
   { timestamps: true },
 );
+
+carbuySchema.pre("save", function () {
+  if (this.quantity <= 0) {
+    this.status = "sold";
+  } else if (this.status === "sold" && this.quantity > 0) {
+    this.status = "available";
+  }
+});
 
 export const carbuymodel = mongoose.model("carBuy", carbuySchema);

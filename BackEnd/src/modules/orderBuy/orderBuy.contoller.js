@@ -1,9 +1,9 @@
-import { orderModel } from "../../DB/model/order.model.js";
-import { carModel } from "../../DB/model/carRent.model.js";
+import { orderBuyModel } from "../../DB/model/orderBuy.model.js";
+import { carbuymodel } from "../../DB/model/carBuy.model.js";
 import { createNotification } from "../../services/notification.service.js";
 import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
 
-const POPULATE_CAR = "carbrand carname carprice carimage owner isavailable";
+const POPULATE_CAR = "carbrand carname carmodel carprice carimage owner quantity status";
 const POPULATE_USER = "userName email phone role";
 
 const ORDER_POPULATE = [
@@ -12,136 +12,80 @@ const ORDER_POPULATE = [
   { path: "owner", select: POPULATE_USER },
 ];
 
-const ALLOWED_STATUS_VALUES = ["accepted", "rejected", "completed","cancelled"];
+const ALLOWED_STATUS_VALUES = ["accepted", "rejected", "completed"];
 
 const ALLOWED_TRANSITIONS = {
   pending: ["accepted", "rejected"],
   accepted: ["completed"],
 };
 
-const calcTotalDays = (startDate, endDate) => {
-  const MS_PER_DAY = 1000 * 60 * 60 * 24;
-  const diff = new Date(endDate) - new Date(startDate);
-  return Math.max(1, Math.ceil(diff / MS_PER_DAY));
-};
-
-export const createOrder = async (req, res, next) => {
+export const createOrderBuy = async (req, res, next) => {
   try {
-    const { car, startDate, endDate, notes } = req.body;
+    const { car, notes } = req.body;
 
-    if (!startDate || !endDate) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate and endDate are required",
-          data: null,
-        });
-    }
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate and endDate must be valid dates",
-          data: null,
-        });
-    }
-
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-    if (start < todayStart) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate cannot be in the past",
-          data: null,
-        });
-    }
-
-    if (start >= end) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate must be earlier than endDate",
-          data: null,
-        });
-    }
-
-    const Carobj = await carModel
+    const carObj = await carbuymodel
       .findById(car)
-      .select("owner isavailable carprice");
+      .select("owner carprice quantity status");
 
-    if (!Carobj) {
+    if (!carObj) {
       return res
         .status(404)
         .json({ success: false, message: "Car not found", data: null });
     }
 
-    if (Carobj.isavailable !== "avilable") {
+    if (carObj.status === "sold" || carObj.quantity <= 0) {
       return res
         .status(400)
         .json({
           success: false,
-          message: "Car is not available for booking",
-          data: null,
-        });
-    }
-    if (Carobj.owner.toString() === req.user.id) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "You can't book your own car",
+          message: "Car is sold out",
           data: null,
         });
     }
 
-    const overlappingOrder = await orderModel.findOne({
+    if (carObj.owner.toString() === req.user.id) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "You can't request your own car",
+          data: null,
+        });
+    }
+
+   
+    const existingPendingOrder = await orderBuyModel.findOne({
       car,
-      status: { $in: ["pending", "accepted"] },
-      startDate: { $lte: end },
-      endDate: { $gte: start },
+      user: req.user.id,
+      status: "pending",
     });
 
-    if (overlappingOrder) {
+    if (existingPendingOrder) {
       return res
         .status(409)
         .json({
           success: false,
-          message: "Car is already booked for the selected dates",
+          message: "You already have a pending request for this car",
           data: null,
         });
     }
 
-    const totalDays = calcTotalDays(start, end);
-    const totalPrice = Number(totalDays * Carobj.carprice);
-
-    const order = await orderModel.create({
+    const order = await orderBuyModel.create({
       car,
       user: req.user.id,
-      owner: Carobj.owner,
-      startDate: start,
-      endDate: end,
-      totalDays,
-      priceperDay: Carobj.carprice,
-      totalPrice,
+      owner: carObj.owner,
+      carprice: carObj.carprice,
       notes,
     });
 
     await order.populate(ORDER_POPULATE);
 
     await createNotification({
-      recipientId: Carobj.owner,
+      recipientId: carObj.owner,
       senderId: req.user.id,
-      type: NOTIFICATION_TYPES.ORDER_CREATED,
-      title: "طلب إيجار جديد",
-      message: "تم إرسال طلب إيجار جديد على سيارتك",
+      type: NOTIFICATION_TYPES.ORDER_BUY_CREATED,
+      title: "طلب شراء جديد",
+      message: "أرسل المستخدم طلبًا جديدًا لشراء السيارة",
       entityType: ENTITY_TYPES.ORDER,
       entityId: order._id,
       metadata: { orderId: order._id.toString(), carId: car },
@@ -159,7 +103,8 @@ export const createOrder = async (req, res, next) => {
   }
 };
 
-export const getMyOrders = async (req, res, next) => {
+
+export const getMyOrdersBuy = async (req, res, next) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
@@ -168,9 +113,9 @@ export const getMyOrders = async (req, res, next) => {
     const filter = { user: req.user.id };
     if (req.query.status) filter.status = req.query.status;
 
-    const totalOrders = await orderModel.countDocuments(filter);
+    const totalOrders = await orderBuyModel.countDocuments(filter);
 
-    const orders = await orderModel
+    const orders = await orderBuyModel
       .find(filter)
       .populate(ORDER_POPULATE)
       .sort({ createdAt: -1 })
@@ -193,17 +138,19 @@ export const getMyOrders = async (req, res, next) => {
   }
 };
 
-export const getOwnerOrders = async (req, res, next) => {
+
+export const getOwnerOrdersBuy = async (req, res, next) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
+
     const filter = { owner: req.user.id };
     if (req.query.status) filter.status = req.query.status;
 
-    const totalOrders = await orderModel.countDocuments(filter);
+    const totalOrders = await orderBuyModel.countDocuments(filter);
 
-    const orders = await orderModel
+    const orders = await orderBuyModel
       .find(filter)
       .populate(ORDER_POPULATE)
       .sort({ createdAt: -1 })
@@ -226,11 +173,14 @@ export const getOwnerOrders = async (req, res, next) => {
   }
 };
 
-export const getOrderById = async (req, res, next) => {
+export const getOrderBuyById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const order = await orderModel.findById(id).populate(ORDER_POPULATE).lean();
+    const order = await orderBuyModel
+      .findById(id)
+      .populate(ORDER_POPULATE)
+      .lean();
 
     if (!order) {
       return res
@@ -263,7 +213,7 @@ export const getOrderById = async (req, res, next) => {
   }
 };
 
-export const updateOrderStatus = async (req, res, next) => {
+export const updateOrderBuyStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status, rejectionReason } = req.body;
@@ -278,20 +228,21 @@ export const updateOrderStatus = async (req, res, next) => {
         });
     }
 
-    const order = await orderModel.findById(id);
+    const order = await orderBuyModel.findById(id);
     if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found",
-        data: null,
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found", data: null });
     }
+
     if (order.owner.toString() !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        message: "Only the car owner can update this order",
-        data: null,
-      });
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "Only the car owner can update this order",
+          data: null,
+        });
     }
 
     const allowedNextStatuses = ALLOWED_TRANSITIONS[order.status] || [];
@@ -315,25 +266,46 @@ export const updateOrderStatus = async (req, res, next) => {
         });
     }
 
+    if (status === "completed") {
+      const carObj = await carbuymodel.findById(order.car);
+
+      if (!carObj) {
+        return res
+          .status(404)
+          .json({
+            success: false,
+            message: "Car not found, cannot complete order",
+            data: null,
+          });
+      }
+
+      if (carObj.quantity <= 0) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message: "Car is already sold out",
+            data: null,
+          });
+      }
+
+      carObj.quantity -= 1;
+      await carObj.save();
+    }
+
     order.status = status;
     if (status === "rejected") order.rejectionReason = rejectionReason;
 
-  
-    if (status === "accepted") {
-      await carModel.findByIdAndUpdate(order.car, {
-        isavailable: "regestred",
-      });
-    }
     await order.save();
     await order.populate(ORDER_POPULATE);
 
     const notificationType =
       status === "accepted"
-        ? NOTIFICATION_TYPES.ORDER_ACCEPTED
+        ? NOTIFICATION_TYPES.ORDER_BUY_ACCEPTED
         : status === "rejected"
-          ? NOTIFICATION_TYPES.ORDER_REJECTED
+          ? NOTIFICATION_TYPES.ORDER_BUY_REJECTED
           : status === "completed"
-            ? NOTIFICATION_TYPES.ORDER_COMPLETED
+            ? NOTIFICATION_TYPES.ORDER_BUY_COMPLETED
             : null;
 
     if (notificationType) {
@@ -344,16 +316,16 @@ export const updateOrderStatus = async (req, res, next) => {
         title: status === "accepted" ? "تم قبول الطلب" : status === "rejected" ? "تم رفض الطلب" : "تم إكمال الطلب",
         message:
           status === "accepted"
-            ? "تم قبول طلب الإيجار الخاص بك"
+            ? "تم قبول طلبك لشراء السيارة"
             : status === "rejected"
-              ? "تم رفض طلب الإيجار الخاص بك"
-              : "تم إكمال طلب الإيجار الخاص بك",
+              ? "تم رفض طلبك لشراء السيارة"
+              : "تم إكمال طلبك لشراء السيارة",
         entityType: ENTITY_TYPES.ORDER,
         entityId: order._id,
         metadata: { orderId: order._id.toString(), status },
       });
     }
-    
+
     return res
       .status(200)
       .json({
@@ -366,11 +338,12 @@ export const updateOrderStatus = async (req, res, next) => {
   }
 };
 
-export const cancelOrder = async (req, res, next) => {
+export const cancelOrderBuy = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { cancellationReason } = req.body;
-    const order = await orderModel.findById(id);
+
+    const order = await orderBuyModel.findById(id);
 
     if (!order) {
       return res
@@ -407,9 +380,9 @@ export const cancelOrder = async (req, res, next) => {
     await createNotification({
       recipientId: order.owner,
       senderId: req.user.id,
-      type: NOTIFICATION_TYPES.ORDER_CANCELLED,
-      title: "تم إلغاء الطلب",
-      message: "تم إلغاء طلب الإيجار من قبل المستخدم",
+      type: NOTIFICATION_TYPES.ORDER_BUY_CANCELLED,
+      title: "تم إلغاء طلب الشراء",
+      message: "تم إلغاء طلب الشراء من قبل المستخدم",
       entityType: ENTITY_TYPES.ORDER,
       entityId: order._id,
       metadata: { orderId: order._id.toString(), status: order.status },
