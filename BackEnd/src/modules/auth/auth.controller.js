@@ -67,9 +67,10 @@ export const login = async (req, res, next) => {
   }
 
   if (!user.confirmEmail) {
-    return res.status(403).json({
+    return res.status(400).json({
       success: false,
       message: "Please verify your email first",
+      code: "EMAIL_NOT_VERIFIED",
     });
   }
 
@@ -303,5 +304,42 @@ export const logout = (req, res) => {
       res.clearCookie("connect.sid");
       res.redirect("/");
     });
+  });
+};
+
+export const resendOtp = async (req, res, next) => {
+  const { email, type } = req.body;
+
+  const user = await userModel.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  if (type === "register" && user.confirmEmail) {
+    return res.status(400).json({
+      success: false,
+      message: "Email already verified",
+    });
+  }
+
+  const otp = customAlphabet("0123456789", 6)();
+
+  user.otp = otp;
+  user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+  await user.save();
+
+  emailEvent.emit("sendConfirmationEmail", {
+    email,
+    otp,
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "OTP sent successfully",
   });
 };

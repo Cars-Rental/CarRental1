@@ -42,8 +42,13 @@ router.post("/login", validation(authvalidation.login), auth.login);
 // });
 
 router.post("/refresh-token", auth.refreshToken);
-router.post("/verifyemail/:id", auth.VerifyEmail);
-router.patch("/updatepassword", verifyToken, auth.updatePassword);
+router.post("/verify-email", auth.VerifyEmail);
+router.patch("/update-password", verifyToken, auth.updatePassword);
 router.post("/reset-password", auth.resetpassword);
 router.post("/forgot-password", auth.forgotPassword);
+router.post(
+  "/resend-code",
+  validation(authvalidation.resendOtpSchema),
+  auth.resendOtp,
+);
 export default router;
