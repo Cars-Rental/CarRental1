@@ -1,49 +1,49 @@
-"use client";
+  "use client";
 
-import {
-  CalendarCheck,
-  LayoutDashboard,
-  LogOut,
-  User,
-} from "lucide-react";
-import { useTranslations } from "next-intl";
+  import {
+    CalendarCheck,
+    LayoutDashboard,
+    LogOut,
+    User,
+  } from "lucide-react";
+  import { useTranslations } from "next-intl";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/config/routes";
-import { ROLES } from "@/constants";
-import { useAppSelector } from "@/store/hooks";
+  import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
+  import { Link } from "@/i18n/navigation";
+  import { ROUTES } from "@/config/routes";
+  import { ROLES } from "@/constants";
+  import { useAppSelector } from "@/store/hooks";
 
-import { useLogout } from "../hooks";
+  import { useLogout } from "../hooks";
 
-export function ProfileDropdown() {
-  const t = useTranslations("Navigation");
-  const user = useAppSelector((state) => state.auth.user);
-  const { mutate: logout, isPending } = useLogout();
+  export function ProfileDropdown() {
+    const t = useTranslations("Navigation");
+    const user = useAppSelector((state) => state.auth.user);
+    const { mutate: logout, isPending } = useLogout();
 
-  if (!user) return null;
+    if (!user) return null;
 
-  const initials =
-    user.userName
-      ?.split(" ")
-      .map((word) => word[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() || "U";
+    const initials =
+      user.userName
+        ?.split(" ")
+        .map((word) => word[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase() || "U";
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="h-10 rounded-full outline-none">
-        <span className="inline-flex h-10 items-center gap-2 rounded-full px-2 transition-colors hover:bg-accent">
-          <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
-            {initials}
-          </span>
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="h-10 rounded-full outline-none">
+          <span className="inline-flex h-10 items-center gap-2 rounded-full px-2 transition-colors hover:bg-accent">
+            <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+              {initials}
+            </span>
 
           <span className="hidden max-w-28 truncate text-sm font-semibold md:block">
             {user.userName}

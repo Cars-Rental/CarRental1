@@ -38,15 +38,15 @@ export function Footer() {
             {/* Contact Details */}
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-3 text-slate-400">
-                <Phone size={16} className="text-[var(--primary)] shrink-0" />
+                <Phone size={16} className="text-primary shrink-0" />
                 <span dir="ltr">+20 100 000 0000</span>
               </div>
               <div className="flex items-center gap-3 text-slate-400">
-                <Mail size={16} className="text-[var(--primary)] shrink-0" />
+                <Mail size={16} className="text-primary shrink-0" />
                 <span>info@drivease.com</span>
               </div>
               <div className="flex items-center gap-3 text-slate-400">
-                <MapPin size={16} className="text-[var(--primary)] shrink-0" />
+                <MapPin size={16} className="text-primary shrink-0" />
                 <span>{locale === "ar" ? "القاهرة، مصر" : "Cairo, Egypt"}</span>
               </div>
             </div>
@@ -63,7 +63,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={`/${locale}${link.href}`}
-                      className="text-sm text-slate-400 hover:text-[var(--primary)] transition-colors duration-150 font-medium"
+                      className="text-sm text-slate-400 hover:text-primary transition-colors duration-150 font-medium"
                     >
                       {locale === "ar" ? link.labelAr : link.label}
                     </Link>
