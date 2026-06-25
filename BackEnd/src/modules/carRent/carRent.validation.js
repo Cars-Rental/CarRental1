@@ -76,3 +76,78 @@ export const addcar = joi.object({
     "any.required": "Transmission is required",
   }),
 });
+
+export const updateCar = joi
+  .object({
+    carbrand: joi.string().min(2).max(100).messages({
+      "string.base": "Car brand must be a string",
+      "string.min": "Car brand must be at least 2 characters",
+      "string.max": "Car brand must not exceed 100 characters",
+    }),
+
+    carmodel: joi.string().min(2).max(100).messages({
+      "string.base": "Car model must be a string",
+      "string.min": "Car model must be at least 2 characters",
+      "string.max": "Car model must not exceed 100 characters",
+    }),
+
+    year: joi.number().min(1900).max(2100).messages({
+      "number.base": "Year must be a number",
+      "number.min": "Year must not be less than 1900",
+      "number.max": "Year must not exceed 2100",
+    }),
+
+    location: joi.string().messages({
+      "string.base": "Location must be a string",
+    }),
+
+    carname: joi.string().min(2).max(100).messages({
+      "string.base": "Car name must be a string",
+      "string.min": "Car name must be at least 2 characters",
+      "string.max": "Car name must not exceed 100 characters",
+    }),
+
+    carprice: joi.number().min(0).messages({
+      "number.base": "Car price must be a number",
+      "number.min": "Car price cannot be negative",
+    }),
+
+    distance: joi.string().messages({
+      "string.base": "Distance must be a string",
+    }),
+
+    fuel: joi
+      .string()
+      .valid("Petrol", "Diesel", "Electric", "Hybrid")
+      .messages({
+        "any.only": "Fuel must be Petrol, Diesel, Electric, or Hybrid",
+      }),
+
+    seatCount: joi.number().valid(4, 5, 7).messages({
+      "any.only": "Seat count must be 4, 5, or 7",
+    }),
+
+    Body_Type: joi
+      .string()
+      .valid(
+        "Sedan",
+        "SUV",
+        "Hatchback",
+        "Coupe",
+        "Pickup",
+        "Van",
+        "Convertible",
+      )
+      .messages({
+        "any.only":
+          "Body type must be Sedan, SUV, Hatchback, Coupe, Pickup, Van, or Convertible",
+      }),
+
+    Transmission: joi.string().valid("Automatic", "Manual").messages({
+      "any.only": "Transmission must be Automatic or Manual",
+    }),
+  })
+  .min(1)
+  .messages({
+    "object.min": "At least one field must be provided for update",
+  });
