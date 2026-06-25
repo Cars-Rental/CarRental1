@@ -53,7 +53,13 @@ export const login = async (req, res, next) => {
   if (!user) {
     return res.status(401).json({
       success: false,
-      message: "Email not found",
+      message: "Validation error",
+      errors: [
+        {
+          field: "email",
+          message: "Email not found",
+        },
+      ],
     });
   }
 
@@ -62,14 +68,26 @@ export const login = async (req, res, next) => {
   if (!isMatch) {
     return res.status(401).json({
       success: false,
-      message: "Password mismatch",
+      message: "Validation error",
+      errors: [
+        {
+          field: "password",
+          message: "Password mismatch",
+        },
+      ],
     });
   }
 
   if (!user.confirmEmail) {
     return res.status(400).json({
       success: false,
-      message: "Please verify your email first",
+      message: "Validation error",
+      errors: [
+        {
+          field: "email",
+          message: "Please verify your email first",
+        },
+      ],
       code: "EMAIL_NOT_VERIFIED",
     });
   }
@@ -88,7 +106,7 @@ export const login = async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "Login successful.",
+    message: "Login successful",
     data: {
       user: {
         id: user._id,
