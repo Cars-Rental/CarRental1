@@ -172,9 +172,8 @@ export const refreshToken = async (req, res, next) => {
     });
   }
 };
-
 export const VerifyEmail = async (req, res, next) => {
-  const { email, otp } = req.body;
+  const { email, otp, type } = req.body;
 
   const user = await userModel.findOne({ email });
 
@@ -185,14 +184,14 @@ export const VerifyEmail = async (req, res, next) => {
     });
   }
 
-  if (user.confirmEmail) {
+  if (type === "register" && user.confirmEmail) {
     return res.status(400).json({
       success: false,
       message: "Email already verified",
     });
   }
 
-  if (user.otp !== otp) {
+  if (!user.otp || user.otp !== otp) {
     return res.status(400).json({
       success: false,
       message: "Invalid OTP",
@@ -205,17 +204,31 @@ export const VerifyEmail = async (req, res, next) => {
       message: "OTP expired",
     });
   }
+  if (type === "register") {
+    user.confirmEmail = true;
+    user.otp = null;
+    user.otpExpires = null;
 
-  user.confirmEmail = true;
-  user.otp = null;
-  user.otpExpires = null;
+    await user.save();
 
-  await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Email verified successfully",
+      data: null,
+    });
+  }
 
-  return res.status(200).json({
-    success: true,
-    message: "Email verified successfully.",
-    data: null,
+  if (type === "reset") {
+    return res.status(200).json({
+      success: true,
+      message: "Reset code verified successfully",
+      data: null,
+    });
+  }
+
+  return res.status(400).json({
+    success: false,
+    message: "Invalid verification type",
   });
 };
 
@@ -359,5 +372,20 @@ export const resendOtp = async (req, res, next) => {
   return res.status(200).json({
     success: true,
     message: "OTP sent successfully",
+  });
+};
+
+export const logoutt = async (req, res, next) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({
+      success: false,
+      message: "Refresh token is required",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+    data: null,
   });
 };
