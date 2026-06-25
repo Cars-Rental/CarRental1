@@ -263,7 +263,7 @@ export const forgotPassword = async (req, res, next) => {
   });
 };
 export const resetpassword = async (req, res, next) => {
-  const { email, otp } = req.body;
+  const { email, password, confirmPassword } = req.body;
 
   const user = await userModel.findOne({ email });
 
@@ -274,24 +274,24 @@ export const resetpassword = async (req, res, next) => {
     });
   }
 
-  if (!user.otp || user.otp !== otp) {
+  if (password !== confirmPassword) {
     return res.status(400).json({
       success: false,
-      message: "Invalid OTP",
+      message: "Password and confirm password do not match",
     });
   }
 
-  if (user.otpExpires < new Date()) {
-    return res.status(400).json({
-      success: false,
-      message: "OTP expired",
-    });
-  }
+  const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
+
+  user.password = hashedPassword;
+  user.otp = null;
+  user.otpExpires = null;
+
+  await user.save();
 
   return res.status(200).json({
     success: true,
-    message: "Reset code verified successfully.",
-    data: null,
+    message: "Password reset successfully",
   });
 };
 export const updatePassword = async (req, res, next) => {
