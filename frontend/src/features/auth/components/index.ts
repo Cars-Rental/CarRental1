@@ -13,3 +13,4 @@ export * from "./LoginVisualContent";
 export * from "./ForgotVisualContent";
 export * from "./VerifyEmailVisualContent";
 export * from "./ResetPasswordVisualCotent";
+export * from "./ProfileDropdown";
