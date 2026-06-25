@@ -2,7 +2,7 @@ import express from "express";
 import * as reviewController from "./review.controller.js";
 import * as reviewValidation from "./review.validation.js";
 import { auth } from "../../middleware/verifyToken.js";
-import { validation } from "../../middleware/validation.js";
+import { validation } from "../../middleware/validation.middleware.js";
 
 const router = express.Router();
 
