@@ -31,7 +31,7 @@ export const API_ENDPOINTS = {
       DELETE_RENT: (id: string) => `/cars/delete/${id}`,
     },
     SALE: {
-      GET_ALL_SALE: "/carbuy/getallcar",
+      GET_ALL_SALE: "/carbuy/getall",
       ADD_SALE: "/carbuy/addcar",
       GET_SALE_BY_ID: (id: string) => `/carbuy/getbyid/${id}`,
       UPDATE_SALE: (id: string) => `/carbuy/updatecar/${id}`,
