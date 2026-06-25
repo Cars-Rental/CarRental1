@@ -85,3 +85,8 @@ export const login = joi.object({
       "any.required": "Password is required",
     }),
 });
+
+export const resendOtpSchema = joi.object({
+  email: joi.string().email().required(),
+  type: joi.string().valid("register", "forgotPassword").required(),
+});

@@ -10,6 +10,9 @@ import "./modules/auth/passport.config.js";
 import carbuy from "./modules/CarBuy/carbuy.route.js";
 import carsroute from "./modules/carRent/carRent.route.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 import ratelimit from "express-rate-limit";
 const limiter = ratelimit({
   windowMs: 20 * 60 * 1000,
@@ -19,7 +22,12 @@ const limiter = ratelimit({
 
 const bootstrap = (app, express) => {
   app.use(express.json());
-  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL,
+      credentials: true,
+    }),
+  );
   app.use(
     session({
       secret: "your_secret_key",

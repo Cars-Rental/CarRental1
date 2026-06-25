@@ -4,10 +4,12 @@ import upload from "../../utlis/cloudinary/multer.js";
 import { auth } from "../../middleware/verifyToken.js";
 import validation from "../../middleware/validation.middleware.js";
 import * as carbuyvalidation from "./carbuy.validation.js";
+import { Authorization } from "../../middleware/verifyToken.js";
 const router = express.Router();
 router.post(
   "/addcar",
   auth,
+  Authorization(["Trader"]),
   upload.single("image"),
   validation(carbuyvalidation.addcar),
   carbuy.addcarTobuy,
