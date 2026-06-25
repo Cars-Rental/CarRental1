@@ -9,6 +9,9 @@ import cors from "cors";
 import "./modules/auth/passport.config.js";
 import carbuy from "./modules/CarBuy/carbuy.route.js";
 import carsroute from "./modules/carRent/carRent.route.js";
+import notificationroute from "./modules/notification/notification.route.js";
+import orderBuy from "./modules/orderBuy/orderBuy.route.js";
+import chatroute from "./modules/chat/chat.route.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -52,6 +55,10 @@ const bootstrap = (app, express) => {
   app.use("/admin", adminRoute);
   app.use("/orders", orderroute);
   app.use("/carbuy", carbuy);
+  app.use("/notifications", notificationroute);
+  app.use("/orderBuy", orderBuy);
+  app.use("/orserBuy", orderBuy);
+  app.use("/chat", chatroute);
   app.use(globalErrorhandling);
 
   ConnectDB();
