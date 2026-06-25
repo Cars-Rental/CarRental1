@@ -6,8 +6,6 @@ import { getMessages } from "next-intl/server";
 import { AppProviders } from "@/providers/app-providers";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
 
 export const metadata: Metadata = {
   title: "Car Rental",
@@ -59,11 +57,7 @@ export default async function LocaleLayout({
     >
       <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <AppProviders key={locale}>
-            <Navbar />
-            <main className="pt-16">{children}</main>
-            <Footer />
-          </AppProviders>
+          <AppProviders key={locale}>{children}</AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

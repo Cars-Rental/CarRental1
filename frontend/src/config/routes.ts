@@ -7,6 +7,7 @@ export const ROUTES = {
     LOGIN: "/login",
     REGISTER: "/register",
     FORGOT_PASSWORD: "/forgot-password",
+    VERIFY_EMAIL: "/verify-email",
     RESET_PASSWORD: "/reset-password",
   },
 
@@ -23,9 +24,10 @@ export const ROUTES = {
 
   DASHBOARD: {
     ROOT: "/dashboard",
+    OVERVIEW: "/dashboard",
     CARS: "/dashboard/cars",
     BOOKINGS: "/dashboard/bookings",
-    USERS: "/dashboard/users",
+    PROFILE: "/dashboard/profile",
   },
 
   FAVORITES: "/favorites",

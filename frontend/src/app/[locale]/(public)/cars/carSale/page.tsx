@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setMode, selectSaleState } from "@/features/cars/store";
 import { useSaleCars } from "@/features/cars/hooks/useSaleCars";
+// import { useGetAllSaleCars } from "@/features/cars/hooks/useGetAllCars";
 import { MarketplaceLayout } from "@/features/cars/components/MarketplaceLayout";
 // import { CarCard } from "@/features/cars/components/CarCard";
 import { CarCard } from "@/components/shared/CarCard";
@@ -39,6 +40,7 @@ export default function SaleCarsPage() {
   };
 
   const { data, isLoading } = useSaleCars(params);
+  // const { cars, total, isLoading } = useGetAllSaleCars();
   const cars = data?.cars ?? [];
   const total = data?.total ?? 0;
   return (

@@ -1,6 +1,6 @@
 import type { UserRole } from "@/constants/roles";
 
-export type Gender = "male" | "female";
+export type Gender = "Male" | "Female";
 
 export interface AuthUser {
   id: string;

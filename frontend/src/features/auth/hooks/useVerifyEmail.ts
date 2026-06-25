@@ -1,11 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 import { useRouter } from "@/i18n/navigation";
-
 import { verifyEmailApi } from "../api";
+import type { VerifyEmailSchema } from "../schemas";
+import { ApiErrorResponse } from "@/types";
 
-export function useVerifyEmail() {
+type UseVerifyEmailOptions = {
+  onFieldErrors?: (field: keyof VerifyEmailSchema, message: string) => void;
+};
+
+export function useVerifyEmail(options?: UseVerifyEmailOptions) {
   const router = useRouter();
 
   return useMutation({
@@ -24,8 +30,11 @@ export function useVerifyEmail() {
       router.replace("/login");
     },
 
-    onError: () => {
-      toast.error("Invalid verification code");
+    onError: (error: AxiosError<ApiErrorResponse>) => {
+      options?.onFieldErrors?.(
+        "otp",
+        error.response?.data?.message ?? "Invalid verification code"
+      );
     },
   });
 }

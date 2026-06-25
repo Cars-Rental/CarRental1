@@ -47,6 +47,7 @@ router.patch("/update-password", verifyToken, auth.updatePassword);
 router.post("/reset-password", auth.resetpassword);
 router.post("/forgot-password", auth.forgotPassword);
 router.post("/logoutt", auth.logoutt);
+router.get("/me", verifyToken, auth.getProfilee);
 router.post(
   "/resend-code",
   validation(authvalidation.resendOtpSchema),

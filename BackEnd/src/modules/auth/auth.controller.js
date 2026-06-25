@@ -263,7 +263,7 @@ export const forgotPassword = async (req, res, next) => {
   });
 };
 export const resetpassword = async (req, res, next) => {
-  const { email, otp } = req.body;
+  const { email, password, confirmPassword } = req.body;
 
   const user = await userModel.findOne({ email });
 
@@ -274,24 +274,24 @@ export const resetpassword = async (req, res, next) => {
     });
   }
 
-  if (!user.otp || user.otp !== otp) {
+  if (password !== confirmPassword) {
     return res.status(400).json({
       success: false,
-      message: "Invalid OTP",
+      message: "Password and confirm password do not match",
     });
   }
 
-  if (user.otpExpires < new Date()) {
-    return res.status(400).json({
-      success: false,
-      message: "OTP expired",
-    });
-  }
+  const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
+
+  user.password = hashedPassword;
+  user.otp = null;
+  user.otpExpires = null;
+
+  await user.save();
 
   return res.status(200).json({
     success: true,
-    message: "Reset code verified successfully.",
-    data: null,
+    message: "Password reset successfully",
   });
 };
 export const updatePassword = async (req, res, next) => {
@@ -338,7 +338,7 @@ export const logout = (req, res) => {
   });
 };
 
-export const resendOtp = async (req, res, next) => {
+export const resendOtp = async (req, res) => {
   const { email, type } = req.body;
 
   const user = await userModel.findOne({ email });
@@ -350,10 +350,24 @@ export const resendOtp = async (req, res, next) => {
     });
   }
 
-  if (type === "register" && user.confirmEmail) {
+  if (type === "register") {
+    if (user.confirmEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already verified",
+      });
+    }
+  } else if (type === "reset") {
+    if (!user.confirmEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email first",
+      });
+    }
+  } else {
     return res.status(400).json({
       success: false,
-      message: "Email already verified",
+      message: "Invalid type",
     });
   }
 
@@ -374,7 +388,6 @@ export const resendOtp = async (req, res, next) => {
     message: "OTP sent successfully",
   });
 };
-
 export const logoutt = async (req, res, next) => {
   const { refreshToken } = req.body;
   if (!refreshToken) {
@@ -388,4 +401,33 @@ export const logoutt = async (req, res, next) => {
     message: "Logged out successfully",
     data: null,
   });
+};
+
+export const getProfilee = async (req, res) => {
+  try {
+    const user = await userModel
+      .findById(req.userId)
+      .select("_id userName email phone gender role");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Authenticated user",
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
 };

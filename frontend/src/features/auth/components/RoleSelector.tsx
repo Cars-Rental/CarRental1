@@ -1,18 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { useTranslations } from "use-intl";
+import { useTranslations } from "next-intl";
+
+import { ROLES, type UserRole } from "@/constants";
 import { useDirection } from "@/lib";
+import { cn } from "@/lib/utils";
+
+type SelectableRole = Exclude<UserRole, typeof ROLES.ADMIN>;
 
 interface RoleSelectorProps {
-  value: "user" | "trader";
-  onChange: (role: "user" | "trader") => void;
+  value: SelectableRole;
+  onChange: (role: SelectableRole) => void;
 }
 
 export function RoleSelector({ value, onChange }: RoleSelectorProps) {
   const t = useTranslations("Auth.register.role");
   const { isRTL } = useDirection();
+
   return (
     <div className="relative grid h-12 grid-cols-2 rounded-lg bg-zinc-100 p-1">
       <motion.div
@@ -25,20 +30,23 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
         className={cn(
           "absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-md bg-primary shadow-md",
           isRTL
-            ? value === "trader"
+            ? value === ROLES.TRADER
               ? "left-1"
               : "right-1"
-            : value === "trader"
+            : value === ROLES.TRADER
               ? "right-1"
               : "left-1",
         )}
       />
+
       <button
         type="button"
-        onClick={() => onChange("user")}
+        onClick={() => onChange(ROLES.USER)}
         className={cn(
           "relative z-10 rounded-md text-sm font-semibold transition-colors duration-300",
-          value === "user" ? "text-white" : "text-zinc-600 hover:text-zinc-900",
+          value === ROLES.USER
+            ? "text-white"
+            : "text-zinc-600 hover:text-zinc-900",
         )}
       >
         {t("user")}
@@ -46,15 +54,15 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
 
       <button
         type="button"
-        onClick={() => onChange("trader")}
+        onClick={() => onChange(ROLES.TRADER)}
         className={cn(
           "relative z-10 rounded-md text-sm font-semibold transition-colors duration-300",
-          value === "trader"
+          value === ROLES.TRADER
             ? "text-white"
             : "text-zinc-600 hover:text-zinc-900",
         )}
       >
-        {t("trader")}{" "}
+        {t("trader")}
       </button>
     </div>
   );
