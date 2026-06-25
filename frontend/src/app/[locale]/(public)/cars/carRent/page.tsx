@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setMode, selectRentState } from "@/features/cars/store";
 import { useRentCars } from "@/features/cars/hooks/useRentCars";
+// import { useGetAllRentCars } from "@/features/cars/hooks/useGetAllCars";
 import { MarketplaceLayout } from "@/features/cars/components/MarketplaceLayout";
 // import { CarCard } from "@/features/cars/components/CarCard";
 import { CarCard } from "@/components/shared/CarCard";
@@ -38,6 +39,7 @@ export default function RentCarsPage() {
   };
 
   const { data, isLoading } = useRentCars(params);
+  // const { cars, total, isLoading } = useGetAllRentCars();
   const cars = data?.cars ?? [];
   const total = data?.total ?? 0;
 
