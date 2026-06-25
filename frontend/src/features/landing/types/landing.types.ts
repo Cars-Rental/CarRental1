@@ -46,8 +46,7 @@ export interface SearchFormValues {
 }
 
 export interface NavLink {
-  label: string;
-  labelAr: string;
+  key: string;
   href: string;
 }
 

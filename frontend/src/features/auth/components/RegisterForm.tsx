@@ -1,10 +1,16 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, LoaderCircle, Mail, UserRound } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  LoaderCircle,
+  Mail,
+  UserRound,
+} from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, type Path } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,18 +22,19 @@ import { createRegisterSchema, type RegisterSchema } from "../schemas";
 import { RoleSelector } from "./RoleSelector";
 import { PasswordField } from "./PasswordField";
 import { useDirection } from "@/lib";
+import { GenderSelector } from "./GenderSelector";
 
 export function RegisterForm() {
   const t = useTranslations("Auth.register");
-  const registerSchema= createRegisterSchema(t);
-  const { mutate: registerUser, isPending } = useRegister();
-  const {isRTL}= useDirection();
+  const registerSchema = createRegisterSchema(t);
+  const { isRTL } = useDirection();
 
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -35,16 +42,29 @@ export function RegisterForm() {
       userName: "",
       email: "",
       phone: "",
-      gender: "male",
+      gender: "Male",
       password: "",
       confirmPassword: "",
-      role: "user",
+      role: "User",
     },
   });
   const selectedRole = useWatch({
     control,
     name: "role",
   });
+
+  const selectedGender = useWatch({
+    control,
+    name: "gender",
+  })
+
+    const { mutate: registerUser, isPending } = useRegister({
+      onFieldErrors: (field, message) => {
+        setError(field as Path<RegisterSchema>, { message });
+      }
+    });
+
+
   function onSubmit(data: RegisterSchema) {
     registerUser(data);
   }
@@ -122,6 +142,17 @@ export function RegisterForm() {
           </p>
         )}
       </div>
+
+      <GenderSelector
+        value={selectedGender}
+        onChange={(gender) =>
+          setValue("gender", gender, {
+            shouldValidate: true,
+            shouldDirty: true,
+          })
+        }
+        error={errors.gender?.message}
+      />
 
       <PasswordField
         label={t("password")}
