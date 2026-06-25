@@ -9,6 +9,7 @@ import cors from "cors";
 import "./modules/auth/passport.config.js";
 import carbuy from "./modules/CarBuy/carbuy.route.js";
 import carsroute from "./modules/carRent/carRent.route.js";
+import helmet from "helmet";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -22,6 +23,7 @@ const limiter = ratelimit({
 
 const bootstrap = (app, express) => {
   app.use(express.json());
+  app.use(helmet());
   app.use(
     cors({
       origin: process.env.CLIENT_URL,

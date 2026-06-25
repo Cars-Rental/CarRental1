@@ -20,7 +20,7 @@ router.patch(
   "/updatecar/:id",
   auth,
   upload.single("image"),
-  validation(carbuyvalidation.updatecar),
+  validation(carbuyvalidation.updateCar),
   carbuy.updatecarbyid,
 );
 router.delete("/deletecar/:id", auth, carbuy.deletecar);
