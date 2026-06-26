@@ -55,6 +55,10 @@ const bootstrap = (app, express) => {
   app.use("/admin", adminRoute);
   app.use("/orders", orderroute);
   app.use("/carbuy", carbuy);
+  app.use("/notifications", notificationroute);
+  app.use("/orderBuy", orderBuy);
+  app.use("/orserBuy", orderBuy);
+  app.use("/chat", chatroute);
   app.use(globalErrorhandling);
 
   ConnectDB();
