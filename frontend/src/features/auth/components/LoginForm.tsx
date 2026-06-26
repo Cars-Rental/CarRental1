@@ -11,7 +11,7 @@ import {
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { useForm } from "react-hook-form";
+import { useForm, type Path } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,7 +26,6 @@ import { PasswordField } from "./PasswordField";
 export function LoginForm() {
   const t = useTranslations("Auth.login");
   const loginSchema = createLoginSchema(t);
-  const { mutate: login, isPending } = useLogin();
   const { isRTL } = useDirection();
 
   const socialProviders = [
@@ -47,12 +46,19 @@ export function LoginForm() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
+    },
+  });
+
+  const { mutate: login, isPending } = useLogin({
+    onFieldErrors: (field, message) => {
+      setError(field as Path<LoginSchema>, { message });
     },
   });
 

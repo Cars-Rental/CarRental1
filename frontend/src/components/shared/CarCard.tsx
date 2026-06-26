@@ -46,7 +46,7 @@ export function CarCard({ car, mode }: CarCardProps) {
             e.stopPropagation();
             setIsFavorite(!isFavorite);
           }}
-          className={`absolute bottom-4 end-4 size-9 rounded-full flex items-center justify-center border shadow-md backdrop-blur-md cursor-pointer transition-all duration-200 ${
+          className={`absolute bottom-4 inset-e-4 size-9 rounded-full flex items-center justify-center border shadow-md backdrop-blur-md cursor-pointer transition-all duration-200 ${
             isFavorite
               ? "bg-rose-500 border-rose-500 text-white hover:scale-110"
               : "bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-750 text-slate-550 dark:text-slate-350 hover:bg-white dark:hover:bg-slate-800 hover:scale-110"
@@ -98,7 +98,7 @@ export function CarCard({ car, mode }: CarCardProps) {
               <span className="line-clamp-1">{car.fuel}</span>
             </div>
             <div className="flex flex-col items-center justify-center gap-1 text-[11px] text-center">
-              <Gauge className="size-4 text-[var(--primary)] dark:text-emerald-400 mb-0.5" />
+              <Gauge className="size-4 text-primary dark:text-emerald-400 mb-0.5" />
               <span className="line-clamp-1">
                 {Number(car.distance).toLocaleString()} {t("km")}
               </span>
@@ -130,8 +130,8 @@ export function CarCard({ car, mode }: CarCardProps) {
               {t("viewDetails")}
             </Link>
             <Link
-              href={`/${locale}/cars/${car._id}`}
-              className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-[var(--primary)]/10 hover:shadow-[var(--primary)]/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
+              href={`/${locale}/cars/${car.id}`}
+              className="flex-1 bg-primary hover:bg-(--primary-dark) text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-(--primary)/10 hover:shadow-(--primary)/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
             >
               {mode === "rent" ? t("rentNow") : t("buyNow")}
             </Link>

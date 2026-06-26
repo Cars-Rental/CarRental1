@@ -88,5 +88,5 @@ export const login = joi.object({
 
 export const resendOtpSchema = joi.object({
   email: joi.string().email().required(),
-  type: joi.string().valid("register", "forgotPassword").required(),
+  type: joi.string().valid("register", "reset").required(),
 });

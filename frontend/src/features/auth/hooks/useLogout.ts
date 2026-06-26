@@ -5,8 +5,11 @@ import { useAppDispatch } from "@/store/hooks";
 import { logoutApi } from "../api";
 import { logout } from "../store";
 import { tokenStorage } from "../utils";
+import { useRouter } from "@/i18n/navigation";
+import { ROUTES } from "@/config/routes";
 
 export function useLogout() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   return useMutation({
@@ -16,6 +19,7 @@ export function useLogout() {
       tokenStorage.clearTokens();
       dispatch(logout());
       toast.success("Logged out successfully");
+      router.replace(ROUTES.HOME);
     },
   });
 }

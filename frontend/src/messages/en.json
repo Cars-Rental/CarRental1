@@ -3,6 +3,19 @@
     "title": "Car Rental & Marketplace",
     "description": "Book or list your car easily"
   },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "rentCars": "Rent Cars",
+    "buyCars": "Buy Cars",
+    "contact": "Contact",
+    "login": "Login",
+    "signUp": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "bookings": "Bookings",
+    "dashboard": "Dashboard"
+  },
   "Auth": {
     "register": {
       "title": "Biggest car rental platform in Egypt",
@@ -30,12 +43,17 @@
         "user": "Customer",
         "trader": "Car Dealer"
       },
+      "gender": "Gender",
+      "genderOptions": {
+        "male": "Male",
+        "female": "Female"
+      },
       "validation": {
         "userNameMin": "Name must be at least 3 characters",
-        "userNameMax": "Name is too long",
+        "userNameMax": "Username must not exceed 40 characters",
         "emailInvalid": "Please enter a valid email address",
         "phoneInvalid": "Invalid Egyptian phone number",
-        "passwordMin": "Password must be at least 8 characters",
+        "passwordInvalid": "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number.",
         "passwordsNotMatch": "Passwords do not match"
       }
     },
@@ -64,7 +82,7 @@
       "createAccount": "Create a new account",
       "validation": {
         "emailInvalid": "Please enter a valid email address",
-        "passwordMin": "Password must be at least 8 characters"
+        "passwordInvalid": "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number."
       }
     },
     "forgotPassword": {

@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   "/addcar",
   auth,
-  Authorization(["Trader"]),
+  // Authorization(["Trader"]),
   upload.single("image"),
   validation(carbuyvalidation.addcar),
   carbuy.addcarTobuy,
@@ -20,7 +20,7 @@ router.patch(
   "/updatecar/:id",
   auth,
   upload.single("image"),
-  validation(carbuyvalidation.updatecar),
+  validation(carbuyvalidation.updateCar),
   carbuy.updatecarbyid,
 );
 router.delete("/deletecar/:id", auth, carbuy.deletecar);

@@ -5,7 +5,7 @@ import { LoaderCircle, RotateCcw, ShieldCheck } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm , type Path} from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,12 +30,12 @@ export function VerifyEmailForm() {
 
   const verifyEmailSchema = createVerifyEmailSchema(t);
 
-  const { mutate: verifyEmail, isPending } = useVerifyEmail();
   const { mutate: resendCode, isPending: isResending } = useResendCode();
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<VerifyEmailSchema>({
     resolver: zodResolver(verifyEmailSchema),
@@ -43,6 +43,12 @@ export function VerifyEmailForm() {
       otp: "",
     },
   });
+
+  const { mutate: verifyEmail, isPending } = useVerifyEmail({
+  onFieldErrors: (field, message) => {
+    setError(field as Path<VerifyEmailSchema>, { message });
+  },
+});
 
   const canResend = secondsLeft === 0;
 
@@ -146,7 +152,7 @@ export function VerifyEmailForm() {
             }
 
             return (
-              <div className="flex justify-center gap-2" dir="ltr">
+              <div className="flex justify-center gap-1 sm:gap-2" dir="ltr">
                 {Array.from({ length: OTP_LENGTH }).map((_, index) => (
                   <Input
                     key={index}
@@ -162,7 +168,7 @@ export function VerifyEmailForm() {
                     inputMode="numeric"
                     maxLength={1}
                     aria-invalid={!!errors.otp}
-                    className="size-14 rounded-lg text-center text-lg font-bold"
+                    className="size-11 sm:size-14 rounded-lg text-center text-md sm:text-lg font-bold"
                   />
                 ))}
               </div>
