@@ -3,24 +3,31 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CarCard } from "@/components/shared/CarCard";
-
-import { MOCK_RENT_CARS } from "@/constants/car-card-mock-data";
-
 import { useDirection } from "@/lib";
 import { ROUTES } from "@/config/routes";
+import {
+  useGetAllRentCars,
+  useGetAllSaleCars,
+} from "@/features/cars/hooks/useGetAllCars";
+import { CarCard } from "@/components/shared/CarCard";
+
 interface FeaturedCarsProps {
   mode: "rent" | "sale";
 }
 
 export function FeaturedCars({ mode }: FeaturedCarsProps) {
   const { CARS } = ROUTES;
-
   const locale = useLocale();
   const t = useTranslations("Landing.featured");
   const { isRTL } = useDirection();
-  // const cars = mode === "rent" ? FEATURED_RENTAL_CARS : FEATURED_BUY_CARS;
-  const cars = MOCK_RENT_CARS.slice(3, 6);
+
+  const rentQuery = useGetAllRentCars();
+  const saleQuery = useGetAllSaleCars();
+
+  const { cars, isLoading } =
+    mode === "rent"
+      ? { cars: rentQuery.cars.slice(0, 3), isLoading: rentQuery.isLoading }
+      : { cars: saleQuery.cars.slice(0, 3), isLoading: saleQuery.isLoading };
 
   const title = mode === "rent" ? t("titleRent") : t("titleBuy");
   const subtitle = mode === "rent" ? t("subtitleRent") : t("subtitleBuy");
@@ -33,7 +40,6 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container mx-auto">
-        {/* Header Grid */}
         <div className="flex items-end justify-between mb-10">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
@@ -43,8 +49,6 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
               {subtitle}
             </p>
           </div>
-
-          {/* Show All Link */}
           <Link
             href={targetLink}
             className="flex items-center gap-1 text-[var(--primary)] hover:text-[var(--primary-dark)] text-sm font-bold transition-colors duration-150"
@@ -58,12 +62,22 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
           </Link>
         </div>
 
-        {/* Cars Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {cars.map((car) => (
-            <CarCard key={car.id} car={car} mode={mode} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="h-80 bg-slate-100 dark:bg-slate-800 rounded-3xl animate-pulse"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {cars.map((car) => (
+              <CarCard key={car._id} car={car} mode={mode} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
