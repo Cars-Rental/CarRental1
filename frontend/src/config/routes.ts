@@ -25,9 +25,16 @@ export const ROUTES = {
   DASHBOARD: {
     ROOT: "/dashboard",
     OVERVIEW: "/dashboard",
-    CARS: "/dashboard/cars",
+    RENTAL_CARS: "/dashboard/rental-cars",
+    SALE_CARS: "/dashboard/sale-cars",
     BOOKINGS: "/dashboard/bookings",
-    PROFILE: "/dashboard/profile",
+    ORDERS: "/dashboard/orders",
+    CUSTOMERS: "/dashboard/customers",
+    REVIEWS: "/dashboard/reviews",
+    MESSAGES: "/dashboard/messages",
+    ANALYTICS: "/dashboard/analytics",
+    EARNINGS: "/dashboard/earnings",
+    SETTINGS: "/dashboard/settings",
   },
 
   FAVORITES: "/favorites",

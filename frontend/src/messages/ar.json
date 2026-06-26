@@ -331,9 +331,18 @@
     "title": "نحن هنا لمساعدتك",
     "description": "لديك سؤال حول التأجير أو البيع أو إضافة سيارة؟ أرسل لنا رسالة وسيتواصل معك فريقنا.",
     "info": {
-      "phone": { "title": "الهاتف", "value": "+20 100 000 0000" },
-      "email": { "title": "البريد الإلكتروني", "value": "info@rento.com" },
-      "address": { "title": "العنوان", "value": "القاهرة، مصر" }
+      "phone": {
+        "title": "الهاتف",
+        "value": "+20 100 000 0000"
+      },
+      "email": {
+        "title": "البريد الإلكتروني",
+        "value": "info@rento.com"
+      },
+      "address": {
+        "title": "العنوان",
+        "value": "القاهرة، مصر"
+      }
     },
     "form": {
       "name": "اسمك",
@@ -352,6 +361,214 @@
     },
     "social": {
       "title": "تابعنا"
+    }
+  },
+  "TraderDashboard": {
+    "auth": {
+      "checking": "جارٍ التحقق من صلاحية الوصول إلى لوحة التحكم..."
+    },
+    "topbar": {
+      "toggleMenu": "تبديل القائمة",
+      "notifications": "الإشعارات",
+      "collapseSidebar": "طي القائمة الجانبية",
+      "expandSidebar": "توسيع القائمة الجانبية"
+    },
+    "sidebar": {
+      "overview": "نظرة عامة",
+      "rentalCars": "سيارات الإيجار",
+      "saleCars": "سيارات للبيع",
+      "bookings": "الحجوزات",
+      "orders": "الطلبات",
+      "customers": "العملاء",
+      "reviews": "التقييمات",
+      "messages": "الرسائل",
+      "analytics": "التحليلات",
+      "earnings": "الأرباح",
+      "settings": "الإعدادات"
+    },
+    "pages": {
+      "overview": {
+        "title": "نظرة عامة",
+        "description": "تابع الإيرادات والطلب وآخر أنشطة العملاء.",
+        "recentBookings": "أحدث الحجوزات",
+        "recentOrders": "أحدث الطلبات"
+      },
+      "rentalCars": {
+        "title": "سيارات الإيجار",
+        "description": "إدارة السيارات المتاحة للإيجار اليومي."
+      },
+      "saleCars": {
+        "title": "سيارات للبيع",
+        "description": "إدارة السيارات المعروضة للبيع."
+      },
+      "bookings": {
+        "title": "الحجوزات",
+        "description": "متابعة طلبات الإيجار وحالة الحجوزات."
+      },
+      "orders": {
+        "title": "الطلبات",
+        "description": "مراجعة عروض الشراء ومتابعة عمليات البيع."
+      },
+      "customers": {
+        "title": "العملاء",
+        "description": "عرض نشاط العملاء عبر الحجوزات والطلبات."
+      },
+      "reviews": {
+        "title": "التقييمات",
+        "description": "اطلع على آراء العملاء حول سياراتك."
+      },
+      "messages": {
+        "title": "الرسائل",
+        "description": "ستظهر هنا محادثات العملاء."
+      },
+      "analytics": {
+        "title": "التحليلات",
+        "description": "ستظهر هنا الرسوم البيانية وتحليلات الأداء."
+      },
+      "earnings": {
+        "title": "الأرباح",
+        "description": "تابع الأرباح المتاحة والمعلقة وإجمالي الأرباح."
+      },
+      "settings": {
+        "title": "الإعدادات",
+        "description": "راجع بيانات حساب التاجر الخاص بك."
+      }
+    },
+    "stats": {
+      "totalRevenue": "إجمالي الإيرادات",
+      "activeRentals": "الإيجارات النشطة",
+      "pendingBookings": "الحجوزات المعلقة",
+      "completedOrders": "الطلبات المكتملة",
+      "totalCustomers": "إجمالي العملاء",
+      "averageRating": "متوسط التقييم",
+      "ratingValue": "{value} / 5"
+    },
+    "tables": {
+      "customer": "العميل",
+      "car": "السيارة",
+      "total": "الإجمالي",
+      "offer": "العرض",
+      "status": "الحالة",
+      "location": "الموقع",
+      "price": "السعر",
+      "salePrice": "سعر البيع",
+      "specs": "المواصفات",
+      "specsValue": "{transmission} / {fuelType} / {seats} مقاعد",
+      "dates": "التواريخ",
+      "dateRange": "{start} - {end}",
+      "createdAt": "تاريخ الإنشاء",
+      "phone": "رقم الهاتف",
+      "activity": "النشاط",
+      "customerActivity": "{bookings} حجوزات / {orders} طلبات",
+      "totalSpent": "إجمالي الإنفاق",
+      "rating": "التقييم",
+      "comment": "التعليق"
+    },
+    "status": {
+      "active": "نشطة",
+      "maintenance": "قيد الصيانة",
+      "sold": "تم البيع",
+      "inactive": "غير نشطة",
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "rejected": "مرفوض",
+      "negotiating": "قيد التفاوض",
+      "accepted": "مقبول",
+      "failed": "فشل"
+    },
+    "empty": {
+      "cars": {
+        "title": "لا توجد سيارات",
+        "description": "ستظهر السيارات هنا بعد إضافتها."
+      },
+      "bookings": {
+        "title": "لا توجد حجوزات بعد",
+        "description": "ستظهر حجوزات الإيجار هنا عند حجز العملاء لسياراتك."
+      },
+      "orders": {
+        "title": "لا توجد طلبات بعد",
+        "description": "ستظهر عروض الشراء هنا عندما يتواصل معك العملاء."
+      },
+      "customers": {
+        "title": "لا يوجد عملاء بعد",
+        "description": "سيظهر العملاء هنا بعد إنشاء حجوزات أو طلبات."
+      },
+      "reviews": {
+        "title": "لا توجد تقييمات بعد",
+        "description": "ستظهر تقييمات العملاء هنا بعد اكتمال الرحلات أو عمليات الشراء."
+      },
+      "messages": {
+        "title": "الرسائل قريبًا",
+        "description": "هذا القسم جاهز لإضافة نظام المراسلة."
+      },
+      "analytics": {
+        "title": "التحليلات قريبًا",
+        "description": "هذا القسم جاهز لإضافة الرسوم البيانية وتحليلات الأداء."
+      },
+      "earnings": {
+        "title": "لا توجد بيانات أرباح",
+        "description": "ستظهر الأرباح هنا بعد توفر المعاملات."
+      },
+      "settings": {
+        "title": "لا توجد بيانات للحساب",
+        "description": "ستظهر بيانات الحساب بعد تحميل الملف الشخصي."
+      }
+    },
+    "actions": {
+      "addCar": "إضافة سيارة"
+    },
+    "earnings": {
+      "availableBalance": "الرصيد المتاح",
+      "pendingBalance": "الرصيد المعلق",
+      "totalEarnings": "إجمالي الأرباح"
+    },
+    "analytics": {
+      "revenueTrend": "اتجاه الإيرادات",
+      "revenueMix": "توزيع الإيرادات",
+      "bookingVolume": "حجم الحجوزات",
+      "topCars": "السيارات الأعلى أداءً",
+      "carMeta": "{views} مشاهدة / {conversion}% معدل التحويل",
+      "kpis": {
+        "monthlyRevenue": "الإيرادات الشهرية",
+        "monthlyRevenueHelper": "استنادًا إلى بيانات تجريبية للإيجارات والمبيعات",
+        "totalViews": "مشاهدات الإعلانات",
+        "totalViewsHelper": "عبر جميع الإعلانات النشطة",
+        "conversionRate": "معدل التحويل",
+        "conversionRateHelper": "متوسط معدل تحويل الاستفسارات إلى صفقات",
+        "completedDemand": "الطلبات المفتوحة",
+        "completedDemandHelper": "إجمالي الحجوزات المعلقة والطلبات المكتملة"
+      },
+      "months": {
+        "jan": "يناير",
+        "feb": "فبراير",
+        "mar": "مارس",
+        "apr": "أبريل",
+        "may": "مايو",
+        "jun": "يونيو"
+      },
+      "sources": {
+        "rentals": "إيرادات الإيجار",
+        "sales": "إيرادات البيع",
+        "returningCustomers": "العملاء العائدون"
+      }
+    },
+    "settings": {
+      "accountInformation": "معلومات الحساب",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "role": "الدور"
+    },
+    "validation": {
+      "titleMin": "يجب أن يتكون العنوان من 3 أحرف على الأقل",
+      "required": "هذا الحقل مطلوب",
+      "invalidYear": "أدخل سنة صحيحة",
+      "positivePrice": "يجب أن يكون السعر أكبر من صفر",
+      "positiveSeats": "يجب أن يكون عدد المقاعد أكبر من صفر",
+      "descriptionMin": "يجب أن يتكون الوصف من 10 أحرف على الأقل",
+      "imagesMin": "أضف صورة واحدة على الأقل"
     }
   }
 }

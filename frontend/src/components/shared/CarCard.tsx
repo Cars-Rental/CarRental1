@@ -71,7 +71,7 @@ export function CarCard({ car, mode }: CarCardProps) {
           <div className="flex justify-between items-start gap-2 mb-3">
             <Link
               href={`/${locale}/cars/${car._id}`}
-              className="text-base font-bold text-slate-800 dark:text-slate-100 hover:text-[var(--primary)] dark:hover:text-emerald-450 transition-colors line-clamp-1 flex-1"
+              className="text-base font-bold text-slate-800 dark:text-slate-100 hover:text-primary dark:hover:text-emerald-450 transition-colors line-clamp-1 flex-1"
             >
               {car.carname}
             </Link>
@@ -90,11 +90,11 @@ export function CarCard({ car, mode }: CarCardProps) {
 
           <div className="grid grid-cols-3 gap-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800/40 p-3 rounded-2xl text-slate-550 dark:text-slate-400 font-medium mb-5">
             <div className="flex flex-col items-center justify-center gap-1 text-[11px] text-center border-e border-slate-200/50 dark:border-slate-800/50">
-              <Settings className="size-4 text-[var(--primary)] dark:text-emerald-400 mb-0.5" />
+              <Settings className="size-4 text-primary dark:text-emerald-400 mb-0.5" />
               <span className="line-clamp-1">{car.Transmission}</span>
             </div>
             <div className="flex flex-col items-center justify-center gap-1 text-[11px] text-center border-e border-slate-200/50 dark:border-slate-800/50">
-              <Fuel className="size-4 text-[var(--primary)] dark:text-emerald-400 mb-0.5" />
+              <Fuel className="size-4 text-primary dark:text-emerald-400 mb-0.5" />
               <span className="line-clamp-1">{car.fuel}</span>
             </div>
             <div className="flex flex-col items-center justify-center gap-1 text-[11px] text-center">
@@ -130,7 +130,7 @@ export function CarCard({ car, mode }: CarCardProps) {
               {t("viewDetails")}
             </Link>
             <Link
-              href={`/${locale}/cars/${car.id}`}
+              href={`/${locale}/cars/${car._id}`}
               className="flex-1 bg-primary hover:bg-(--primary-dark) text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-(--primary)/10 hover:shadow-(--primary)/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
             >
               {mode === "rent" ? t("rentNow") : t("buyNow")}
