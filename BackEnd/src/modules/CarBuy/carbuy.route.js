@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   "/addcar",
   auth,
-  // Authorization(["Trader"]),
+  Authorization("Trader"),
   upload.single("image"),
   validation(carbuyvalidation.addcar),
   carbuy.addcarTobuy,
