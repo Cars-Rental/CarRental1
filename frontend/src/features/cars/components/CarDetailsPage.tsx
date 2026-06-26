@@ -103,7 +103,8 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
               images={car.carimage}
               carName={carName}
               isAvailable={
-                car.isavailable === "true" || car.isavailable === "available"
+                car.isavailable === "avilable" ||
+                car.isavailable === "available"
               }
             />
 
@@ -182,7 +183,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
             <hr className="border-slate-100 dark:border-slate-800" />
 
             {/* Owner */}
-            <CarOwnerCard owner={car.owner} />
+            <CarOwnerCard owner={car.owner || "bahaa"} />
 
             {/* Location Map */}
             <CarLocationMap location={car.location} />

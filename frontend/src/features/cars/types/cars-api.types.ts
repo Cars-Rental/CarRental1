@@ -25,7 +25,7 @@ export interface RawCar {
   seatCount: number;
   Body_Type: string;
   Transmission: string;
-  owner: CarOwner;
+  owner: CarOwner | null;
   carimage: CarImage[];
   isavailable: string;
   createdAt: string;

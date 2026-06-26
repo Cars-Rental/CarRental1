@@ -11,17 +11,6 @@ export const API_ENDPOINTS = {
     ME: "/auth/me",
   },
 
-  // CARS: {
-  //   ROOT: "/cars",
-  //   RENT: "/cars/rent",
-  //   SALE: "/cars/sale",
-  //   GET_ALL: "/cars/getallcar",
-  //   ADD: "/cars/addcars",
-  //   DETAILS: (id: string) => `/cars/getbyid/${id}`,
-  //   UPDATE: (id: string) => `/cars/update/${id}`,
-  //   DELETE: (id: string) => `/cars/delete/${id}`,
-  // },
-
   CARS: {
     RENT: {
       GET_ALL_RENT: "/cars/getallcar",
