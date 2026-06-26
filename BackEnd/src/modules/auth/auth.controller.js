@@ -114,7 +114,7 @@ export const login = async (req, res, next) => {
         email: user.email,
         phone: user.phone,
         gender: user.gender,
-        role: user.role.toLowerCase(),
+        role: user.role,
         confirmEmail: user.confirmEmail,
       },
       accessToken,
