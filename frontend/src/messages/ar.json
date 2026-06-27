@@ -569,6 +569,8 @@
       "positiveSeats": "يجب أن يكون عدد المقاعد أكبر من صفر",
       "descriptionMin": "يجب أن يتكون الوصف من 10 أحرف على الأقل",
       "imagesMin": "أضف صورة واحدة على الأقل"
+    }
+  },
   "CarDetails": {
     "available": "متوفر",
     "condition": "الحالة",

@@ -560,6 +560,8 @@
       "positiveSeats": "Seats must be greater than zero",
       "descriptionMin": "Description must be at least 10 characters",
       "imagesMin": "Add at least one image"
+    }
+  },
   "CarDetails": {
     "available": "Available",
     "condition": "Condition",
