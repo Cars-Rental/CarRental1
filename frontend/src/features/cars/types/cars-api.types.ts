@@ -32,6 +32,55 @@ export interface RawCar {
   updatedAt: string;
 }
 
+export const EGYPT_LOCATIONS = [
+  "Cairo",
+  "Giza",
+  "Alexandria",
+  "Dakahlia",
+  "Red Sea",
+  "Beheira",
+  "Fayoum",
+  "Gharbia",
+  "Ismailia",
+  "Menoufia",
+  "Minya",
+  "Qalyubia",
+  "New Valley",
+  "Suez",
+  "Aswan",
+  "Assiut",
+  "Beni Suef",
+  "Port Said",
+  "Damietta",
+  "Sharkia",
+  "South Sinai",
+  "Kafr El Sheikh",
+  "Matrouh",
+  "Luxor",
+  "Qena",
+  "North Sinai",
+  "Sohag",
+] as const;
+
+export type EgyptLocation = (typeof EGYPT_LOCATIONS)[number];
+export const TRANSMISSIONS = ["automatic", "manual"] as const;
+export type Transmission = (typeof TRANSMISSIONS)[number];
+
+export const FUEL_TYPES = ["petrol", "diesel", "electric", "hybrid"] as const;
+export type FuelType = (typeof FUEL_TYPES)[number];
+
+export const BODY_TYPES = [
+  "sedan",
+  "suv",
+  "hatchback",
+  "coupe",
+  "pickup",
+  "van",
+  "convertible",
+] as const;
+export type BodyType =
+  (typeof BODY_TYPES)[number];
+
 export interface GetAllCarsRawResponse {
   success: boolean;
   message: string;
@@ -47,13 +96,14 @@ export interface AddCarRequest {
   carname: string;
   carmodel: string;
   year: number;
-  location: string;
+  location: EgyptLocation;
   distance: string;
   carprice: number;
-  fuel: string;
+  fuel: FuelType;
   seatCount: number;
-  Body_Type: string;
-  Transmission: string;
+  Body_Type: BodyType;
+  Transmission: Transmission;
+  images: string[];
 }
 
-export interface UpdateCarRequest extends Partial<AddCarRequest> {}
+export type UpdateCarRequest = Partial<AddCarRequest>;

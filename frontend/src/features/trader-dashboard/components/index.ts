@@ -9,6 +9,7 @@ export * from "./DashboardStatusBadge";
 export * from "./DashboardTable";
 export * from "./TraderOverviewPage";
 export * from "./TraderCarsPage";
+export * from "./TraderCarDialog";
 export * from "./TraderBookingsPage";
 export * from "./TraderOrdersPage";
 export * from "./TraderCustomersPage";

@@ -11,16 +11,32 @@ interface BrandComboboxProps {
 }
 
 const BRANDS = [
+  "Hyundai",
+  "Nissan",
   "Toyota",
   "Kia",
-  "Mercedes",
-  "Hyundai",
   "Chevrolet",
+  "Chery",
+  "MG",
+  "BYD",
+  "Mercedes-Benz",
   "BMW",
-  "Nissan",
-  "Volkswagen",
-  "Honda",
+  "Renault",
+  "Peugeot",
+  "Fiat",
+  "Suzuki",
   "Mitsubishi",
+  "Volkswagen",
+  "Skoda",
+  "Opel",
+  "Honda",
+  "Ford",
+  "Audi",
+  "Jeep",
+  "Volvo",
+  "Land Rover",
+  "Porsche",
+  "Lexus",
 ];
 
 export function BrandCombobox({ selectedBrands, onChange }: BrandComboboxProps) {

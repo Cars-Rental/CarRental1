@@ -1,5 +1,6 @@
 import axiosInstance from "@/services/axios";
 import { API_ENDPOINTS } from "@/constants";
+import type { GetAllCarsRawResponse, RawCar } from "@/features/cars/types/cars-api.types";
 import type { 
   TraderDashboardStats, 
   TraderBooking, 
@@ -33,6 +34,29 @@ const resolveMock = async <T>(data: T): Promise<T> =>
     setTimeout(() => resolve(data), MOCK_DELAY_MS);
   });
 
+const mapRawCarToTraderCar = (
+  car: RawCar,
+  type: "rent" | "sale"
+): TraderCar => ({
+  id: car._id,
+  title: car.carname,
+  brand: car.carbrand,
+  model: car.carmodel,
+  year: car.year,
+  image: car.carimage[0]?.secure_url ?? "",
+  images: car.carimage.map((image) => image.secure_url),
+  location: car.location,
+  type,
+  price: car.carprice,
+  salePrice: type === "sale" ? car.carprice : undefined,
+  transmission: car.Transmission,
+  fuelType: car.fuel,
+  bodyType: car.Body_Type,
+  seats: car.seatCount,
+  status: car.isavailable === "true" ? "active" : "inactive",
+  mileage: Number(car.distance) || 0,
+});
+
 export const getDashboardStats = async (): Promise<TraderDashboardStats> => {
   if (USE_MOCK_TRADER_DASHBOARD) {
     return resolveMock(mockTraderDashboardStats);
@@ -61,6 +85,27 @@ export const getRecentOrders = async (): Promise<TraderOrder[]> => {
 };
 
 export const getTraderCars = async (type?: string): Promise<PaginatedResponse<TraderCar>> => {
+  if (type === "rent" || type === "sale") {
+    const endpoint =
+      type === "rent"
+        ? API_ENDPOINTS.CARS.RENT.GET_ALL_RENT
+        : API_ENDPOINTS.CARS.SALE.GET_ALL_SALE;
+    const response = await axiosInstance.get<GetAllCarsRawResponse>(
+      endpoint
+    );
+    const cars = response.data.data.map((car) =>
+      mapRawCarToTraderCar(car, type)
+    );
+
+    return {
+      data: cars,
+      total: response.data.totalCars,
+      page: response.data.currentPage,
+      limit: response.data.limit,
+      totalPages: response.data.totalPages,
+    };
+  }
+
   if (USE_MOCK_TRADER_DASHBOARD) {
     const cars = type
       ? mockTraderCars.filter((car) => car.type === type)

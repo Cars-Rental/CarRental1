@@ -12,7 +12,7 @@ export async function updateRentCarApi({
   id,
   data,
 }: UpdateCarParams): Promise<RawCar> {
-  const response = await axiosInstance.put<ApiResponse<RawCar>>(
+  const response = await axiosInstance.patch<ApiResponse<RawCar>>(
     API_ENDPOINTS.CARS.RENT.UPDATE_RENT(id),
     data,
   );
@@ -23,7 +23,7 @@ export async function updateSaleCarApi({
   id,
   data,
 }: UpdateCarParams): Promise<RawCar> {
-  const response = await axiosInstance.put<ApiResponse<RawCar>>(
+  const response = await axiosInstance.patch<ApiResponse<RawCar>>(
     API_ENDPOINTS.CARS.SALE.UPDATE_SALE(id),
     data,
   );
