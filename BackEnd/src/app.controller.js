@@ -15,6 +15,9 @@ import chatroute from "./modules/chat/chat.route.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import wishlistroute from "../src/modules/wishlist/withlist.route.js";
+import dashboardroute from "../src/modules/Dashboard-trader/dashboard.route.js";
+import reviewRoutes from "../src/modules/review/review.route.js";
+
 import jwt from "jsonwebtoken";
 import { handleSocketConnection } from "./sockets/onlineUsers.js";
 dotenv.config();
@@ -57,13 +60,14 @@ const bootstrap = (app, express, io) => {
   app.use("/auth", authroute);
   app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
+  app.use("/dashboard", dashboardroute);
   app.use("/orders", orderroute);
   app.use("/carbuy", carbuy);
   app.use("/notifications", notificationroute);
   app.use("/orderBuy", orderBuy);
- 
   app.use("/chat", chatroute);
   app.use("/wishlist", wishlistroute);
+  app.use("/reviews", reviewRoutes );
   app.use(globalErrorhandling);
 
   
