@@ -1,5 +1,7 @@
 import { carbuymodel } from "../../DB/model/carBuy.model.js";
 import cloudinary from "../../utlis/cloudinary/cloudinary.js";
+import { createNotification } from "../../services/notification.service.js";
+import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
 
 const POPULATE_OWNER = "userName email phone role";
 
@@ -64,6 +66,17 @@ export const addcarTobuy = async (req, res, next) => {
 
     const populatedCar = await addedcar.populate("owner", POPULATE_OWNER);
 
+    await createNotification({
+      recipientId: ownerId,
+      senderId: ownerId,
+      type: NOTIFICATION_TYPES.CAR_BUY_ADDED,
+      title: "تمت إضافة سيارة للبيع",
+      message: "تمت إضافة السيارة بنجاح وسيتم عرضها للمستخدمين",
+      entityType: ENTITY_TYPES.CAR,
+      entityId: addedcar._id,
+      metadata: { carId: addedcar._id.toString() },
+    });
+
     return res.status(201).json({
       success: true,
       message: "Car added for sale successfully",
@@ -100,6 +113,17 @@ export const deletecar = async (req, res, next) => {
     }
 
     await carbuymodel.findByIdAndDelete(id);
+
+    await createNotification({
+      recipientId: car.owner,
+      senderId: car.owner,
+      type: NOTIFICATION_TYPES.CAR_BUY_DELETED,
+      title: "تم حذف السيارة للبيع",
+      message: "تم حذف السيارة بنجاح",
+      entityType: ENTITY_TYPES.CAR,
+      entityId: car._id,
+      metadata: { carId: car._id.toString() },
+    });
 
     return res.status(200).json({
       success: true,

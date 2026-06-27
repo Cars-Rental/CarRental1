@@ -1,7 +1,9 @@
 import { orderModel } from "../../DB/model/order.model.js";
 import { carModel } from "../../DB/model/carRent.model.js";
+import { createNotification } from "../../services/notification.service.js";
+import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
 
-const POPULATE_CAR = "carbrand carname carprice carimage owner isAvailable";
+const POPULATE_CAR = "carbrand carname carprice carimage owner isavailable";
 const POPULATE_USER = "userName email phone role";
 
 const ORDER_POPULATE = [
@@ -10,7 +12,7 @@ const ORDER_POPULATE = [
   { path: "owner", select: POPULATE_USER },
 ];
 
-const ALLOWED_STATUS_VALUES = ["accepted", "rejected", "completed"];
+const ALLOWED_STATUS_VALUES = ["accepted", "rejected", "completed","cancelled"];
 
 const ALLOWED_TRANSITIONS = {
   pending: ["accepted", "rejected"],
@@ -73,7 +75,7 @@ export const createOrder = async (req, res, next) => {
 
     const Carobj = await carModel
       .findById(car)
-      .select("owner isAvailable carprice");
+      .select("owner isavailable carprice");
 
     if (!Carobj) {
       return res
@@ -81,7 +83,7 @@ export const createOrder = async (req, res, next) => {
         .json({ success: false, message: "Car not found", data: null });
     }
 
-    if (Carobj.isAvailable) {
+    if (Carobj.isavailable !== "avilable") {
       return res
         .status(400)
         .json({
@@ -133,6 +135,17 @@ export const createOrder = async (req, res, next) => {
     });
 
     await order.populate(ORDER_POPULATE);
+
+    await createNotification({
+      recipientId: Carobj.owner,
+      senderId: req.user.id,
+      type: NOTIFICATION_TYPES.ORDER_CREATED,
+      title: "طلب إيجار جديد",
+      message: "تم إرسال طلب إيجار جديد على سيارتك",
+      entityType: ENTITY_TYPES.ORDER,
+      entityId: order._id,
+      metadata: { orderId: order._id.toString(), carId: car },
+    });
 
     return res
       .status(201)
@@ -305,9 +318,42 @@ export const updateOrderStatus = async (req, res, next) => {
     order.status = status;
     if (status === "rejected") order.rejectionReason = rejectionReason;
 
+  
+    if (status === "accepted") {
+      await carModel.findByIdAndUpdate(order.car, {
+        isavailable: "regestred",
+      });
+    }
     await order.save();
     await order.populate(ORDER_POPULATE);
 
+    const notificationType =
+      status === "accepted"
+        ? NOTIFICATION_TYPES.ORDER_ACCEPTED
+        : status === "rejected"
+          ? NOTIFICATION_TYPES.ORDER_REJECTED
+          : status === "completed"
+            ? NOTIFICATION_TYPES.ORDER_COMPLETED
+            : null;
+
+    if (notificationType) {
+      await createNotification({
+        recipientId: order.user,
+        senderId: req.user.id,
+        type: notificationType,
+        title: status === "accepted" ? "تم قبول الطلب" : status === "rejected" ? "تم رفض الطلب" : "تم إكمال الطلب",
+        message:
+          status === "accepted"
+            ? "تم قبول طلب الإيجار الخاص بك"
+            : status === "rejected"
+              ? "تم رفض طلب الإيجار الخاص بك"
+              : "تم إكمال طلب الإيجار الخاص بك",
+        entityType: ENTITY_TYPES.ORDER,
+        entityId: order._id,
+        metadata: { orderId: order._id.toString(), status },
+      });
+    }
+    
     return res
       .status(200)
       .json({
@@ -357,6 +403,17 @@ export const cancelOrder = async (req, res, next) => {
 
     await order.save();
     await order.populate(ORDER_POPULATE);
+
+    await createNotification({
+      recipientId: order.owner,
+      senderId: req.user.id,
+      type: NOTIFICATION_TYPES.ORDER_CANCELLED,
+      title: "تم إلغاء الطلب",
+      message: "تم إلغاء طلب الإيجار من قبل المستخدم",
+      entityType: ENTITY_TYPES.ORDER,
+      entityId: order._id,
+      metadata: { orderId: order._id.toString(), status: order.status },
+    });
 
     return res
       .status(200)

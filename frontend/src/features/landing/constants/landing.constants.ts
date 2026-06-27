@@ -9,12 +9,13 @@ import type {
 
 import { ROUTES } from "@/config/routes";
 const { CARS, HOME, ABOUT, CONTACT } = ROUTES;
+
 export const NAV_LINKS: NavLink[] = [
-  { label: "Home", labelAr: "الرئيسية", href: HOME },
-  { label: "Rent Cars", labelAr: "إيجار السيارات", href: CARS.RENT },
-  { label: "Buy Cars", labelAr: "بيع السيارات", href: CARS.SALE },
-  { label: "About Us", labelAr: "من نحن", href: ABOUT },
-  { label: "Contact", labelAr: "تواصل معنا", href: CONTACT },
+  { key: "home", href: HOME },
+  { key: "rentCars", href: CARS.RENT },
+  { key: "buyCars", href: CARS.SALE },
+  { key: "about", href: ABOUT },
+  { key: "contact", href: CONTACT },
 ];
 
 export const STATS: Stat[] = [

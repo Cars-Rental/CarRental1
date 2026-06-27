@@ -2,7 +2,7 @@ export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
-    LOGOUT: "/auth/logout",
+    LOGOUT: "/auth/logoutt",
     REFRESH: "/auth/refresh",
     FORGOT_PASSWORD: "/auth/forgot-password",
     VERIFY_EMAIL: "/auth/verify-email",
@@ -11,16 +11,32 @@ export const API_ENDPOINTS = {
     ME: "/auth/me",
   },
 
-  CARS: {
-    ROOT: "/cars",
-    RENT: "/cars/rent",
-    SALE: "/cars/sale",
-    DETAILS: (id: string) => `/cars/${id}`,
-  },
+  // CARS: {
+  //   ROOT: "/cars",
+  //   RENT: "/cars/rent",
+  //   SALE: "/cars/sale",
+  //   GET_ALL: "/cars/getallcar",
+  //   ADD: "/cars/addcars",
+  //   DETAILS: (id: string) => `/cars/getbyid/${id}`,
+  //   UPDATE: (id: string) => `/cars/update/${id}`,
+  //   DELETE: (id: string) => `/cars/delete/${id}`,
+  // },
 
-  cars: {
-    carRent: "/cars/rent",
-    carSale: "/cars/sale",
+  CARS: {
+    RENT: {
+      GET_ALL_RENT: "/cars/getallcar",
+      ADD_RENT: "/cars/addcars",
+      GET_RENT_BY_ID: (id: string) => `/cars/getbyid/${id}`,
+      UPDATE_RENT: (id: string) => `/cars/update/${id}`,
+      DELETE_RENT: (id: string) => `/cars/delete/${id}`,
+    },
+    SALE: {
+      GET_ALL_SALE: "/carbuy/getall",
+      ADD_SALE: "/carbuy/addcar",
+      GET_SALE_BY_ID: (id: string) => `/carbuy/getbyid/${id}`,
+      UPDATE_SALE: (id: string) => `/carbuy/updatecar/${id}`,
+      DELETE_SALE: (id: string) => `/carbuy/deletecar/${id}`,
+    },
   },
 
   BOOKINGS: {
