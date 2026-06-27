@@ -40,7 +40,7 @@ interface TraderCarDialogProps {
   open: boolean;
   type: TraderCarType;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: AddCarRequest) => void;
+  onSubmit: (data: AddCarRequest) => Promise<void> | void;
 }
 
 type TraderCarFormValues = AddCarRequest;
@@ -225,8 +225,8 @@ export function TraderCarDialog({
     });
   }
 
-  function submitForm(data: TraderCarFormValues) {
-    onSubmit(data);
+  async function submitForm(data: TraderCarFormValues) {
+    await onSubmit(data);
     onOpenChange(false);
   }
 

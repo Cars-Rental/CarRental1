@@ -14,7 +14,10 @@
     "logout": "تسجيل الخروج",
     "profile": "الصفحة الشخصية",
     "bookings": "الحجوزات",
-    "dashboard": "لوحة التحكم"
+    "dashboard": "لوحة التحكم",
+    "orders": "طلباتي",
+    "favorites": "المفضلة",
+    "settings": "الإعدادات"
   },
   "Auth": {
     "register": {

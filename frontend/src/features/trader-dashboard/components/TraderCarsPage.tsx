@@ -5,9 +5,18 @@ import { useState } from "react";
 import { Car, Pencil, Plus, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import {
+  useAddRentCar,
+  useAddSaleCar,
+  useDeleteRentCar,
+  useDeleteSaleCar,
+  useUpdateRentCar,
+  useUpdateSaleCar,
+} from "@/features/cars/hooks";
 import type {
   AddCarRequest,
   FuelType,
+  RawCar,
   Transmission,
 } from "@/features/cars/types/cars-api.types";
 import { useTraderCars } from "../hooks";
@@ -60,17 +69,30 @@ export function TraderCarsPage({ type }: TraderCarsPageProps) {
   const [localCars, setLocalCars] = useState<TraderCar[] | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCar, setEditingCar] = useState<TraderCar | null>(null);
+  const addRentCar = useAddRentCar();
+  const addSaleCar = useAddSaleCar();
+  const updateRentCar = useUpdateRentCar();
+  const updateSaleCar = useUpdateSaleCar();
+  const deleteRentCar = useDeleteRentCar();
+  const deleteSaleCar = useDeleteSaleCar();
   const visibleCars = localCars ?? cars;
+  const isRentPage = type === "rent";
+  const isSalePage = type === "sale";
 
-  function mapFormToTraderCar(data: AddCarRequest, currentCar?: TraderCar): TraderCar {
+  function mapFormToTraderCar(
+    data: AddCarRequest,
+    currentCar?: TraderCar,
+    savedCar?: RawCar
+  ): TraderCar {
     return {
-      id: currentCar?.id ?? `${type}-${Date.now()}`,
+      id: savedCar?._id ?? currentCar?.id ?? `${type}-${Date.now()}`,
       title: data.carname,
       brand: data.carbrand,
       model: data.carmodel,
       year: data.year,
-      image: data.images[0] ?? currentCar?.image ?? "",
-      images: data.images,
+      image:
+        savedCar?.carimage[0]?.secure_url ?? data.images[0] ?? currentCar?.image ?? "",
+      images: savedCar?.carimage.map((image) => image.secure_url) ?? data.images,
       location: data.location,
       type,
       price: data.carprice,
@@ -98,8 +120,21 @@ export function TraderCarsPage({ type }: TraderCarsPageProps) {
     setIsDialogOpen(true);
   }
 
-  function handleSubmitCar(formData: AddCarRequest) {
+  async function handleSubmitCar(formData: AddCarRequest) {
     if (editingCar) {
+      if (isRentPage) {
+        await updateRentCar.mutateAsync({
+          id: editingCar.id,
+          data: formData,
+        });
+      }
+      if (isSalePage) {
+        await updateSaleCar.mutateAsync({
+          id: editingCar.id,
+          data: formData,
+        });
+      }
+
       setLocalCars((currentCars) =>
         (currentCars ?? cars).map((car) =>
           car.id === editingCar.id ? mapFormToTraderCar(formData, editingCar) : car
@@ -108,15 +143,26 @@ export function TraderCarsPage({ type }: TraderCarsPageProps) {
       return;
     }
 
-    console.log("Car From Data",formData);
+    const savedCar = isRentPage
+      ? await addRentCar.mutateAsync(formData)
+      : isSalePage
+        ? await addSaleCar.mutateAsync(formData)
+        : undefined;
 
     setLocalCars((currentCars) => [
-      mapFormToTraderCar(formData),
+      mapFormToTraderCar(formData, undefined, savedCar),
       ...(currentCars ?? cars),
     ]);
   }
 
-  function handleDeleteCar(id: string) {
+  async function handleDeleteCar(id: string) {
+    if (isRentPage) {
+      await deleteRentCar.mutateAsync(id);
+    }
+    if (isSalePage) {
+      await deleteSaleCar.mutateAsync(id);
+    }
+
     setLocalCars((currentCars) =>
       (currentCars ?? cars).filter((car) => car.id !== id)
     );

@@ -14,7 +14,10 @@
     "logout": "Logout",
     "profile": "Profile",
     "bookings": "Bookings",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "orders": "My Orders",
+    "favorites": "Favorites",
+    "settings": "Settings"
   },
   "Auth": {
     "register": {
