@@ -453,7 +453,8 @@
       "customerActivity": "{bookings} bookings / {orders} orders",
       "totalSpent": "Total Spent",
       "rating": "Rating",
-      "comment": "Comment"
+      "comment": "Comment",
+      "actions": "Actions"
     },
     "status": {
       "active": "Active",
@@ -508,7 +509,51 @@
       }
     },
     "actions": {
-      "addCar": "Add Car"
+      "addCar": "Add Car",
+      "updateCar": "Update Car",
+      "deleteCar": "Delete Car",
+      "cancel": "Cancel"
+    },
+    "carForm": {
+      "addTitle": "Add Car",
+      "editTitle": "Update Car",
+      "rentDescription": "Add or update a car available for rent.",
+      "saleDescription": "Add or update a car listed for sale.",
+      "name": "Car Name",
+      "model": "Model",
+      "year": "Year",
+      "location": "Location",
+      "rentPrice": "Rent Price",
+      "salePrice": "Sale Price",
+      "transmission": "Transmission",
+      "fuel": "Fuel Type",
+      "bodyType": "Body Type",
+      "seats": "Seats",
+      "distance": "Distance",
+      "images": "Images",
+      "uploadImages": "Upload car images",
+      "uploadImagesHint": "Choose one or more images to preview before saving.",
+      "imagePreview": "Car image preview",
+      "removeImage": "Remove image",
+      "transmissionOptions": {
+        "automatic": "Automatic",
+        "manual": "Manual"
+      },
+      "fuelOptions": {
+        "petrol": "Petrol",
+        "diesel": "Diesel",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      },
+      "bodyOptions": {
+        "sedan": "Sedan",
+        "suv": "SUV",
+        "hatchback": "Hatchback",
+        "coupe": "Coupe",
+        "pickup": "Pickup",
+        "van": "Van",
+        "convertible": "Convertible"
+      }
     },
     "earnings": {
       "availableBalance": "Available Balance",

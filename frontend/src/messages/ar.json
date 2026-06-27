@@ -462,7 +462,8 @@
       "customerActivity": "{bookings} حجوزات / {orders} طلبات",
       "totalSpent": "إجمالي الإنفاق",
       "rating": "التقييم",
-      "comment": "التعليق"
+      "comment": "التعليق",
+      "actions": "الإجراءات"
     },
     "status": {
       "active": "نشطة",
@@ -517,7 +518,51 @@
       }
     },
     "actions": {
-      "addCar": "إضافة سيارة"
+      "addCar": "إضافة سيارة",
+      "updateCar": "تحديث السيارة",
+      "deleteCar": "حذف السيارة",
+      "cancel": "إلغاء"
+    },
+    "carForm": {
+      "addTitle": "إضافة سيارة",
+      "editTitle": "تحديث السيارة",
+      "rentDescription": "أضف أو حدّث سيارة متاحة للإيجار.",
+      "saleDescription": "أضف أو حدّث سيارة معروضة للبيع.",
+      "name": "اسم السيارة",
+      "model": "الموديل",
+      "year": "السنة",
+      "location": "الموقع",
+      "rentPrice": "سعر الإيجار",
+      "salePrice": "سعر البيع",
+      "transmission": "ناقل الحركة",
+      "fuel": "نوع الوقود",
+      "bodyType": "نوع الهيكل",
+      "seats": "المقاعد",
+      "distance": "المسافة",
+      "images": "الصور",
+      "uploadImages": "ارفع صور السيارة",
+      "uploadImagesHint": "اختر صورة واحدة أو أكثر لمعاينتها قبل الحفظ.",
+      "imagePreview": "معاينة صورة السيارة",
+      "removeImage": "حذف الصورة",
+      "transmissionOptions": {
+        "automatic": "أوتوماتيك",
+        "manual": "يدوي"
+      },
+      "fuelOptions": {
+        "petrol": "بنزين",
+        "diesel": "ديزل",
+        "electric": "كهرباء",
+        "hybrid": "هجين"
+      },
+      "bodyOptions": {
+        "sedan": "سيدان",
+        "suv": "دفع رباعي",
+        "hatchback": "هاتشباك",
+        "coupe": "كوبيه",
+        "pickup": "بيك أب",
+        "van": "فان",
+        "convertible": "مكشوفة"
+      }
     },
     "earnings": {
       "availableBalance": "الرصيد المتاح",
