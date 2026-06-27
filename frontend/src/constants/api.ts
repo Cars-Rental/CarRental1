@@ -35,4 +35,29 @@ export const API_ENDPOINTS = {
   USERS: {
     PROFILE: "/users/profile",
   },
+
+  TRADER: {
+    DASHBOARD: {
+      STATS: "/trader/dashboard/stats",
+      RECENT_BOOKINGS: "/trader/dashboard/recent-bookings",
+      RECENT_ORDERS: "/trader/dashboard/recent-orders",
+    },
+    CARS: {
+      GET_ALL: "/trader/cars",
+      ADD: "/trader/cars",
+      UPDATE: (id: string) => `/trader/cars/${id}`,
+      DELETE: (id: string) => `/trader/cars/${id}`,
+    },
+    BOOKINGS: {
+      GET_ALL: "/trader/bookings",
+      UPDATE_STATUS: (id: string) => `/trader/bookings/${id}/status`,
+    },
+    ORDERS: {
+      GET_ALL: "/trader/orders",
+      UPDATE_STATUS: (id: string) => `/trader/orders/${id}/status`,
+    },
+    CUSTOMERS: "/trader/customers",
+    REVIEWS: "/trader/reviews",
+    EARNINGS: "/trader/earnings",
+  },
 } as const;
