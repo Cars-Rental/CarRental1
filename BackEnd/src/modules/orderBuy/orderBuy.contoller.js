@@ -2,6 +2,8 @@ import { orderBuyModel } from "../../DB/model/orderBuy.model.js";
 import { carbuymodel } from "../../DB/model/carBuy.model.js";
 import { createNotification } from "../../services/notification.service.js";
 import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
+import { roomModel } from "../../DB/model/room.model.js";
+import { getSocketIds } from "../../sockets/onlineUsers.js";
 
 const POPULATE_CAR = "carbrand carname carmodel carprice carimage owner quantity status";
 const POPULATE_USER = "userName email phone role";
@@ -12,8 +14,7 @@ const ORDER_POPULATE = [
   { path: "owner", select: POPULATE_USER },
 ];
 
-const ALLOWED_STATUS_VALUES = ["accepted", "rejected", "completed"];
-
+const ALLOWED_STATUS_VALUES = ["pending", "accepted", "rejected", "completed", "cancelled"];
 const ALLOWED_TRANSITIONS = {
   pending: ["accepted", "rejected"],
   accepted: ["completed"],
@@ -102,6 +103,59 @@ export const createOrderBuy = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const getAllOrdersBuy = async (req, res, next) => {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const filter = {};
+
+    if (req.query.status) {
+      if (!ALLOWED_STATUS_VALUES.includes(req.query.status)) {
+        return res.status(400).json({
+          success: false,
+          message: `status must be one of: ${ALLOWED_STATUS_VALUES.join(", ")}`,
+          data: null,
+        });
+      }
+      filter.status = req.query.status;
+    }
+
+    
+    if (req.query.userId) {
+      filter.user = req.query.userId;
+    }
+
+    if (req.query.ownerId) {
+      filter.owner = req.query.ownerId;
+    }
+
+    const totalOrders = await orderBuyModel.countDocuments(filter);
+
+    const orders = await orderBuyModel
+      .find(filter)
+      .populate(ORDER_POPULATE)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      message: "All orders fetched successfully",
+      totalOrders,
+      page,
+      limit,
+      data: orders,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 export const getMyOrdersBuy = async (req, res, next) => {
@@ -292,6 +346,32 @@ export const updateOrderBuyStatus = async (req, res, next) => {
       carObj.quantity -= 1;
       await carObj.save();
     }
+    if (status === "accepted") {
+  const io = req.app.get("io");
+
+  let room = await roomModel.findOne({
+    type: "private",
+    members: { $all: [order.user, order.owner], $size: 2 },
+  });
+
+  if (!room) {
+    room = await roomModel.create({
+      type: "private",
+      members: [order.user, order.owner],
+    });
+  }
+
+  await room.populate("members", "userName email avatar bio isOnline lastSeen");
+
+  if (io) {
+    [order.user.toString(), order.owner.toString()].forEach((memberId) => {
+      getSocketIds(memberId).forEach((sId) => {
+        io.sockets.sockets.get(sId)?.join(room._id.toString());
+        io.to(sId).emit("room:created", { room, isNew: true });
+      });
+    });
+  }
+}
 
     order.status = status;
     if (status === "rejected") order.rejectionReason = rejectionReason;
@@ -332,39 +412,6 @@ export const updateOrderBuyStatus = async (req, res, next) => {
         success: true,
         message: `Order ${status} successfully`,
         data: order,
-      });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getOrderBuyByUserId = async (req, res, next) => {
-  try {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-
-    const filter = { user: req.user.id };
-
-    const totalOrders = await orderBuyModel.countDocuments(filter);
-
-    const orders = await orderBuyModel
-      .find(filter)
-      .populate(ORDER_POPULATE)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "User's orders fetched successfully",
-        totalOrders,
-        page,
-        limit,
-        data: orders,
       });
   } catch (error) {
     next(error);

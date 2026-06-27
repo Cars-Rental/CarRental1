@@ -4,7 +4,7 @@ import { userModel } from "../../DB/model/user.model.js";
 
 const MEMBER_FIELDS = "userName email avatar bio isOnline lastSeen";
 
-// GET /chat/rooms
+
 export const getMyRooms = async (req, res, next) => {
   const userId = req.user?.id || req.user?._id;
 
@@ -21,7 +21,7 @@ export const getMyRooms = async (req, res, next) => {
   res.status(200).json({ message: "rooms fetched", rooms });
 };
 
-// GET /chat/rooms/:roomId/messages
+
 export const getRoomMessages = async (req, res, next) => {
   const { roomId } = req.params;
   const userId = req.user?.id || req.user?._id;
@@ -44,7 +44,7 @@ export const getRoomMessages = async (req, res, next) => {
   res.status(200).json({ message: "messages fetched", messages, totalMembers: room.members.length });
 };
 
-// GET /chat/users — قائمة كل اليوزرز (عشان تبدأ شات جديد / تعمل جروب)
+
 export const getAllUsers = async (req, res, next) => {
   const userId = req.user?.id || req.user?._id;
 
@@ -55,7 +55,7 @@ export const getAllUsers = async (req, res, next) => {
   res.status(200).json({ message: "users fetched", users });
 };
 
-// GET /chat/rooms/:roomId — تفاصيل روم واحد (عشان صفحة معلومات الجروب)
+
 export const getRoomById = async (req, res, next) => {
   const { roomId } = req.params;
   const userId = req.user?.id || req.user?._id;

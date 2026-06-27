@@ -6,7 +6,7 @@ const fail = (res, status, message) =>
 const ok = (res, status, message, data, extra = {}) =>
   res.status(status).json({ success: true, message, data, ...extra });
 
-// GET /notifications
+
 export const getNotifications = async (req, res, next) => {
   try {
     const page  = Number(req.query.page)  || 1;
@@ -30,7 +30,7 @@ export const getNotifications = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-// GET /notifications/unread
+
 export const getUnreadNotifications = async (req, res, next) => {
   try {
     const notifications = await notificationModel
@@ -46,7 +46,7 @@ export const getUnreadNotifications = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-// PATCH /notifications/:id/read
+
 export const markAsRead = async (req, res, next) => {
   try {
     const notification = await notificationModel.findOneAndUpdate(
@@ -61,7 +61,7 @@ export const markAsRead = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-// PATCH /notifications/read-all
+
 export const markAllAsRead = async (req, res, next) => {
   try {
     const result = await notificationModel.updateMany(
@@ -75,7 +75,7 @@ export const markAllAsRead = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-// DELETE /notifications/:id
+
 export const deleteNotification = async (req, res, next) => {
   try {
     const notification = await notificationModel.findOneAndDelete({

@@ -14,35 +14,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-// export const getUserById = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "invalid user id format",
-//       });
-//     }
-
-//     const user = await userModel.findById(id);
-
-//     if (!user) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "user not found!" });
-//     }
-
-//     return res
-//       .status(200)
-//       .json({ success: true, message: "user found", data: user });
-//   } catch (err) {
-//     return res
-//       .status(500)
-//       .json({ success: false, message: "something went wrong", error: err });
-//   }
-// };
-
 export const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;

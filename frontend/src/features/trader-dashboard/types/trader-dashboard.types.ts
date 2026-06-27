@@ -1,3 +1,5 @@
+import type { BodyType, FuelType, Transmission } from "@/features/cars/types/cars-api.types";
+
 export type TraderCarType = "rent" | "sale";
 export type TraderCarStatus = "active" | "maintenance" | "sold" | "inactive";
 export type TraderBookingStatus = "pending" | "confirmed" | "active" | "completed" | "cancelled" | "rejected";
@@ -21,11 +23,13 @@ export interface TraderCar {
   model: string;
   year: number;
   image: string;
+  images?: string[];
   location: string;
   type: TraderCarType;
   price: number;
-  transmission: string;
-  fuelType: string;
+  transmission: Transmission | string;
+  fuelType: FuelType | string;
+  bodyType?: BodyType | string;
   seats: number;
   status: TraderCarStatus;
   rating?: number;

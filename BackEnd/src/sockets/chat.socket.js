@@ -10,7 +10,7 @@ const MEMBER_FIELDS = "userName email avatar bio isOnline lastSeen";
 export const registerChatEvents = (io, socket) => {
   const userId = socket.user._id.toString();
 
-  // الانضمام لروم
+
   socket.on(SOCKET_EVENTS.ROOM_JOIN, async ({ roomId }) => {
     const room = await roomModel.findById(roomId);
     if (!room) return socket.emit(SOCKET_EVENTS.ERROR, { message: "Room not found" });
@@ -23,7 +23,7 @@ export const registerChatEvents = (io, socket) => {
 
   socket.on(SOCKET_EVENTS.ROOM_LEAVE, ({ roomId }) => socket.leave(roomId));
 
-  // إنشاء private room
+  
   socket.on(SOCKET_EVENTS.ROOM_CREATE_PRIVATE, async ({ targetUserId }) => {
     try {
       if (targetUserId === userId) {
@@ -53,7 +53,7 @@ export const registerChatEvents = (io, socket) => {
     }
   });
 
-  // إنشاء جروب
+ 
   socket.on(SOCKET_EVENTS.ROOM_CREATE_GROUP, async ({ name, memberIds, avatar }) => {
     try {
       const allMembers = [...new Set([userId, ...memberIds])];
@@ -79,7 +79,7 @@ export const registerChatEvents = (io, socket) => {
     }
   });
 
-  // إرسال رسالة
+  
   socket.on(SOCKET_EVENTS.MESSAGE_SEND, async ({ roomId, content, attachment }) => {
     try {
       const room = await roomModel
@@ -107,7 +107,7 @@ export const registerChatEvents = (io, socket) => {
         totalMembers: room.members.length,
       });
 
-      // إشعار لكل عضو غير المرسل
+    
       const others = room.members.filter((m) => m._id.toString() !== userId);
 
       await Promise.all(
@@ -133,7 +133,7 @@ export const registerChatEvents = (io, socket) => {
     }
   });
 
-  // تايبينج
+  
   socket.on(SOCKET_EVENTS.TYPING_START, ({ roomId }) => {
     socket.to(roomId).emit(SOCKET_EVENTS.TYPING_START, {
       userId,
@@ -146,7 +146,6 @@ export const registerChatEvents = (io, socket) => {
     socket.to(roomId).emit(SOCKET_EVENTS.TYPING_STOP, { userId, roomId });
   });
 
-  // تعليم مقروء
   socket.on(SOCKET_EVENTS.MESSAGE_READ, async ({ roomId }) => {
     await messageModel.updateMany(
       { room: roomId, readBy: { $ne: userId } },
