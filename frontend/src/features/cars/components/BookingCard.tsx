@@ -72,7 +72,7 @@ export function BookingCard({
   const { mutate: createOrder, isPending } = useCreateOrder({
     onSuccess: (orderId) => {
       // Redirect to payment page with orderId
-      router.push(`/${locale}/payment?orderId=${orderId}`);
+      router.push(`/${locale}/payment?orderId=${orderId}&mode=${mode}`);
     },
     onError: (message) => {
       setErrorMessage(message);

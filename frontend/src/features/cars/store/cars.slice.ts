@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { CarsFilterState, SortOption } from "../types/cars-filter.types";
+import type { CarsFilterState, SortOption } from "../types/cars-api.types";
 
 export interface CarsFeatureState {
   mode: "rent" | "sale";

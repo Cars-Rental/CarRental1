@@ -26,7 +26,8 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-import type { SortOption } from "../types/cars-filter.types";
+// import type { SortOption } from "../types/cars-filter.types";
+import type { SortOption } from "../types/cars-api.types";
 
 interface MarketplaceLayoutProps {
   children: React.ReactNode;
