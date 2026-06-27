@@ -1,5 +1,5 @@
 import express from "express";
-import { auth } from "../../middleware/verifyToken.js";
+import { auth , Authorization  } from "../../middleware/verifyToken.js";
 import { validation } from "../../middleware/validation.middleware.js";
 import {
   createOrderBuyValidation,
@@ -15,7 +15,7 @@ import {
   getOrderBuyById,
   updateOrderBuyStatus,
   cancelOrderBuy,
-  getOrderBuyByUserId
+  getAllOrdersBuy
 } from "./orderBuy.contoller.js";
 
 const router = express.Router();
@@ -27,13 +27,7 @@ router.post(
   createOrderBuy,
 );
 
-router.get(
-  "/by-user",
-  auth,
-  validation(getOrdersBuyQueryValidation),
-  getOrderBuyByUserId,
-);
-
+router.get("/all", auth, Authorization("admin"), getAllOrdersBuy);
 
 router.get(
   "/my-orders",

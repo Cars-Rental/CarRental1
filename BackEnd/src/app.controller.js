@@ -14,6 +14,8 @@ import orderBuy from "./modules/orderBuy/orderBuy.route.js";
 import chatroute from "./modules/chat/chat.route.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { handleSocketConnection } from "./sockets/onlineUsers.js";
 dotenv.config();
 
 import ratelimit from "express-rate-limit";
@@ -23,7 +25,7 @@ const limiter = ratelimit({
   message: "too many request please try again after 20 min",
 });
 
-const bootstrap = (app, express) => {
+const bootstrap = (app, express, io) => {  // ✅ استقبال io
   app.use(express.json());
   app.use(helmet());
   app.use(
@@ -58,10 +60,32 @@ const bootstrap = (app, express) => {
   app.use("/carbuy", carbuy);
   app.use("/notifications", notificationroute);
   app.use("/orderBuy", orderBuy);
-  app.use("/orserBuy", orderBuy);
+ 
   app.use("/chat", chatroute);
   app.use(globalErrorhandling);
 
+  // ✅ حفظ io عشان نوصله في أي controller
+  app.set("io", io);
+
+  // ✅ Socket.io middleware للتحقق من التوكن
+  io.use((socket, next) => {
+    const token = socket.handshake.auth?.token;
+    if (!token) return next(new Error("No token provided"));
+    try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      socket.user = decoded;
+      next();
+    } catch (err) {
+      next(new Error("Invalid token"));
+    }
+  });
+
+  // ✅ ربط الـ socket events
+  io.on("connection", (socket) => {
+    handleSocketConnection(io, socket);
+  });
+
   ConnectDB();
 };
+
 export default bootstrap;
