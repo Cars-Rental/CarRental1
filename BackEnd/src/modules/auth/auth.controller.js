@@ -3,6 +3,7 @@ import { userModel } from "../../DB/model/user.model.js";
 import bcrypt from "bcrypt";
 import { emailEvent } from "../../utlis/events/email.event.js";
 import jwt from "jsonwebtoken";
+import cloudinary from "../../utlis/cloudinary/cloudinary.js";
 
 export const register = async (req, res, next) => {
   const { userName, email, password, phone, role, gender } = req.body;
@@ -429,5 +430,34 @@ export const getProfilee = async (req, res) => {
       message: "Something went wrong",
       error: error.message,
     });
+  }
+};
+
+export const uploadProfileImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Profile image is required",
+      });
+    }
+    const uploaded = await cloudinary.uploader.upload(req.file.path);
+    const user = await userModel.findByIdAndUpdate(
+      req.user.id,
+      {
+        profileImage: {
+          secure_url: uploaded.secure_url,
+          public_id: uploaded.public_id,
+        },
+      },
+      { new: true },
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Profile image updated successfully",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
   }
 };

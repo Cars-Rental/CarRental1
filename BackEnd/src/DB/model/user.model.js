@@ -33,7 +33,7 @@ export const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: function () {
-        return this.provider !== 'google';
+        return this.provider !== "google";
       },
       minLength: 6,
       maxLength: 1024,
@@ -53,9 +53,12 @@ export const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    provider: { type: String, default: 'local' },
+    provider: { type: String, default: "local" },
     providerId: { type: String },
-
+    profileImage: {
+      secure_url: String,
+      public_id: String,
+    },
   },
   { timestamps: true },
 );

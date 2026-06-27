@@ -10,7 +10,7 @@ router.post(
   "/addcar",
   auth,
   Authorization("Trader"),
-  upload.single("image"),
+  upload.array("image", 4),
   validation(carbuyvalidation.addcar),
   carbuy.addcarTobuy,
 );
@@ -20,8 +20,14 @@ router.patch(
   "/updatecar/:id",
   auth,
   upload.single("image"),
+  Authorization("Trader"),
   validation(carbuyvalidation.updateCar),
   carbuy.updatecarbyid,
 );
-router.delete("/deletecar/:id", auth, carbuy.deletecar);
+router.delete(
+  "/deletecar/:id",
+  auth,
+  Authorization("Trader"),
+  carbuy.deletecar,
+);
 export default router;

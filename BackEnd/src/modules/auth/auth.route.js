@@ -7,6 +7,7 @@ import passport from "./passport.config.js";
 import { googleRedirect, getProfile, logout } from "./auth.controller.js";
 // import upload from "./../../middleware/multer.middleware.js";
 import { auth as verifyToken } from "../../middleware/verifyToken.js";
+import upload from "../../utlis/cloudinary/multer.js";
 
 const router = express.Router();
 
@@ -52,5 +53,11 @@ router.post(
   "/resend-code",
   validation(authvalidation.resendOtpSchema),
   auth.resendOtp,
+);
+router.post(
+  "/image-profile",
+  upload.single("image"),
+  verifyToken,
+  auth.uploadProfileImage,
 );
 export default router;
