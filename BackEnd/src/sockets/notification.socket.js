@@ -4,7 +4,7 @@ import { SOCKET_EVENTS } from "./events/events.js";
 export const registerNotificationEvents = async (socket) => {
   const userId = socket.user._id.toString();
 
-  // ابعت الإشعارات الغير مقروءة فوراً عند الاتصال
+
   const unread = await notificationModel
     .find({ recipient: userId, isRead: false })
     .populate("sender", "userName avatar")
@@ -19,7 +19,6 @@ export const registerNotificationEvents = async (socket) => {
     });
   }
 
-  // تعليم إشعار واحد كمقروء عبر Socket
   socket.on(SOCKET_EVENTS.MARK_NOTIFICATION_READ, async ({ notificationId }) => {
     await notificationModel.findOneAndUpdate(
       { _id: notificationId, recipient: userId },

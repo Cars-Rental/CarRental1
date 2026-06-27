@@ -4,7 +4,7 @@ import { userModel } from "../DB/model/user.model.js";
 
 const MEMBER_FIELDS = "userName email avatar bio isOnline lastSeen";
 
-// userId -> Set<socketId>  (يدعم أكتر من تاب/جهاز لنفس اليوزر)
+
 const onlineUsers = new Map();
 
 const addOnline = (userId, socketId) => {
@@ -14,27 +14,27 @@ const addOnline = (userId, socketId) => {
 
 const removeOnline = (userId, socketId) => {
   const set = onlineUsers.get(userId);
-  if (!set) return true; // مش موجود أصلاً = اعتبره أوفلاين
+  if (!set) return true; 
   set.delete(socketId);
   if (set.size === 0) {
     onlineUsers.delete(userId);
-    return true; // فعلاً بقى أوفلاين بالكامل
+    return true; 
   }
-  return false; // لسه متصل من جهاز/تاب تاني
+  return false; 
 };
 
 export const handleSocketConnection = (io, socket) => {
   const userId = socket.user._id.toString();
 
-  // ============ اتصال ============
+  
   addOnline(userId, socket.id);
   userModel.findByIdAndUpdate(userId, { isOnline: true, socketId: socket.id }).exec();
   socket.broadcast.emit("user:online", { userId });
 
-  // ابعت قائمة كل اليوزرز الأونلاين دلوقتي لليوزر الجديد
+ 
   socket.emit("users:onlineList", { userIds: Array.from(onlineUsers.keys()) });
 
-  // ============ الانضمام لروم ============
+  
   socket.on("room:join", async ({ roomId }) => {
     const room = await roomModel.findById(roomId);
     if (!room) return socket.emit("error", { message: "Room not found" });
@@ -51,7 +51,7 @@ export const handleSocketConnection = (io, socket) => {
     socket.leave(roomId);
   });
 
-  // ============ إنشاء private room ============
+  
   socket.on("room:createPrivate", async ({ targetUserId }) => {
     try {
       if (targetUserId === userId) {
@@ -90,7 +90,7 @@ export const handleSocketConnection = (io, socket) => {
     }
   });
 
-  // ============ إنشاء جروب ============
+  
   socket.on("room:createGroup", async ({ name, memberIds, avatar }) => {
     try {
       if (!name || !memberIds || memberIds.length === 0) {
@@ -124,7 +124,7 @@ export const handleSocketConnection = (io, socket) => {
     }
   });
 
-  // ============ إضافة/إزالة أعضاء من جروب ============
+ 
   socket.on("room:addMembers", async ({ roomId, memberIds }) => {
     try {
       const room = await roomModel.findById(roomId);
@@ -155,7 +155,6 @@ export const handleSocketConnection = (io, socket) => {
     }
   });
 
-  // ============ إرسال رسالة ============
   socket.on("message:send", async ({ roomId, content, attachment }) => {
     try {
       const room = await roomModel.findById(roomId);
@@ -185,7 +184,7 @@ export const handleSocketConnection = (io, socket) => {
     }
   });
 
-  // ============ تايبينج ============
+
   socket.on("typing:start", ({ roomId }) => {
     socket.to(roomId).emit("typing:start", { userId, userName: socket.user.userName, roomId });
   });
@@ -194,7 +193,7 @@ export const handleSocketConnection = (io, socket) => {
     socket.to(roomId).emit("typing:stop", { userId, roomId });
   });
 
-  // ============ تعليم كمقروء (✓✓) ============
+
   socket.on("message:read", async ({ roomId }) => {
     await messageModel.updateMany(
       { room: roomId, readBy: { $ne: userId } },
@@ -204,7 +203,7 @@ export const handleSocketConnection = (io, socket) => {
     socket.to(roomId).emit("message:read", { roomId, userId });
   });
 
-  // ============ قطع الاتصال ============
+ 
   socket.on("disconnect", async () => {
     const fullyOffline = removeOnline(userId, socket.id);
 
