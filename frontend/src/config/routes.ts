@@ -22,6 +22,12 @@ export const ROUTES = {
 
   PROFILE: "/profile",
 
+  ORDERS: "/orders",
+
+  FAVORITES: "/favorites",
+
+  SETTINGS: "/settings",
+
   DASHBOARD: {
     ROOT: "/dashboard",
     OVERVIEW: "/dashboard",
@@ -36,8 +42,6 @@ export const ROUTES = {
     EARNINGS: "/dashboard/earnings",
     SETTINGS: "/dashboard/settings",
   },
-
-  FAVORITES: "/favorites",
 
   NOT_FOUND: "/not-found",
   FOOTER: {},
