@@ -6,8 +6,11 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
   const { userName, email, password, phone, role, gender } = req.body;
+
   const hashedpassword = await bcrypt.hash(password, Number(process.env.SALT));
+
   const otp = customAlphabet("0123456789", 6)();
+
   const user = await userModel.create({
     userName,
     email,
@@ -18,26 +21,45 @@ export const register = async (req, res, next) => {
     role,
     gender,
   });
+
   emailEvent.emit("sendConfirmationEmail", {
     email,
     otp,
   });
+
   return res.status(201).json({
     success: true,
-    message: "User registered successfully",
+    message:
+      "User registered successfully. Verification code has been sent to your email.",
     data: {
-      user,
+      user: {
+        id: user._id,
+        userName: user.userName,
+        email: user.email,
+        phone: user.phone,
+        gender: user.gender,
+        role: user.role,
+        confirmEmail: user.confirmEmail,
+      },
     },
   });
 };
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
+
   const user = await userModel.findOne({ email });
+
   if (!user) {
     return res.status(401).json({
       success: false,
-      message: "Email not found",
+      message: "Validation error",
+      errors: [
+        {
+          field: "email",
+          message: "Email not found",
+        },
+      ],
     });
   }
 
@@ -46,21 +68,34 @@ export const login = async (req, res, next) => {
   if (!isMatch) {
     return res.status(401).json({
       success: false,
-      message: "Password mismatch",
+      message: "Validation error",
+      errors: [
+        {
+          field: "password",
+          message: "Password mismatch",
+        },
+      ],
     });
   }
 
   if (!user.confirmEmail) {
-    return res.status(403).json({
+    return res.status(400).json({
       success: false,
-      message: "Please verify your email first",
+      message: "Validation error",
+      errors: [
+        {
+          field: "email",
+          message: "Please verify your email first",
+        },
+      ],
+      code: "EMAIL_NOT_VERIFIED",
     });
   }
 
   const accessToken = jwt.sign(
-    { id: user._id },
+    { id: user._id, role: user.role },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" },
+    { expiresIn: "7d" },
   );
 
   const refreshToken = jwt.sign(
@@ -77,7 +112,10 @@ export const login = async (req, res, next) => {
         id: user._id,
         userName: user.userName,
         email: user.email,
-        role: user.role.toLowerCase(),
+        phone: user.phone,
+        gender: user.gender,
+        role: user.role,
+        confirmEmail: user.confirmEmail,
       },
       accessToken,
       refreshToken,
@@ -134,12 +172,10 @@ export const refreshToken = async (req, res, next) => {
     });
   }
 };
-
 export const VerifyEmail = async (req, res, next) => {
-  const { id } = req.params;
-  const { otp } = req.body;
+  const { email, otp, type } = req.body;
 
-  const user = await userModel.findById(id);
+  const user = await userModel.findOne({ email });
 
   if (!user) {
     return res.status(404).json({
@@ -148,7 +184,7 @@ export const VerifyEmail = async (req, res, next) => {
     });
   }
 
-  if (user.confirmEmail) {
+  if (type === "register" && user.confirmEmail) {
     return res.status(400).json({
       success: false,
       message: "Email already verified",
@@ -168,16 +204,31 @@ export const VerifyEmail = async (req, res, next) => {
       message: "OTP expired",
     });
   }
+  if (type === "register") {
+    user.confirmEmail = true;
+    user.otp = null;
+    user.otpExpires = null;
 
-  user.confirmEmail = true;
-  user.otp = null;
-  user.otpExpires = null;
+    await user.save();
 
-  await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Email verified successfully",
+      data: null,
+    });
+  }
 
-  return res.status(200).json({
-    success: true,
-    message: "Email verified successfully",
+  if (type === "reset") {
+    return res.status(200).json({
+      success: true,
+      message: "Reset code verified successfully",
+      data: null,
+    });
+  }
+
+  return res.status(400).json({
+    success: false,
+    message: "Invalid verification type",
   });
 };
 
@@ -207,11 +258,12 @@ export const forgotPassword = async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "OTP sent to email",
+    message: "Verification code has been sent to your email.",
+    data: null,
   });
 };
 export const resetpassword = async (req, res, next) => {
-  const { email, otp, newPassword } = req.body;
+  const { email, password, confirmPassword } = req.body;
 
   const user = await userModel.findOne({ email });
 
@@ -222,22 +274,16 @@ export const resetpassword = async (req, res, next) => {
     });
   }
 
-  if (!user.otp || user.otp !== otp) {
+  if (password !== confirmPassword) {
     return res.status(400).json({
       success: false,
-      message: "Invalid OTP",
+      message: "Password and confirm password do not match",
     });
   }
 
-  if (user.otpExpires < new Date()) {
-    return res.status(400).json({
-      success: false,
-      message: "OTP expired",
-    });
-  }
+  const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
 
-  user.password = await bcrypt.hash(newPassword, Number(process.env.SALT));
-
+  user.password = hashedPassword;
   user.otp = null;
   user.otpExpires = null;
 
@@ -251,15 +297,12 @@ export const resetpassword = async (req, res, next) => {
 export const updatePassword = async (req, res, next) => {
   const userId = req.user.id;
   const { password } = req.body;
-
   const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
-
   const user = await userModel.findByIdAndUpdate(
     userId,
     { password: hashedPassword },
     { new: true },
   );
-
   if (!user) {
     return res.status(404).json({
       success: false,
@@ -293,4 +336,98 @@ export const logout = (req, res) => {
       res.redirect("/");
     });
   });
+};
+
+export const resendOtp = async (req, res) => {
+  const { email, type } = req.body;
+
+  const user = await userModel.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  if (type === "register") {
+    if (user.confirmEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already verified",
+      });
+    }
+  } else if (type === "reset") {
+    if (!user.confirmEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email first",
+      });
+    }
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid type",
+    });
+  }
+
+  const otp = customAlphabet("0123456789", 6)();
+
+  user.otp = otp;
+  user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+  await user.save();
+
+  emailEvent.emit("sendConfirmationEmail", {
+    email,
+    otp,
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "OTP sent successfully",
+  });
+};
+export const logoutt = async (req, res, next) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({
+      success: false,
+      message: "Refresh token is required",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+    data: null,
+  });
+};
+
+export const getProfilee = async (req, res) => {
+  try {
+    const user = await userModel
+      .findById(req.userId)
+      .select("_id userName email phone gender role");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Authenticated user",
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
 };

@@ -85,7 +85,7 @@ export function MarketplaceLayout({
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
 
   return (
-    <div className="container-main py-10" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="container mx-auto py-10" dir={isRTL ? "rtl" : "ltr"}>
       {/* Top Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
@@ -110,16 +110,14 @@ export function MarketplaceLayout({
 
           {/* Sort Dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 h-11 px-4 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 text-sm font-semibold text-slate-750 dark:text-slate-300 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all cursor-pointer flex-1 md:flex-initial justify-between md:justify-start">
-                <div className="flex items-center gap-2">
-                  <ArrowUpDown className="size-4 text-slate-450" />
-                  <span className="text-slate-400 dark:text-slate-500 text-xs uppercase font-bold tracking-wider">
-                    {t("sortBy")}:
-                  </span>
-                  <span>{activeSortLabel}</span>
-                </div>
-              </button>
+            <DropdownMenuTrigger>
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="size-4 text-slate-450" />
+                <span className="text-slate-400 dark:text-slate-500 text-xs uppercase font-bold tracking-wider">
+                  {t("sortBy")}:
+                </span>
+                <span>{activeSortLabel}</span>
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"

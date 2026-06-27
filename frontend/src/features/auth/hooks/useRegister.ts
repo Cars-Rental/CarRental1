@@ -1,30 +1,40 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
-import { useAppDispatch } from "@/store/hooks";
-import { registerApi } from "../api";
-import { loginSuccess } from "../store";
-import { tokenStorage } from "../utils";
 import { useRouter } from "@/i18n/navigation";
+import type { ApiErrorResponse, ApiFieldError } from "@/types";
 
-export function useRegister() {
-  const dispatch = useAppDispatch();
+import { registerApi } from "../api";
+
+interface UseRegisterOptions {
+  onFieldErrors?: (field: string, message: string) => void;
+}
+
+export function useRegister(options?: UseRegisterOptions) {
   const router = useRouter();
 
   return useMutation({
     mutationFn: registerApi,
 
     onSuccess: (data, variables) => {
-      tokenStorage.setTokens(data.accessToken, data.refreshToken);
-      dispatch(loginSuccess(data.user));
-      //   router.push(
-      // `/verify-email?type=register&email=${encodeURIComponent(variables.email)}`
-      // );
+      router.push(
+        `/verify-email?type=register&email=${encodeURIComponent(variables.email)}`
+      );
+
       toast.success("Account created successfully");
     },
 
-    onError: () => {
-      toast.error("Registration failed");
+    onError: (error: AxiosError<ApiErrorResponse>) => {
+      const errors = error.response?.data?.errors;
+
+      if (Array.isArray(errors) && errors.length > 0) {
+        (errors as ApiFieldError[]).forEach(({ field, message }) => {
+          options?.onFieldErrors?.(field, message);
+        });
+      } else {
+        toast.error(error.response?.data?.message ?? "Registration failed");
+      }
     },
   });
 }

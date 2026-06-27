@@ -7,6 +7,7 @@ export const ROUTES = {
     LOGIN: "/login",
     REGISTER: "/register",
     FORGOT_PASSWORD: "/forgot-password",
+    VERIFY_EMAIL: "/verify-email",
     RESET_PASSWORD: "/reset-password",
   },
 
@@ -23,9 +24,17 @@ export const ROUTES = {
 
   DASHBOARD: {
     ROOT: "/dashboard",
-    CARS: "/dashboard/cars",
+    OVERVIEW: "/dashboard",
+    RENTAL_CARS: "/dashboard/rental-cars",
+    SALE_CARS: "/dashboard/sale-cars",
     BOOKINGS: "/dashboard/bookings",
-    USERS: "/dashboard/users",
+    ORDERS: "/dashboard/orders",
+    CUSTOMERS: "/dashboard/customers",
+    REVIEWS: "/dashboard/reviews",
+    MESSAGES: "/dashboard/messages",
+    ANALYTICS: "/dashboard/analytics",
+    EARNINGS: "/dashboard/earnings",
+    SETTINGS: "/dashboard/settings",
   },
 
   FAVORITES: "/favorites",

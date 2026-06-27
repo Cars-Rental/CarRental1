@@ -8,8 +8,14 @@ import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 import "./modules/auth/passport.config.js";
-
-import carsroute from "../src/modules/car/car.route.js";
+import carbuy from "./modules/CarBuy/carbuy.route.js";
+import carsroute from "./modules/carRent/carRent.route.js";
+import notificationroute from "./modules/notification/notification.route.js";
+import orderBuy from "./modules/orderBuy/orderBuy.route.js";
+import chatroute from "./modules/chat/chat.route.js";
+import helmet from "helmet";
+import dotenv from "dotenv";
+dotenv.config();
 
 import ratelimit from "express-rate-limit";
 const limiter = ratelimit({
@@ -20,7 +26,13 @@ const limiter = ratelimit({
 
 const bootstrap = (app, express) => {
   app.use(express.json());
-  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+  app.use(helmet());
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL,
+      credentials: true,
+    }),
+  );
   app.use(
     session({
       secret: "your_secret_key",
@@ -45,6 +57,11 @@ const bootstrap = (app, express) => {
   app.use("/admin", adminRoute);
   app.use("/review", reviewRoute);
   app.use("/orders", orderroute);
+  app.use("/carbuy", carbuy);
+  app.use("/notifications", notificationroute);
+  app.use("/orderBuy", orderBuy);
+  app.use("/orserBuy", orderBuy);
+  app.use("/chat", chatroute);
   app.use(globalErrorhandling);
 
   ConnectDB();
