@@ -357,6 +357,111 @@
       "title": "Follow Us"
     }
   },
+  "UserAccount": {
+    "auth": {
+      "checking": "Checking account access..."
+    },
+    "actions": {
+      "viewDetails": "View details",
+      "removeFavorite": "Remove favorite"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "gender": "Gender",
+      "role": "Role",
+      "joinedAt": "Joined"
+    },
+    "gender": {
+      "Male": "Male",
+      "Female": "Female"
+    },
+    "role": {
+      "User": "Customer",
+      "Trader": "Trader",
+      "Admin": "Admin"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "processing": "Processing",
+      "paid": "Paid",
+      "refunded": "Refunded"
+    },
+    "paymentStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "refunded": "Refunded"
+    },
+    "carType": {
+      "rent": "Rent",
+      "sale": "Sale"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your personal information and account overview.",
+      "editProfile": "Edit profile",
+      "personalInfo": "Personal information",
+      "summary": {
+        "bookings": "Bookings",
+        "orders": "Orders",
+        "favorites": "Favorites"
+      }
+    },
+    "bookings": {
+      "title": "My Bookings",
+      "description": "Track your rental bookings and trip details.",
+      "pickupDate": "Pickup date",
+      "returnDate": "Return date",
+      "totalDays": "Total days",
+      "totalPrice": "Total price",
+      "daysValue": "{count} days"
+    },
+    "orders": {
+      "title": "My Orders",
+      "description": "Review your purchase orders and payment status.",
+      "salePrice": "Sale price",
+      "orderDate": "Order date",
+      "paymentStatus": "Payment status"
+    },
+    "favorites": {
+      "title": "Favorites",
+      "description": "View and manage the cars you saved.",
+      "location": "Location",
+      "price": "Price"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Control account preferences, notifications, language, and theme.",
+      "profileDescription": "Update your profile details when account editing is available.",
+      "securityDescription": "Manage password and account security options.",
+      "notificationsDescription": "Choose how Rento can contact you.",
+      "languageDescription": "Switch between English and Arabic.",
+      "themeDescription": "Switch between light and dark mode.",
+      "dangerDescription": "Sensitive account actions will appear here.",
+      "manageProfile": "Manage profile",
+      "changePassword": "Change password",
+      "emailNotifications": "Email notifications",
+      "smsNotifications": "SMS notifications",
+      "marketingNotifications": "Marketing notifications",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "deleteAccount": "Delete account",
+      "sections": {
+        "profile": "Profile settings",
+        "security": "Security",
+        "notifications": "Notifications",
+        "language": "Language",
+        "theme": "Theme",
+        "dangerZone": "Danger zone"
+      }
+    }
+  },
   "TraderDashboard": {
     "auth": {
       "checking": "Checking dashboard access..."
