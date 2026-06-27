@@ -15,6 +15,7 @@ import {
   getOrderBuyById,
   updateOrderBuyStatus,
   cancelOrderBuy,
+  getOrderBuyByUserId
 } from "./orderBuy.contoller.js";
 
 const router = express.Router();
@@ -25,6 +26,14 @@ router.post(
   validation(createOrderBuyValidation),
   createOrderBuy,
 );
+
+router.get(
+  "/by-user",
+  auth,
+  validation(getOrdersBuyQueryValidation),
+  getOrderBuyByUserId,
+);
+
 
 router.get(
   "/my-orders",

@@ -15,7 +15,6 @@ export default function SaleCarsPage() {
   }, [dispatch]);
 
   const { cars, total, isLoading } = useGetAllSaleCars();
-  console.log(cars);
   return (
     <MarketplaceLayout totalCount={total} isLoading={isLoading}>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

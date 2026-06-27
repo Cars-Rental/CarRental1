@@ -615,5 +615,52 @@
       "descriptionMin": "يجب أن يتكون الوصف من 10 أحرف على الأقل",
       "imagesMin": "أضف صورة واحدة على الأقل"
     }
+  },
+  "CarDetails": {
+    "available": "متوفر",
+    "condition": "الحالة",
+    "excellent": "ممتازة",
+    "type": "النوع",
+    "year": "السنة",
+    "modelLabel": "الموديل",
+    "brand": "الماركة",
+    "seats": "المقاعد",
+    "featuresTitle": "المميزات والخدمات",
+    "features": {
+      "ac": "تكييف قوي",
+      "fuelSaver": "موفر للوقود",
+      "gps": "خرائط GPS",
+      "bluetooth": "بلوتوث",
+      "smartEntry": "دخول ذكي"
+    },
+    "chat": "محادثة",
+    "visitProfile": "زيارة الملف الشخصي",
+    "locationTitle": "موقع السيارة",
+    "mapPlaceholder": "الخريطة قادمة قريباً",
+    "reviewsTitle": "آراء العملاء",
+    "viewAll": "عرض الكل",
+    "salePrice": "سعر البيع",
+    "egp": "ج.م",
+    "buyNow": "اشتري الآن",
+    "bookNow": "احجز الآن",
+    "noChargeNote": "لن يتم خصم أي مبالغ الآن",
+    "preferredDate": "التاريخ المفضل",
+    "perDay": "يوم",
+    "days": "أيام",
+    "serviceFee": "رسوم الخدمة",
+    "total": "الإجمالي",
+    "legend": {
+      "selected": "محدد",
+      "reserved": "محجوز",
+      "available": "متاح"
+    },
+    "errorLoading": "فشل تحميل تفاصيل السيارة",
+    "goBack": "العودة للسيارات",
+    "reviews": "تقييم",
+    "breadcrumb": {
+      "home": "الرئيسية",
+      "rentCars": "سيارات للإيجار",
+      "saleCars": "سيارات للبيع"
+    }
   }
 }

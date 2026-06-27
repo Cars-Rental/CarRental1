@@ -17,6 +17,7 @@ router.get("/my", validation(ordervalidation.listOrdersSchema), orders.getMyOrde
 
 router.get("/owner", validation(ordervalidation.listOrdersSchema), orders.getOwnerOrders);
 
+router.get("/my-cars", validation(ordervalidation.listOrdersSchema), orders.getOrderByUserId);
 
 router.get("/:id",validation(ordervalidation.getOrderByIdSchema),orders.getOrderById);
 
