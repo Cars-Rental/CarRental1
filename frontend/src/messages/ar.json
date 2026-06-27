@@ -366,6 +366,111 @@
       "title": "تابعنا"
     }
   },
+  "UserAccount": {
+    "auth": {
+      "checking": "جاري التحقق من صلاحية الحساب..."
+    },
+    "actions": {
+      "viewDetails": "عرض التفاصيل",
+      "removeFavorite": "إزالة من المفضلة"
+    },
+    "fields": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "gender": "النوع",
+      "role": "الدور",
+      "joinedAt": "تاريخ الانضمام"
+    },
+    "gender": {
+      "Male": "ذكر",
+      "Female": "أنثى"
+    },
+    "role": {
+      "User": "عميل",
+      "Trader": "تاجر",
+      "Admin": "مدير"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "معلق",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "processing": "قيد التنفيذ",
+      "paid": "مدفوع",
+      "refunded": "مسترد"
+    },
+    "paymentStatus": {
+      "pending": "معلق",
+      "paid": "مدفوع",
+      "refunded": "مسترد"
+    },
+    "carType": {
+      "rent": "إيجار",
+      "sale": "بيع"
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "description": "إدارة معلوماتك الشخصية ونظرة عامة على حسابك.",
+      "editProfile": "تعديل الملف",
+      "personalInfo": "المعلومات الشخصية",
+      "summary": {
+        "bookings": "الحجوزات",
+        "orders": "الطلبات",
+        "favorites": "المفضلة"
+      }
+    },
+    "bookings": {
+      "title": "حجوزاتي",
+      "description": "تابع حجوزات الإيجار وتفاصيل الرحلات.",
+      "pickupDate": "تاريخ الاستلام",
+      "returnDate": "تاريخ الإرجاع",
+      "totalDays": "إجمالي الأيام",
+      "totalPrice": "السعر الإجمالي",
+      "daysValue": "{count} أيام"
+    },
+    "orders": {
+      "title": "طلباتي",
+      "description": "راجع طلبات الشراء وحالة الدفع.",
+      "salePrice": "سعر البيع",
+      "orderDate": "تاريخ الطلب",
+      "paymentStatus": "حالة الدفع"
+    },
+    "favorites": {
+      "title": "المفضلة",
+      "description": "اعرض وأدر السيارات التي حفظتها.",
+      "location": "الموقع",
+      "price": "السعر"
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "description": "تحكم في تفضيلات الحساب والإشعارات واللغة والمظهر.",
+      "profileDescription": "حدّث بيانات ملفك الشخصي عند توفر تعديل الحساب.",
+      "securityDescription": "إدارة كلمة المرور وخيارات أمان الحساب.",
+      "notificationsDescription": "اختر كيف يمكن لـ Rento التواصل معك.",
+      "languageDescription": "بدّل بين العربية والإنجليزية.",
+      "themeDescription": "بدّل بين الوضع الفاتح والداكن.",
+      "dangerDescription": "ستظهر إجراءات الحساب الحساسة هنا.",
+      "manageProfile": "إدارة الملف",
+      "changePassword": "تغيير كلمة المرور",
+      "emailNotifications": "إشعارات البريد الإلكتروني",
+      "smsNotifications": "إشعارات الرسائل",
+      "marketingNotifications": "إشعارات تسويقية",
+      "enabled": "مفعل",
+      "disabled": "غير مفعل",
+      "deleteAccount": "حذف الحساب",
+      "sections": {
+        "profile": "إعدادات الملف",
+        "security": "الأمان",
+        "notifications": "الإشعارات",
+        "language": "اللغة",
+        "theme": "المظهر",
+        "dangerZone": "منطقة الخطر"
+      }
+    }
+  },
   "TraderDashboard": {
     "auth": {
       "checking": "جارٍ التحقق من صلاحية الوصول إلى لوحة التحكم..."
