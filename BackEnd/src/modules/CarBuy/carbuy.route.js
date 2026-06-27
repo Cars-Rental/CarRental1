@@ -10,7 +10,7 @@ router.post(
   "/addcar",
   auth,
   Authorization("Trader"),
-  upload.single("image"),
+  upload.array("image", 4),
   validation(carbuyvalidation.addcar),
   carbuy.addcarTobuy,
 );

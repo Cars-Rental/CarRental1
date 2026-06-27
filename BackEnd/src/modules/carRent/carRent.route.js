@@ -8,17 +8,17 @@ import upload from "../../utlis/cloudinary/multer.js";
 router.post(
   "/addcars",
   auth,
-  upload.single("image"),
+  upload.array("image", 4),
   validation(carvalidation.addcar),
   cars.addcar,
 );
-router.delete("/delete/:id", upload.single("iamge"), auth, cars.deletecar);
+router.delete("/delete/:id", upload.single("image"), auth, cars.deletecar);
 router.get("/getallcar", cars.getallcar);
 router.patch(
   "/update/:id",
   auth,
   validation(carvalidation.updateCar),
-  upload.single("image"),
+  upload.array("image", 4),
   cars.updatecar,
 );
 router.get("/getbyid/:id", cars.getbyid);

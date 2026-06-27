@@ -14,6 +14,7 @@ import orderBuy from "./modules/orderBuy/orderBuy.route.js";
 import chatroute from "./modules/chat/chat.route.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import wishlistroute from "../src/modules/wishlist/withlist.route.js";
 import jwt from "jsonwebtoken";
 import { handleSocketConnection } from "./sockets/onlineUsers.js";
 dotenv.config();
@@ -21,7 +22,7 @@ dotenv.config();
 import ratelimit from "express-rate-limit";
 const limiter = ratelimit({
   windowMs: 20 * 60 * 1000,
-  max: 30,
+  max: 100,
   message: "too many request please try again after 20 min",
 });
 
@@ -62,6 +63,7 @@ const bootstrap = (app, express, io) => {  // ✅ استقبال io
   app.use("/orderBuy", orderBuy);
  
   app.use("/chat", chatroute);
+  app.use("/wishlist", wishlistroute);
   app.use(globalErrorhandling);
 
   // ✅ حفظ io عشان نوصله في أي controller
