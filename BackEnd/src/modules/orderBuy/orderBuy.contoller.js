@@ -338,6 +338,40 @@ export const updateOrderBuyStatus = async (req, res, next) => {
   }
 };
 
+export const getOrderBuyByUserId = async (req, res, next) => {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const filter = { user: req.user.id };
+
+    const totalOrders = await orderBuyModel.countDocuments(filter);
+
+    const orders = await orderBuyModel
+      .find(filter)
+      .populate(ORDER_POPULATE)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "User's orders fetched successfully",
+        totalOrders,
+        page,
+        limit,
+        data: orders,
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export const cancelOrderBuy = async (req, res, next) => {
   try {
     const { id } = req.params;
