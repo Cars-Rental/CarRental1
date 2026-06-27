@@ -1,17 +1,26 @@
 import mongoose from "mongoose";
 
-const wishlistSchema = new mongoose.Schema(
+export const wishlistSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: true,
       unique: true,
     },
     cars: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Car",
+        _id: false,
+        car: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          refPath: "cars.carModel",
+        },
+        carModel: {
+          type: String,
+          required: true,
+          enum: ["carRent", "carBuy"],
+        },
       },
     ],
   },
@@ -20,4 +29,4 @@ const wishlistSchema = new mongoose.Schema(
   },
 );
 
-export const wishlistModel = mongoose.model("Wishlist", wishlistSchema);
+export const wishlistModel = mongoose.model("wishlist", wishlistSchema);

@@ -1,7 +1,10 @@
 import { carModel } from "../../DB/model/carRent.model.js";
 import cloudinary from "../../utlis/cloudinary/cloudinary.js";
 import { createNotification } from "../../services/notification.service.js";
-import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
+import {
+  NOTIFICATION_TYPES,
+  ENTITY_TYPES,
+} from "../../constants/notification.types.js";
 
 const POPULATE_OWNER = "userName email phone role";
 
@@ -30,14 +33,24 @@ export const addcar = async (req, res, next) => {
       });
     }
 
-    if (!req.file) {
+    // ✅ MUST use req.files (not req.file)
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Car image is required",
+        message: "Car images are required",
       });
     }
 
-    const uploadedImage = await cloudinary.uploader.upload(req.file.path);
+    // ✅ upload multiple images
+    const uploadedImages = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path);
+        return {
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        };
+      }),
+    );
 
     const addedcar = await carModel.create({
       carbrand,
@@ -52,12 +65,7 @@ export const addcar = async (req, res, next) => {
       Body_Type,
       Transmission,
       owner: ownerId,
-      carimage: [
-        {
-          secure_url: uploadedImage.secure_url,
-          public_id: uploadedImage.public_id,
-        },
-      ],
+      carimage: uploadedImages,
     });
 
     const populatedCar = await addedcar.populate("owner", POPULATE_OWNER);
