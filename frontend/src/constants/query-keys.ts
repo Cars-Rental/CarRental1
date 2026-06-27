@@ -10,6 +10,11 @@ export const QUERY_KEYS = {
     DETAILS: (id: string) => ["cars", id] as const,
   },
 
+  ORDERS: {
+    ALL: ["orders"] as const,
+    DETAILS: (id: string) => ["orders", id] as const,
+  },
+
   BOOKINGS: {
     ALL: ["bookings"] as const,
     DETAILS: (id: string) => ["bookings", id] as const,
