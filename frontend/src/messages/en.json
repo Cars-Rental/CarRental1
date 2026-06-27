@@ -353,5 +353,258 @@
     "social": {
       "title": "Follow Us"
     }
+  },
+  "TraderDashboard": {
+    "auth": {
+      "checking": "Checking dashboard access..."
+    },
+    "topbar": {
+      "toggleMenu": "Toggle menu",
+      "notifications": "Notifications",
+      "collapseSidebar": "Collapse sidebar",
+      "expandSidebar": "Expand sidebar"
+    },
+    "sidebar": {
+      "overview": "Overview",
+      "rentalCars": "Rental Cars",
+      "saleCars": "Sale Cars",
+      "bookings": "Bookings",
+      "orders": "Orders",
+      "customers": "Customers",
+      "reviews": "Reviews",
+      "messages": "Messages",
+      "analytics": "Analytics",
+      "earnings": "Earnings",
+      "settings": "Settings"
+    },
+    "pages": {
+      "overview": {
+        "title": "Overview",
+        "description": "Monitor revenue, demand, and recent customer activity.",
+        "recentBookings": "Recent Bookings",
+        "recentOrders": "Recent Orders"
+      },
+      "rentalCars": {
+        "title": "Rental Cars",
+        "description": "Manage cars available for daily rental."
+      },
+      "saleCars": {
+        "title": "Sale Cars",
+        "description": "Manage vehicles listed for purchase."
+      },
+      "bookings": {
+        "title": "Bookings",
+        "description": "Track rental requests and booking status."
+      },
+      "orders": {
+        "title": "Orders",
+        "description": "Review purchase offers and sales pipeline."
+      },
+      "customers": {
+        "title": "Customers",
+        "description": "View customer activity across bookings and orders."
+      },
+      "reviews": {
+        "title": "Reviews",
+        "description": "Read customer feedback for your listed cars."
+      },
+      "messages": {
+        "title": "Messages",
+        "description": "Customer conversations will appear here."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Performance charts and trends will appear here."
+      },
+      "earnings": {
+        "title": "Earnings",
+        "description": "Track available, pending, and lifetime earnings."
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Review account details for your trader profile."
+      }
+    },
+    "stats": {
+      "totalRevenue": "Total Revenue",
+      "activeRentals": "Active Rentals",
+      "pendingBookings": "Pending Bookings",
+      "completedOrders": "Completed Orders",
+      "totalCustomers": "Total Customers",
+      "averageRating": "Average Rating",
+      "ratingValue": "{value} / 5"
+    },
+    "tables": {
+      "customer": "Customer",
+      "car": "Car",
+      "total": "Total",
+      "offer": "Offer",
+      "status": "Status",
+      "location": "Location",
+      "price": "Price",
+      "salePrice": "Sale Price",
+      "specs": "Specs",
+      "specsValue": "{transmission} / {fuelType} / {seats} seats",
+      "dates": "Dates",
+      "dateRange": "{start} - {end}",
+      "createdAt": "Created",
+      "phone": "Phone",
+      "activity": "Activity",
+      "customerActivity": "{bookings} bookings / {orders} orders",
+      "totalSpent": "Total Spent",
+      "rating": "Rating",
+      "comment": "Comment"
+    },
+    "status": {
+      "active": "Active",
+      "maintenance": "Maintenance",
+      "sold": "Sold",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "rejected": "Rejected",
+      "negotiating": "Negotiating",
+      "accepted": "Accepted",
+      "failed": "Failed"
+    },
+    "empty": {
+      "cars": {
+        "title": "No cars found",
+        "description": "Listed cars will appear here after they are added."
+      },
+      "bookings": {
+        "title": "No bookings yet",
+        "description": "Rental bookings will appear here when customers reserve your cars."
+      },
+      "orders": {
+        "title": "No orders yet",
+        "description": "Purchase offers will appear here when customers contact you."
+      },
+      "customers": {
+        "title": "No customers yet",
+        "description": "Customers will appear here after bookings or orders are created."
+      },
+      "reviews": {
+        "title": "No reviews yet",
+        "description": "Customer reviews will appear here after completed trips or purchases."
+      },
+      "messages": {
+        "title": "Messages are coming soon",
+        "description": "This placeholder is ready for the messaging workflow."
+      },
+      "analytics": {
+        "title": "Analytics are coming soon",
+        "description": "This placeholder is ready for charts and performance insights."
+      },
+      "earnings": {
+        "title": "No earnings data",
+        "description": "Earnings will appear here once transactions are available."
+      },
+      "settings": {
+        "title": "No account details",
+        "description": "Account details will appear after your profile loads."
+      }
+    },
+    "actions": {
+      "addCar": "Add Car"
+    },
+    "earnings": {
+      "availableBalance": "Available Balance",
+      "pendingBalance": "Pending Balance",
+      "totalEarnings": "Total Earnings"
+    },
+    "analytics": {
+      "revenueTrend": "Revenue Trend",
+      "revenueMix": "Revenue Mix",
+      "bookingVolume": "Booking Volume",
+      "topCars": "Top Performing Cars",
+      "carMeta": "{views} views / {conversion}% conversion",
+      "kpis": {
+        "monthlyRevenue": "Monthly Revenue",
+        "monthlyRevenueHelper": "From mock rental and sales activity",
+        "totalViews": "Listing Views",
+        "totalViewsHelper": "Across top active listings",
+        "conversionRate": "Conversion Rate",
+        "conversionRateHelper": "Average inquiry-to-deal rate",
+        "completedDemand": "Open Demand",
+        "completedDemandHelper": "Pending bookings plus completed orders"
+      },
+      "months": {
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun"
+      },
+      "sources": {
+        "rentals": "Rental Revenue",
+        "sales": "Sale Revenue",
+        "returningCustomers": "Returning Customers"
+      }
+    },
+    "settings": {
+      "accountInformation": "Account Information",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role"
+    },
+    "validation": {
+      "titleMin": "Title must be at least 3 characters",
+      "required": "This field is required",
+      "invalidYear": "Enter a valid year",
+      "positivePrice": "Price must be greater than zero",
+      "positiveSeats": "Seats must be greater than zero",
+      "descriptionMin": "Description must be at least 10 characters",
+      "imagesMin": "Add at least one image"
+  "CarDetails": {
+    "available": "Available",
+    "condition": "Condition",
+    "excellent": "Excellent",
+    "type": "Type",
+    "year": "Year",
+    "modelLabel": "Model",
+    "brand": "Brand",
+    "seats": "Seats",
+    "featuresTitle": "Features & Amenities",
+    "features": {
+      "ac": "Air Conditioning",
+      "fuelSaver": "Fuel Saver",
+      "gps": "GPS Navigation",
+      "bluetooth": "Bluetooth",
+      "smartEntry": "Smart Entry"
+    },
+    "chat": "Chat",
+    "visitProfile": "Visit Profile",
+    "locationTitle": "Car Location",
+    "mapPlaceholder": "Map coming soon",
+    "reviewsTitle": "Customer Reviews",
+    "viewAll": "View All",
+    "salePrice": "Sale Price",
+    "egp": "EGP",
+    "buyNow": "Buy Now",
+    "bookNow": "Book Now",
+    "noChargeNote": "No charges will be made at this time",
+    "preferredDate": "Preferred Date",
+    "perDay": "day",
+    "days": "days",
+    "serviceFee": "Service Fee",
+    "total": "Total",
+    "legend": {
+      "selected": "Selected",
+      "reserved": "Reserved",
+      "available": "Available"
+    },
+    "errorLoading": "Failed to load car details",
+    "goBack": "Go back to cars",
+    "reviews": "reviews",
+    "breadcrumb": {
+      "home": "Home",
+      "rentCars": "Rent Cars",
+      "saleCars": "Sale Cars"
+    }
   }
 }

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
 import { useRouter } from "@/i18n/navigation";
+import { ROUTES } from "@/config/routes";
 
 export function HeroSection() {
   const router = useRouter();
@@ -17,12 +18,14 @@ export function HeroSection() {
     carType: "family",
   });
 
+  const { CARS } = ROUTES;
+
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (form.location) params.set("city", form.location);
     if (form.date) params.set("date", form.date);
     if (form.carType) params.set("type", form.carType);
-    router.push(`/cars?${params.toString()}`);
+    router.push(`${CARS.RENT}`);
   };
 
   return (
