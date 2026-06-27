@@ -1,6 +1,3 @@
-
-
-// Map<userId, Set<socketId>>
 const onlineUsers = new Map();
 
 export const addUser = (userId, socketId) => {
@@ -31,9 +28,9 @@ export const getAllOnlineUserIds = () =>
   Array.from(onlineUsers.keys());
 
 
-// ✅ الدالة اللي ناقصة
+
 export const handleSocketConnection = (io, socket) => {
-  const userId = socket.user.id; // أو socket.user._id حسب الـ JWT عندك
+  const userId = socket.user.id; 
 
   addUser(userId, socket.id);
 
