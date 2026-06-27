@@ -353,5 +353,52 @@
     "social": {
       "title": "Follow Us"
     }
+  },
+  "CarDetails": {
+    "available": "Available",
+    "condition": "Condition",
+    "excellent": "Excellent",
+    "type": "Type",
+    "year": "Year",
+    "modelLabel": "Model",
+    "brand": "Brand",
+    "seats": "Seats",
+    "featuresTitle": "Features & Amenities",
+    "features": {
+      "ac": "Air Conditioning",
+      "fuelSaver": "Fuel Saver",
+      "gps": "GPS Navigation",
+      "bluetooth": "Bluetooth",
+      "smartEntry": "Smart Entry"
+    },
+    "chat": "Chat",
+    "visitProfile": "Visit Profile",
+    "locationTitle": "Car Location",
+    "mapPlaceholder": "Map coming soon",
+    "reviewsTitle": "Customer Reviews",
+    "viewAll": "View All",
+    "salePrice": "Sale Price",
+    "egp": "EGP",
+    "buyNow": "Buy Now",
+    "bookNow": "Book Now",
+    "noChargeNote": "No charges will be made at this time",
+    "preferredDate": "Preferred Date",
+    "perDay": "day",
+    "days": "days",
+    "serviceFee": "Service Fee",
+    "total": "Total",
+    "legend": {
+      "selected": "Selected",
+      "reserved": "Reserved",
+      "available": "Available"
+    },
+    "errorLoading": "Failed to load car details",
+    "goBack": "Go back to cars",
+    "reviews": "reviews",
+    "breadcrumb": {
+      "home": "Home",
+      "rentCars": "Rent Cars",
+      "saleCars": "Sale Cars"
+    }
   }
 }

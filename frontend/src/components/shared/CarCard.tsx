@@ -28,7 +28,7 @@ export function CarCard({ car, mode }: CarCardProps) {
     >
       <div className="relative h-48 w-full select-none bg-slate-50 dark:bg-slate-900/60 overflow-hidden">
         <Link
-          href={`/${locale}/cars/${car._id}`}
+          href={`/${locale}/cars/${car._id}?mode=${mode}`}
           className="block w-full h-full"
         >
           <Image
@@ -70,7 +70,7 @@ export function CarCard({ car, mode }: CarCardProps) {
 
           <div className="flex justify-between items-start gap-2 mb-3">
             <Link
-              href={`/${locale}/cars/${car._id}`}
+              href={`/${locale}/cars/${car._id}?mode=${mode}`}
               className="text-base font-bold text-slate-800 dark:text-slate-100 hover:text-[var(--primary)] dark:hover:text-emerald-450 transition-colors line-clamp-1 flex-1"
             >
               {car.carname}
@@ -124,13 +124,13 @@ export function CarCard({ car, mode }: CarCardProps) {
 
           <div className="flex gap-2 w-full">
             <Link
-              href={`/${locale}/cars/${car._id}`}
+              href={`/${locale}/cars/${car._id}?mode=${mode}`}
               className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl transition-all border border-slate-250 dark:border-slate-750 flex items-center justify-center"
             >
               {t("viewDetails")}
             </Link>
             <Link
-              href={`/${locale}/cars/${car.id}`}
+              href={`/${locale}/cars/${car._id}?mode=${mode}`}
               className="flex-1 bg-primary hover:bg-(--primary-dark) text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-(--primary)/10 hover:shadow-(--primary)/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
             >
               {mode === "rent" ? t("rentNow") : t("buyNow")}
