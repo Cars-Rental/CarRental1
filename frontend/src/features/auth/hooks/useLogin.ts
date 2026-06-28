@@ -32,6 +32,9 @@ export function useLogin(options?: UseLoginOptions) {
       if (data.user.role === ROLES.TRADER) {
         router.replace(ROUTES.DASHBOARD.ROOT);
         return;
+      } else if (data.user.role === ROLES.ADMIN) {
+        router.replace(ROUTES.ADMIN.ROOT);
+        return;
       }
 
       router.replace(ROUTES.HOME);

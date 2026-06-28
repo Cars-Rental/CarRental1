@@ -1,0 +1,17 @@
+export const ADMIN_DASHBOARD_QUERY_KEYS = {
+  overview: ["admin-dashboard", "overview"] as const,
+  users: ["admin-dashboard", "users"] as const,
+  traders: ["admin-dashboard", "traders"] as const,
+  cars: ["admin-dashboard", "cars"] as const,
+  bookings: ["admin-dashboard", "bookings"] as const,
+  orders: ["admin-dashboard", "orders"] as const,
+  reviews: ["admin-dashboard", "reviews"] as const,
+  reports: ["admin-dashboard", "reports"] as const,
+  payments: ["admin-dashboard", "payments"] as const,
+  verifications: ["admin-dashboard", "verifications"] as const,
+  notifications: ["admin-dashboard", "notifications"] as const,
+  categories: ["admin-dashboard", "categories"] as const,
+  locations: ["admin-dashboard", "locations"] as const,
+  promotions: ["admin-dashboard", "promotions"] as const,
+  settings: ["admin-dashboard", "settings"] as const,
+} as const;
