@@ -43,6 +43,26 @@ export const ROUTES = {
     SETTINGS: "/dashboard/settings",
   },
 
+  ADMIN: {
+    ROOT: "/admin",
+    OVERVIEW: "/admin",
+    USERS: "/admin/users",
+    TRADERS: "/admin/traders",
+    RENTAL_CARS: "/admin/rental-cars",
+    SALE_CARS: "/admin/sale-cars",
+    BOOKINGS: "/admin/bookings",
+    ORDERS: "/admin/orders",
+    REVIEWS: "/admin/reviews",
+    REPORTS: "/admin/reports",
+    PAYMENTS: "/admin/payments",
+    VERIFICATIONS: "/admin/verifications",
+    NOTIFICATIONS: "/admin/notifications",
+    CATEGORIES: "/admin/categories",
+    LOCATIONS: "/admin/locations",
+    PROMOTIONS: "/admin/promotions",
+    SETTINGS: "/admin/settings",
+  },
+
   NOT_FOUND: "/not-found",
   FOOTER: {},
 } as const;

@@ -462,6 +462,302 @@
       }
     }
   },
+  "AdminDashboard": {
+    "auth": {
+      "checking": "Checking admin access..."
+    },
+    "topbar": {
+      "title": "Overview",
+      "toggleMenu": "Toggle menu",
+      "notifications": "Notifications",
+      "collapseSidebar": "Collapse sidebar",
+      "expandSidebar": "Expand sidebar"
+    },
+    "sidebar": {
+      "overview": "Overview",
+      "users": "Users",
+      "traders": "Traders",
+      "rentalCars": "Rental Cars",
+      "saleCars": "Cars For Sale",
+      "bookings": "Bookings",
+      "orders": "Orders",
+      "reviews": "Reviews",
+      "reports": "Reports",
+      "payments": "Payments",
+      "verifications": "Verification Requests",
+      "notifications": "Notifications",
+      "categories": "Categories",
+      "locations": "Locations",
+      "promotions": "Promotions",
+      "settings": "Settings"
+    },
+    "pages": {
+      "overview": {
+        "title": "Admin Overview",
+        "description": "Monitor platform growth, moderation queues, revenue, and recent activity."
+      },
+      "users": {
+        "title": "Users",
+        "description": "Manage customer accounts, access state, and activity history."
+      },
+      "traders": {
+        "title": "Traders",
+        "description": "Review trader accounts, verification status, cars, and earnings."
+      },
+      "rentalCars": {
+        "title": "Rental Cars",
+        "description": "Moderate rental listings across traders, categories, and locations."
+      },
+      "saleCars": {
+        "title": "Cars For Sale",
+        "description": "Moderate sale listings and marketplace availability."
+      },
+      "bookings": {
+        "title": "Bookings",
+        "description": "Track rental bookings between customers and traders."
+      },
+      "orders": {
+        "title": "Orders",
+        "description": "Track purchase orders, payments, and order progress."
+      },
+      "reviews": {
+        "title": "Reviews",
+        "description": "Moderate customer reviews across the platform."
+      },
+      "reports": {
+        "title": "Reports",
+        "description": "Resolve content and account reports from the community."
+      },
+      "payments": {
+        "title": "Payments",
+        "description": "Review revenue, commission, withdrawals, and transactions."
+      },
+      "verifications": {
+        "title": "Verification Requests",
+        "description": "Approve or reject trader documents before marketplace access."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Create broadcasts and review notification history."
+      },
+      "categories": {
+        "title": "Categories",
+        "description": "Manage car categories, brands, and models."
+      },
+      "locations": {
+        "title": "Locations",
+        "description": "Manage countries and cities available on the platform."
+      },
+      "promotions": {
+        "title": "Promotions",
+        "description": "Manage coupons, discounts, featured cars, and featured traders."
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Configure platform, security, payments, commission, and localization."
+      }
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalTraders": "Total Traders",
+      "activeRentalCars": "Active Rental Cars",
+      "carsForSale": "Cars For Sale",
+      "totalBookings": "Total Bookings",
+      "totalOrders": "Total Orders",
+      "monthlyRevenue": "Monthly Revenue",
+      "platformCommission": "Platform Commission",
+      "pendingVerifications": "Pending Verifications",
+      "openReports": "Open Reports"
+    },
+    "charts": {
+      "revenue": "Revenue chart",
+      "revenueDescription": "Monthly gross marketplace revenue.",
+      "bookings": "Bookings chart",
+      "bookingsDescription": "Rental booking volume by month.",
+      "orders": "Orders chart",
+      "ordersDescription": "Purchase order volume by month."
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun"
+    },
+    "sections": {
+      "latestUsers": "Latest registered users",
+      "latestTraders": "Latest traders",
+      "latestBookings": "Latest bookings",
+      "latestOrders": "Latest orders",
+      "recentReports": "Recent reports",
+      "quickActions": "Quick actions",
+      "quickActionsDescription": "Common admin workflows prepared for future API actions.",
+      "notificationHistory": "Notification history"
+    },
+    "filters": {
+      "search": "Search by name, email, car, or trader...",
+      "status": "Status",
+      "apply": "Apply filters"
+    },
+    "pagination": {
+      "summary": "Showing mock results 1-10",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "tables": {
+      "avatar": "Avatar",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "createdAt": "Created At",
+      "totalBookings": "Total Bookings",
+      "totalOrders": "Total Orders",
+      "actions": "Actions",
+      "business": "Business",
+      "owner": "Owner",
+      "verification": "Verification",
+      "carsCount": "Cars Count",
+      "earnings": "Earnings",
+      "joinedAt": "Joined Date",
+      "car": "Car",
+      "trader": "Trader",
+      "category": "Category",
+      "price": "Price",
+      "bookingId": "Booking ID",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "pickup": "Pickup",
+      "return": "Return",
+      "paymentStatus": "Payment Status",
+      "orderStatus": "Order Status",
+      "rating": "Rating",
+      "review": "Review",
+      "date": "Date",
+      "reporter": "Reporter",
+      "target": "Target",
+      "reason": "Reason",
+      "transactionId": "Transaction ID",
+      "type": "Type",
+      "amount": "Amount",
+      "submittedAt": "Submitted At",
+      "documents": "Documents",
+      "title": "Title",
+      "message": "Message",
+      "audience": "Audience",
+      "value": "Value",
+      "endsAt": "Ends At"
+    },
+    "actions": {
+      "view": "View",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "delete": "Delete",
+      "approve": "Approve",
+      "reject": "Reject",
+      "viewProfile": "View Profile",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "hide": "Hide",
+      "resolve": "Resolve",
+      "dismiss": "Dismiss",
+      "deleteContent": "Delete Content",
+      "viewDocuments": "View Documents",
+      "createNotification": "Create notification",
+      "broadcast": "Broadcast",
+      "addItem": "Add item",
+      "createPromotion": "Create promotion",
+      "reviewReports": "Review reports"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "suspended": "Suspended",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "resolved": "Resolved",
+      "open": "Open",
+      "hidden": "Hidden",
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "paid": "Paid",
+      "failed": "Failed",
+      "sold": "Sold",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "dismissed": "Dismissed",
+      "sent": "Sent",
+      "draft": "Draft"
+    },
+    "targetType": {
+      "car": "Car",
+      "review": "Review",
+      "trader": "Trader",
+      "user": "User"
+    },
+    "transactionType": {
+      "booking": "Booking",
+      "order": "Order",
+      "withdrawal": "Withdrawal",
+      "commission": "Commission"
+    },
+    "audience": {
+      "all": "All",
+      "users": "Users",
+      "traders": "Traders"
+    },
+    "dictionaryType": {
+      "category": "Category",
+      "brand": "Brand",
+      "model": "Model",
+      "country": "Country",
+      "city": "City"
+    },
+    "promotionType": {
+      "coupon": "Coupon",
+      "discount": "Discount",
+      "featuredCar": "Featured Car",
+      "featuredTrader": "Featured Trader"
+    },
+    "payments": {
+      "totalRevenue": "Total Revenue",
+      "platformCommission": "Platform Commission",
+      "pendingWithdrawals": "Pending Withdrawals",
+      "completedWithdrawals": "Completed Withdrawals"
+    },
+    "notifications": {
+      "createTitle": "Create notification",
+      "createDescription": "Prepare a platform notification for users, traders, or everyone.",
+      "titlePlaceholder": "Notification title",
+      "messagePlaceholder": "Notification message"
+    },
+    "settings": {
+      "general": "General",
+      "platform": "Platform",
+      "security": "Security",
+      "email": "Email",
+      "notifications": "Notifications",
+      "payments": "Payments",
+      "commission": "Commission",
+      "localization": "Localization"
+    },
+    "settingsDescriptions": {
+      "general": "Application name and public identity.",
+      "platform": "Marketplace operating mode and controls.",
+      "security": "Admin review and protection settings.",
+      "email": "Support and transactional sender configuration.",
+      "notifications": "Platform notification preferences.",
+      "payments": "Withdrawal and payment handling rules.",
+      "commission": "Marketplace commission rate.",
+      "localization": "Supported languages and direction behavior."
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Enter a valid email address"
+    }
+  },
   "TraderDashboard": {
     "auth": {
       "checking": "Checking dashboard access..."
