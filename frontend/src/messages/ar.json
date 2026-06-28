@@ -269,6 +269,8 @@
     "mileage": "المسافة المقطوعة",
     "km": "كم",
     "viewDetails": "عرض التفاصيل",
+    "toggleFavorite": "تبديل المفضلة",
+    "favoriteLoginRequired": "يرجى تسجيل الدخول لإضافة السيارات إلى المفضلة.",
     "rentNow": "احجز الآن",
     "buyNow": "شراء الآن",
     "badgeAvailable": "متاحة",
@@ -442,7 +444,9 @@
       "title": "المفضلة",
       "description": "اعرض وأدر السيارات التي حفظتها.",
       "location": "الموقع",
-      "price": "السعر"
+      "price": "السعر",
+      "empty": "لا توجد سيارات محفوظة بعد.",
+      "error": "تعذر تحميل السيارات المحفوظة. حاول مرة أخرى."
     },
     "settings": {
       "title": "الإعدادات",
@@ -950,6 +954,8 @@
       "smartEntry": "دخول ذكي"
     },
     "chat": "محادثة",
+    "toggleFavorite": "تبديل المفضلة",
+    "favoriteLoginRequired": "يرجى تسجيل الدخول لإضافة هذه السيارة إلى المفضلة.",
     "visitProfile": "زيارة الملف الشخصي",
     "locationTitle": "موقع السيارة",
     "mapPlaceholder": "الخريطة قادمة قريباً",
@@ -958,6 +964,7 @@
     "salePrice": "سعر البيع",
     "egp": "ج.م",
     "buyNow": "اشتري الآن",
+    "booking": "الحجز ...",
     "bookNow": "احجز الآن",
     "noChargeNote": "لن يتم خصم أي مبالغ الآن",
     "preferredDate": "التاريخ المفضل",

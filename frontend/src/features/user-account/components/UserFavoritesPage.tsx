@@ -1,22 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { HeartOff } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ROUTES } from "@/config/routes";
-import { mockUserFavorites } from "../utils";
 import { formatUserAccountCurrency } from "../utils";
+import { useRemoveFavorite, useUserFavorites } from "../hooks";
 import { UserAccountLayout } from "./UserAccountLayout";
 import { UserAccountPageHeader } from "./UserAccountPageHeader";
 
 export function UserFavoritesPage() {
   const t = useTranslations("UserAccount");
   const locale = useLocale();
-  const [favorites, setFavorites] = useState(mockUserFavorites);
+  const { data: favorites = [], isError, isLoading } = useUserFavorites();
+  const removeFavorite = useRemoveFavorite();
 
   return (
     <UserAccountLayout>
@@ -24,6 +25,24 @@ export function UserFavoritesPage() {
         title={t("favorites.title")}
         description={t("favorites.description")}
       />
+
+      {isLoading && <FavoritesSkeleton />}
+
+      {isError && (
+        <Card>
+          <CardContent className="p-6 text-sm text-muted-foreground">
+            {t("favorites.error")}
+          </CardContent>
+        </Card>
+      )}
+
+      {!isLoading && !isError && favorites.length === 0 && (
+        <Card>
+          <CardContent className="p-6 text-sm text-muted-foreground">
+            {t("favorites.empty")}
+          </CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {favorites.map((car) => (
@@ -59,7 +78,7 @@ export function UserFavoritesPage() {
 
               <div className="flex gap-2">
                 <Link
-                  href={ROUTES.CARS.DETAILS(car.id)}
+                  href={`${ROUTES.CARS.DETAILS(car.id)}?mode=${car.type}`}
                   className="inline-flex h-7 flex-1 items-center justify-center rounded-md border border-border bg-background px-2.5 text-[0.8rem] font-semibold transition hover:bg-muted"
                 >
                   {t("actions.viewDetails")}
@@ -68,11 +87,8 @@ export function UserFavoritesPage() {
                   type="button"
                   variant="destructive"
                   size="icon-sm"
-                  onClick={() =>
-                    setFavorites((current) =>
-                      current.filter((item) => item.id !== car.id)
-                    )
-                  }
+                  disabled={removeFavorite.isPending}
+                  onClick={() => removeFavorite.mutate(car.id)}
                 >
                   <HeartOff className="h-4 w-4" />
                   <span className="sr-only">{t("actions.removeFavorite")}</span>
@@ -83,6 +99,26 @@ export function UserFavoritesPage() {
         ))}
       </div>
     </UserAccountLayout>
+  );
+}
+
+function FavoritesSkeleton() {
+  return (
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <Card key={index} className="overflow-hidden">
+          <Skeleton className="aspect-video w-full rounded-none" />
+          <CardContent className="space-y-4 p-4">
+            <Skeleton className="h-5 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
+            <div className="grid grid-cols-2 gap-3">
+              <Skeleton className="h-10" />
+              <Skeleton className="h-10" />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   );
 }
 
