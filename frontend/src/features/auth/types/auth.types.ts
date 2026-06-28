@@ -9,6 +9,12 @@ export interface AuthUser {
   phone: string;
   gender: Gender;
   role: UserRole;
+  status?: "active" | "inactive";
+  joinedAt?: string;
+  createdAt?: string;
+  bookingsCount?: number;
+  ordersCount?: number;
+  favoritesCount?: number;
 }
 
 export interface AuthTokens {
