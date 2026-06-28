@@ -770,5 +770,49 @@
       "rentCars": "سيارات للإيجار",
       "saleCars": "سيارات للبيع"
     }
+  },
+  "Payment": {
+    "pageTitle": "أكمل الدفع",
+    "pageSubtitle": "دفع آمن لتأكيد الحجز",
+    "sessionPageTitle": "فتح جلسة محادثة",
+    "sessionPageSubtitle": "ادفع رسوماً لمرة واحدة للتواصل مع البائع",
+    "formTitle": "تفاصيل الدفع",
+    "formSubtitle": "أدخل بيانات بطاقتك لإتمام الحجز",
+    "sessionFormSubtitle": "أدخل بيانات بطاقتك لفتح جلسة محادثة",
+    "sessionNotice": "بدفع رسوم 300 ج.م، ستفتح جلسة محادثة خاصة مع مالك السيارة لمناقشة تفاصيل الشراء والاتفاق على الشروط.",
+    "cardName": "اسم حامل البطاقة",
+    "cardNamePlaceholder": "الاسم على البطاقة",
+    "cardNumber": "رقم البطاقة",
+    "expiry": "تاريخ الانتهاء",
+    "cvv": "CVV",
+    "payNow": "ادفع",
+    "processing": "جاري المعالجة...",
+    "secure": "آمن",
+    "secureNote": "دفعتك مشفرة وآمنة",
+    "egp": "ج.م",
+    "days": "أيام",
+    "serviceFee": "رسوم الخدمة",
+    "totalDue": "الإجمالي المستحق",
+    "sessionFeeNote": "رسوم جلسة لمرة واحدة للتواصل مع البائع",
+    "sessionFeeDesc": "تفتح هذه الرسوم محادثة خاصة مع مالك السيارة",
+    "successTitle": "تم تأكيد الحجز!",
+    "successMessage": "تم حجز {car} لك من {from} إلى {to}. إجمالي المدفوع: {amount} ج.م",
+    "sessionSuccessTitle": "تم فتح الجلسة!",
+    "sessionSuccessMessage": "جلسة المحادثة مع مالك {car} نشطة الآن. يمكنك مناقشة تفاصيل الشراء مباشرة.",
+    "redirecting": "جاري إعادة التوجيه...",
+    "errorLoading": "فشل تحميل تفاصيل الطلب",
+    "goBack": "العودة للسيارات",
+    "breadcrumb": {
+      "home": "الرئيسية",
+      "rentCars": "سيارات للإيجار",
+      "saleCars": "سيارات للبيع",
+      "payment": "الدفع"
+    },
+    "errors": {
+      "nameRequired": "اسم حامل البطاقة مطلوب",
+      "cardRequired": "أدخل رقم بطاقة صالح مكون من 16 رقم",
+      "expiryRequired": "أدخل تاريخ انتهاء صالح",
+      "cvvRequired": "أدخل CVV صالح"
+    }
   }
 }

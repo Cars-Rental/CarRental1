@@ -9,7 +9,6 @@ interface BrandComboboxProps {
   selectedBrands: string[];
   onChange: (brands: string[]) => void;
 }
-
 const BRANDS = [
   "Hyundai",
   "Nissan",
@@ -39,7 +38,10 @@ const BRANDS = [
   "Lexus",
 ];
 
-export function BrandCombobox({ selectedBrands, onChange }: BrandComboboxProps) {
+export function BrandCombobox({
+  selectedBrands,
+  onChange,
+}: BrandComboboxProps) {
   const t = useTranslations("Cars");
   const { isRTL } = useDirection();
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +63,7 @@ export function BrandCombobox({ selectedBrands, onChange }: BrandComboboxProps) 
   }, []);
 
   const filteredBrands = BRANDS.filter((brand) =>
-    brand.toLowerCase().includes(search.toLowerCase())
+    brand.toLowerCase().includes(search.toLowerCase()),
   );
 
   const toggleBrand = (brand: string) => {
@@ -78,7 +80,11 @@ export function BrandCombobox({ selectedBrands, onChange }: BrandComboboxProps) 
   };
 
   return (
-    <div className="relative w-full" ref={containerRef} dir={isRTL ? "rtl" : "ltr"}>
+    <div
+      className="relative w-full"
+      ref={containerRef}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
         {t("brand")}
       </label>
