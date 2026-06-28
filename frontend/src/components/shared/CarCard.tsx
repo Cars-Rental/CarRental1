@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 import { Star, Settings, Fuel, Gauge, MapPin, Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
@@ -57,7 +58,13 @@ export function CarCard({ car, mode }: CarCardProps) {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            if (!isAuthenticated || isFavoritePending) return;
+            if (!isAuthenticated) {
+              toast.error(t("favoriteLoginRequired"), {
+                position: "top-left",
+              });
+              return;
+            }
+            if (isFavoritePending) return;
             if (isFavorite) {
               removeFavorite.mutate(car._id);
               return;

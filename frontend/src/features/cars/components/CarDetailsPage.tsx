@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { ChevronRight, Heart, Share2, Star } from "lucide-react";
 import { useDirection } from "@/lib";
@@ -154,7 +155,13 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => {
-                    if (!isAuthenticated || isFavoritePending) return;
+                    if (!isAuthenticated) {
+                      toast.error(t("favoriteLoginRequired"), {
+                        position: "top-left",
+                      });
+                      return;
+                    }
+                    if (isFavoritePending) return;
                     if (isFavorite) {
                       removeFavorite.mutate(id);
                       return;
