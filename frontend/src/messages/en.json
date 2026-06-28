@@ -1108,5 +1108,24 @@
       "expiryRequired": "Enter a valid expiry date",
       "cvvRequired": "Enter a valid CVV"
     }
+  },
+  "Chat": {
+    "title": "Conversations",
+    "searchPlaceholder": "Search for a conversation...",
+    "all": "All",
+    "open": "Open",
+    "unread": "Unread",
+    "resolved": "Resolved",
+    "typing": "typing...",
+    "typeMessage": "Type your message here...",
+    "markAsResolved": "Mark as 'Resolved'",
+    "activeBooking": "Active Booking",
+    "rentBooking": "Rental Booking",
+    "buyBooking": "Purchase Request",
+    "online": "Online",
+    "offline": "Offline",
+    "noActiveRoom": "Select a conversation to start chatting",
+    "startChatWith": "Chat with {name}",
+    "noRooms": "No conversations found"
   }
 }

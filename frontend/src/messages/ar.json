@@ -1029,5 +1029,24 @@
       "expiryRequired": "أدخل تاريخ انتهاء صالح",
       "cvvRequired": "أدخل CVV صالح"
     }
+  },
+  "Chat": {
+    "title": "المحادثات",
+    "searchPlaceholder": "البحث عن محادثة...",
+    "all": "الكل",
+    "open": "مفتوحة",
+    "unread": "غير مقروءة",
+    "resolved": "تم حلها",
+    "typing": "يكتب الآن...",
+    "typeMessage": "اكتب رسالتك هنا...",
+    "markAsResolved": "تمييز كـ 'تم الحل'",
+    "activeBooking": "حجز نشط",
+    "rentBooking": "حجز إيجار",
+    "buyBooking": "طلب شراء",
+    "online": "متصل الآن",
+    "offline": "غير متصل",
+    "noActiveRoom": "اختر محادثة لبدء الدردشة",
+    "startChatWith": "محادثة مع {name}",
+    "noRooms": "لم يتم العثور على محادثات"
   }
 }

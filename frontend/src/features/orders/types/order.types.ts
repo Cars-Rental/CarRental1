@@ -27,11 +27,12 @@ export interface Order {
   car: OrderCar;
   user: OrderUser;
   owner: OrderUser;
-  startDate: string;
-  endDate: string;
-  totalDays: number;
-  priceperDay: number;
-  totalPrice: number;
+  startDate?: string;
+  endDate?: string;
+  totalDays?: number;
+  priceperDay?: number;
+  totalPrice?: number;
+  carprice?: number;
   status: OrderStatus;
   notes?: string;
   cancellationReason?: string;
@@ -53,6 +54,19 @@ export interface CreateOrderResponse {
 }
 
 export interface GetOrderResponse {
+  success: boolean;
+  message: string;
+  data: Order;
+}
+
+export type OrderMode = "rent" | "sale";
+
+export interface CreateBuyOrderRequest {
+  car: string;
+  notes?: string;
+}
+
+export interface CreateBuyOrderResponse {
   success: boolean;
   message: string;
   data: Order;

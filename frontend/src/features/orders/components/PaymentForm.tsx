@@ -8,7 +8,7 @@ import type { Order } from "../types/order.types";
 interface PaymentFormProps {
   order: Order;
   mode: "rent" | "sale";
-  onSuccess: () => void;
+  onChat?: () => void;
 }
 
 interface CardForm {
@@ -34,10 +34,12 @@ function formatExpiry(value: string) {
   return digits;
 }
 
-export function PaymentForm({ order, mode, onSuccess }: PaymentFormProps) {
+export function PaymentForm({ order, mode, onChat }: PaymentFormProps) {
   const t = useTranslations("Payment");
   const isRent = mode === "rent";
-  const totalAmount = isRent ? order.totalPrice : SESSION_FEE;
+  const totalAmount = isRent
+    ? (order.totalPrice ?? 0)
+    : (order.carprice ?? SESSION_FEE);
 
   const [form, setForm] = useState<CardForm>({
     cardName: "",
@@ -69,7 +71,6 @@ export function PaymentForm({ order, mode, onSuccess }: PaymentFormProps) {
 
     setIsPaying(false);
     setIsSuccess(true);
-    setTimeout(() => onSuccess(), 2500);
   };
 
   // --- SUCCESS STATE ---
@@ -87,15 +88,19 @@ export function PaymentForm({ order, mode, onSuccess }: PaymentFormProps) {
             {isRent
               ? t("successMessage", {
                   car: order.car.carname,
-                  from: new Date(order.startDate).toLocaleDateString("en-EG", {
-                    day: "numeric",
-                    month: "long",
-                  }),
-                  to: new Date(order.endDate).toLocaleDateString("en-EG", {
-                    day: "numeric",
-                    month: "long",
-                  }),
-                  amount: order.totalPrice.toLocaleString(),
+                  from: order.startDate
+                    ? new Date(order.startDate).toLocaleDateString("en-EG", {
+                        day: "numeric",
+                        month: "long",
+                      })
+                    : "",
+                  to: order.endDate
+                    ? new Date(order.endDate).toLocaleDateString("en-EG", {
+                        day: "numeric",
+                        month: "long",
+                      })
+                    : "",
+                  amount: (order.totalPrice ?? 0).toLocaleString(),
                 })
               : t("sessionSuccessMessage", { car: order.car.carname })}
           </p>
@@ -103,9 +108,17 @@ export function PaymentForm({ order, mode, onSuccess }: PaymentFormProps) {
         <div className="text-2xl font-extrabold text-[var(--primary)]">
           {totalAmount.toLocaleString()} {t("egp")}
         </div>
-        <p className="text-xs text-slate-400 dark:text-slate-500">
-          {t("redirecting")}
-        </p>
+        <div className="flex flex-col gap-3 w-full max-w-xs">
+          {onChat && (
+            <button
+              type="button"
+              onClick={onChat}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--primary)] text-white font-bold py-3 shadow-md shadow-[var(--primary)]/20 hover:bg-[var(--primary-dark)] transition-all"
+            >
+              {t("startChatWith", { name: order.car.carname })}
+            </button>
+          )}
+        </div>
       </div>
     );
   }
