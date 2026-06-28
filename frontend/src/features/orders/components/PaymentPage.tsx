@@ -6,6 +6,10 @@ import { ChevronRight, AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useDirection } from "@/lib";
+import {
+  ChatProvider,
+  useChatSocket,
+} from "@/features/chat/hooks/useChatSocket";
 import { useGetOrderById } from "@/features/orders/hooks/useGetOrderById";
 import { ROUTES } from "@/config/routes";
 import { OrderSummaryCard } from "./OrderSummaryCard";
@@ -30,15 +34,22 @@ function PaymentSkeleton() {
   );
 }
 
-export function PaymentPage({ orderId, mode }: PaymentPageProps) {
+function PaymentRoute({ orderId, mode }: PaymentPageProps) {
   const t = useTranslations("Payment");
   const { locale } = useDirection();
   const router = useRouter();
+  const { createPrivateChat } = useChatSocket();
 
-  const { data: response, isLoading, isError } = useGetOrderById(orderId);
+  const { data: response, isLoading, isError } = useGetOrderById(orderId, mode);
   const order = response?.data;
 
-  const handlePaymentSuccess = () => {
+  const handleOpenChat = () => {
+    if (order) {
+      createPrivateChat(order.owner._id);
+    }
+  };
+
+  const handleGoBack = () => {
     router.push(
       `/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`,
     );
@@ -55,7 +66,7 @@ export function PaymentPage({ orderId, mode }: PaymentPageProps) {
             {t("errorLoading")}
           </p>
           <Link
-            href={`/${locale}${ROUTES.CARS.RENT}`}
+            href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
             className="text-[var(--primary)] text-sm font-bold hover:underline"
           >
             {t("goBack")}
@@ -117,14 +128,18 @@ export function PaymentPage({ orderId, mode }: PaymentPageProps) {
 
           {/* Right — Payment form */}
           <div>
-            <PaymentForm
-              order={order}
-              mode={mode}
-              onSuccess={handlePaymentSuccess}
-            />
+            <PaymentForm order={order} mode={mode} onChat={handleOpenChat} />
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export function PaymentPage(props: PaymentPageProps) {
+  return (
+    <ChatProvider>
+      <PaymentRoute {...props} />
+    </ChatProvider>
   );
 }

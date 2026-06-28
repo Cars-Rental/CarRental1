@@ -7,6 +7,7 @@ import { CalendarIcon, Key, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDirection } from "@/lib";
 import { useCreateOrder } from "@/features/orders/hooks/useCreateOrder";
+import { useCreateBuyOrder } from "@/features/orders/hooks/useCreateBuyOrder";
 
 interface BookingCardProps {
   mode: "rent" | "sale";
@@ -69,15 +70,25 @@ export function BookingCard({
   const [selectingFrom, setSelectingFrom] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { mutate: createOrder, isPending } = useCreateOrder({
+  const { mutate: createOrder, isPending: isRentPending } = useCreateOrder({
     onSuccess: (orderId) => {
-      // Redirect to payment page with orderId
       router.push(`/${locale}/payment?orderId=${orderId}&mode=${mode}`);
     },
     onError: (message) => {
       setErrorMessage(message);
     },
   });
+
+  const { mutate: createBuyOrder, isPending: isBuyPending } = useCreateBuyOrder(
+    {
+      onSuccess: (orderId) => {
+        router.push(`/${locale}/payment?orderId=${orderId}&mode=${mode}`);
+      },
+      onError: (message) => {
+        setErrorMessage(message);
+      },
+    },
+  );
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date) return;
@@ -110,9 +121,15 @@ export function BookingCard({
     });
   };
 
+  const handleBuyNow = () => {
+    setErrorMessage(null);
+    createBuyOrder({ car: carId });
+  };
+
   const totalDays = daysBetween(fromDate, toDate);
   const subtotal = pricePerDay * totalDays;
   const grandTotal = subtotal + SERVICE_FEE;
+  const isPending = mode === "rent" ? isRentPending : isBuyPending;
 
   // --- SALE MODE ---
   if (mode === "sale") {
@@ -130,8 +147,16 @@ export function BookingCard({
           </p>
         </div>
 
-        <button className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 transition-all hover:scale-[1.01] active:scale-[0.99]">
-          <Key className="size-4" />
+        <button
+          onClick={handleBuyNow}
+          disabled={isPending}
+          className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+        >
+          {isPending ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Key className="size-4" />
+          )}
           {t("buyNow")}
         </button>
 
