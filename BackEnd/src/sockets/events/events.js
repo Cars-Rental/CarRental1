@@ -1,14 +1,13 @@
 export const SOCKET_EVENTS = Object.freeze({
-  // Connection
+
   CONNECT:    "connect",
   DISCONNECT: "disconnect",
 
-  // Online status
   USER_ONLINE:       "user:online",
   USER_OFFLINE:      "user:offline",
   USERS_ONLINE_LIST: "users:onlineList",
 
-  // Chat
+  
   ROOM_JOIN:           "room:join",
   ROOM_JOINED:         "room:joined",
   ROOM_CREATE_PRIVATE: "room:createPrivate",
@@ -24,23 +23,22 @@ export const SOCKET_EVENTS = Object.freeze({
   TYPING_START: "typing:start",
   TYPING_STOP:  "typing:stop",
 
-  // Notifications
+ 
   NEW_NOTIFICATION:       "new_notification",
   UNREAD_NOTIFICATIONS:   "unread_notifications",
   MARK_NOTIFICATION_READ: "mark_notification_read",
 
-  // Booking
   BOOKING_CREATED:   "booking_created",
   BOOKING_ACCEPTED:  "booking_accepted",
   BOOKING_REJECTED:  "booking_rejected",
   BOOKING_COMPLETED: "booking_completed",
   BOOKING_CANCELLED: "booking_cancelled",
 
-  // Marketplace
+
   OFFER_CREATED:  "offer_created",
   OFFER_ACCEPTED: "offer_accepted",
   OFFER_REJECTED: "offer_rejected",
 
-  // Error
+
   ERROR: "error",
 });

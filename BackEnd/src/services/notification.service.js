@@ -7,10 +7,7 @@ export const initNotificationService = (io) => {
   _io = io;
 };
 
-/**
- * createNotification — يُستخدم من أي موديول
- * يحفظ في الداتابيز + يبعت real-time لو المستخدم أونلاين
- */
+
 export const createNotification = async ({
   recipientId,
   senderId = null,

@@ -183,8 +183,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
             <hr className="border-slate-100 dark:border-slate-800" />
 
             {/* Owner */}
-            <CarOwnerCard owner={car.owner || "bahaa"} />
-
+            {car.owner && <CarOwnerCard owner={car.owner} />}
             {/* Location Map */}
             <CarLocationMap location={car.location} />
 

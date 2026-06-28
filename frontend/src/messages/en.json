@@ -1057,5 +1057,49 @@
       "rentCars": "Rent Cars",
       "saleCars": "Sale Cars"
     }
+  },
+  "Payment": {
+    "pageTitle": "Complete Your Payment",
+    "pageSubtitle": "Secure payment to confirm your rental",
+    "sessionPageTitle": "Open a Chat Session",
+    "sessionPageSubtitle": "Pay a one-time fee to connect with the seller",
+    "formTitle": "Payment Details",
+    "formSubtitle": "Enter your card information to complete the rental",
+    "sessionFormSubtitle": "Enter your card information to open a chat session",
+    "sessionNotice": "By paying this 300 EGP fee, you will open a private chat session with the car owner to discuss purchase details and agree on terms.",
+    "cardName": "Cardholder Name",
+    "cardNamePlaceholder": "Name on card",
+    "cardNumber": "Card Number",
+    "expiry": "Expiry Date",
+    "cvv": "CVV",
+    "payNow": "Pay",
+    "processing": "Processing...",
+    "secure": "Secure",
+    "secureNote": "Your payment is encrypted and secure",
+    "egp": "EGP",
+    "days": "days",
+    "serviceFee": "Service Fee",
+    "totalDue": "Total Due",
+    "sessionFeeNote": "One-time session fee to connect with seller",
+    "sessionFeeDesc": "This fee opens a private chat with the car owner",
+    "successTitle": "Booking Confirmed!",
+    "successMessage": "{car} is reserved for you from {from} to {to}. Total paid: {amount} EGP",
+    "sessionSuccessTitle": "Session Opened!",
+    "sessionSuccessMessage": "Your chat session with the owner of {car} is now active. You can discuss purchase details directly.",
+    "redirecting": "Redirecting you...",
+    "errorLoading": "Failed to load order details",
+    "goBack": "Go back to cars",
+    "breadcrumb": {
+      "home": "Home",
+      "rentCars": "Rent Cars",
+      "saleCars": "Sale Cars",
+      "payment": "Payment"
+    },
+    "errors": {
+      "nameRequired": "Cardholder name is required",
+      "cardRequired": "Enter a valid 16-digit card number",
+      "expiryRequired": "Enter a valid expiry date",
+      "cvvRequired": "Enter a valid CVV"
+    }
   }
 }

@@ -4,6 +4,33 @@ export interface CarImage {
   _id: string;
 }
 
+export interface PriceRange {
+  min: number;
+  max: number;
+}
+
+export interface YearRange {
+  min: number;
+  max: number;
+}
+
+export interface CarsFilterState {
+  brands: string[];
+  priceRange: PriceRange;
+  yearRange: YearRange;
+  transmission: Transmission | "";
+  fuelType: FuelType | "";
+  bodyType: BodyType | "";
+  seats: number;
+  location: string;
+}
+
+export type SortOption =
+  | "newest"
+  | "oldest"
+  | "price_asc"
+  | "price_desc"
+  | "popular";
 export interface CarOwner {
   _id: string;
   userName: string;
@@ -78,8 +105,7 @@ export const BODY_TYPES = [
   "van",
   "convertible",
 ] as const;
-export type BodyType =
-  (typeof BODY_TYPES)[number];
+export type BodyType = (typeof BODY_TYPES)[number];
 
 export interface GetAllCarsRawResponse {
   success: boolean;

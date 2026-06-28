@@ -28,6 +28,12 @@ export const API_ENDPOINTS = {
     },
   },
 
+  ORDERS: {
+    CREATE: "/orders/create",
+    GET_BY_ID: (id: string) => `/orders/${id}`,
+    DELETE: (id: string) => `/orders/${id}`,
+  },
+
   BOOKINGS: {
     ROOT: "/bookings",
   },

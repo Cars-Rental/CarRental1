@@ -1,4 +1,8 @@
+// export const env = {
+//   // apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
+//   apiBaseUrl: "http://localhost:3000",
+// };
+
 export const env = {
-  // apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
-  apiBaseUrl: "http://localhost:3000",
+  apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api",
 };
