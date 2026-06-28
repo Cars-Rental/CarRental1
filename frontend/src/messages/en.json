@@ -269,6 +269,7 @@
     "mileage": "Mileage",
     "km": "km",
     "viewDetails": "View Details",
+    "toggleFavorite": "Toggle favorite",
     "rentNow": "Rent Now",
     "buyNow": "Buy Now",
     "badgeAvailable": "Available",
@@ -433,7 +434,9 @@
       "title": "Favorites",
       "description": "View and manage the cars you saved.",
       "location": "Location",
-      "price": "Price"
+      "price": "Price",
+      "empty": "No saved cars yet.",
+      "error": "We couldn't load your saved cars. Please try again."
     },
     "settings": {
       "title": "Settings",
@@ -733,6 +736,7 @@
       "smartEntry": "Smart Entry"
     },
     "chat": "Chat",
+    "toggleFavorite": "Toggle favorite",
     "visitProfile": "Visit Profile",
     "locationTitle": "Car Location",
     "mapPlaceholder": "Map coming soon",
@@ -742,6 +746,7 @@
     "egp": "EGP",
     "buyNow": "Buy Now",
     "bookNow": "Book Now",
+    "booking": "Booking ...",
     "noChargeNote": "No charges will be made at this time",
     "preferredDate": "Preferred Date",
     "perDay": "day",

@@ -1,12 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, Settings, Fuel, Gauge, MapPin, Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
 import type { RawCar } from "@/features/cars/types/cars-api.types";
+import {
+  useAddFavorite,
+  useRemoveFavorite,
+  useUserFavorites,
+} from "@/features/user-account/hooks";
+import { useAppSelector } from "@/store/hooks";
+import { selectIsAuthenticated } from "@/features/auth/store";
 
 interface CarCardProps {
   car: RawCar;
@@ -16,7 +22,14 @@ interface CarCardProps {
 export function CarCard({ car, mode }: CarCardProps) {
   const t = useTranslations("Cars");
   const { isRTL, locale } = useDirection();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const { data: favorites = [] } = useUserFavorites({
+    enabled: isAuthenticated,
+  });
+  const addFavorite = useAddFavorite();
+  const removeFavorite = useRemoveFavorite();
+  const isFavorite = favorites.some((favorite) => favorite.id === car._id);
+  const isFavoritePending = addFavorite.isPending || removeFavorite.isPending;
 
   const image =
     car.carimage?.[0]?.secure_url ?? "/assets/images/landing/car1.png";
@@ -44,14 +57,23 @@ export function CarCard({ car, mode }: CarCardProps) {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setIsFavorite(!isFavorite);
+            if (!isAuthenticated || isFavoritePending) return;
+            if (isFavorite) {
+              removeFavorite.mutate(car._id);
+              return;
+            }
+            addFavorite.mutate({
+              carId: car._id,
+              carModel: mode === "sale" ? "carBuy" : "carRent",
+            });
           }}
+          disabled={isFavoritePending}
           className={`absolute bottom-4 inset-e-4 size-9 rounded-full flex items-center justify-center border shadow-md backdrop-blur-md cursor-pointer transition-all duration-200 ${
             isFavorite
               ? "bg-rose-500 border-rose-500 text-white hover:scale-110"
               : "bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-750 text-slate-550 dark:text-slate-350 hover:bg-white dark:hover:bg-slate-800 hover:scale-110"
           }`}
-          aria-label="Toggle favorite"
+          aria-label={t("toggleFavorite")}
         >
           <Heart className={`size-4.5 ${isFavorite ? "fill-current" : ""}`} />
         </button>

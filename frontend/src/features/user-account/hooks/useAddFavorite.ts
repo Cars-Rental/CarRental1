@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeFavoriteApi } from "../api";
+import { addFavoriteApi } from "../api";
 import { USER_ACCOUNT_QUERY_KEYS } from "../utils";
 import { toast } from "sonner";
 
-export function useRemoveFavorite() {
+export function useAddFavorite() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: removeFavoriteApi,
+    mutationFn: addFavoriteApi,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: USER_ACCOUNT_QUERY_KEYS.favorites,
       });
-      toast.success("Removed from favorites");
+      toast.success("Added to favorites");
     },
   });
 }
