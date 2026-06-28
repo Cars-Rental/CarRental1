@@ -1,5 +1,5 @@
 // src/modules/dashboard/dashboard.controller.js
-
+import mongoose from "mongoose";
 import { orderModel }      from "../../DB/model/order.model.js";
 import { orderBuyModel }   from "../../DB/model/orderBuy.model.js";
 import { carModel }        from "../../DB/model/carRent.model.js";
@@ -13,7 +13,7 @@ const ok = (res, data) =>
 
 export const getOverview = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
 
     const [
       totalRentRevenue,
@@ -29,41 +29,21 @@ export const getOverview = async (req, res, next) => {
       recentRentOrders,
       recentBuyOrders,
     ] = await Promise.all([
-
-      // إجمالي إيرادات الإيجار
       orderModel.aggregate([
         { $match: { owner: traderId, status: "completed" } },
         { $group: { _id: null, total: { $sum: "$totalPrice" } } },
       ]),
-
-      // إجمالي إيرادات البيع
       orderBuyModel.aggregate([
         { $match: { owner: traderId, status: "completed" } },
         { $group: { _id: null, total: { $sum: "$carprice" } } },
       ]),
-
-      // الإيجارات النشطة (accepted)
       orderModel.countDocuments({ owner: traderId, status: "accepted" }),
-
-      // الحجوزات المعلقة (rent)
       orderModel.countDocuments({ owner: traderId, status: "pending" }),
-
-      // الطلبات المعلقة (buy)
       orderBuyModel.countDocuments({ owner: traderId, status: "pending" }),
-
-      // الحجوزات المكتملة (rent)
       orderModel.countDocuments({ owner: traderId, status: "completed" }),
-
-      // الطلبات المكتملة (buy)
       orderBuyModel.countDocuments({ owner: traderId, status: "completed" }),
-
-      // عملاء الإيجار الفريدين
       orderModel.distinct("user", { owner: traderId }),
-
-      // عملاء الشراء الفريدين
       orderBuyModel.distinct("user", { owner: traderId }),
-
-      // متوسط التقييمات
       reviewModel.aggregate([
         {
           $lookup: {
@@ -84,55 +64,76 @@ export const getOverview = async (req, res, next) => {
         },
       ]),
 
-      // أحدث 5 حجوزات إيجار
+    
       orderModel
         .find({ owner: traderId })
-        .populate("user", "userName email phone avatar")
-        .populate("car", "carbrand carname carmodel year carimage carprice")
+        .populate("user", "userName")
+        .populate("car", "carbrand carname carmodel year")
         .sort({ createdAt: -1 })
         .limit(5)
+        .select("status totalPrice")
         .lean(),
 
-      // أحدث 5 طلبات شراء
+    
       orderBuyModel
         .find({ owner: traderId })
-        .populate("user", "userName email phone avatar")
-        .populate("car", "carbrand carname carmodel year carimage carprice")
+        .populate("user", "userName")
+        .populate("car", "carbrand carname carmodel year carprice")
         .sort({ createdAt: -1 })
         .limit(5)
+        .select("status")
         .lean(),
     ]);
 
-    // دمج العملاء الفريدين
     const allCustomerIds = new Set([
       ...uniqueRentCustomers.map(String),
       ...uniqueBuyCustomers.map(String),
     ]);
 
+   
+    const formattedRentOrders = recentRentOrders.map((order) => ({
+      id: order._id,
+      customerName: order.user?.userName || "",
+      carTitle: `${order.car?.carbrand || ""} ${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      totalPrice: order.totalPrice,
+      status: order.status,
+    }));
+
+   
+    const formattedBuyOrders = recentBuyOrders.map((order) => ({
+      id: order._id,
+      customerName: order.user?.userName || "",
+      carTitle: `${order.car?.carbrand || ""} ${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      totalPrice: order.car?.carprice || 0,
+      status: order.status,
+    }));
+
     return ok(res, {
       revenue: {
-        rent:  totalRentRevenue[0]?.total || 0,
-        buy:   totalBuyRevenue[0]?.total  || 0,
-        total: (totalRentRevenue[0]?.total || 0) + (totalBuyRevenue[0]?.total || 0),
+        rent: totalRentRevenue[0]?.total || 0,
+        buy: totalBuyRevenue[0]?.total || 0,
+        total:
+          (totalRentRevenue[0]?.total || 0) +
+          (totalBuyRevenue[0]?.total || 0),
       },
       activeRentals,
       pendingOrders: {
-        rent:  pendingRentOrders,
-        buy:   pendingBuyOrders,
+        rent: pendingRentOrders,
+        buy: pendingBuyOrders,
         total: pendingRentOrders + pendingBuyOrders,
       },
       completedOrders: {
-        rent:  completedRentOrders,
-        buy:   completedBuyOrders,
+        rent: completedRentOrders,
+        buy: completedBuyOrders,
         total: completedRentOrders + completedBuyOrders,
       },
       totalCustomers: allCustomerIds.size,
       reviews: {
         average: Number((reviewStats[0]?.avgRating || 0).toFixed(1)),
-        total:   reviewStats[0]?.totalReviews || 0,
+        total: reviewStats[0]?.totalReviews || 0,
       },
-      recentRentOrders,
-      recentBuyOrders,
+      recentRentOrders: formattedRentOrders,
+      recentBuyOrders: formattedBuyOrders,
     });
   } catch (error) {
     next(error);
@@ -142,7 +143,8 @@ export const getOverview = async (req, res, next) => {
 
 export const getRentCars = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
     const skip  = (page - 1) * limit;
@@ -154,50 +156,38 @@ export const getRentCars = async (req, res, next) => {
       carModel.countDocuments(filter),
       carModel
         .find(filter)
-        .select("carbrand carname carmodel year location carprice fuel seatCount Body_Type Transmission carimage isavailable createdAt")
+        .select("carbrand carname carmodel year location carprice Transmission seatCount carimage isavailable")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
     ]);
 
-    // لكل سيارة جيب عدد حجوزاتها وإيراداتها
-    const carsWithStats = await Promise.all(
-      cars.map(async (car) => {
-        const [totalBookings, revenue, avgRating] = await Promise.all([
-          orderModel.countDocuments({ car: car._id }),
-          orderModel.aggregate([
-            { $match: { car: car._id, status: "completed" } },
-            { $group: { _id: null, total: { $sum: "$totalPrice" } } },
-          ]),
-          reviewModel.aggregate([
-            { $match: { car: car._id } },
-            { $group: { _id: null, avg: { $avg: "$rating" }, count: { $sum: 1 } } },
-          ]),
-        ]);
+    const formattedCars = cars.map((car) => ({
+      id: car._id,
+      name: `${car.carbrand} ${car.carname}`,
+      model: car.carmodel,
+      year: car.year,
+     image: Array.isArray(car.carimage) ? car.carimage[0] : car.carimage,
+      location: car.location,
+      price: car.carprice,
+      specs: {
+        transmission: car.Transmission,
+        seats: car.seatCount,
+      },
+      status: car.isavailable,
+    }));
 
-        return {
-          ...car,
-          stats: {
-            totalBookings,
-            revenue:   revenue[0]?.total || 0,
-            avgRating: Number((avgRating[0]?.avg || 0).toFixed(1)),
-            reviews:   avgRating[0]?.count || 0,
-          },
-        };
-      })
-    );
-
-    return ok(res, { total, page, limit, cars: carsWithStats });
+    return ok(res, { total, page, limit, cars: formattedCars });
   } catch (error) {
     next(error);
   }
 };
 
-
 export const getBuyCars = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
     const skip  = (page - 1) * limit;
@@ -206,28 +196,29 @@ export const getBuyCars = async (req, res, next) => {
       carbuymodel.countDocuments({ owner: traderId }),
       carbuymodel
         .find({ owner: traderId })
-        .select("carbrand carname carmodel year location carprice fuel seatCount Body_Type Transmission carimage isavailable createdAt")
+        .select("carbrand carname carmodel year location carprice Transmission seatCount carimage isavailable")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
     ]);
 
-    const carsWithStats = await Promise.all(
-      cars.map(async (car) => {
-        const [totalOffers, completedSales] = await Promise.all([
-          orderBuyModel.countDocuments({ car: car._id }),
-          orderBuyModel.countDocuments({ car: car._id, status: "completed" }),
-        ]);
+    const formattedCars = cars.map((car) => ({
+      id: car._id,
+      name: `${car.carbrand} ${car.carname}`,
+      model: car.carmodel,
+      year: car.year,
+      image: Array.isArray(car.carimage) ? car.carimage[0] : car.carimage,
+      location: car.location,
+      price: car.carprice,
+      specs: {
+        transmission: car.Transmission,
+        seats: car.seatCount,
+      },
+      status: car.isavailable,
+    }));
 
-        return {
-          ...car,
-          stats: { totalOffers, completedSales },
-        };
-      })
-    );
-
-    return ok(res, { total, page, limit, cars: carsWithStats });
+    return ok(res, { total, page, limit, cars: formattedCars });
   } catch (error) {
     next(error);
   }
@@ -236,10 +227,12 @@ export const getBuyCars = async (req, res, next) => {
 
 export const getRentOrders = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
-    const page   = Number(req.query.page)   || 1;
-    const limit  = Number(req.query.limit)  || 20;
-    const skip   = (page - 1) * limit;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
+    const page  = Number(req.query.page)  || 1;
+    const limit = Number(req.query.limit) || 20;
+    const skip  = (page - 1) * limit;
+
     const filter = { owner: traderId };
     if (req.query.status) filter.status = req.query.status;
 
@@ -247,15 +240,26 @@ export const getRentOrders = async (req, res, next) => {
       orderModel.countDocuments(filter),
       orderModel
         .find(filter)
-        .populate("user", "userName email phone avatar")
-        .populate("car",  "carbrand carname carmodel year carimage carprice location")
+        .populate("user", "userName")
+        .populate("car", "carmodel year")
+        .select("startDate endDate totalPrice status")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
     ]);
 
-    return ok(res, { total, page, limit, orders });
+    const formattedOrders = orders.map((order) => ({
+      id: order._id,
+      customer: order.user?.userName || "",
+      car: `${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      startDate: order.startDate,
+      endDate: order.endDate,
+      totalPrice: order.totalPrice,
+      status: order.status,
+    }));
+
+    return ok(res, { total, page, limit, orders: formattedOrders });
   } catch (error) {
     next(error);
   }
@@ -264,10 +268,12 @@ export const getRentOrders = async (req, res, next) => {
 
 export const getBuyOrders = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
-    const page   = Number(req.query.page)   || 1;
-    const limit  = Number(req.query.limit)  || 20;
-    const skip   = (page - 1) * limit;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
+    const page  = Number(req.query.page)  || 1;
+    const limit = Number(req.query.limit) || 20;
+    const skip  = (page - 1) * limit;
+
     const filter = { owner: traderId };
     if (req.query.status) filter.status = req.query.status;
 
@@ -275,15 +281,25 @@ export const getBuyOrders = async (req, res, next) => {
       orderBuyModel.countDocuments(filter),
       orderBuyModel
         .find(filter)
-        .populate("user", "userName email phone avatar")
-        .populate("car",  "carbrand carname carmodel year carimage carprice location")
+        .populate("user", "userName")
+        .populate("car", "carmodel year")
+        .select("carprice createdAt status")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
     ]);
 
-    return ok(res, { total, page, limit, orders });
+    const formattedOrders = orders.map((order) => ({
+      id: order._id,
+      customer: order.user?.userName || "",
+      car: `${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      carprice: order.carprice,
+      createdAt: order.createdAt,
+      status: order.status,
+    }));
+
+    return ok(res, { total, page, limit, orders: formattedOrders });
   } catch (error) {
     next(error);
   }
@@ -292,12 +308,12 @@ export const getBuyOrders = async (req, res, next) => {
 
 export const getCustomers = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
     const skip  = (page - 1) * limit;
 
-    
     const [rentCustomerIds, buyCustomerIds] = await Promise.all([
       orderModel.distinct("user",    { owner: traderId }),
       orderBuyModel.distinct("user", { owner: traderId }),
@@ -310,16 +326,14 @@ export const getCustomers = async (req, res, next) => {
 
     const total = allIds.length;
 
-    // جيب بيانات العملاء
     const customers = await userModel
       .find({ _id: { $in: allIds } })
-      .select("userName email phone avatar createdAt")
+      .select("userName email phone isActive")
       .skip(skip)
       .limit(limit)
       .lean();
 
-    // لكل عميل جيب نشاطه
-    const customersWithStats = await Promise.all(
+    const formattedCustomers = await Promise.all(
       customers.map(async (customer) => {
         const [rentOrders, buyOrders, totalSpentRent, totalSpentBuy] = await Promise.all([
           orderModel.countDocuments({ user: customer._id, owner: traderId }),
@@ -335,18 +349,17 @@ export const getCustomers = async (req, res, next) => {
         ]);
 
         return {
-          ...customer,
-          activity: {
-            rentOrders,
-            buyOrders,
-            totalOrders: rentOrders + buyOrders,
-            totalSpent:  (totalSpentRent[0]?.total || 0) + (totalSpentBuy[0]?.total || 0),
-          },
+          id: customer._id,
+          name: customer.userName,
+          email: customer.email,
+          phone: customer.phone,
+          totalOrders: rentOrders + buyOrders,
+          totalSpent: (totalSpentRent[0]?.total || 0) + (totalSpentBuy[0]?.total || 0),
         };
       })
     );
 
-    return ok(res, { total, page, limit, customers: customersWithStats });
+    return ok(res, { total, page, limit, customers: formattedCustomers });
   } catch (error) {
     next(error);
   }
@@ -355,12 +368,12 @@ export const getCustomers = async (req, res, next) => {
 
 export const getReviews = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
     const skip  = (page - 1) * limit;
 
-   
     const traderCars = await carModel.distinct("_id", { owner: traderId });
 
     const filter = { car: { $in: traderCars } };
@@ -371,8 +384,9 @@ export const getReviews = async (req, res, next) => {
 
       reviewModel
         .find(filter)
-        .populate("user", "userName email avatar")
-        .populate("car",  "carbrand carname carmodel year carimage")
+        .populate("user", "userName")
+        .populate("car",  "carmodel year")
+        .select("rating comment createdAt")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -395,6 +409,15 @@ export const getReviews = async (req, res, next) => {
       ]),
     ]);
 
+    const formattedReviews = reviews.map((review) => ({
+      id: review._id,
+      customer: review.user?.userName || "",
+      car: `${review.car?.carmodel || ""} ${review.car?.year || ""}`.trim(),
+      rating: review.rating,
+      comment: review.comment,
+      createdAt: review.createdAt,
+    }));
+
     return ok(res, {
       total,
       page,
@@ -409,17 +432,16 @@ export const getReviews = async (req, res, next) => {
           1: ratingStats[0]?.stars1 || 0,
         },
       },
-      reviews,
+      reviews: formattedReviews,
     });
   } catch (error) {
     next(error);
   }
 };
 
-
 export const getAnalytics = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
 
     // آخر 12 شهر
     const twelveMonthsAgo = new Date();
@@ -684,7 +706,8 @@ export const getAnalytics = async (req, res, next) => {
 
 export const getEarnings = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+        const traderId = new mongoose.Types.ObjectId(req.user.id);
+
 
     const [
       totalEarningsRent,
@@ -759,7 +782,7 @@ export const getEarnings = async (req, res, next) => {
 
 export const getRecentActivity = async (req, res, next) => {
   try {
-    const traderId = req.user._id;
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
     const limit    = Number(req.query.limit) || 10;
 
     const [recentRentOrders, recentBuyOrders, recentReviews] = await Promise.all([
