@@ -53,7 +53,10 @@ export const carRentSchema = new mongoose.Schema(
         "North Sinai",
         "Sohag",
       ],
-      required: true,
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
     distance: {
       type: String,
