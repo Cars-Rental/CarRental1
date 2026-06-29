@@ -39,7 +39,9 @@ export const QUERY_KEYS = {
     BOOKINGS: ["trader", "bookings"] as const,
     ORDERS: ["trader", "orders"] as const,
     CUSTOMERS: ["trader", "customers"] as const,
-    REVIEWS: ["trader", "reviews"] as const,
+    REVIEWS: (page?: number, limit?: number) =>
+      ["trader", "reviews", { page, limit }] as const,
     EARNINGS: ["trader", "earnings"] as const,
+    ANALYTICS: ["trader", "analytics"] as const,
   },
 } as const;

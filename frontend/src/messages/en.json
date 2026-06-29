@@ -922,6 +922,7 @@
       "totalSpent": "Total Spent",
       "rating": "Rating",
       "comment": "Comment",
+      "notAvailable": "Not available",
       "actions": "Actions"
     },
     "status": {
@@ -1059,9 +1060,15 @@
       "bookingVolume": "Booking Volume",
       "topCars": "Top Performing Cars",
       "carMeta": "{views} views / {conversion}% conversion",
+      "carBookings": "{count} bookings",
+      "carSales": "{count} sales",
       "kpis": {
         "monthlyRevenue": "Monthly Revenue",
-        "monthlyRevenueHelper": "From mock rental and sales activity",
+        "monthlyRevenueHelper": "From rental and sales activity",
+        "totalRentRevenue": "Rental Revenue",
+        "totalRentRevenueHelper": "Total revenue from rental bookings",
+        "totalBuyRevenue": "Sale Revenue",
+        "totalBuyRevenueHelper": "Total revenue from purchase orders",
         "totalViews": "Listing Views",
         "totalViewsHelper": "Across top active listings",
         "conversionRate": "Conversion Rate",
@@ -1082,6 +1089,9 @@
         "sales": "Sale Revenue",
         "returningCustomers": "Returning Customers"
       }
+    },
+    "reviews": {
+      "ratingCount": "{rating} star reviews"
     },
     "settings": {
       "accountInformation": "Account Information",

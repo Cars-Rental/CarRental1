@@ -76,6 +76,8 @@ export const API_ENDPOINTS = {
       CUSTOMERS: "/dashboard/customers",
       EARNINGS: "/dashboard/earnings",
       RECENT_ACTIVITY: "/dashboard/recent-activity",
+      ANALYTICS: "/dashboard/analytics",
+      REVIEWS: "/dashboard/reviews",
       STATS: "/trader/dashboard/stats",
       RECENT_BOOKINGS: "/trader/dashboard/recent-bookings",
       RECENT_ORDERS: "/trader/dashboard/recent-orders",

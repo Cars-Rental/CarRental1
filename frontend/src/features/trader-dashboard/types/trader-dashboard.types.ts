@@ -147,6 +147,74 @@ export interface TraderDashboardEarningsResponse {
   }>;
 }
 
+export interface TraderDashboardAnalyticsCarDetails {
+  carbrand: string;
+  carname: string;
+  carmodel: string;
+  carprice: number;
+}
+
+export interface TraderDashboardTopRentCar {
+  _id: string;
+  revenue: number;
+  bookings: number;
+  car: TraderDashboardAnalyticsCarDetails;
+}
+
+export interface TraderDashboardTopBuyCar {
+  _id: string;
+  revenue: number;
+  sales: number;
+  car: TraderDashboardAnalyticsCarDetails;
+}
+
+export interface TraderDashboardOrderVolumeItem {
+  _id: {
+    year: number;
+    month: number;
+  };
+  count: number;
+}
+
+export interface TraderDashboardAnalyticsResponse {
+  summary: {
+    monthlyRevenue: number;
+    openDemand: number;
+    conversionRate: number;
+    totalRentRevenue: number;
+    totalBuyRevenue: number;
+  };
+  revenueMix: {
+    rentPercent: number;
+    buyPercent: number;
+  };
+  revenueTimeline: Array<{
+    month: string;
+    rentRevenue: number;
+    buyRevenue: number;
+    rentOrders: number;
+    buyOrders: number;
+    totalRevenue: number;
+  }>;
+  orderVolume: {
+    rent: TraderDashboardOrderVolumeItem[];
+    buy: TraderDashboardOrderVolumeItem[];
+  };
+  statusDistribution: {
+    rent: Record<string, number>;
+    buy: Record<string, number>;
+  };
+  topPerformingCars: {
+    rent: TraderDashboardTopRentCar[];
+    buy: TraderDashboardTopBuyCar[];
+  };
+  conversionRate: {
+    rent: number;
+    buy: number;
+    overall: number;
+  };
+}
+
 export interface TraderDashboardActivityItem {
   type: "buy_order" | "rent_order";
   _id: string;
@@ -183,6 +251,28 @@ export interface TraderRecentActivity {
 
 export interface TraderDashboardRecentActivityResponse {
   activities: TraderDashboardActivityItem[];
+}
+
+export interface TraderDashboardReviewItem {
+  id: string;
+  customerId: string;
+  customerName: string;
+  carId: string;
+  carTitle: string;
+  rating: number;
+  comment: string;
+  createdAt?: string;
+}
+
+export interface TraderDashboardReviewsResponse {
+  total: number;
+  page: number;
+  limit: number;
+  stats: {
+    average: number;
+    distribution: Record<"1" | "2" | "3" | "4" | "5", number>;
+  };
+  reviews: TraderDashboardReviewItem[];
 }
 
 export interface TraderNotificationSender {
@@ -278,7 +368,7 @@ export interface TraderReview {
   carId: string;
   rating: number;
   comment: string;
-  createdAt: string;
+  createdAt?: string;
   customerName: string;
   carTitle: string;
 }
