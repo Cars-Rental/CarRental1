@@ -2,7 +2,7 @@ import type { BodyType, FuelType, Transmission } from "@/features/cars/types/car
 
 export type TraderCarType = "rent" | "sale";
 export type TraderCarStatus = "active" | "maintenance" | "sold" | "inactive";
-export type TraderBookingStatus = "pending" | "confirmed" | "active" | "completed" | "cancelled" | "rejected";
+export type TraderBookingStatus = "pending" | "confirmed" | "active" | "completed" | "cancelled" | "rejected" | "accepted";
 export type TraderOrderStatus = "pending" | "negotiating" | "accepted" | "rejected" | "completed" | "cancelled";
 
 export interface TraderDashboardStats {
@@ -14,6 +14,175 @@ export interface TraderDashboardStats {
   completedOrders: number;
   totalCustomers: number;
   averageRating: number;
+}
+
+export interface TraderOverviewOrder {
+  id: string;
+  customerName: string;
+  carTitle: string;
+  totalPrice: number;
+  status: string;
+}
+
+export interface TraderOverviewResponse {
+  revenue: {
+    rent: number;
+    buy: number;
+    total: number;
+  };
+  activeRentals: number;
+  pendingOrders: {
+    rent: number;
+    buy: number;
+    total: number;
+  };
+  completedOrders: {
+    rent: number;
+    buy: number;
+    total: number;
+  };
+  totalCustomers: number;
+  reviews: {
+    average: number;
+    total: number;
+  };
+  recentRentOrders: TraderOverviewOrder[];
+  recentBuyOrders: TraderOverviewOrder[];
+}
+
+export interface TraderDashboardCarResponseItem {
+  id: string;
+  name: string;
+  model: string;
+  year: number;
+  image?: {
+    secure_url: string;
+    public_id: string;
+    _id: string;
+  };
+  location: string;
+  price: number;
+  specs: {
+    transmission: string;
+    seats: number;
+  };
+  status?: string;
+}
+
+export interface TraderDashboardCarsResponse {
+  total: number;
+  page: number;
+  limit: number;
+  cars: TraderDashboardCarResponseItem[];
+}
+
+export interface TraderDashboardRentOrderItem {
+  id: string;
+  customer: string;
+  car: string;
+  startDate: string;
+  endDate: string;
+  totalPrice: number;
+  status: string;
+}
+
+export interface TraderDashboardBuyOrderItem {
+  id: string;
+  customer: string;
+  car: string;
+  carprice: number;
+  createdAt: string;
+  status: string;
+}
+
+export interface TraderDashboardRentOrdersResponse {
+  total: number;
+  page: number;
+  limit: number;
+  orders: TraderDashboardRentOrderItem[];
+}
+
+export interface TraderDashboardBuyOrdersResponse {
+  total: number;
+  page: number;
+  limit: number;
+  orders: TraderDashboardBuyOrderItem[];
+}
+
+export interface TraderDashboardCustomerItem {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  totalOrders: number;
+  totalSpent: number;
+}
+
+export interface TraderDashboardCustomersResponse {
+  total: number;
+  page: number;
+  limit: number;
+  customers: TraderDashboardCustomerItem[];
+}
+
+export interface TraderDashboardEarningsResponse {
+  available: number;
+  pending: number;
+  total: number;
+  breakdown: {
+    rent: {
+      earned: number;
+      pending: number;
+    };
+    buy: {
+      earned: number;
+      pending: number;
+    };
+  };
+  monthlyBreakdown: Array<{
+    month?: string;
+    earned?: number;
+    pending?: number;
+    total?: number;
+  }>;
+}
+
+export interface TraderDashboardActivityItem {
+  type: "buy_order" | "rent_order";
+  _id: string;
+  car: {
+    _id: string;
+    carbrand: string;
+    carname: string;
+    carimage: Array<{
+      secure_url: string;
+      public_id: string;
+      _id: string;
+    }>;
+  };
+  user: {
+    _id: string;
+    userName: string;
+  };
+  carprice?: number;
+  totalPrice?: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface TraderRecentActivity {
+  id: string;
+  type: "buy_order" | "rent_order";
+  customerName: string;
+  carTitle: string;
+  image: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface TraderDashboardRecentActivityResponse {
+  activities: TraderDashboardActivityItem[];
 }
 
 export interface TraderCar {
@@ -91,6 +260,8 @@ export interface TraderEarnings {
   availableBalance: number;
   pendingBalance: number;
   totalEarnings: number;
+  breakdown?: TraderDashboardEarningsResponse["breakdown"];
+  monthlyBreakdown?: TraderDashboardEarningsResponse["monthlyBreakdown"];
 }
 
 export interface TraderTransaction {

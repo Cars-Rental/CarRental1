@@ -781,6 +781,7 @@
       "orders": "Orders",
       "customers": "Customers",
       "reviews": "Reviews",
+      "recentActivity": "Recent Activity",
       "messages": "Messages",
       "analytics": "Analytics",
       "earnings": "Earnings",
@@ -791,7 +792,8 @@
         "title": "Overview",
         "description": "Monitor revenue, demand, and recent customer activity.",
         "recentBookings": "Recent Bookings",
-        "recentOrders": "Recent Orders"
+        "recentOrders": "Recent Orders",
+        "recentActivity": "Recent Activity"
       },
       "rentalCars": {
         "title": "Rental Cars",
@@ -816,6 +818,10 @@
       "reviews": {
         "title": "Reviews",
         "description": "Read customer feedback for your listed cars."
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "description": "Track the latest rental and purchase activity across your cars."
       },
       "messages": {
         "title": "Messages",
@@ -843,6 +849,23 @@
       "averageRating": "Average Rating",
       "ratingValue": "{value} / 5"
     },
+    "filters": {
+      "searchCars": "Search by car name, model, or location...",
+      "searchOrders": "Search by customer, car, or order ID...",
+      "searchCustomers": "Search by name, email, or phone...",
+      "allStatuses": "All statuses",
+      "allLocations": "All locations",
+      "minPrice": "Min price",
+      "maxPrice": "Max price",
+      "minOrders": "Min orders",
+      "minSpent": "Min spent"
+    },
+    "pagination": {
+      "summary": "Showing {current}-{end} of {total} cars",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {totalPages}"
+    },
     "tables": {
       "customer": "Customer",
       "car": "Car",
@@ -854,6 +877,7 @@
       "salePrice": "Sale Price",
       "specs": "Specs",
       "specsValue": "{transmission} / {fuelType} / {seats} seats",
+      "specsValueShort": "{transmission} / {seats} seats",
       "dates": "Dates",
       "dateRange": "{start} - {end}",
       "createdAt": "Created",
@@ -912,6 +936,10 @@
         "title": "No earnings data",
         "description": "Earnings will appear here once transactions are available."
       },
+      "activity": {
+        "title": "No recent activity",
+        "description": "Recent rent and buy activity will appear here."
+      },
       "settings": {
         "title": "No account details",
         "description": "Account details will appear after your profile loads."
@@ -967,7 +995,20 @@
     "earnings": {
       "availableBalance": "Available Balance",
       "pendingBalance": "Pending Balance",
-      "totalEarnings": "Total Earnings"
+      "totalEarnings": "Total Earnings",
+      "earned": "Earned",
+      "pending": "Pending",
+      "breakdown": {
+        "rent": "Rental earnings",
+        "buy": "Sale earnings"
+      }
+    },
+    "activity": {
+      "title": "Latest platform activity",
+      "type": {
+        "buy_order": "Buy order",
+        "rent_order": "Rent order"
+      }
     },
     "analytics": {
       "revenueTrend": "Revenue Trend",

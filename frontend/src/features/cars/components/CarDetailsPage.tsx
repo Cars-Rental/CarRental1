@@ -60,7 +60,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
           </p>
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="text-[var(--primary)] text-sm font-bold hover:underline mt-2 inline-block"
+            className="text-(--primary) text-sm font-bold hover:underline mt-2 inline-block"
           >
             {t("goBack")}
           </Link>
@@ -79,14 +79,14 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
         <nav className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-6 font-medium flex-wrap">
           <Link
             href={`/${locale}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-(--primary) transition-colors"
           >
             {t("breadcrumb.home")}
           </Link>
           <ChevronRight className="size-3 shrink-0" />
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-(--primary) transition-colors"
           >
             {mode === "rent"
               ? t("breadcrumb.rentCars")
@@ -100,7 +100,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* LEFT — Sticky Booking / Price Card */}
-          <div className="w-full lg:w-[300px] shrink-0 lg:sticky lg:top-8">
+          <div className="w-full lg:w-75 shrink-0 lg:sticky lg:top-8">
             <BookingCard
               mode={mode}
               pricePerDay={car.carprice}

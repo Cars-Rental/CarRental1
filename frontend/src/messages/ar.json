@@ -702,6 +702,7 @@
       "orders": "الطلبات",
       "customers": "العملاء",
       "reviews": "التقييمات",
+      "recentActivity": "النشاط الأخير",
       "messages": "الرسائل",
       "analytics": "التحليلات",
       "earnings": "الأرباح",
@@ -712,7 +713,8 @@
         "title": "نظرة عامة",
         "description": "تابع الإيرادات والطلب وآخر أنشطة العملاء.",
         "recentBookings": "أحدث الحجوزات",
-        "recentOrders": "أحدث الطلبات"
+        "recentOrders": "أحدث الطلبات",
+        "recentActivity": "النشاط الأخير"
       },
       "rentalCars": {
         "title": "سيارات الإيجار",
@@ -737,6 +739,10 @@
       "reviews": {
         "title": "التقييمات",
         "description": "اطلع على آراء العملاء حول سياراتك."
+      },
+      "recentActivity": {
+        "title": "النشاط الأخير",
+        "description": "تابع أحدث أنشطة الإيجار والشراء على سياراتك."
       },
       "messages": {
         "title": "الرسائل",
@@ -764,6 +770,23 @@
       "averageRating": "متوسط التقييم",
       "ratingValue": "{value} / 5"
     },
+    "filters": {
+      "searchCars": "ابحث باسم السيارة أو الموديل أو الموقع...",
+      "searchOrders": "ابحث بالعميل أو السيارة أو رقم الطلب...",
+      "searchCustomers": "ابحث بالاسم أو البريد أو الهاتف...",
+      "allStatuses": "كل الحالات",
+      "allLocations": "كل المواقع",
+      "minPrice": "أقل سعر",
+      "maxPrice": "أعلى سعر",
+      "minOrders": "أقل طلبات",
+      "minSpent": "أقل إنفاق"
+    },
+    "pagination": {
+      "summary": "عرض {current}-{end} من {total} سيارة",
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "صفحة {page} من {totalPages}"
+    },
     "tables": {
       "customer": "العميل",
       "car": "السيارة",
@@ -775,6 +798,7 @@
       "salePrice": "سعر البيع",
       "specs": "المواصفات",
       "specsValue": "{transmission} / {fuelType} / {seats} مقاعد",
+      "specsValueShort": "{transmission} / {seats} مقاعد",
       "dates": "التواريخ",
       "dateRange": "{start} - {end}",
       "createdAt": "تاريخ الإنشاء",
@@ -833,6 +857,10 @@
         "title": "لا توجد بيانات أرباح",
         "description": "ستظهر الأرباح هنا بعد توفر المعاملات."
       },
+      "activity": {
+        "title": "لا يوجد نشاط حديث",
+        "description": "سيظهر نشاط الإيجار والشراء الحديث هنا."
+      },
       "settings": {
         "title": "لا توجد بيانات للحساب",
         "description": "ستظهر بيانات الحساب بعد تحميل الملف الشخصي."
@@ -888,7 +916,20 @@
     "earnings": {
       "availableBalance": "الرصيد المتاح",
       "pendingBalance": "الرصيد المعلق",
-      "totalEarnings": "إجمالي الأرباح"
+      "totalEarnings": "إجمالي الأرباح",
+      "earned": "المكتسب",
+      "pending": "المعلق",
+      "breakdown": {
+        "rent": "أرباح الإيجار",
+        "buy": "أرباح البيع"
+      }
+    },
+    "activity": {
+      "title": "أحدث نشاط على المنصة",
+      "type": {
+        "buy_order": "طلب شراء",
+        "rent_order": "طلب إيجار"
+      }
     },
     "analytics": {
       "revenueTrend": "اتجاه الإيرادات",
