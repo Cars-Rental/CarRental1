@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const reviewSchema = new mongoose.Schema(
   {
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",  
       required: true,
@@ -12,6 +12,12 @@ export const reviewSchema = new mongoose.Schema(
       ref: "carRent",  
       required: true,
     },
+    order: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "order",
+  required: true,
+},
+
     rating: {
       type: Number,
       min: 1,
