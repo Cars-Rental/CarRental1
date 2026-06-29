@@ -14,7 +14,7 @@ export function AdminDashboardLayout({ children }: { children: React.ReactNode }
 
   return (
     <AdminAuthGuard>
-      <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
+      <div className="fixed inset-0 flex h-dvh w-full overflow-hidden bg-background text-foreground">
         {isMobileMenuOpen && (
           <div
             className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
@@ -23,7 +23,7 @@ export function AdminDashboardLayout({ children }: { children: React.ReactNode }
         )}
         <div
           className={cn(
-            "fixed inset-y-0 inset-s-0 z-50 transition-transform duration-300 ease-in-out md:static md:z-auto md:block md:translate-x-0",
+            "fixed inset-y-0 inset-s-0 z-50 transition-transform duration-300 ease-in-out md:static md:z-auto md:block md:h-dvh md:translate-x-0",
             isMobileMenuOpen
               ? "translate-x-0"
               : isRTL
@@ -33,7 +33,7 @@ export function AdminDashboardLayout({ children }: { children: React.ReactNode }
         >
           <AdminSidebar isCollapsed={isSidebarCollapsed} />
         </div>
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <AdminTopbar
             isSidebarCollapsed={isSidebarCollapsed}
             onMenuClick={() => setIsMobileMenuOpen((current) => !current)}
@@ -41,7 +41,7 @@ export function AdminDashboardLayout({ children }: { children: React.ReactNode }
               setIsSidebarCollapsed((current) => !current)
             }
           />
-          <main className="flex-1 overflow-y-auto bg-muted/20 p-6 md:p-8">
+          <main className="min-h-0 flex-1 overflow-y-auto bg-muted/20 p-6 md:p-8">
             <div className="mx-auto max-w-7xl">{children}</div>
           </main>
         </div>

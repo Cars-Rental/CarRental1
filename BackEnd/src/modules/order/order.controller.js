@@ -1,7 +1,16 @@
 import { orderModel } from "../../DB/model/order.model.js";
 import { carModel } from "../../DB/model/carRent.model.js";
 import { createNotification } from "../../services/notification.service.js";
-import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
+import {
+  NOTIFICATION_TYPES,
+  ENTITY_TYPES,
+} from "../../constants/notification.types.js";
+
+import axios from "axios";
+import dotenv from "dotenv";
+import { orderBuyModel } from "../../DB/model/orderBuy.model.js";
+
+dotenv.config();
 
 const POPULATE_CAR = "carbrand carname carprice carimage owner isavailable";
 const POPULATE_USER = "userName email phone role";
@@ -12,7 +21,12 @@ const ORDER_POPULATE = [
   { path: "owner", select: POPULATE_USER },
 ];
 
-const ALLOWED_STATUS_VALUES = ["accepted", "rejected", "completed", "cancelled"];
+const ALLOWED_STATUS_VALUES = [
+  "accepted",
+  "rejected",
+  "completed",
+  "cancelled",
+];
 
 const ALLOWED_TRANSITIONS = {
   pending: ["accepted", "rejected"],
@@ -25,52 +39,44 @@ const calcTotalDays = (startDate, endDate) => {
   return Math.max(1, Math.ceil(diff / MS_PER_DAY));
 };
 
-export const createOrder = async (req, res, next) => {
+export const createOrderR = async (req, res, next) => {
   try {
     const { car, startDate, endDate, notes } = req.body;
 
     if (!startDate || !endDate) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate and endDate are required",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "startDate and endDate are required",
+        data: null,
+      });
     }
     const start = new Date(startDate);
     const end = new Date(endDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate and endDate must be valid dates",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "startDate and endDate must be valid dates",
+        data: null,
+      });
     }
 
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
     if (start < todayStart) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate cannot be in the past",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "startDate cannot be in the past",
+        data: null,
+      });
     }
 
     if (start >= end) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "startDate must be earlier than endDate",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "startDate must be earlier than endDate",
+        data: null,
+      });
     }
 
     const Carobj = await carModel
@@ -84,22 +90,18 @@ export const createOrder = async (req, res, next) => {
     }
 
     if (Carobj.isavailable !== "avilable") {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Car is not available for booking",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Car is not available for booking",
+        data: null,
+      });
     }
     if (Carobj.owner.toString() === req.user.id) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "You can't book your own car",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "You can't book your own car",
+        data: null,
+      });
     }
 
     const overlappingOrder = await orderModel.findOne({
@@ -110,13 +112,11 @@ export const createOrder = async (req, res, next) => {
     });
 
     if (overlappingOrder) {
-      return res
-        .status(409)
-        .json({
-          success: false,
-          message: "Car is already booked for the selected dates",
-          data: null,
-        });
+      return res.status(409).json({
+        success: false,
+        message: "Car is already booked for the selected dates",
+        data: null,
+      });
     }
 
     const totalDays = calcTotalDays(start, end);
@@ -147,13 +147,11 @@ export const createOrder = async (req, res, next) => {
       metadata: { orderId: order._id.toString(), carId: car },
     });
 
-    return res
-      .status(201)
-      .json({
-        success: true,
-        message: "Order created successfully",
-        data: order,
-      });
+    return res.status(201).json({
+      success: true,
+      message: "Order created successfully",
+      data: order,
+    });
   } catch (error) {
     next(error);
   }
@@ -178,16 +176,14 @@ export const getMyOrders = async (req, res, next) => {
       .limit(limit)
       .lean();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "My orders fetched successfully",
-        totalOrders,
-        page,
-        limit,
-        data: orders,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "My orders fetched successfully",
+      totalOrders,
+      page,
+      limit,
+      data: orders,
+    });
   } catch (error) {
     next(error);
   }
@@ -211,16 +207,14 @@ export const getOwnerOrders = async (req, res, next) => {
       .limit(limit)
       .lean();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Owner orders fetched successfully",
-        totalOrders,
-        page,
-        limit,
-        data: orders,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Owner orders fetched successfully",
+      totalOrders,
+      page,
+      limit,
+      data: orders,
+    });
   } catch (error) {
     next(error);
   }
@@ -242,28 +236,22 @@ export const getOrderById = async (req, res, next) => {
     const isCustomer = order.user._id.toString() === req.user.id;
 
     if (!isOwner && !isCustomer) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "You are not authorized to view this order",
-          data: null,
-        });
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to view this order",
+        data: null,
+      });
     }
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Order fetched successfully",
-        data: order,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Order fetched successfully",
+      data: order,
+    });
   } catch (error) {
     next(error);
   }
 };
-
-
 
 export const getOrderByUserId = async (req, res, next) => {
   try {
@@ -283,16 +271,14 @@ export const getOrderByUserId = async (req, res, next) => {
       .limit(limit)
       .lean();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "User's orders fetched successfully",
-        totalOrders,
-        page,
-        limit,
-        data: orders,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "User's orders fetched successfully",
+      totalOrders,
+      page,
+      limit,
+      data: orders,
+    });
   } catch (error) {
     next(error);
   }
@@ -304,13 +290,11 @@ export const updateOrderStatus = async (req, res, next) => {
     const { status, rejectionReason } = req.body;
 
     if (!status || !ALLOWED_STATUS_VALUES.includes(status)) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `status must be one of: ${ALLOWED_STATUS_VALUES.join(", ")}`,
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: `status must be one of: ${ALLOWED_STATUS_VALUES.join(", ")}`,
+        data: null,
+      });
     }
 
     const order = await orderModel.findById(id);
@@ -331,23 +315,19 @@ export const updateOrderStatus = async (req, res, next) => {
 
     const allowedNextStatuses = ALLOWED_TRANSITIONS[order.status] || [];
     if (!allowedNextStatuses.includes(status)) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `Cannot change order status from "${order.status}" to "${status}"`,
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: `Cannot change order status from "${order.status}" to "${status}"`,
+        data: null,
+      });
     }
 
     if (status === "rejected" && !rejectionReason) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "rejectionReason is required when rejecting an order",
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "rejectionReason is required when rejecting an order",
+        data: null,
+      });
     }
 
     order.status = status;
@@ -375,7 +355,12 @@ export const updateOrderStatus = async (req, res, next) => {
         recipientId: order.user,
         senderId: req.user.id,
         type: notificationType,
-        title: status === "accepted" ? "تم قبول الطلب" : status === "rejected" ? "تم رفض الطلب" : "تم إكمال الطلب",
+        title:
+          status === "accepted"
+            ? "تم قبول الطلب"
+            : status === "rejected"
+              ? "تم رفض الطلب"
+              : "تم إكمال الطلب",
         message:
           status === "accepted"
             ? "تم قبول طلب الإيجار الخاص بك"
@@ -387,14 +372,12 @@ export const updateOrderStatus = async (req, res, next) => {
         metadata: { orderId: order._id.toString(), status },
       });
     }
-    
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: `Order ${status} successfully`,
-        data: order,
-      });
+
+    return res.status(200).json({
+      success: true,
+      message: `Order ${status} successfully`,
+      data: order,
+    });
   } catch (error) {
     next(error);
   }
@@ -413,23 +396,19 @@ export const cancelOrder = async (req, res, next) => {
     }
 
     if (order.user.toString() !== req.user.id) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "You are not authorized to cancel this order",
-          data: null,
-        });
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to cancel this order",
+        data: null,
+      });
     }
 
     if (order.status !== "pending") {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `Cannot cancel an order that is already ${order.status}`,
-          data: null,
-        });
+      return res.status(400).json({
+        success: false,
+        message: `Cannot cancel an order that is already ${order.status}`,
+        data: null,
+      });
     }
 
     order.status = "cancelled";
@@ -449,14 +428,107 @@ export const cancelOrder = async (req, res, next) => {
       metadata: { orderId: order._id.toString(), status: order.status },
     });
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Order cancelled successfully",
-        data: order,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Order cancelled successfully",
+      data: order,
+    });
   } catch (error) {
     next(error);
+  }
+};
+
+const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY;
+const PAYMOB_API_URL = process.env.PAYMOB_API_URL;
+const PAYMOB_IFRAME_ID = process.env.PAYMOB_IFRAME_ID;
+const PAYMOB_INTEGRATION_ID = process.env.PAYMOB_INTEGRATION_ID;
+
+// STEP 1
+async function getAuthToken() {
+  const response = await axios.post(`${PAYMOB_API_URL}/auth/tokens`, {
+    api_key: PAYMOB_API_KEY,
+  });
+
+  return response.data.token;
+}
+// STEP 2
+async function createOrder(authToken, amount) {
+  const response = await axios.post(`${PAYMOB_API_URL}/ecommerce/orders`, {
+    auth_token: authToken,
+    delivery_needed: false,
+    amount_cents: amount * 100,
+    currency: "EGP",
+    items: [],
+  });
+  return response.data.id;
+}
+// STEP 3
+async function createPaymentKey(authToken, orderId, amount) {
+  const response = await axios.post(
+    `${PAYMOB_API_URL}/acceptance/payment_keys`,
+    {
+      auth_token: authToken,
+      amount_cents: amount * 100,
+      expiration: 3600,
+      order_id: orderId,
+      currency: "EGP",
+      integration_id: Number(PAYMOB_INTEGRATION_ID),
+
+      billing_data: {
+        apartment: "NA",
+        email: "customer@example.com",
+        floor: "NA",
+        first_name: "Customer",
+        street: "NA",
+        building: "NA",
+        phone_number: "01000000000",
+        shipping_method: "NA",
+        postal_code: "NA",
+        city: "NA",
+        country: "EG",
+        last_name: "User",
+        state: "NA",
+      },
+    },
+  );
+  return response.data.token;
+}
+
+export const createPayment = async (req, res) => {
+  try {
+    const { orderId, type } = req.body;
+    let order = await orderModel.findById(orderId);
+    if (!order) {
+      order = await orderBuyModel.findById(orderId);
+    }
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    const amount = type === "rent" ? order.totalPrice : order.carprice;
+
+    const authToken = await getAuthToken();
+    const paymobOrderId = await createOrder(authToken, amount);
+    const paymentKey = await createPaymentKey(authToken, paymobOrderId, amount);
+
+    const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${paymentKey}`;
+
+    res.status(200).json({
+      success: true,
+      iframeUrl,
+      paymentToken: paymentKey,
+      paymobOrderId,
+    });
+  } catch (error) {
+    console.log(error.response?.data || error.message);
+
+    res.status(500).json({
+      success: false,
+      error: error.response?.data || error.message,
+    });
   }
 };

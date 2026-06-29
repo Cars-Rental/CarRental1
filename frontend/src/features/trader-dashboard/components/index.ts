@@ -18,3 +18,4 @@ export * from "./TraderPlaceholderPage";
 export * from "./TraderEarningsPage";
 export * from "./TraderSettingsPage";
 export * from "./TraderAnalyticsPage";
+export * from "./TraderRecentActivityPage";

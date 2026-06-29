@@ -1,14 +1,13 @@
 // src/modules/dashboard/dashboard.controller.js
 import mongoose from "mongoose";
-import { orderModel }      from "../../DB/model/order.model.js";
-import { orderBuyModel }   from "../../DB/model/orderBuy.model.js";
-import { carModel }        from "../../DB/model/carRent.model.js";
-import { carbuymodel }     from "../../DB/model/carBuy.model.js";
-import { userModel }       from "../../DB/model/user.model.js";
-import {reviewModel}         from "../../DB/model/review.model.js";
+import { orderModel } from "../../DB/model/order.model.js";
+import { orderBuyModel } from "../../DB/model/orderBuy.model.js";
+import { carModel } from "../../DB/model/carRent.model.js";
+import { carbuymodel } from "../../DB/model/carBuy.model.js";
+import { userModel } from "../../DB/model/user.model.js";
+import { reviewModel } from "../../DB/model/review.model.js";
 
-const ok = (res, data) =>
-  res.status(200).json({ success: true, data });
+const ok = (res, data) => res.status(200).json({ success: true, data });
 
 export const getOverview = async (req, res, next) => {
   try {
@@ -41,7 +40,7 @@ export const getOverview = async (req, res, next) => {
       orderBuyModel.countDocuments({ owner: traderId, status: "pending" }),
       orderModel.countDocuments({ owner: traderId, status: "completed" }),
       orderBuyModel.countDocuments({ owner: traderId, status: "completed" }),
-      orderModel.distinct("user", { owner: traderId }),
+      orderModel.distinct("user"),
       orderBuyModel.distinct("user", { owner: traderId }),
       reviewModel.aggregate([
         {
@@ -63,7 +62,6 @@ export const getOverview = async (req, res, next) => {
         },
       ]),
 
-    
       orderModel
         .find({ owner: traderId })
         .populate("user", "userName")
@@ -73,7 +71,6 @@ export const getOverview = async (req, res, next) => {
         .select("status totalPrice")
         .lean(),
 
-    
       orderBuyModel
         .find({ owner: traderId })
         .populate("user", "userName")
@@ -89,20 +86,20 @@ export const getOverview = async (req, res, next) => {
       ...uniqueBuyCustomers.map(String),
     ]);
 
-   
     const formattedRentOrders = recentRentOrders.map((order) => ({
       id: order._id,
       customerName: order.user?.userName || "",
-      carTitle: `${order.car?.carbrand || ""} ${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      carTitle:
+        `${order.car?.carbrand || ""} ${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
       totalPrice: order.totalPrice,
       status: order.status,
     }));
 
-   
     const formattedBuyOrders = recentBuyOrders.map((order) => ({
       id: order._id,
       customerName: order.user?.userName || "",
-      carTitle: `${order.car?.carbrand || ""} ${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      carTitle:
+        `${order.car?.carbrand || ""} ${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
       totalPrice: order.car?.carprice || 0,
       status: order.status,
     }));
@@ -112,8 +109,7 @@ export const getOverview = async (req, res, next) => {
         rent: totalRentRevenue[0]?.total || 0,
         buy: totalBuyRevenue[0]?.total || 0,
         total:
-          (totalRentRevenue[0]?.total || 0) +
-          (totalBuyRevenue[0]?.total || 0),
+          (totalRentRevenue[0]?.total || 0) + (totalBuyRevenue[0]?.total || 0),
       },
       activeRentals,
       pendingOrders: {
@@ -139,14 +135,13 @@ export const getOverview = async (req, res, next) => {
   }
 };
 
-
 export const getRentCars = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page  = Number(req.query.page)  || 1;
+    const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip  = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
     const filter = { owner: traderId };
     if (req.query.isavailable) filter.isavailable = req.query.isavailable;
@@ -155,47 +150,9 @@ export const getRentCars = async (req, res, next) => {
       carModel.countDocuments(filter),
       carModel
         .find(filter)
-        .select("carbrand carname carmodel year location carprice Transmission seatCount carimage isavailable")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-    ]);
-
-    const formattedCars = cars.map((car) => ({
-      id: car._id,
-      name: `${car.carbrand} ${car.carname}`,
-      model: car.carmodel,
-      year: car.year,
-     image: Array.isArray(car.carimage) ? car.carimage[0] : car.carimage,
-      location: car.location,
-      price: car.carprice,
-      specs: {
-        transmission: car.Transmission,
-        seats: car.seatCount,
-      },
-      status: car.isavailable,
-    }));
-
-    return ok(res, { total, page, limit, cars: formattedCars });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getBuyCars = async (req, res, next) => {
-  try {
-    const traderId = new mongoose.Types.ObjectId(req.user.id);
-
-    const page  = Number(req.query.page)  || 1;
-    const limit = Number(req.query.limit) || 20;
-    const skip  = (page - 1) * limit;
-
-    const [total, cars] = await Promise.all([
-      carbuymodel.countDocuments({ owner: traderId }),
-      carbuymodel
-        .find({ owner: traderId })
-        .select("carbrand carname carmodel year location carprice Transmission seatCount carimage isavailable")
+        .select(
+          "carbrand carname carmodel year location carprice Transmission seatCount carimage isavailable",
+        )
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -223,14 +180,55 @@ export const getBuyCars = async (req, res, next) => {
   }
 };
 
+export const getBuyCars = async (req, res, next) => {
+  try {
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const [total, cars] = await Promise.all([
+      carbuymodel.countDocuments({ owner: traderId }),
+      carbuymodel
+        .find({ owner: traderId })
+        .select(
+          "carbrand carname carmodel year location carprice Transmission seatCount carimage isavailable",
+        )
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ]);
+
+    const formattedCars = cars.map((car) => ({
+      id: car._id,
+      name: `${car.carbrand} ${car.carname}`,
+      model: car.carmodel,
+      year: car.year,
+      image: Array.isArray(car.carimage) ? car.carimage[0] : car.carimage,
+      location: car.location,
+      price: car.carprice,
+      specs: {
+        transmission: car.Transmission,
+        seats: car.seatCount,
+      },
+      status: car.isavailable,
+    }));
+
+    return ok(res, { total, page, limit, cars: formattedCars });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getRentOrders = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page  = Number(req.query.page)  || 1;
+    const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip  = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
     const filter = { owner: traderId };
     if (req.query.status) filter.status = req.query.status;
@@ -264,7 +262,6 @@ export const getRentOrders = async (req, res, next) => {
   }
 };
 
-
 export const getBuyOrders = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
@@ -272,7 +269,7 @@ export const getBuyOrders = async (req, res, next) => {
 
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip  = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
     const filter = { owner: traderId };
     if (req.query.status) filter.status = req.query.status;
@@ -305,24 +302,35 @@ export const getBuyOrders = async (req, res, next) => {
   }
 };
 
-
 export const getCustomers = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page  = Number(req.query.page)  || 1;
+    const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip  = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
     const [rentCustomerIds, buyCustomerIds] = await Promise.all([
-      orderModel.distinct("user",    { owner: traderId }),
-      orderBuyModel.distinct("user", { owner: traderId }),
+      orderModel.distinct("user", { owner: traderId }),
+      orderBuyModel.distinct(
+        "user", // With this:
+        {
+          $match: {
+            $or: [
+              { owner: traderId },
+              { owner: req.user.id }, // match as string too
+            ],
+          },
+        },
+      ),
     ]);
 
-    const allIds = [...new Set([
-      ...rentCustomerIds.map(String),
-      ...buyCustomerIds.map(String),
-    ])];
+    const allIds = [
+      ...new Set([
+        ...rentCustomerIds.map(String),
+        ...buyCustomerIds.map(String),
+      ]),
+    ];
 
     const total = allIds.length;
 
@@ -335,18 +343,34 @@ export const getCustomers = async (req, res, next) => {
 
     const formattedCustomers = await Promise.all(
       customers.map(async (customer) => {
-        const [rentOrders, buyOrders, totalSpentRent, totalSpentBuy] = await Promise.all([
-          orderModel.countDocuments({ user: customer._id, owner: traderId }),
-          orderBuyModel.countDocuments({ user: customer._id, owner: traderId }),
-          orderModel.aggregate([
-            { $match: { user: customer._id, owner: traderId, status: "completed" } },
-            { $group: { _id: null, total: { $sum: "$totalPrice" } } },
-          ]),
-          orderBuyModel.aggregate([
-            { $match: { user: customer._id, owner: traderId, status: "completed" } },
-            { $group: { _id: null, total: { $sum: "$carprice" } } },
-          ]),
-        ]);
+        const [rentOrders, buyOrders, totalSpentRent, totalSpentBuy] =
+          await Promise.all([
+            orderModel.countDocuments({ user: customer._id, owner: traderId }),
+            orderBuyModel.countDocuments({
+              user: customer._id,
+              owner: traderId,
+            }),
+            orderModel.aggregate([
+              {
+                $match: {
+                  user: customer._id,
+                  owner: traderId,
+                  status: "completed",
+                },
+              },
+              { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+            ]),
+            orderBuyModel.aggregate([
+              {
+                $match: {
+                  user: customer._id,
+                  owner: traderId,
+                  status: "completed",
+                },
+              },
+              { $group: { _id: null, total: { $sum: "$carprice" } } },
+            ]),
+          ]);
 
         return {
           id: customer._id,
@@ -354,9 +378,10 @@ export const getCustomers = async (req, res, next) => {
           email: customer.email,
           phone: customer.phone,
           totalOrders: rentOrders + buyOrders,
-          totalSpent: (totalSpentRent[0]?.total || 0) + (totalSpentBuy[0]?.total || 0),
+          totalSpent:
+            (totalSpentRent[0]?.total || 0) + (totalSpentBuy[0]?.total || 0),
         };
-      })
+      }),
     );
 
     return ok(res, { total, page, limit, customers: formattedCustomers });
@@ -365,61 +390,59 @@ export const getCustomers = async (req, res, next) => {
   }
 };
 
-
 export const getReviews = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page  = Number(req.query.page)  || 1;
+    const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip  = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
-   
     const traderCars = await carModel.distinct("_id", { owner: traderId });
 
-    
     const filter = { carRent: { $in: traderCars } };
     if (req.query.rating) filter.rating = Number(req.query.rating);
 
     const [total, reviews, ratingStats] = await Promise.all([
       reviewModel.countDocuments(filter),
 
-    reviewModel
-    .find(filter)
-    .populate("userId",  "userName")  
-    .populate("carRent", "carbrand carname carmodel year")
-    .select("rating comment createdAt userId carRent")
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limit)
-    .lean(),
+      reviewModel
+        .find(filter)
+        .populate("userId", "userName")
+        .populate("carRent", "carbrand carname carmodel year")
+        .select("rating comment createdAt userId carRent")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
       reviewModel.aggregate([
         { $match: filter },
         {
           $group: {
             _id: null,
             avgRating: { $avg: "$rating" },
-            total:     { $sum: 1 },
-            stars5:    { $sum: { $cond: [{ $eq: ["$rating", 5] }, 1, 0] } },
-            stars4:    { $sum: { $cond: [{ $eq: ["$rating", 4] }, 1, 0] } },
-            stars3:    { $sum: { $cond: [{ $eq: ["$rating", 3] }, 1, 0] } },
-            stars2:    { $sum: { $cond: [{ $eq: ["$rating", 2] }, 1, 0] } },
-            stars1:    { $sum: { $cond: [{ $eq: ["$rating", 1] }, 1, 0] } },
+            total: { $sum: 1 },
+            stars5: { $sum: { $cond: [{ $eq: ["$rating", 5] }, 1, 0] } },
+            stars4: { $sum: { $cond: [{ $eq: ["$rating", 4] }, 1, 0] } },
+            stars3: { $sum: { $cond: [{ $eq: ["$rating", 3] }, 1, 0] } },
+            stars2: { $sum: { $cond: [{ $eq: ["$rating", 2] }, 1, 0] } },
+            stars1: { $sum: { $cond: [{ $eq: ["$rating", 1] }, 1, 0] } },
           },
         },
       ]),
     ]);
 
-   const formattedReviews = reviews.map((review) => ({
-  id:           review._id,
-  customerId:   review.userId?._id      || "",  
-  customerName: review.userId?.userName || "",  
-  carId:        review.carRent?._id     || "",
-  carTitle: `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
-  rating:    review.rating,
-  comment:   review.comment,
-  createdAt: review.createdAt,
-}));
+    const formattedReviews = reviews.map((review) => ({
+      id: review._id,
+      customerId: review.userId?._id || "",
+      customerName: review.userId?.userName || "",
+      carId: review.carRent?._id || "",
+      carTitle:
+        `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
+      rating: review.rating,
+      comment: review.comment,
+      createdAt: review.createdAt,
+    }));
     return ok(res, {
       total,
       page,
@@ -440,7 +463,6 @@ export const getReviews = async (req, res, next) => {
     next(error);
   }
 };
-
 export const getAnalytics = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
@@ -448,6 +470,10 @@ export const getAnalytics = async (req, res, next) => {
    
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+    const RENT_ACTIVE_STATUSES = ["completed", "pending"];
+    const BUY_ACTIVE_STATUSES = ["completed", "pending", "accepted"];
+    const BUY_SUCCESS_STATUSES = ["completed", "accepted"];
 
     const [
       monthlyRentRevenue,
@@ -461,52 +487,51 @@ export const getAnalytics = async (req, res, next) => {
       conversionRent,
       conversionBuy,
     ] = await Promise.all([
-
-      // إيرادات الإيجار شهريًا
+      // Rent revenue monthly
       orderModel.aggregate([
         {
           $match: {
             owner: traderId,
-            status: "completed",
+            status: { $in: RENT_ACTIVE_STATUSES },
             createdAt: { $gte: twelveMonthsAgo },
           },
         },
         {
           $group: {
             _id: {
-              year:  { $year: "$createdAt" },
+              year: { $year: "$createdAt" },
               month: { $month: "$createdAt" },
             },
             revenue: { $sum: "$totalPrice" },
-            orders:  { $sum: 1 },
+            orders: { $sum: 1 },
           },
         },
         { $sort: { "_id.year": 1, "_id.month": 1 } },
       ]),
 
-      // إيرادات البيع شهريًا
+      // Buy revenue monthly
       orderBuyModel.aggregate([
         {
           $match: {
             owner: traderId,
-            status: "completed",
+            status: { $in: BUY_ACTIVE_STATUSES },
             createdAt: { $gte: twelveMonthsAgo },
           },
         },
         {
           $group: {
             _id: {
-              year:  { $year: "$createdAt" },
+              year: { $year: "$createdAt" },
               month: { $month: "$createdAt" },
             },
             revenue: { $sum: "$carprice" },
-            orders:  { $sum: 1 },
+            orders: { $sum: 1 },
           },
         },
         { $sort: { "_id.year": 1, "_id.month": 1 } },
       ]),
 
-      // عدد أوردرات الإيجار شهريًا (كل الحالات)
+      // Rent order count monthly (all statuses)
       orderModel.aggregate([
         {
           $match: {
@@ -517,7 +542,7 @@ export const getAnalytics = async (req, res, next) => {
         {
           $group: {
             _id: {
-              year:  { $year: "$createdAt" },
+              year: { $year: "$createdAt" },
               month: { $month: "$createdAt" },
             },
             count: { $sum: 1 },
@@ -526,7 +551,7 @@ export const getAnalytics = async (req, res, next) => {
         { $sort: { "_id.year": 1, "_id.month": 1 } },
       ]),
 
-      // عدد أوردرات الشراء شهريًا
+      // Buy order count monthly (all statuses)
       orderBuyModel.aggregate([
         {
           $match: {
@@ -537,7 +562,7 @@ export const getAnalytics = async (req, res, next) => {
         {
           $group: {
             _id: {
-              year:  { $year: "$createdAt" },
+              year: { $year: "$createdAt" },
               month: { $month: "$createdAt" },
             },
             count: { $sum: 1 },
@@ -546,25 +571,30 @@ export const getAnalytics = async (req, res, next) => {
         { $sort: { "_id.year": 1, "_id.month": 1 } },
       ]),
 
-      // توزيع الحالات - إيجار
+      // Status distribution — rent
       orderModel.aggregate([
         { $match: { owner: traderId } },
         { $group: { _id: "$status", count: { $sum: 1 } } },
       ]),
 
-      // توزيع الحالات - شراء
+      // Status distribution — buy
       orderBuyModel.aggregate([
         { $match: { owner: traderId } },
         { $group: { _id: "$status", count: { $sum: 1 } } },
       ]),
 
-      // أعلى 5 سيارات إيجار أداءً
+      // Top 5 rent cars
       orderModel.aggregate([
-        { $match: { owner: traderId, status: "completed" } },
+        {
+          $match: {
+            owner: traderId,
+            status: { $in: RENT_ACTIVE_STATUSES },
+          },
+        },
         {
           $group: {
-            _id:      "$car",
-            revenue:  { $sum: "$totalPrice" },
+            _id: "$car",
+            revenue: { $sum: "$totalPrice" },
             bookings: { $sum: 1 },
           },
         },
@@ -572,32 +602,37 @@ export const getAnalytics = async (req, res, next) => {
         { $limit: 5 },
         {
           $lookup: {
-            from:         "carrents",
-            localField:   "_id",
+            from: "carrents",
+            localField: "_id",
             foreignField: "_id",
-            as:           "car",
+            as: "car",
           },
         },
-        { $unwind: "$car" },
+        // ✅ FIXED: preserveNullAndEmptyArrays keeps orders even if car was deleted
+        { $unwind: { path: "$car", preserveNullAndEmptyArrays: true } },
         {
           $project: {
             revenue: 1,
             bookings: 1,
-            "car.carbrand":  1,
-            "car.carname":   1,
-            "car.carmodel":  1,
-            "car.carimage":  1,
-            "car.carprice":  1,
+            "car.carbrand": 1,
+            "car.carname": 1,
+            "car.carmodel": 1,
+            "car.carprice": 1,
           },
         },
       ]),
 
-      // أعلى 5 سيارات بيع أداءً
+      // Top 5 buy cars
       orderBuyModel.aggregate([
-        { $match: { owner: traderId, status: "completed" } },
+        {
+          $match: {
+            owner: traderId,
+            status: { $in: BUY_ACTIVE_STATUSES },
+          },
+        },
         {
           $group: {
-            _id:   "$car",
+            _id: "$car",
             sales: { $sum: 1 },
             revenue: { $sum: "$carprice" },
           },
@@ -606,99 +641,172 @@ export const getAnalytics = async (req, res, next) => {
         { $limit: 5 },
         {
           $lookup: {
-            from:         "carbuys",
-            localField:   "_id",
+            from: "carbuys",
+            localField: "_id",
             foreignField: "_id",
-            as:           "car",
+            as: "car",
           },
         },
-        { $unwind: "$car" },
+        // ✅ FIXED: preserveNullAndEmptyArrays keeps orders even if car was deleted
+        { $unwind: { path: "$car", preserveNullAndEmptyArrays: true } },
         {
           $project: {
             sales: 1,
             revenue: 1,
-            "car.carbrand":  1,
-            "car.carname":   1,
-            "car.carmodel":  1,
-            "car.carimage":  1,
-            "car.carprice":  1,
+            "car.carbrand": 1,
+            "car.carname": 1,
+            "car.carmodel": 1,
+            "car.carprice": 1,
           },
         },
       ]),
 
-      // معدل تحويل الإيجار (completed / total)
+      // Conversion rate — rent
       orderModel.aggregate([
         { $match: { owner: traderId } },
         {
           $group: {
-            _id:   null,
+            _id: null,
             total: { $sum: 1 },
-            completed: { $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] } },
+            completed: {
+              $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] },
+            },
+            pending: {
+              $sum: { $cond: [{ $eq: ["$status", "pending"] }, 1, 0] },
+            },
           },
         },
       ]),
 
-      // معدل تحويل الشراء
+      // Conversion rate — buy
       orderBuyModel.aggregate([
         { $match: { owner: traderId } },
         {
           $group: {
-            _id:   null,
+            _id: null,
             total: { $sum: 1 },
-            completed: { $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] } },
+            completed: {
+              $sum: {
+                $cond: [{ $in: ["$status", BUY_SUCCESS_STATUSES] }, 1, 0],
+              },
+            },
+            pending: {
+              $sum: { $cond: [{ $eq: ["$status", "pending"] }, 1, 0] },
+            },
           },
         },
       ]),
     ]);
 
-    // دمج إيرادات الإيجار والشراء في timeline واحد
+    // Merge rent + buy into one revenue timeline
     const revenueMap = {};
 
     monthlyRentRevenue.forEach(({ _id, revenue, orders }) => {
       const key = `${_id.year}-${String(_id.month).padStart(2, "0")}`;
-      if (!revenueMap[key]) revenueMap[key] = { month: key, rentRevenue: 0, buyRevenue: 0, rentOrders: 0, buyOrders: 0 };
+      if (!revenueMap[key])
+        revenueMap[key] = {
+          month: key,
+          rentRevenue: 0,
+          buyRevenue: 0,
+          rentOrders: 0,
+          buyOrders: 0,
+        };
       revenueMap[key].rentRevenue = revenue;
-      revenueMap[key].rentOrders  = orders;
+      revenueMap[key].rentOrders = orders;
     });
 
     monthlyBuyRevenue.forEach(({ _id, revenue, orders }) => {
       const key = `${_id.year}-${String(_id.month).padStart(2, "0")}`;
-      if (!revenueMap[key]) revenueMap[key] = { month: key, rentRevenue: 0, buyRevenue: 0, rentOrders: 0, buyOrders: 0 };
+      if (!revenueMap[key])
+        revenueMap[key] = {
+          month: key,
+          rentRevenue: 0,
+          buyRevenue: 0,
+          rentOrders: 0,
+          buyOrders: 0,
+        };
       revenueMap[key].buyRevenue = revenue;
-      revenueMap[key].buyOrders  = orders;
+      revenueMap[key].buyOrders = orders;
     });
 
     const revenueTimeline = Object.values(revenueMap)
-      .map(m => ({ ...m, totalRevenue: m.rentRevenue + m.buyRevenue }))
+      .map((m) => ({ ...m, totalRevenue: m.rentRevenue + m.buyRevenue }))
       .sort((a, b) => a.month.localeCompare(b.month));
 
-    // توزيع الحالات
+    // Format status distribution
     const formatStatus = (arr) =>
       arr.reduce((acc, { _id, count }) => ({ ...acc, [_id]: count }), {});
 
-    // معدل التحويل
-    const rentTotal     = conversionRent[0]?.total     || 0;
+    // Conversion values
+    const rentTotal = conversionRent[0]?.total || 0;
     const rentCompleted = conversionRent[0]?.completed || 0;
-    const buyTotal      = conversionBuy[0]?.total      || 0;
-    const buyCompleted  = conversionBuy[0]?.completed  || 0;
+    const rentPending = conversionRent[0]?.pending || 0;
+
+    const buyTotal = conversionBuy[0]?.total || 0;
+    const buyCompleted = conversionBuy[0]?.completed || 0;
+    const buyPending = conversionBuy[0]?.pending || 0;
+
+    // Total revenue
+    const totalRentRevenue = revenueTimeline.reduce(
+      (sum, m) => sum + m.rentRevenue,
+      0,
+    );
+    const totalBuyRevenue = revenueTimeline.reduce(
+      (sum, m) => sum + m.buyRevenue,
+      0,
+    );
+    const totalRevenue = totalRentRevenue + totalBuyRevenue;
+
+    // Revenue mix
+    const rentMixPercent =
+      totalRevenue > 0
+        ? +((totalRentRevenue / totalRevenue) * 100).toFixed(1)
+        : 0;
+    const buyMixPercent =
+      totalRevenue > 0
+        ? +((totalBuyRevenue / totalRevenue) * 100).toFixed(1)
+        : 0;
+
+    // Open demand = pending orders
+    const openDemand = rentPending + buyPending;
+
+    const overallConversionRate =
+      rentTotal + buyTotal > 0
+        ? +(
+            ((rentCompleted + buyCompleted) / (rentTotal + buyTotal)) *
+            100
+          ).toFixed(1)
+        : 0;
 
     return ok(res, {
+      summary: {
+        monthlyRevenue: totalRevenue,
+        openDemand,
+        conversionRate: overallConversionRate,
+        totalRentRevenue,
+        totalBuyRevenue,
+      },
+      revenueMix: {
+        rentPercent: rentMixPercent,
+        buyPercent: buyMixPercent,
+      },
       revenueTimeline,
       orderVolume: {
         rent: monthlyRentOrders,
-        buy:  monthlyBuyOrders,
+        buy: monthlyBuyOrders,
       },
       statusDistribution: {
         rent: formatStatus(statusDistributionRent),
-        buy:  formatStatus(statusDistributionBuy),
+        buy: formatStatus(statusDistributionBuy),
       },
       topPerformingCars: {
         rent: topRentCars,
-        buy:  topBuyCars,
+        buy: topBuyCars,
       },
       conversionRate: {
         rent: rentTotal ? +((rentCompleted / rentTotal) * 100).toFixed(1) : 0,
-        buy:  buyTotal  ? +((buyCompleted  / buyTotal)  * 100).toFixed(1) : 0,
+        buy: buyTotal ? +((buyCompleted / buyTotal) * 100).toFixed(1) : 0,
+        overall: overallConversionRate,
       },
     });
   } catch (error) {
@@ -708,8 +816,7 @@ export const getAnalytics = async (req, res, next) => {
 
 export const getEarnings = async (req, res, next) => {
   try {
-        const traderId = new mongoose.Types.ObjectId(req.user.id);
-
+    const traderId = new mongoose.Types.ObjectId(req.user.id);
 
     const [
       totalEarningsRent,
@@ -718,7 +825,6 @@ export const getEarnings = async (req, res, next) => {
       pendingBuyRevenue,
       monthlyBreakdown,
     ] = await Promise.all([
-
       // إجمالي الأرباح المكتملة - إيجار
       orderModel.aggregate([
         { $match: { owner: traderId, status: "completed" } },
@@ -749,11 +855,11 @@ export const getEarnings = async (req, res, next) => {
         {
           $group: {
             _id: {
-              year:  { $year: "$createdAt" },
+              year: { $year: "$createdAt" },
               month: { $month: "$createdAt" },
             },
             rentEarnings: { $sum: "$totalPrice" },
-            rentCount:    { $sum: 1 },
+            rentCount: { $sum: 1 },
           },
         },
         { $sort: { "_id.year": -1, "_id.month": -1 } },
@@ -761,18 +867,18 @@ export const getEarnings = async (req, res, next) => {
       ]),
     ]);
 
-    const totalRent    = totalEarningsRent[0]?.total  || 0;
-    const totalBuy     = totalEarningsBuy[0]?.total   || 0;
-    const pendingRent  = pendingRentRevenue[0]?.total || 0;
-    const pendingBuy   = pendingBuyRevenue[0]?.total  || 0;
+    const totalRent = totalEarningsRent[0]?.total || 0;
+    const totalBuy = totalEarningsBuy[0]?.total || 0;
+    const pendingRent = pendingRentRevenue[0]?.total || 0;
+    const pendingBuy = pendingBuyRevenue[0]?.total || 0;
 
     return ok(res, {
-      available: totalRent + totalBuy,           // الرصيد المتاح (مكتمل)
-      pending:   pendingRent + pendingBuy,        // الرصيد المعلق (accepted)
-      total:     totalRent + totalBuy + pendingRent + pendingBuy,
+      available: totalRent + totalBuy, // الرصيد المتاح (مكتمل)
+      pending: pendingRent + pendingBuy, // الرصيد المعلق (accepted)
+      total: totalRent + totalBuy + pendingRent + pendingBuy,
       breakdown: {
         rent: { earned: totalRent, pending: pendingRent },
-        buy:  { earned: totalBuy,  pending: pendingBuy  },
+        buy: { earned: totalBuy, pending: pendingBuy },
       },
       monthlyBreakdown,
     });
@@ -781,45 +887,48 @@ export const getEarnings = async (req, res, next) => {
   }
 };
 
-
 export const getRecentActivity = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
-    const limit    = Number(req.query.limit) || 10;
+    const limit = Number(req.query.limit) || 10;
 
-    const [recentRentOrders, recentBuyOrders, recentReviews] = await Promise.all([
-      orderModel
-        .find({ owner: traderId })
-        .populate("user", "userName avatar")
-        .populate("car",  "carbrand carname carimage")
-        .sort({ createdAt: -1 })
-        .limit(limit)
-        .lean(),
+    const [recentRentOrders, recentBuyOrders, recentReviews] =
+      await Promise.all([
+        orderModel
+          .find({ owner: traderId })
+          .populate("user", "userName avatar")
+          .populate("car", "carbrand carname carimage")
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .lean(),
 
-      orderBuyModel
-        .find({ owner: traderId })
-        .populate("user", "userName avatar")
-        .populate("car",  "carbrand carname carimage")
-        .sort({ createdAt: -1 })
-        .limit(limit)
-        .lean(),
+        orderBuyModel
+          .find({ owner: traderId })
+          .populate("user", "userName avatar")
+          .populate("car", "carbrand carname carimage")
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .lean(),
 
-      reviewModel
-        .find({ car: { $in: await carModel.distinct("_id", { owner: traderId }) } })
-        .populate("user", "userName avatar")
-        .populate("car",  "carbrand carname")
-        .sort({ createdAt: -1 })
-        .limit(limit)
-        .lean(),
-    ]);
+        reviewModel
+          .find({
+            car: { $in: await carModel.distinct("_id", { owner: traderId }) },
+          })
+          .populate("user", "userName avatar")
+          .populate("car", "carbrand carname")
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .lean(),
+      ]);
 
     // دمج كل الأنشطة وترتيبها بالتاريخ
     const activities = [
-      ...recentRentOrders.map(o => ({ type: "rent_order",  ...o })),
-      ...recentBuyOrders.map(o  => ({ type: "buy_order",   ...o })),
-      ...recentReviews.map(r    => ({ type: "review",      ...r })),
-    ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-     .slice(0, limit);
+      ...recentRentOrders.map((o) => ({ type: "rent_order", ...o })),
+      ...recentBuyOrders.map((o) => ({ type: "buy_order", ...o })),
+      ...recentReviews.map((r) => ({ type: "review", ...r })),
+    ]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, limit);
 
     return ok(res, { activities });
   } catch (error) {

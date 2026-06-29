@@ -24,7 +24,7 @@ const roomSchema = new mongoose.Schema(
 
     admin: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
 
     avatar: { type: String },

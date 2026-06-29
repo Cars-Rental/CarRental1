@@ -1,9 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Bell, Menu, User } from "lucide-react";
+import { Bell, LogOut, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle, ThemeToggle } from "@/components/shared";
+import { useLogout } from "@/features/auth/hooks";
 
 interface TraderTopbarProps {
   onMenuClick?: () => void;
@@ -17,6 +18,8 @@ export function TraderTopbar({
   isSidebarCollapsed = false,
 }: TraderTopbarProps) {
   const t = useTranslations("TraderDashboard");
+  const navT = useTranslations("Navigation");
+  const { mutate: logout, isPending } = useLogout();
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6 shadow-sm">
@@ -59,6 +62,15 @@ export function TraderTopbar({
           <Bell className="h-5 w-5 text-muted-foreground" />
           <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-destructive" />
           <span className="sr-only">{t("topbar.notifications")}</span>
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          disabled={isPending}
+          onClick={() => logout()}
+        >
+          <LogOut className="h-5 w-5 text-muted-foreground" />
+          <span className="sr-only">{navT("logout")}</span>
         </Button>
         
         <div className="flex items-center gap-2 border-l border-border pl-4">

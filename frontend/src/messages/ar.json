@@ -17,7 +17,8 @@
     "dashboard": "لوحة التحكم",
     "orders": "طلباتي",
     "favorites": "المفضلة",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "messages": "الرسائل"
   },
   "Auth": {
     "register": {
@@ -701,6 +702,7 @@
       "orders": "الطلبات",
       "customers": "العملاء",
       "reviews": "التقييمات",
+      "recentActivity": "النشاط الأخير",
       "messages": "الرسائل",
       "analytics": "التحليلات",
       "earnings": "الأرباح",
@@ -711,7 +713,8 @@
         "title": "نظرة عامة",
         "description": "تابع الإيرادات والطلب وآخر أنشطة العملاء.",
         "recentBookings": "أحدث الحجوزات",
-        "recentOrders": "أحدث الطلبات"
+        "recentOrders": "أحدث الطلبات",
+        "recentActivity": "النشاط الأخير"
       },
       "rentalCars": {
         "title": "سيارات الإيجار",
@@ -736,6 +739,10 @@
       "reviews": {
         "title": "التقييمات",
         "description": "اطلع على آراء العملاء حول سياراتك."
+      },
+      "recentActivity": {
+        "title": "النشاط الأخير",
+        "description": "تابع أحدث أنشطة الإيجار والشراء على سياراتك."
       },
       "messages": {
         "title": "الرسائل",
@@ -763,6 +770,23 @@
       "averageRating": "متوسط التقييم",
       "ratingValue": "{value} / 5"
     },
+    "filters": {
+      "searchCars": "ابحث باسم السيارة أو الموديل أو الموقع...",
+      "searchOrders": "ابحث بالعميل أو السيارة أو رقم الطلب...",
+      "searchCustomers": "ابحث بالاسم أو البريد أو الهاتف...",
+      "allStatuses": "كل الحالات",
+      "allLocations": "كل المواقع",
+      "minPrice": "أقل سعر",
+      "maxPrice": "أعلى سعر",
+      "minOrders": "أقل طلبات",
+      "minSpent": "أقل إنفاق"
+    },
+    "pagination": {
+      "summary": "عرض {current}-{end} من {total} سيارة",
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "صفحة {page} من {totalPages}"
+    },
     "tables": {
       "customer": "العميل",
       "car": "السيارة",
@@ -774,6 +798,7 @@
       "salePrice": "سعر البيع",
       "specs": "المواصفات",
       "specsValue": "{transmission} / {fuelType} / {seats} مقاعد",
+      "specsValueShort": "{transmission} / {seats} مقاعد",
       "dates": "التواريخ",
       "dateRange": "{start} - {end}",
       "createdAt": "تاريخ الإنشاء",
@@ -832,6 +857,10 @@
         "title": "لا توجد بيانات أرباح",
         "description": "ستظهر الأرباح هنا بعد توفر المعاملات."
       },
+      "activity": {
+        "title": "لا يوجد نشاط حديث",
+        "description": "سيظهر نشاط الإيجار والشراء الحديث هنا."
+      },
       "settings": {
         "title": "لا توجد بيانات للحساب",
         "description": "ستظهر بيانات الحساب بعد تحميل الملف الشخصي."
@@ -887,7 +916,20 @@
     "earnings": {
       "availableBalance": "الرصيد المتاح",
       "pendingBalance": "الرصيد المعلق",
-      "totalEarnings": "إجمالي الأرباح"
+      "totalEarnings": "إجمالي الأرباح",
+      "earned": "المكتسب",
+      "pending": "المعلق",
+      "breakdown": {
+        "rent": "أرباح الإيجار",
+        "buy": "أرباح البيع"
+      }
+    },
+    "activity": {
+      "title": "أحدث نشاط على المنصة",
+      "type": {
+        "buy_order": "طلب شراء",
+        "rent_order": "طلب إيجار"
+      }
     },
     "analytics": {
       "revenueTrend": "اتجاه الإيرادات",
@@ -1032,6 +1074,13 @@
   },
   "Chat": {
     "title": "المحادثات",
+    "conversations": "المحادثات",
+    "selectConversation": "اختر محادثة لبدء الدردشة",
+    "selectRoomHint": "اختر غرفة من القائمة على اليمين لعرض الرسائل",
+    "newChat": "محادثة جديدة",
+    "selectContacts": "اختر الأشخاص لبدء محادثة خاصة أو إنشاء مجموعة",
+    "create": "إنشاء",
+    "cancel": "إلغاء",
     "searchPlaceholder": "البحث عن محادثة...",
     "all": "الكل",
     "open": "مفتوحة",
@@ -1046,6 +1095,12 @@
     "online": "متصل الآن",
     "offline": "غير متصل",
     "noActiveRoom": "اختر محادثة لبدء الدردشة",
+    "noMessagesYet": "لا توجد رسائل بعد",
+    "groupChat": "محادثة مجموعة",
+    "groupName": "اسم المجموعة",
+    "selectAtLeastOne": "الرجاء اختيار شخص واحد على الأقل.",
+    "socketNotConnected": "السوكيت غير متصل. أعد تحميل الصفحة.",
+    "createRoomFailed": "فشل إنشاء غرفة الدردشة. حاول مرة أخرى.",
     "startChatWith": "محادثة مع {name}",
     "noRooms": "لم يتم العثور على محادثات"
   }

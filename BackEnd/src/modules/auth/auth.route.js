@@ -53,4 +53,6 @@ router.post(
   validation(authvalidation.resendOtpSchema),
   auth.resendOtp,
 );
+router.patch("/update-profile", verifyToken, auth.updateProfiles);
+router.get("/document", verifyToken, auth.countDocument);
 export default router;
