@@ -269,13 +269,6 @@ export const getBuyOrders = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-     // مؤقت للتشخيص
-    const total1 = await orderBuyModel.countDocuments({ owner: traderId });
-    console.log("total orders for this trader:", total1);
-    console.log("traderId:", traderId); 
-
-    const allOwners = await orderBuyModel.distinct("owner");
-console.log("all owners:", allOwners);
 
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
