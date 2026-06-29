@@ -19,10 +19,6 @@ import dashboardroute from "../src/modules/Dashboard-trader/dashboard.route.js";
 import reviewRoutes from "../src/modules/review/review.route.js";
 import jwt from "jsonwebtoken";
 import { handleSocketConnection } from "./sockets/onlineUsers.js";
-import { userModel } from "./DB/model/user.model.js";
-import { socketAuthMiddleware } from "./sockets/socket.auth.js";
-import { registerChatEvents } from "./sockets/chat.socket.js";
-import { addUser, removeUser, getAllOnlineUserIds } from "./sockets/onlineUsers.js";
 dotenv.config();
 
 import ratelimit from "express-rate-limit";
@@ -32,7 +28,7 @@ const limiter = ratelimit({
   message: "too many request please try again after 20 min",
 });
 
-const bootstrap = (app, express, io) => {
+const bootstrap = (app, express, io) => {  
   app.use(express.json());
   app.use(helmet());
   app.use(
@@ -70,11 +66,13 @@ const bootstrap = (app, express, io) => {
   app.use("/orderBuy", orderBuy);
   app.use("/chat", chatroute);
   app.use("/wishlist", wishlistroute);
-  app.use("/reviews", reviewRoutes);
+  app.use("/reviews", reviewRoutes );
   app.use(globalErrorhandling);
 
+  
   app.set("io", io);
 
+ 
   io.use((socket, next) => {
     const token = socket.handshake.auth?.token;
     if (!token) return next(new Error("No token provided"));
@@ -87,22 +85,9 @@ const bootstrap = (app, express, io) => {
     }
   });
 
+
   io.on("connection", (socket) => {
     handleSocketConnection(io, socket);
-  io.use(socketAuthMiddleware);
-
-  io.on("connection", async (socket) => {
-    const userId = socket.user._id.toString();
-
-    addUser(userId, socket.id);
-    userModel.findByIdAndUpdate(userId, { isOnline: true, socketId: socket.id }).exec();
-    socket.broadcast.emit("user:online", { userId });
-
-    socket.emit("users:onlineList", {
-      userIds: getAllOnlineUserIds(),
-    });
-
-    registerChatEvents(io, socket);
   });
 
   ConnectDB();
