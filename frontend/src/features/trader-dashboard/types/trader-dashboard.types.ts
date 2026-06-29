@@ -2,7 +2,7 @@ import type { BodyType, FuelType, Transmission } from "@/features/cars/types/car
 
 export type TraderCarType = "rent" | "sale";
 export type TraderCarStatus = "active" | "maintenance" | "sold" | "inactive";
-export type TraderBookingStatus = "pending" | "confirmed" | "active" | "completed" | "cancelled" | "rejected";
+export type TraderBookingStatus = "pending" | "confirmed" | "active" | "completed" | "cancelled" | "rejected" | "accepted";
 export type TraderOrderStatus = "pending" | "negotiating" | "accepted" | "rejected" | "completed" | "cancelled";
 
 export interface TraderDashboardStats {
@@ -14,6 +14,66 @@ export interface TraderDashboardStats {
   completedOrders: number;
   totalCustomers: number;
   averageRating: number;
+}
+
+export interface TraderOverviewOrder {
+  id: string;
+  customerName: string;
+  carTitle: string;
+  totalPrice: number;
+  status: string;
+}
+
+export interface TraderOverviewResponse {
+  revenue: {
+    rent: number;
+    buy: number;
+    total: number;
+  };
+  activeRentals: number;
+  pendingOrders: {
+    rent: number;
+    buy: number;
+    total: number;
+  };
+  completedOrders: {
+    rent: number;
+    buy: number;
+    total: number;
+  };
+  totalCustomers: number;
+  reviews: {
+    average: number;
+    total: number;
+  };
+  recentRentOrders: TraderOverviewOrder[];
+  recentBuyOrders: TraderOverviewOrder[];
+}
+
+export interface TraderDashboardCarResponseItem {
+  id: string;
+  name: string;
+  model: string;
+  year: number;
+  image?: {
+    secure_url: string;
+    public_id: string;
+    _id: string;
+  };
+  location: string;
+  price: number;
+  specs: {
+    transmission: string;
+    seats: number;
+  };
+  status?: string;
+}
+
+export interface TraderDashboardCarsResponse {
+  total: number;
+  page: number;
+  limit: number;
+  cars: TraderDashboardCarResponseItem[];
 }
 
 export interface TraderCar {

@@ -763,6 +763,19 @@
       "averageRating": "متوسط التقييم",
       "ratingValue": "{value} / 5"
     },
+    "filters": {
+      "searchCars": "ابحث باسم السيارة أو الموديل أو الموقع...",
+      "allStatuses": "كل الحالات",
+      "allLocations": "كل المواقع",
+      "minPrice": "أقل سعر",
+      "maxPrice": "أعلى سعر"
+    },
+    "pagination": {
+      "summary": "عرض {current}-{end} من {total} سيارة",
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "صفحة {page} من {totalPages}"
+    },
     "tables": {
       "customer": "العميل",
       "car": "السيارة",
@@ -774,6 +787,7 @@
       "salePrice": "سعر البيع",
       "specs": "المواصفات",
       "specsValue": "{transmission} / {fuelType} / {seats} مقاعد",
+      "specsValueShort": "{transmission} / {seats} مقاعد",
       "dates": "التواريخ",
       "dateRange": "{start} - {end}",
       "createdAt": "تاريخ الإنشاء",

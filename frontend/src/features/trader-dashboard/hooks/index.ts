@@ -2,6 +2,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/constants";
 import * as api from "../api";
 
+export function useTraderOverview() {
+  return useQuery({
+    queryKey: QUERY_KEYS.TRADER.OVERVIEW,
+    queryFn: api.getTraderOverview,
+  });
+}
+
 export function useDashboardStats() {
   return useQuery({
     queryKey: QUERY_KEYS.TRADER.DASHBOARD_STATS,

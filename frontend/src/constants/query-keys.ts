@@ -25,6 +25,7 @@ export const QUERY_KEYS = {
   },
 
   TRADER: {
+    OVERVIEW: ["trader", "dashboard", "overview"] as const,
     DASHBOARD_STATS: ["trader", "dashboard", "stats"] as const,
     RECENT_BOOKINGS: ["trader", "dashboard", "recent-bookings"] as const,
     RECENT_ORDERS: ["trader", "dashboard", "recent-orders"] as const,

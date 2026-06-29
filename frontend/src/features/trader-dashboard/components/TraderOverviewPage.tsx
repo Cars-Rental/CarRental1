@@ -2,12 +2,14 @@
 
 import { CalendarDays, ShoppingCart } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import {
-  useDashboardStats,
-  useRecentBookings,
-  useRecentOrders,
-} from "../hooks";
-import type { TraderBooking, TraderOrder } from "../types";
+import { useTraderOverview } from "../hooks";
+import type {
+  TraderBooking,
+  TraderBookingStatus,
+  TraderOrder,
+  TraderOrderStatus,
+  TraderOverviewOrder,
+} from "../types";
 import { DashboardEmptyState } from "./DashboardEmptyState";
 import { DashboardPageHeader } from "./DashboardPageHeader";
 import { DashboardStatsCards } from "./DashboardStatsCards";
@@ -18,10 +20,23 @@ import { formatDashboardCurrency } from "../utils";
 export function TraderOverviewPage() {
   const locale = useLocale();
   const t = useTranslations("TraderDashboard");
-  const { data: stats, isLoading: isStatsLoading } = useDashboardStats();
-  const { data: bookings = [], isLoading: isBookingsLoading } =
-    useRecentBookings();
-  const { data: orders = [], isLoading: isOrdersLoading } = useRecentOrders();
+  const { data: overview, isLoading } = useTraderOverview();
+
+  const stats = overview
+    ? {
+        totalRevenue: overview.revenue.total,
+        monthlyRevenue: overview.revenue.total,
+        activeRentalCars: overview.activeRentals,
+        carsForSale: 0,
+        pendingBookings: overview.pendingOrders.total,
+        completedOrders: overview.completedOrders.total,
+        totalCustomers: overview.totalCustomers,
+        averageRating: overview.reviews.average,
+      }
+    : undefined;
+
+  const bookings = overview?.recentRentOrders.map(mapOverviewRentOrder) ?? [];
+  const orders = overview?.recentBuyOrders.map(mapOverviewBuyOrder) ?? [];
 
   return (
     <div>
@@ -30,14 +45,14 @@ export function TraderOverviewPage() {
         description={t("pages.overview.description")}
       />
 
-      <DashboardStatsCards stats={stats} isLoading={isStatsLoading} />
+      <DashboardStatsCards stats={stats} isLoading={isLoading} />
 
       <div className="mt-8 grid gap-6 xl:grid-cols-2">
         <section>
           <h2 className="mb-3 text-base font-semibold text-foreground">
             {t("pages.overview.recentBookings")}
           </h2>
-          {bookings.length === 0 && !isBookingsLoading ? (
+          {bookings.length === 0 && !isLoading ? (
             <DashboardEmptyState
               icon={CalendarDays}
               title={t("empty.bookings.title")}
@@ -47,7 +62,7 @@ export function TraderOverviewPage() {
             <DashboardTable<TraderBooking>
               data={bookings}
               getRowKey={(booking) => booking.id}
-              isLoading={isBookingsLoading}
+              isLoading={isLoading}
               columns={[
                 {
                   key: "customer",
@@ -84,7 +99,7 @@ export function TraderOverviewPage() {
           <h2 className="mb-3 text-base font-semibold text-foreground">
             {t("pages.overview.recentOrders")}
           </h2>
-          {orders.length === 0 && !isOrdersLoading ? (
+          {orders.length === 0 && !isLoading ? (
             <DashboardEmptyState
               icon={ShoppingCart}
               title={t("empty.orders.title")}
@@ -94,7 +109,7 @@ export function TraderOverviewPage() {
             <DashboardTable<TraderOrder>
               data={orders}
               getRowKey={(order) => order.id}
-              isLoading={isOrdersLoading}
+              isLoading={isLoading}
               columns={[
                 {
                   key: "customer",
@@ -129,4 +144,35 @@ export function TraderOverviewPage() {
       </div>
     </div>
   );
+}
+
+function normalizeOverviewStatus(status: string) {
+  return status.toLowerCase();
+}
+
+function mapOverviewRentOrder(order: TraderOverviewOrder): TraderBooking {
+  return {
+    id: order.id,
+    carId: order.id,
+    customerId: order.id,
+    startDate: "",
+    endDate: "",
+    totalPrice: order.totalPrice,
+    status: normalizeOverviewStatus(order.status) as TraderBookingStatus,
+    customerName: order.customerName,
+    carTitle: order.carTitle,
+  };
+}
+
+function mapOverviewBuyOrder(order: TraderOverviewOrder): TraderOrder {
+  return {
+    id: order.id,
+    carId: order.id,
+    customerId: order.id,
+    offerPrice: order.totalPrice,
+    status: normalizeOverviewStatus(order.status) as TraderOrderStatus,
+    createdAt: "",
+    customerName: order.customerName,
+    carTitle: order.carTitle,
+  };
 }
