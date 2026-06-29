@@ -3,6 +3,9 @@ import { userModel } from "../../DB/model/user.model.js";
 import bcrypt from "bcrypt";
 import { emailEvent } from "../../utlis/events/email.event.js";
 import jwt from "jsonwebtoken";
+import { orderBuyModel } from "../../DB/model/orderBuy.model.js";
+import { orderModel } from "../../DB/model/order.model.js";
+import { wishlistModel } from "../../DB/wishlist.model.js";
 
 export const register = async (req, res, next) => {
   const { userName, email, password, phone, role, gender } = req.body;
@@ -407,7 +410,7 @@ export const getProfilee = async (req, res) => {
   try {
     const user = await userModel
       .findById(req.userId)
-      .select("_id userName email phone gender role");
+      .select("_id userName email phone gender role createdAt");
 
     if (!user) {
       return res.status(404).json({
@@ -468,4 +471,17 @@ export const updateProfiles = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+export const countDocument = async (req, res, next) => {
+  const orders = await orderModel.countDocuments({ user: req.userId });
+  const booking = await orderBuyModel.countDocuments({ user: req.userId });
+  const wishLIST = await wishlistModel.countDocuments({ user: req.userId });
+  res.json({
+    success: true,
+    message: "Document is",
+    orders,
+    booking,
+    wishLIST,
+  });
 };

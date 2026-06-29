@@ -54,4 +54,5 @@ router.post(
   auth.resendOtp,
 );
 router.patch("/update-profile", verifyToken, auth.updateProfiles);
+router.get("/document", verifyToken, auth.countDocument);
 export default router;
