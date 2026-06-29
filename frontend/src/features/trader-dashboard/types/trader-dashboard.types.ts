@@ -76,6 +76,39 @@ export interface TraderDashboardCarsResponse {
   cars: TraderDashboardCarResponseItem[];
 }
 
+export interface TraderDashboardRentOrderItem {
+  id: string;
+  customer: string;
+  car: string;
+  startDate: string;
+  endDate: string;
+  totalPrice: number;
+  status: string;
+}
+
+export interface TraderDashboardBuyOrderItem {
+  id: string;
+  customer: string;
+  car: string;
+  carprice: number;
+  createdAt: string;
+  status: string;
+}
+
+export interface TraderDashboardRentOrdersResponse {
+  total: number;
+  page: number;
+  limit: number;
+  orders: TraderDashboardRentOrderItem[];
+}
+
+export interface TraderDashboardBuyOrdersResponse {
+  total: number;
+  page: number;
+  limit: number;
+  orders: TraderDashboardBuyOrderItem[];
+}
+
 export interface TraderCar {
   id: string;
   title: string;

@@ -844,6 +844,7 @@
     },
     "filters": {
       "searchCars": "Search by car name, model, or location...",
+      "searchOrders": "Search by customer, car, or order ID...",
       "allStatuses": "All statuses",
       "allLocations": "All locations",
       "minPrice": "Min price",

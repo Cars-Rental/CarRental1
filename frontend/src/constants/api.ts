@@ -57,6 +57,8 @@ export const API_ENDPOINTS = {
       OVERVIEW: "/dashboard/overview",
       RENT_CARS: "/dashboard/rent-cars",
       BUY_CARS: "/dashboard/buy-cars",
+      RENT_ORDERS: "/dashboard/rent-orders",
+      BUY_ORDERS: "/dashboard/buy-orders",
       STATS: "/trader/dashboard/stats",
       RECENT_BOOKINGS: "/trader/dashboard/recent-bookings",
       RECENT_ORDERS: "/trader/dashboard/recent-orders",

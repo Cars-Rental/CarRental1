@@ -5,6 +5,10 @@ import type {
   TraderOverviewResponse,
   TraderDashboardCarsResponse,
   TraderDashboardCarResponseItem,
+  TraderDashboardRentOrdersResponse,
+  TraderDashboardBuyOrdersResponse,
+  TraderDashboardRentOrderItem,
+  TraderDashboardBuyOrderItem,
   TraderBooking, 
   TraderOrder,
   TraderCar,
@@ -68,6 +72,35 @@ const mapDashboardCarToTraderCar = (
   fuelType: "",
   seats: car.specs.seats,
   status: mapDashboardCarStatus(car.status ?? "active"),
+});
+
+const normalizeDashboardStatus = (status: string) => status.toLowerCase();
+
+const mapDashboardRentOrderToTraderBooking = (
+  order: TraderDashboardRentOrderItem
+): TraderBooking => ({
+  id: order.id,
+  carId: order.id,
+  customerId: order.id,
+  startDate: order.startDate,
+  endDate: order.endDate,
+  totalPrice: order.totalPrice,
+  status: normalizeDashboardStatus(order.status) as TraderBooking["status"],
+  customerName: order.customer,
+  carTitle: order.car,
+});
+
+const mapDashboardBuyOrderToTraderOrder = (
+  order: TraderDashboardBuyOrderItem
+): TraderOrder => ({
+  id: order.id,
+  carId: order.id,
+  customerId: order.id,
+  offerPrice: order.carprice,
+  status: normalizeDashboardStatus(order.status) as TraderOrder["status"],
+  createdAt: order.createdAt,
+  customerName: order.customer,
+  carTitle: order.car,
 });
 
 export const getTraderOverview = async (): Promise<TraderOverviewResponse> => {
@@ -182,12 +215,19 @@ export const deleteTraderCar = async (id: string): Promise<void> => {
 };
 
 export const getTraderBookings = async (): Promise<PaginatedResponse<TraderBooking>> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(toMockPaginatedResponse(mockTraderBookings));
-  }
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardRentOrdersResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.RENT_ORDERS);
+  const orders = response.data.data.orders.map(mapDashboardRentOrderToTraderBooking);
 
-  const response = await axiosInstance.get(API_ENDPOINTS.TRADER.BOOKINGS.GET_ALL);
-  return response.data.data;
+  return {
+    data: orders,
+    total: response.data.data.total,
+    page: response.data.data.page,
+    limit: response.data.data.limit,
+    totalPages: Math.max(1, Math.ceil(response.data.data.total / response.data.data.limit)),
+  };
 };
 
 export const updateBookingStatus = async ({ id, data }: { id: string; data: UpdateBookingStatusRequest }): Promise<TraderBooking> => {
@@ -203,12 +243,19 @@ export const updateBookingStatus = async ({ id, data }: { id: string; data: Upda
 };
 
 export const getTraderOrders = async (): Promise<PaginatedResponse<TraderOrder>> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(toMockPaginatedResponse(mockTraderOrders));
-  }
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardBuyOrdersResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.BUY_ORDERS);
+  const orders = response.data.data.orders.map(mapDashboardBuyOrderToTraderOrder);
 
-  const response = await axiosInstance.get(API_ENDPOINTS.TRADER.ORDERS.GET_ALL);
-  return response.data.data;
+  return {
+    data: orders,
+    total: response.data.data.total,
+    page: response.data.data.page,
+    limit: response.data.data.limit,
+    totalPages: Math.max(1, Math.ceil(response.data.data.total / response.data.data.limit)),
+  };
 };
 
 export const updateOrderStatus = async ({ id, data }: { id: string; data: UpdateOrderStatusRequest }): Promise<TraderOrder> => {
