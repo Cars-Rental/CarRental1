@@ -269,6 +269,14 @@ export const getBuyOrders = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
+     // مؤقت للتشخيص
+    const total1 = await orderBuyModel.countDocuments({ owner: traderId });
+    console.log("total orders for this trader:", total1);
+    console.log("traderId:", traderId); 
+
+    const allOwners = await orderBuyModel.distinct("owner");
+console.log("all owners:", allOwners);
+
     const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
     const skip  = (page - 1) * limit;
@@ -292,7 +300,7 @@ export const getBuyOrders = async (req, res, next) => {
     const formattedOrders = orders.map((order) => ({
       id: order._id,
       customer: order.user?.userName || "",
-      car: `${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      car: `${order.car?.carmodel     || ""} ${order.car?.year || ""}`.trim(),
       carprice: order.carprice,
       createdAt: order.createdAt,
       status: order.status,
@@ -444,7 +452,7 @@ export const getAnalytics = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    // آخر 12 شهر
+   
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 
