@@ -33,7 +33,6 @@ export const addcar = async (req, res, next) => {
       });
     }
 
-    // ✅ MUST use req.files (not req.file)
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
@@ -41,7 +40,6 @@ export const addcar = async (req, res, next) => {
       });
     }
 
-    // ✅ upload multiple images
     const uploadedImages = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path);
