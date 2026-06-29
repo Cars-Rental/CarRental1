@@ -17,8 +17,6 @@ import dotenv from "dotenv";
 import wishlistroute from "../src/modules/wishlist/withlist.route.js";
 import dashboardroute from "../src/modules/Dashboard-trader/dashboard.route.js";
 import reviewRoutes from "../src/modules/review/review.route.js";
-import jwt from "jsonwebtoken";
-import { handleSocketConnection } from "./sockets/onlineUsers.js";
 dotenv.config();
 
 import ratelimit from "express-rate-limit";
@@ -71,24 +69,6 @@ const bootstrap = (app, express, io) => {
 
   
   app.set("io", io);
-
- 
-  io.use((socket, next) => {
-    const token = socket.handshake.auth?.token;
-    if (!token) return next(new Error("No token provided"));
-    try {
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      socket.user = decoded;
-      next();
-    } catch (err) {
-      next(new Error("Invalid token"));
-    }
-  });
-
-
-  io.on("connection", (socket) => {
-    handleSocketConnection(io, socket);
-  });
 
   ConnectDB();
 };
