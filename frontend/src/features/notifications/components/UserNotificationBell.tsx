@@ -1,9 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { Bell, CheckCheck, LogOut, Menu, User } from "lucide-react";
-import { useLocale } from "next-intl";
+import { Bell, CheckCheck } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,87 +11,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LanguageToggle, ThemeToggle } from "@/components/shared";
-import { useLogout } from "@/features/auth/hooks";
-import { useTraderNotifications } from "../hooks";
-import type { TraderNotification } from "../types";
 
-interface TraderTopbarProps {
-  onMenuClick?: () => void;
-  onSidebarCollapseClick?: () => void;
-  isSidebarCollapsed?: boolean;
-}
+import { useUserNotifications } from "../hooks/useUserNotifications";
+import type { NotificationItem } from "../types";
 
-export function TraderTopbar({
-  onMenuClick,
-  onSidebarCollapseClick,
-  isSidebarCollapsed = false,
-}: TraderTopbarProps) {
-  const t = useTranslations("TraderDashboard");
-  const navT = useTranslations("Navigation");
-  const { mutate: logout, isPending } = useLogout();
-
-  return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6 shadow-sm">
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={onMenuClick}
-        >
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">{t("topbar.toggleMenu")}</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="hidden md:inline-flex"
-          onClick={onSidebarCollapseClick}
-        >
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">
-            {t(
-              isSidebarCollapsed
-                ? "topbar.expandSidebar"
-                : "topbar.collapseSidebar"
-            )}
-          </span>
-        </Button>
-        <h2 className="text-lg font-semibold text-foreground">
-          {/* We can potentially display the current page title here */}
-          {t("sidebar.overview")}
-        </h2>
-      </div>
-
-      <div className="flex items-center gap-2 sm:gap-3">
-        <ThemeToggle />
-        <LanguageToggle />
-
-        <TraderNotificationsMenu label={t("topbar.notifications")} />
-        <Button
-          variant="ghost"
-          size="icon"
-          disabled={isPending}
-          onClick={() => logout()}
-        >
-          <LogOut className="h-5 w-5 text-muted-foreground" />
-          <span className="sr-only">{navT("logout")}</span>
-        </Button>
-        
-        <div className="flex items-center gap-2 border-l border-border pl-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-            <User className="h-4 w-4 text-primary" />
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function TraderNotificationsMenu({ label }: { label: string }) {
+export function UserNotificationBell() {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("RealtimeNotifications");
   const {
     unreadNotifications,
     unreadCount,
@@ -99,20 +26,13 @@ function TraderNotificationsMenu({ label }: { label: string }) {
     markAsRead,
     markAllAsRead,
     isMarkingAllAsRead,
-  } = useTraderNotifications();
+  } = useUserNotifications();
 
-  function openNotification(notification: TraderNotification) {
-    if (!notification.isRead) {
-      markAsRead(notification._id);
-    }
+  function openNotification(notification: NotificationItem) {
+    markAsRead(notification._id);
 
-    if (
-      notification.type === "NEW_MESSAGE" &&
-      typeof notification.metadata?.roomId === "string"
-    ) {
-      router.push(
-        `/${locale}/dashboard/messages?roomId=${notification.metadata.roomId}`
-      );
+    if (typeof notification.metadata?.roomId === "string") {
+      router.push(`/${locale}/chat?roomId=${notification.metadata.roomId}`);
     }
   }
 
@@ -126,18 +46,20 @@ function TraderNotificationsMenu({ label }: { label: string }) {
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
-          <span className="sr-only">{label}</span>
+          <span className="sr-only">{t("notifications")}</span>
         </span>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-80 p-0">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <div>
-            <p className="text-sm font-semibold text-foreground">{label}</p>
+            <p className="text-sm font-semibold text-foreground">
+              {t("notifications")}
+            </p>
             <p className="text-xs text-muted-foreground">
               {unreadCount > 0
-                ? `${unreadCount} unread`
-                : "No unread notifications"}
+                ? t("unreadCount", { count: unreadCount })
+                : t("noUnread")}
             </p>
           </div>
 
@@ -149,7 +71,7 @@ function TraderNotificationsMenu({ label }: { label: string }) {
             onClick={() => markAllAsRead()}
           >
             <CheckCheck className="size-4" />
-            Read all
+            {t("readAll")}
           </Button>
         </div>
 
@@ -158,7 +80,7 @@ function TraderNotificationsMenu({ label }: { label: string }) {
         <div className="max-h-96 overflow-y-auto py-1">
           {isLoading ? (
             <div className="px-4 py-6 text-center text-sm text-muted-foreground">
-              Loading notifications...
+              {t("loading")}
             </div>
           ) : unreadNotifications.length > 0 ? (
             unreadNotifications.map((notification) => (
@@ -184,7 +106,7 @@ function TraderNotificationsMenu({ label }: { label: string }) {
             ))
           ) : (
             <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-              You are all caught up.
+              {t("caughtUp")}
             </div>
           )}
         </div>

@@ -3,12 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { ImagePlus, X } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import {
-  useForm,
-  useWatch,
-  type UseFormRegisterReturn,
-} from "react-hook-form";
+import { useMemo, useState, type ChangeEvent } from "react";
+import { useForm, useWatch, type UseFormRegisterReturn } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -40,12 +36,20 @@ interface TraderCarDialogProps {
   open: boolean;
   type: TraderCarType;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: AddCarRequest) => Promise<void> | void;
+  onSubmit: (data: AddCarRequest, imageFiles: File[]) => Promise<void> | void;
+}
+
+interface ImagePreview {
+  id: string;
+  src: string;
+  file?: File;
 }
 
 type TraderCarFormValues = AddCarRequest;
 
-type TraderDashboardTranslator = ReturnType<typeof useTranslations<"TraderDashboard">>;
+type TraderDashboardTranslator = ReturnType<
+  typeof useTranslations<"TraderDashboard">
+>;
 
 const defaultValues: TraderCarFormValues = {
   carbrand: "",
@@ -123,7 +127,7 @@ function carToFormValues(car?: TraderCar | null): TraderCarFormValues {
 
 function getTransmissionLabel(
   option: Transmission,
-  t: TraderDashboardTranslator
+  t: TraderDashboardTranslator,
 ) {
   return option === "automatic"
     ? t("carForm.transmissionOptions.automatic")
@@ -163,6 +167,7 @@ export function TraderCarDialog({
   onSubmit,
 }: TraderCarDialogProps) {
   const t = useTranslations("TraderDashboard");
+  const initialValues = useMemo(() => carToFormValues(car), [car]);
   const schema = useMemo(() => createTraderCarFormSchema(t), [t]);
   const isEditMode = Boolean(car);
 
@@ -170,63 +175,93 @@ export function TraderCarDialog({
     handleSubmit,
     control,
     register,
-    reset,
     setValue,
     formState: { errors },
   } = useForm<TraderCarFormValues>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: initialValues,
   });
 
-  useEffect(() => {
-    const values = carToFormValues(car);
-    reset(values);
-  }, [car, open, reset]);
+  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>(() =>
+    initialValues.images.map((src) => ({
+      id: src,
+      src,
+    })),
+  );
+
+  const imageFiles = useMemo(
+    () =>
+      imagePreviews
+        .filter((image): image is ImagePreview & { file: File } =>
+          Boolean(image.file),
+        )
+        .map((image) => image.file),
+    [imagePreviews],
+  );
 
   const selectedBrand = useWatch({ control, name: "carbrand" });
   const selectedBrands = selectedBrand ? [selectedBrand] : [];
-  const imagePreviews = useWatch({ control, name: "images" }) ?? [];
 
   function handleBrandChange(brands: string[]) {
     const nextBrand = brands.at(-1) ?? "";
-    setValue("carbrand", nextBrand, { shouldDirty: true, shouldValidate: true });
-  }
-
-  function handleImagesChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(event.target.files ?? []);
-    if (files.length === 0) return;
-
-    Promise.all(
-      files.map(
-        (file) =>
-          new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(String(reader.result));
-            reader.onerror = () => reject(reader.error);
-            reader.readAsDataURL(file);
-          })
-      )
-    ).then((images) => {
-      const nextImages = [...imagePreviews, ...images];
-      setValue("images", nextImages, {
-        shouldDirty: true,
-        shouldValidate: true,
-      });
-    });
-
-    event.target.value = "";
-  }
-
-  function removeImage(index: number) {
-    const nextImages = imagePreviews.filter((_, imageIndex) => imageIndex !== index);
-    setValue("images", nextImages, {
+    setValue("carbrand", nextBrand, {
       shouldDirty: true,
       shouldValidate: true,
     });
   }
 
+  function handleImagesChange(event: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length === 0) return;
+
+    const nextPreviews = files.map((file) => ({
+      id: `${file.name}-${Date.now()}-${Math.random()}`,
+      src: URL.createObjectURL(file),
+      file,
+    }));
+
+    const nextImagePreviews = [...imagePreviews, ...nextPreviews];
+    setImagePreviews(nextImagePreviews);
+    setValue(
+      "images",
+      nextImagePreviews.map((image) => image.src),
+      {
+        shouldDirty: true,
+        shouldValidate: true,
+      },
+    );
+    event.target.value = "";
+  }
+
+  function removeImage(index: number) {
+    const removed = imagePreviews[index];
+    const nextPreviews = imagePreviews.filter(
+      (_, imageIndex) => imageIndex !== index,
+    );
+
+    if (removed?.file) {
+      URL.revokeObjectURL(removed.src);
+    }
+
+    setImagePreviews(nextPreviews);
+    setValue(
+      "images",
+      nextPreviews.map((image) => image.src),
+      {
+        shouldDirty: true,
+        shouldValidate: true,
+      },
+    );
+  }
+
   async function submitForm(data: TraderCarFormValues) {
-    await onSubmit(data);
+    await onSubmit(
+      {
+        ...data,
+        images: imagePreviews.map((image) => image.src),
+      },
+      imageFiles,
+    );
     onOpenChange(false);
   }
 
@@ -276,11 +311,11 @@ export function TraderCarDialog({
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {imagePreviews.map((image, index) => (
                   <div
-                    key={`${image}-${index}`}
+                    key={image.id}
                     className="relative aspect-video overflow-hidden rounded-md border border-border bg-muted"
                   >
                     <Image
-                      src={image}
+                      src={image.src}
                       alt={t("carForm.imagePreview")}
                       fill
                       className="object-cover"
@@ -294,7 +329,9 @@ export function TraderCarDialog({
                       onClick={() => removeImage(index)}
                     >
                       <X className="h-3 w-3" />
-                      <span className="sr-only">{t("carForm.removeImage")}</span>
+                      <span className="sr-only">
+                        {t("carForm.removeImage")}
+                      </span>
                     </Button>
                   </div>
                 ))}
@@ -364,7 +401,9 @@ export function TraderCarDialog({
             <Field
               id="carprice"
               label={
-                type === "rent" ? t("carForm.rentPrice") : t("carForm.salePrice")
+                type === "rent"
+                  ? t("carForm.rentPrice")
+                  : t("carForm.salePrice")
               }
               error={errors.carprice?.message}
             >
@@ -439,11 +478,12 @@ export function TraderCarDialog({
             <Button
               type="button"
               variant="outline"
+              size="lg"
               onClick={() => onOpenChange(false)}
             >
               {t("actions.cancel")}
             </Button>
-            <Button type="submit">
+            <Button type="submit" size="lg">
               {isEditMode ? t("actions.updateCar") : t("actions.addCar")}
             </Button>
           </DialogFooter>

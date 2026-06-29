@@ -200,18 +200,20 @@ const visibleCars = localCars ?? cars;
     setIsDialogOpen(true);
   }
 
-  async function handleSubmitCar(formData: AddCarRequest) {
+  async function handleSubmitCar(formData: AddCarRequest, imageFiles: File[]) {
     if (editingCar) {
       if (isRentPage) {
         await updateRentCar.mutateAsync({
           id: editingCar.id,
           data: formData,
+          imageFiles,
         });
       }
       if (isSalePage) {
         await updateSaleCar.mutateAsync({
           id: editingCar.id,
           data: formData,
+          imageFiles,
         });
       }
 
@@ -224,9 +226,9 @@ const visibleCars = localCars ?? cars;
     }
 
     const savedCar = isRentPage
-      ? await addRentCar.mutateAsync(formData)
+      ? await addRentCar.mutateAsync({ data: formData, imageFiles })
       : isSalePage
-        ? await addSaleCar.mutateAsync(formData)
+        ? await addSaleCar.mutateAsync({ data: formData, imageFiles })
         : undefined;
 
     setLocalCars((currentCars) => [
@@ -262,6 +264,7 @@ const visibleCars = localCars ?? cars;
       />
 
       <TraderCarDialog
+        key={`${editingCar?.id ?? "new-car"}-${isDialogOpen ? "open" : "closed"}`}
         car={editingCar}
         open={isDialogOpen}
         type={type}

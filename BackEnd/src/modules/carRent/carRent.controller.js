@@ -6,6 +6,29 @@ import {
   ENTITY_TYPES,
 } from "../../constants/notification.types.js";
 
+const normalizeCarRentEnum = (value) => {
+  if (typeof value !== "string") return value;
+
+  const normalized = value.trim().toLowerCase();
+  const lookup = {
+    petrol: "Petrol",
+    diesel: "Diesel",
+    electric: "Electric",
+    hybrid: "Hybrid",
+    sedan: "Sedan",
+    suv: "SUV",
+    hatchback: "Hatchback",
+    coupe: "Coupe",
+    pickup: "Pickup",
+    van: "Van",
+    convertible: "Convertible",
+    automatic: "Automatic",
+    manual: "Manual",
+  };
+
+  return lookup[normalized] ?? value;
+};
+
 const POPULATE_OWNER = "userName email phone role";
 
 export const addcar = async (req, res, next) => {
@@ -23,6 +46,10 @@ export const addcar = async (req, res, next) => {
       Body_Type,
       Transmission,
     } = req.body;
+
+    const normalizedFuel = normalizeCarRentEnum(fuel);
+    const normalizedBodyType = normalizeCarRentEnum(Body_Type);
+    const normalizedTransmission = normalizeCarRentEnum(Transmission);
 
     const ownerId = req.user?.id || req.user?._id;
 
@@ -58,10 +85,10 @@ export const addcar = async (req, res, next) => {
       carname,
       carprice,
       distance,
-      fuel,
+      fuel: normalizedFuel,
       seatCount,
-      Body_Type,
-      Transmission,
+      Body_Type: normalizedBodyType,
+      Transmission: normalizedTransmission,
       owner: ownerId,
       carimage: uploadedImages,
     });
@@ -183,6 +210,10 @@ export const updatecar = async (req, res, next) => {
       Transmission,
     } = req.body;
 
+    const normalizedFuel = normalizeCarRentEnum(fuel);
+    const normalizedBodyType = normalizeCarRentEnum(Body_Type);
+    const normalizedTransmission = normalizeCarRentEnum(Transmission);
+
     const car = await carModel.findById(id);
 
     if (!car) {
@@ -200,21 +231,24 @@ export const updatecar = async (req, res, next) => {
 
     let imageData = car.carimage;
 
-    if (req.file) {
+    if (req.files && req.files.length > 0) {
       if (car.carimage?.length) {
         for (const image of car.carimage) {
           await cloudinary.uploader.destroy(image.public_id);
         }
       }
 
-      const uploadedImage = await cloudinary.uploader.upload(req.file.path);
+      const uploadedImages = await Promise.all(
+        req.files.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path);
+          return {
+            secure_url: result.secure_url,
+            public_id: result.public_id,
+          };
+        }),
+      );
 
-      imageData = [
-        {
-          secure_url: uploadedImage.secure_url,
-          public_id: uploadedImage.public_id,
-        },
-      ];
+      imageData = uploadedImages;
     }
 
     const updatedcar = await carModel
@@ -228,10 +262,10 @@ export const updatecar = async (req, res, next) => {
           carname,
           carprice,
           distance,
-          fuel,
+          fuel: normalizedFuel,
           seatCount,
-          Body_Type,
-          Transmission,
+          Body_Type: normalizedBodyType,
+          Transmission: normalizedTransmission,
           carimage: imageData,
         },
         {

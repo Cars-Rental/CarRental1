@@ -185,6 +185,33 @@ export interface TraderDashboardRecentActivityResponse {
   activities: TraderDashboardActivityItem[];
 }
 
+export interface TraderNotificationSender {
+  _id: string;
+  userName?: string;
+  avatar?: string;
+}
+
+export interface TraderNotification {
+  _id: string;
+  type: string;
+  title: string;
+  message: string;
+  entityType?: string;
+  entityId?: string;
+  metadata?: Record<string, unknown>;
+  isRead: boolean;
+  sender?: TraderNotificationSender | null;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface TraderNotificationsResponse {
+  notifications: TraderNotification[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export interface TraderCar {
   id: string;
   title: string;

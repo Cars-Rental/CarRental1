@@ -13,7 +13,9 @@ import { Button } from "@/components/ui/button";
 import { useUserOrders } from "../hooks/useUserOrders";
 import type { Order } from "@/features/orders/types";
 
-function formatDate(dateStr: string, locale: string) {
+function formatDate(dateStr: string | undefined, locale: string) {
+  if (!dateStr) return "-";
+
   return new Date(dateStr).toLocaleDateString(
     locale === "ar" ? "ar-EG" : "en-EG",
     {
@@ -46,6 +48,8 @@ function OrderCardSkeleton() {
 function OrderCard({ order, locale }: { order: Order; locale: string }) {
   const t = useTranslations("UserAccount");
   const image = order.car.carimage?.[0]?.secure_url;
+  const totalDays = order.totalDays ?? 0;
+  const totalPrice = order.totalPrice ?? 0;
 
   return (
     <Card>
@@ -83,11 +87,11 @@ function OrderCard({ order, locale }: { order: Order; locale: string }) {
             />
             <Info
               label={t("bookings.totalDays")}
-              value={t("bookings.daysValue", { count: order.totalDays })}
+              value={t("bookings.daysValue", { count: totalDays })}
             />
             <Info
               label={t("bookings.totalPrice")}
-              value={formatCurrency(order.totalPrice, locale)}
+              value={formatCurrency(totalPrice, locale)}
             />
           </div>
         </div>

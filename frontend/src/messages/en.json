@@ -3,6 +3,19 @@
     "title": "Car Rental & Marketplace",
     "description": "Book or list your car easily"
   },
+  "RealtimeNotifications": {
+    "notifications": "Notifications",
+    "rentAcceptedTitle": "Rental order accepted",
+    "rentAcceptedDescription": "The trader accepted your rental order.",
+    "buyAcceptedTitle": "Purchase order accepted",
+    "buyAcceptedDescription": "The trader accepted your purchase order and a chat room is ready.",
+    "openChat": "Open chat",
+    "unreadCount": "{count} unread",
+    "noUnread": "No unread notifications",
+    "readAll": "Read all",
+    "loading": "Loading notifications...",
+    "caughtUp": "You are all caught up."
+  },
   "Navigation": {
     "home": "Home",
     "about": "About",
@@ -366,7 +379,9 @@
     },
     "actions": {
       "viewDetails": "View details",
-      "removeFavorite": "Remove favorite"
+      "removeFavorite": "Remove favorite",
+      "cancel": "Cancel",
+      "keepOrder": "Keep order"
     },
     "fields": {
       "name": "Name",
@@ -390,6 +405,8 @@
       "inactive": "Inactive",
       "pending": "Pending",
       "confirmed": "Confirmed",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
       "completed": "Completed",
       "cancelled": "Cancelled",
       "processing": "Processing",
@@ -410,6 +427,9 @@
       "description": "Manage your personal information and account overview.",
       "editProfile": "Edit profile",
       "personalInfo": "Personal information",
+      "editDescription": "Update your name, phone, and gender.",
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
       "summary": {
         "bookings": "Bookings",
         "orders": "Orders",
@@ -423,14 +443,29 @@
       "returnDate": "Return date",
       "totalDays": "Total days",
       "totalPrice": "Total price",
-      "daysValue": "{count} days"
+      "daysValue": "{count} days",
+      "empty": "No bookings yet.",
+      "browseBookings": "Browse bookings",
+      "browseRentals": "Browse rentals"
     },
     "orders": {
       "title": "My Orders",
       "description": "Review your purchase orders and payment status.",
       "salePrice": "Sale price",
       "orderDate": "Order date",
-      "paymentStatus": "Payment status"
+      "paymentStatus": "Payment status",
+      "orderStatus": "Order status",
+      "loading": "Loading orders...",
+      "empty": "No orders yet.",
+      "error": "We couldn't load your orders. Please try again.",
+      "unknownCar": "Car",
+      "cancellationReasonPrompt": "Why do you want to cancel this order? Optional.",
+      "cancelTitle": "Cancel order",
+      "cancelDescription": "You can add a reason for cancelling this order. This step cannot be undone after confirmation.",
+      "cancellationReason": "Cancellation reason",
+      "cancellationReasonPlaceholder": "Write a reason, optional",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Failed to cancel order"
     },
     "favorites": {
       "title": "Favorites",
@@ -949,7 +984,15 @@
       "addCar": "Add Car",
       "updateCar": "Update Car",
       "deleteCar": "Delete Car",
-      "cancel": "Cancel"
+      "accept": "Accept",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "noActions": "No actions",
+      "rejectionReasonPrompt": "Why do you want to reject this order? Optional.",
+      "bookingStatusUpdated": "Booking status updated",
+      "bookingStatusUpdateFailed": "Failed to update booking status",
+      "orderStatusUpdated": "Order status updated",
+      "orderStatusUpdateFailed": "Failed to update order status"
     },
     "carForm": {
       "addTitle": "Add Car",
@@ -1077,6 +1120,8 @@
     "chat": "Chat",
     "toggleFavorite": "Toggle favorite",
     "favoriteLoginRequired": "Please log in to add this car to your favorites.",
+    "bookingLoginRequired": "You must be logged in to book this car.",
+    "buyLoginRequired": "You must be logged in to buy this car.",
     "visitProfile": "Visit Profile",
     "locationTitle": "Car Location",
     "mapPlaceholder": "Map coming soon",
@@ -1101,6 +1146,7 @@
     "errorLoading": "Failed to load car details",
     "goBack": "Go back to cars",
     "reviews": "reviews",
+    "startChatWith": "Chat with {name}",
     "breadcrumb": {
       "home": "Home",
       "rentCars": "Rent Cars",
@@ -1137,6 +1183,7 @@
     "sessionSuccessMessage": "Your chat session with the owner of {car} is now active. You can discuss purchase details directly.",
     "redirecting": "Redirecting you...",
     "errorLoading": "Failed to load order details",
+    "startChatWith":"Start Chat",
     "goBack": "Go back to cars",
     "breadcrumb": {
       "home": "Home",

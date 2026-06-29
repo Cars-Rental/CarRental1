@@ -46,7 +46,7 @@ export function UserFavoritesPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {favorites.map((car) => (
-          <Card key={car.id} className="overflow-hidden">
+          <Card key={car.id} className="overflow-hidden py-0 pb-4">
             <div className="relative aspect-video bg-muted">
               <Image
                 src={car.image}

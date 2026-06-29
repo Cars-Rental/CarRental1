@@ -1,6 +1,7 @@
 "use client";
 
 import React, {
+  useCallback,
   createContext,
   useContext,
   useEffect,
@@ -13,7 +14,7 @@ import { tokenStorage } from "@/features/auth/utils";
 import { getRoomsApi, getRoomMessagesApi } from "../api/chat.api";
 import type { Room, Message, ChatUser } from "../types";
 import { ROLES } from "@/constants";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 
 interface ChatContextType {
@@ -44,7 +45,6 @@ const SOCKET_URL = "http://localhost:3000";
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const locale = useLocale();
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
@@ -61,11 +61,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
+  const socketRef = useRef<Socket | null>(null);
   const activeRoomIdRef = useRef<string | null>(null);
-  activeRoomIdRef.current = activeRoomId;
+
+  useEffect(() => {
+    activeRoomIdRef.current = activeRoomId;
+  }, [activeRoomId]);
 
   // 1. Fetch Rooms Rest API
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
     if (!isAuthenticated) return;
     setIsLoadingRooms(true);
     try {
@@ -76,24 +80,27 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoadingRooms(false);
     }
-  };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchRooms();
+      void Promise.resolve().then(fetchRooms);
     } else {
-      setRooms([]);
-      setMessages([]);
-      setActiveRoomId(null);
+      queueMicrotask(() => {
+        setRooms([]);
+        setMessages([]);
+        setActiveRoomId(null);
+      });
     }
-  }, [isAuthenticated]);
+  }, [fetchRooms, isAuthenticated]);
 
   // 2. Manage Socket.io Connection
   useEffect(() => {
     if (!isAuthenticated || !user) {
-      if (socket) {
-        socket.disconnect();
-        setSocket(null);
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+        queueMicrotask(() => setSocket(null));
       }
       return;
     }
@@ -132,10 +139,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         // and the current user is the non-trader (customer), redirect them
         // to the chat page so they can see the new conversation.
         try {
-          const isMember = room.members?.some?.((m: any) => {
+          const isMember = room.members?.some?.((m: ChatUser | string) => {
             if (!m) return false;
             // member may be object or id string
-            return (m._id ? m._id.toString() : m.toString()) === user?.id;
+            const memberId = typeof m === "string" ? m : m._id;
+            return memberId.toString() === user?.id;
           });
 
           if (isNew && isMember && user?.role !== ROLES.TRADER) {
@@ -264,13 +272,17 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       });
     });
 
+    socketRef.current = newSocket;
     setSocket(newSocket);
 
     return () => {
       newSocket.disconnect();
+      if (socketRef.current === newSocket) {
+        socketRef.current = null;
+      }
       setSocket(null);
     };
-  }, [isAuthenticated, user]);
+  }, [fetchRooms, isAuthenticated, locale, router, user]);
 
   // 3. Mark active room unread as 0 on activation
   const markAsRead = (roomId: string) => {

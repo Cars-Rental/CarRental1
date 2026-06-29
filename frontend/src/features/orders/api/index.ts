@@ -3,3 +3,7 @@ export * from "./create-buy-order.api";
 export * from "./get-order-by-id.api";
 export * from "./get-buy-order-by-id.api";
 export * from "./delete-order.api";
+export * from "./cancel-order.api";
+export * from "./update-order-status.api";
+export * from "./cancel-buy-order.api";
+export * from "./update-buy-order-status.api";

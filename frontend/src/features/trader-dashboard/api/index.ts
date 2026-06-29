@@ -15,6 +15,8 @@ import type {
   TraderDashboardRecentActivityResponse,
   TraderDashboardActivityItem,
   TraderRecentActivity,
+  TraderNotification,
+  TraderNotificationsResponse,
   TraderBooking, 
   TraderOrder,
   TraderCar,
@@ -352,4 +354,60 @@ export const getTraderRecentActivity = async (): Promise<TraderRecentActivity[]>
   }>(API_ENDPOINTS.TRADER.DASHBOARD.RECENT_ACTIVITY);
 
   return response.data.data.activities.map(mapDashboardActivity);
+};
+
+export const getTraderNotifications = async (
+  page = 1,
+  limit = 20
+): Promise<TraderNotificationsResponse> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderNotification[];
+    total: number;
+    page: number;
+    limit: number;
+  }>(API_ENDPOINTS.NOTIFICATIONS.ROOT, { params: { page, limit } });
+
+  return {
+    notifications: response.data.data,
+    total: response.data.total,
+    page: response.data.page,
+    limit: response.data.limit,
+  };
+};
+
+export const getUnreadTraderNotifications = async (): Promise<{
+  notifications: TraderNotification[];
+  count: number;
+}> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderNotification[];
+    count: number;
+  }>(API_ENDPOINTS.NOTIFICATIONS.UNREAD);
+
+  return {
+    notifications: response.data.data,
+    count: response.data.count,
+  };
+};
+
+export const markTraderNotificationAsRead = async (
+  id: string
+): Promise<TraderNotification> => {
+  const response = await axiosInstance.patch<{
+    success: boolean;
+    data: TraderNotification;
+  }>(API_ENDPOINTS.NOTIFICATIONS.MARK_READ(id));
+
+  return response.data.data;
+};
+
+export const markAllTraderNotificationsAsRead = async (): Promise<number> => {
+  const response = await axiosInstance.patch<{
+    success: boolean;
+    updated: number;
+  }>(API_ENDPOINTS.NOTIFICATIONS.READ_ALL);
+
+  return response.data.updated;
 };

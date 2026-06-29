@@ -3,6 +3,19 @@
     "title": "منصة تأجير وبيع السيارات",
     "description": "احجز أو اعرض سيارتك بسهولة"
   },
+  "RealtimeNotifications": {
+    "notifications": "الإشعارات",
+    "rentAcceptedTitle": "تم قبول طلب الإيجار",
+    "rentAcceptedDescription": "وافق التاجر على طلب الإيجار الخاص بك.",
+    "buyAcceptedTitle": "تم قبول طلب الشراء",
+    "buyAcceptedDescription": "وافق التاجر على طلب الشراء وتم تجهيز غرفة المحادثة.",
+    "openChat": "فتح المحادثة",
+    "unreadCount": "{count} غير مقروء",
+    "noUnread": "لا توجد إشعارات غير مقروءة",
+    "readAll": "تحديد الكل كمقروء",
+    "loading": "جاري تحميل الإشعارات...",
+    "caughtUp": "لا توجد إشعارات جديدة."
+  },
   "Navigation": {
     "home": "الرئيسية",
     "rentCars": "إيجار السيارات",
@@ -375,7 +388,9 @@
     },
     "actions": {
       "viewDetails": "عرض التفاصيل",
-      "removeFavorite": "إزالة من المفضلة"
+      "removeFavorite": "إزالة من المفضلة",
+      "cancel": "إلغاء",
+      "keepOrder": "الاحتفاظ بالطلب"
     },
     "fields": {
       "name": "الاسم",
@@ -399,6 +414,8 @@
       "inactive": "غير نشط",
       "pending": "معلق",
       "confirmed": "مؤكد",
+      "accepted": "مقبول",
+      "rejected": "مرفوض",
       "completed": "مكتمل",
       "cancelled": "ملغي",
       "processing": "قيد التنفيذ",
@@ -419,6 +436,9 @@
       "description": "إدارة معلوماتك الشخصية ونظرة عامة على حسابك.",
       "editProfile": "تعديل الملف",
       "personalInfo": "المعلومات الشخصية",
+      "editDescription": "حدّث الاسم ورقم الهاتف والنوع.",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
       "summary": {
         "bookings": "الحجوزات",
         "orders": "الطلبات",
@@ -432,14 +452,28 @@
       "returnDate": "تاريخ الإرجاع",
       "totalDays": "إجمالي الأيام",
       "totalPrice": "السعر الإجمالي",
-      "daysValue": "{count} أيام"
+      "daysValue": "{count} أيام",
+      "empty": "لا توجد حجوزات بعد.",
+      "browseRentals": "تصفح الحجوزات"
     },
     "orders": {
       "title": "طلباتي",
       "description": "راجع طلبات الشراء وحالة الدفع.",
       "salePrice": "سعر البيع",
       "orderDate": "تاريخ الطلب",
-      "paymentStatus": "حالة الدفع"
+      "paymentStatus": "حالة الدفع",
+      "orderStatus": "حالة الطلب",
+      "loading": "جاري تحميل الطلبات...",
+      "empty": "لا توجد طلبات بعد.",
+      "error": "تعذر تحميل طلباتك. حاول مرة أخرى.",
+      "unknownCar": "سيارة",
+      "cancellationReasonPrompt": "لماذا تريد إلغاء هذا الطلب؟ اختياري.",
+      "cancelTitle": "إلغاء الطلب",
+      "cancelDescription": "يمكنك إضافة سبب لإلغاء هذا الطلب. لا يمكن التراجع بعد التأكيد.",
+      "cancellationReason": "سبب الإلغاء",
+      "cancellationReasonPlaceholder": "اكتب السبب، اختياري",
+      "cancelSuccess": "تم إلغاء الطلب بنجاح",
+      "cancelError": "فشل إلغاء الطلب"
     },
     "favorites": {
       "title": "المفضلة",
@@ -870,7 +904,15 @@
       "addCar": "إضافة سيارة",
       "updateCar": "تحديث السيارة",
       "deleteCar": "حذف السيارة",
-      "cancel": "إلغاء"
+      "accept": "قبول",
+      "reject": "رفض",
+      "cancel": "إلغاء",
+      "noActions": "لا توجد إجراءات",
+      "rejectionReasonPrompt": "لماذا تريد رفض هذا الطلب؟ اختياري.",
+      "bookingStatusUpdated": "تم تحديث حالة الحجز",
+      "bookingStatusUpdateFailed": "فشل تحديث حالة الحجز",
+      "orderStatusUpdated": "تم تحديث حالة الطلب",
+      "orderStatusUpdateFailed": "فشل تحديث حالة الطلب"
     },
     "carForm": {
       "addTitle": "إضافة سيارة",
@@ -998,6 +1040,8 @@
     "chat": "محادثة",
     "toggleFavorite": "تبديل المفضلة",
     "favoriteLoginRequired": "يرجى تسجيل الدخول لإضافة هذه السيارة إلى المفضلة.",
+    "bookingLoginRequired": "يجب تسجيل الدخول لحجز هذه السيارة.",
+    "buyLoginRequired": "يجب تسجيل الدخول لشراء هذه السيارة.",
     "visitProfile": "زيارة الملف الشخصي",
     "locationTitle": "موقع السيارة",
     "mapPlaceholder": "الخريطة قادمة قريباً",
@@ -1058,6 +1102,7 @@
     "sessionSuccessMessage": "جلسة المحادثة مع مالك {car} نشطة الآن. يمكنك مناقشة تفاصيل الشراء مباشرة.",
     "redirecting": "جاري إعادة التوجيه...",
     "errorLoading": "فشل تحميل تفاصيل الطلب",
+    "startChatWith":"ابدا المحادثة",
     "goBack": "العودة للسيارات",
     "breadcrumb": {
       "home": "الرئيسية",
