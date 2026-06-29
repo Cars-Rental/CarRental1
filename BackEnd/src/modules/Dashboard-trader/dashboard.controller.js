@@ -10,7 +10,6 @@ import {reviewModel}         from "../../DB/model/review.model.js";
 const ok = (res, data) =>
   res.status(200).json({ success: true, data });
 
-
 export const getOverview = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
