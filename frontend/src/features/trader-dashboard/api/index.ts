@@ -9,6 +9,12 @@ import type {
   TraderDashboardBuyOrdersResponse,
   TraderDashboardRentOrderItem,
   TraderDashboardBuyOrderItem,
+  TraderDashboardCustomersResponse,
+  TraderDashboardCustomerItem,
+  TraderDashboardEarningsResponse,
+  TraderDashboardRecentActivityResponse,
+  TraderDashboardActivityItem,
+  TraderRecentActivity,
   TraderBooking, 
   TraderOrder,
   TraderCar,
@@ -24,9 +30,7 @@ import type {
 import {
   mockTraderBookings,
   mockTraderCars,
-  mockTraderCustomers,
   mockTraderDashboardStats,
-  mockTraderEarnings,
   mockTraderOrders,
   mockTraderReviews,
   toMockPaginatedResponse,
@@ -101,6 +105,42 @@ const mapDashboardBuyOrderToTraderOrder = (
   createdAt: order.createdAt,
   customerName: order.customer,
   carTitle: order.car,
+});
+
+const mapDashboardCustomerToTraderCustomer = (
+  customer: TraderDashboardCustomerItem
+): TraderCustomer => ({
+  id: customer.id,
+  name: customer.name,
+  email: customer.email,
+  phone: customer.phone,
+  bookingsCount: 0,
+  ordersCount: customer.totalOrders,
+  totalSpent: customer.totalSpent,
+  status: "active",
+});
+
+const mapDashboardEarnings = (
+  earnings: TraderDashboardEarningsResponse
+): TraderEarnings => ({
+  availableBalance: earnings.available,
+  pendingBalance: earnings.pending,
+  totalEarnings: earnings.total,
+  breakdown: earnings.breakdown,
+  monthlyBreakdown: earnings.monthlyBreakdown,
+});
+
+const mapDashboardActivity = (
+  activity: TraderDashboardActivityItem
+): TraderRecentActivity => ({
+  id: activity._id,
+  type: activity.type,
+  customerName: activity.user.userName,
+  carTitle: activity.car.carname,
+  image: activity.car.carimage[0]?.secure_url ?? "",
+  amount: activity.totalPrice ?? activity.carprice ?? 0,
+  status: normalizeDashboardStatus(activity.status),
+  createdAt: activity.createdAt,
 });
 
 export const getTraderOverview = async (): Promise<TraderOverviewResponse> => {
@@ -271,12 +311,21 @@ export const updateOrderStatus = async ({ id, data }: { id: string; data: Update
 };
 
 export const getTraderCustomers = async (): Promise<PaginatedResponse<TraderCustomer>> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(toMockPaginatedResponse(mockTraderCustomers));
-  }
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardCustomersResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.CUSTOMERS);
+  const customers = response.data.data.customers.map(
+    mapDashboardCustomerToTraderCustomer
+  );
 
-  const response = await axiosInstance.get(API_ENDPOINTS.TRADER.CUSTOMERS);
-  return response.data.data;
+  return {
+    data: customers,
+    total: response.data.data.total,
+    page: response.data.data.page,
+    limit: response.data.data.limit,
+    totalPages: Math.max(1, Math.ceil(response.data.data.total / response.data.data.limit)),
+  };
 };
 
 export const getTraderReviews = async (): Promise<PaginatedResponse<TraderReview>> => {
@@ -289,10 +338,18 @@ export const getTraderReviews = async (): Promise<PaginatedResponse<TraderReview
 };
 
 export const getTraderEarnings = async (): Promise<TraderEarnings> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(mockTraderEarnings);
-  }
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardEarningsResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.EARNINGS);
+  return mapDashboardEarnings(response.data.data);
+};
 
-  const response = await axiosInstance.get(API_ENDPOINTS.TRADER.EARNINGS);
-  return response.data.data;
+export const getTraderRecentActivity = async (): Promise<TraderRecentActivity[]> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardRecentActivityResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.RECENT_ACTIVITY);
+
+  return response.data.data.activities.map(mapDashboardActivity);
 };

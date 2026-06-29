@@ -37,6 +37,7 @@ export const ROUTES = {
     ORDERS: "/dashboard/orders",
     CUSTOMERS: "/dashboard/customers",
     REVIEWS: "/dashboard/reviews",
+    RECENT_ACTIVITY: "/dashboard/recent-activity",
     MESSAGES: "/dashboard/messages",
     ANALYTICS: "/dashboard/analytics",
     EARNINGS: "/dashboard/earnings",

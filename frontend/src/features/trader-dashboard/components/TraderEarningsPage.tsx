@@ -13,6 +13,7 @@ export function TraderEarningsPage() {
   const locale = useLocale();
   const t = useTranslations("TraderDashboard");
   const { data: earnings, isLoading } = useTraderEarnings();
+  const earningsBreakdown = earnings?.breakdown;
 
   return (
     <div>
@@ -35,34 +36,74 @@ export function TraderEarningsPage() {
           ))}
         </div>
       ) : earnings ? (
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            {
-              label: t("earnings.availableBalance"),
-              value: earnings.availableBalance,
-            },
-            {
-              label: t("earnings.pendingBalance"),
-              value: earnings.pendingBalance,
-            },
-            {
-              label: t("earnings.totalEarnings"),
-              value: earnings.totalEarnings,
-            },
-          ].map((item) => (
-            <Card key={item.label}>
-              <CardHeader>
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {item.label}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-semibold text-foreground">
-                  {formatDashboardCurrency(item.value, locale)}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              {
+                label: t("earnings.availableBalance"),
+                value: earnings.availableBalance,
+              },
+              {
+                label: t("earnings.pendingBalance"),
+                value: earnings.pendingBalance,
+              },
+              {
+                label: t("earnings.totalEarnings"),
+                value: earnings.totalEarnings,
+              },
+            ].map((item) => (
+              <Card key={item.label}>
+                <CardHeader>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    {item.label}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-semibold text-foreground">
+                    {formatDashboardCurrency(item.value, locale)}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {earningsBreakdown && (
+            <div className="grid gap-4 md:grid-cols-2">
+              {(["rent", "buy"] as const).map((key) => (
+                <Card key={key}>
+                  <CardHeader>
+                    <CardTitle className="text-base">
+                      {t(`earnings.breakdown.${key}`)}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        {t("earnings.earned")}
+                      </p>
+                      <p className="mt-1 text-lg font-semibold text-foreground">
+                        {formatDashboardCurrency(
+                          earningsBreakdown[key].earned,
+                          locale
+                        )}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        {t("earnings.pending")}
+                      </p>
+                      <p className="mt-1 text-lg font-semibold text-foreground">
+                        {formatDashboardCurrency(
+                          earningsBreakdown[key].pending,
+                          locale
+                        )}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <DashboardEmptyState

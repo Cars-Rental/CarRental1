@@ -142,6 +142,7 @@ export function TraderOverviewPage() {
           )}
         </section>
       </div>
+
     </div>
   );
 }

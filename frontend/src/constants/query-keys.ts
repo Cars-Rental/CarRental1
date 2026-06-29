@@ -29,6 +29,7 @@ export const QUERY_KEYS = {
     DASHBOARD_STATS: ["trader", "dashboard", "stats"] as const,
     RECENT_BOOKINGS: ["trader", "dashboard", "recent-bookings"] as const,
     RECENT_ORDERS: ["trader", "dashboard", "recent-orders"] as const,
+    RECENT_ACTIVITY: ["trader", "dashboard", "recent-activity"] as const,
     CARS: (type?: string) => ["trader", "cars", { type }] as const,
     BOOKINGS: ["trader", "bookings"] as const,
     ORDERS: ["trader", "orders"] as const,

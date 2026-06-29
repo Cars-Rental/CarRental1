@@ -109,6 +109,82 @@ export interface TraderDashboardBuyOrdersResponse {
   orders: TraderDashboardBuyOrderItem[];
 }
 
+export interface TraderDashboardCustomerItem {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  totalOrders: number;
+  totalSpent: number;
+}
+
+export interface TraderDashboardCustomersResponse {
+  total: number;
+  page: number;
+  limit: number;
+  customers: TraderDashboardCustomerItem[];
+}
+
+export interface TraderDashboardEarningsResponse {
+  available: number;
+  pending: number;
+  total: number;
+  breakdown: {
+    rent: {
+      earned: number;
+      pending: number;
+    };
+    buy: {
+      earned: number;
+      pending: number;
+    };
+  };
+  monthlyBreakdown: Array<{
+    month?: string;
+    earned?: number;
+    pending?: number;
+    total?: number;
+  }>;
+}
+
+export interface TraderDashboardActivityItem {
+  type: "buy_order" | "rent_order";
+  _id: string;
+  car: {
+    _id: string;
+    carbrand: string;
+    carname: string;
+    carimage: Array<{
+      secure_url: string;
+      public_id: string;
+      _id: string;
+    }>;
+  };
+  user: {
+    _id: string;
+    userName: string;
+  };
+  carprice?: number;
+  totalPrice?: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface TraderRecentActivity {
+  id: string;
+  type: "buy_order" | "rent_order";
+  customerName: string;
+  carTitle: string;
+  image: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface TraderDashboardRecentActivityResponse {
+  activities: TraderDashboardActivityItem[];
+}
+
 export interface TraderCar {
   id: string;
   title: string;
@@ -184,6 +260,8 @@ export interface TraderEarnings {
   availableBalance: number;
   pendingBalance: number;
   totalEarnings: number;
+  breakdown?: TraderDashboardEarningsResponse["breakdown"];
+  monthlyBreakdown?: TraderDashboardEarningsResponse["monthlyBreakdown"];
 }
 
 export interface TraderTransaction {

@@ -30,6 +30,13 @@ export function useRecentOrders() {
   });
 }
 
+export function useTraderRecentActivity() {
+  return useQuery({
+    queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY,
+    queryFn: api.getTraderRecentActivity,
+  });
+}
+
 export function useTraderCars(type?: string) {
   return useQuery({
     queryKey: QUERY_KEYS.TRADER.CARS(type),
