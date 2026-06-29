@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { QUERY_KEYS } from "@/constants";
+import { updateBuyOrderStatusApi, updateOrderStatusApi } from "@/features/orders/api";
 import * as api from "../api";
+
+export { useTraderNotifications } from "./useTraderNotifications";
 
 export function useTraderOverview() {
   return useQuery({
@@ -82,12 +87,17 @@ export function useTraderBookings() {
 }
 
 export function useUpdateBookingStatus() {
+  const t = useTranslations("TraderDashboard");
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.updateBookingStatus,
+    mutationFn: updateOrderStatusApi,
     onSuccess: () => {
+      toast.success(t("actions.bookingStatusUpdated"));
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.BOOKINGS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_BOOKINGS });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("actions.bookingStatusUpdateFailed"));
     },
   });
 }
@@ -100,12 +110,17 @@ export function useTraderOrders() {
 }
 
 export function useUpdateOrderStatus() {
+  const t = useTranslations("TraderDashboard");
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.updateOrderStatus,
+    mutationFn: updateBuyOrderStatusApi,
     onSuccess: () => {
+      toast.success(t("actions.orderStatusUpdated"));
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.ORDERS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ORDERS });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("actions.orderStatusUpdateFailed"));
     },
   });
 }

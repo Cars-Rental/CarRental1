@@ -51,11 +51,17 @@ export const addcar = joi.object({
     "any.required": "Distance is required",
   }),
 
-  fuel: joi.string().required().messages({
-    "string.base": "Fuel must be a string",
-    "string.empty": "Fuel is required",
-    "any.required": "Fuel is required",
-  }),
+  fuel: joi
+    .string()
+    .valid("Petrol", "Diesel", "Electric", "Hybrid")
+    .insensitive()
+    .required()
+    .messages({
+      "string.base": "Fuel must be a string",
+      "string.empty": "Fuel is required",
+      "any.required": "Fuel is required",
+      "any.only": "Fuel must be Petrol, Diesel, Electric, or Hybrid",
+    }),
 
   seatCount: joi.number().min(1).max(20).required().messages({
     "number.base": "Seat count must be a number",
@@ -64,17 +70,30 @@ export const addcar = joi.object({
     "any.required": "Seat count is required",
   }),
 
-  Body_Type: joi.string().required().messages({
-    "string.base": "Body type must be a string",
-    "string.empty": "Body type is required",
-    "any.required": "Body type is required",
-  }),
+  Body_Type: joi
+    .string()
+    .valid("Sedan", "SUV", "Hatchback", "Coupe", "Pickup", "Van", "Convertible")
+    .insensitive()
+    .required()
+    .messages({
+      "string.base": "Body type must be a string",
+      "string.empty": "Body type is required",
+      "any.required": "Body type is required",
+      "any.only":
+        "Body type must be Sedan, SUV, Hatchback, Coupe, Pickup, Van, or Convertible",
+    }),
 
-  Transmission: joi.string().required().messages({
-    "string.base": "Transmission must be a string",
-    "string.empty": "Transmission is required",
-    "any.required": "Transmission is required",
-  }),
+  Transmission: joi
+    .string()
+    .valid("Automatic", "Manual")
+    .insensitive()
+    .required()
+    .messages({
+      "string.base": "Transmission must be a string",
+      "string.empty": "Transmission is required",
+      "any.required": "Transmission is required",
+      "any.only": "Transmission must be Automatic or Manual",
+    }),
 });
 
 export const updateCar = joi
@@ -119,6 +138,7 @@ export const updateCar = joi
     fuel: joi
       .string()
       .valid("Petrol", "Diesel", "Electric", "Hybrid")
+      .insensitive()
       .messages({
         "any.only": "Fuel must be Petrol, Diesel, Electric, or Hybrid",
       }),
@@ -138,14 +158,19 @@ export const updateCar = joi
         "Van",
         "Convertible",
       )
+      .insensitive()
       .messages({
         "any.only":
           "Body type must be Sedan, SUV, Hatchback, Coupe, Pickup, Van, or Convertible",
       }),
 
-    Transmission: joi.string().valid("Automatic", "Manual").messages({
-      "any.only": "Transmission must be Automatic or Manual",
-    }),
+    Transmission: joi
+      .string()
+      .valid("Automatic", "Manual")
+      .insensitive()
+      .messages({
+        "any.only": "Transmission must be Automatic or Manual",
+      }),
   })
   .min(1)
   .messages({

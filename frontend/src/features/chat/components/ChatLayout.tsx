@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Search, MessageSquare, Send, Paperclip, Smile, CheckCheck, Check, Sparkles, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { useAppSelector } from "@/store/hooks";
 import type { ChatUser, Room } from "../types";
-import { useUserOrders } from "@/features/user-account/hooks/useUserOrders";
 import {
   Dialog,
   DialogTrigger,
@@ -17,7 +15,6 @@ import {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -42,7 +39,6 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     typingUsers,
     onlineUsers,
     isLoadingRooms,
-    isLoadingMessages,
     selectRoom,
     sendMessage,
     sendTypingStart,
@@ -59,7 +55,6 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { data: userOrders } = useUserOrders();
   const router = useRouter();
 
   useEffect(() => {
@@ -74,12 +69,14 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
 
   const getUserId = () => {
     if (!user) return "";
-    return user.id ?? (user as any)._id ?? "";
+    const idLikeUser = user as { id?: string; _id?: string };
+    return idLikeUser.id ?? idLikeUser._id ?? "";
   };
 
   const getMemberId = (member: ChatUser | string) => {
     if (typeof member === "string") return member;
-    return member._id ?? (member as any).id ?? "";
+    const idLikeMember = member as ChatUser & { id?: string };
+    return idLikeMember._id ?? idLikeMember.id ?? "";
   };
 
   const isSamePerson = (member: ChatUser | string) => {
@@ -210,7 +207,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     const name = groupName || "Group";
 
     const handleRoomCreated = ({ room }: { room: Room }) => {
-      const redirectPath = `/${locale}/chat?roomId=${room._id}`;
+      const redirectPath = isDashboard
+        ? `/${locale}/dashboard/messages?roomId=${room._id}`
+        : `/${locale}/chat?roomId=${room._id}`;
       router.push(redirectPath);
       socket.off("room:created", handleRoomCreated);
       socket.off("error", handleError);
@@ -372,7 +371,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
             <>
               {messages.map((message, index) => {
                 const userId = getUserId();
-                const senderId = message.sender._id ?? (message.sender as any).id ?? "";
+                const senderId =
+                  message.sender._id ??
+                  (message.sender as ChatUser & { id?: string }).id ??
+                  "";
                 const isMe = senderId === userId;
                 const showDate = index === 0 || formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt);
                 return (

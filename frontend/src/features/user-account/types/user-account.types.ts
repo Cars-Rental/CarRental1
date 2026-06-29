@@ -16,16 +16,24 @@ export type UserOrderStatus =
 
 export interface UserProfile {
   id: string;
+  _id?: string;
   userName: string;
   email: string;
   phone: string;
   gender: Gender;
   role: AuthUser["role"];
-  status: "active" | "inactive";
-  joinedAt: string;
-  bookingsCount: number;
-  ordersCount: number;
-  favoritesCount: number;
+  status?: "active" | "inactive";
+  joinedAt?: string;
+  createdAt?: string;
+  bookingsCount?: number;
+  ordersCount?: number;
+  favoritesCount?: number;
+}
+
+export interface UserProfileDocument {
+  orders: number;
+  booking: number;
+  wishLIST: number;
 }
 
 export interface UserBooking {

@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useTraderBookings } from "../hooks";
+import { useTraderBookings, useUpdateBookingStatus } from "../hooks";
 import type { TraderBooking } from "../types";
 import { formatDashboardCurrency, formatDashboardDate } from "../utils";
 import { DashboardEmptyState } from "./DashboardEmptyState";
@@ -18,6 +18,7 @@ export function TraderBookingsPage() {
   const locale = useLocale();
   const t = useTranslations("TraderDashboard");
   const { data, isLoading } = useTraderBookings();
+  const updateBookingStatus = useUpdateBookingStatus();
   const bookings = useMemo(() => data?.data ?? [], [data?.data]);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<
@@ -64,6 +65,22 @@ export function TraderBookingsPage() {
 
   function resetPage() {
     setCurrentPage(1);
+  }
+
+  function acceptBooking(bookingId: string) {
+    updateBookingStatus.mutate({ id: bookingId, status: "accepted" });
+  }
+
+  function rejectBooking(bookingId: string) {
+    const rejectionReason = window.prompt(t("actions.rejectionReasonPrompt"));
+
+    if (rejectionReason === null) return;
+
+    updateBookingStatus.mutate({
+      id: bookingId,
+      status: "rejected",
+      rejectionReason: rejectionReason?.trim() || undefined,
+    });
   }
 
   return (
@@ -169,6 +186,53 @@ export function TraderBookingsPage() {
                   label={t(`status.${booking.status}`)}
                 />
               ),
+            },
+            {
+              key: "actions",
+              header: t("tables.actions"),
+              cell: (booking) => {
+                const isMutatingThisBooking =
+                  updateBookingStatus.isPending &&
+                  updateBookingStatus.variables?.id === booking.id;
+
+                if (booking.status !== "pending") {
+                  return (
+                    <span className="text-xs text-muted-foreground">
+                      {t("actions.noActions")}
+                    </span>
+                  );
+                }
+
+                return (
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      className="gap-1"
+                      disabled={isMutatingThisBooking}
+                      onClick={() => acceptBooking(booking.id)}
+                    >
+                      {isMutatingThisBooking ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <CheckCircle2 className="size-4" />
+                      )}
+                      {t("actions.accept")}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="gap-1 text-destructive hover:text-destructive"
+                      disabled={isMutatingThisBooking}
+                      onClick={() => rejectBooking(booking.id)}
+                    >
+                      <XCircle className="size-4" />
+                      {t("actions.reject")}
+                    </Button>
+                  </div>
+                );
+              },
             },
             ]}
           />

@@ -24,6 +24,11 @@ export const QUERY_KEYS = {
     ME: ["profile", "me"] as const,
   },
 
+  NOTIFICATIONS: {
+    ALL: ["notifications"] as const,
+    UNREAD: ["notifications", "unread"] as const,
+  },
+
   TRADER: {
     OVERVIEW: ["trader", "dashboard", "overview"] as const,
     DASHBOARD_STATS: ["trader", "dashboard", "stats"] as const,

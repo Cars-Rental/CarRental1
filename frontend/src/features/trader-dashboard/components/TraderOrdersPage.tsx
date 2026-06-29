@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ShoppingCart } from "lucide-react";
+import { CheckCircle2, Loader2, ShoppingCart, XCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useTraderOrders } from "../hooks";
+import { useTraderOrders, useUpdateOrderStatus } from "../hooks";
 import type { TraderOrder } from "../types";
 import { formatDashboardCurrency, formatDashboardDate } from "../utils";
 import { DashboardEmptyState } from "./DashboardEmptyState";
@@ -18,6 +18,7 @@ export function TraderOrdersPage() {
   const locale = useLocale();
   const t = useTranslations("TraderDashboard");
   const { data, isLoading } = useTraderOrders();
+  const updateOrderStatus = useUpdateOrderStatus();
   const orders = useMemo(() => data?.data ?? [], [data?.data]);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<
@@ -64,6 +65,22 @@ export function TraderOrdersPage() {
 
   function resetPage() {
     setCurrentPage(1);
+  }
+
+  function acceptOrder(orderId: string) {
+    updateOrderStatus.mutate({ id: orderId, status: "accepted" });
+  }
+
+  function rejectOrder(orderId: string) {
+    const rejectionReason = window.prompt(t("actions.rejectionReasonPrompt"));
+
+    if (rejectionReason === null) return;
+
+    updateOrderStatus.mutate({
+      id: orderId,
+      status: "rejected",
+      rejectionReason: rejectionReason?.trim() || undefined,
+    });
   }
 
   return (
@@ -165,6 +182,53 @@ export function TraderOrdersPage() {
                   label={t(`status.${order.status}`)}
                 />
               ),
+            },
+            {
+              key: "actions",
+              header: t("tables.actions"),
+              cell: (order) => {
+                const isMutatingThisOrder =
+                  updateOrderStatus.isPending &&
+                  updateOrderStatus.variables?.id === order.id;
+
+                if (order.status !== "pending") {
+                  return (
+                    <span className="text-xs text-muted-foreground">
+                      {t("actions.noActions")}
+                    </span>
+                  );
+                }
+
+                return (
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      className="gap-1"
+                      disabled={isMutatingThisOrder}
+                      onClick={() => acceptOrder(order.id)}
+                    >
+                      {isMutatingThisOrder ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <CheckCircle2 className="size-4" />
+                      )}
+                      {t("actions.accept")}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="gap-1 text-destructive hover:text-destructive"
+                      disabled={isMutatingThisOrder}
+                      onClick={() => rejectOrder(order.id)}
+                    >
+                      <XCircle className="size-4" />
+                      {t("actions.reject")}
+                    </Button>
+                  </div>
+                );
+              },
             },
             ]}
           />

@@ -282,7 +282,7 @@ export const getBuyOrders = async (req, res, next) => {
       orderBuyModel
         .find(filter)
         .populate("user", "userName")
-        .populate("car", "carmodel year")
+        .populate("car", "carname carmodel year")
         .select("carprice createdAt status")
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -293,11 +293,12 @@ export const getBuyOrders = async (req, res, next) => {
     const formattedOrders = orders.map((order) => ({
       id: order._id,
       customer: order.user?.userName || "",
-      car: `${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      car: `${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
       carprice: order.carprice,
       createdAt: order.createdAt,
       status: order.status,
     }));
+
 
     return ok(res, { total, page, limit, orders: formattedOrders });
   } catch (error) {
@@ -374,24 +375,25 @@ export const getReviews = async (req, res, next) => {
     const limit = Number(req.query.limit) || 20;
     const skip  = (page - 1) * limit;
 
+   
     const traderCars = await carModel.distinct("_id", { owner: traderId });
 
-    const filter = { car: { $in: traderCars } };
+    
+    const filter = { carRent: { $in: traderCars } };
     if (req.query.rating) filter.rating = Number(req.query.rating);
 
     const [total, reviews, ratingStats] = await Promise.all([
       reviewModel.countDocuments(filter),
 
-      reviewModel
-        .find(filter)
-        .populate("user", "userName")
-        .populate("car",  "carmodel year")
-        .select("rating comment createdAt")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-
+    reviewModel
+    .find(filter)
+    .populate("userId",  "userName")  
+    .populate("carRent", "carbrand carname carmodel year")
+    .select("rating comment createdAt userId carRent")
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean(),
       reviewModel.aggregate([
         { $match: filter },
         {
@@ -409,15 +411,16 @@ export const getReviews = async (req, res, next) => {
       ]),
     ]);
 
-    const formattedReviews = reviews.map((review) => ({
-      id: review._id,
-      customer: review.user?.userName || "",
-      car: `${review.car?.carmodel || ""} ${review.car?.year || ""}`.trim(),
-      rating: review.rating,
-      comment: review.comment,
-      createdAt: review.createdAt,
-    }));
-
+   const formattedReviews = reviews.map((review) => ({
+  id:           review._id,
+  customerId:   review.userId?._id      || "",  
+  customerName: review.userId?.userName || "",  
+  carId:        review.carRent?._id     || "",
+  carTitle: `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
+  rating:    review.rating,
+  comment:   review.comment,
+  createdAt: review.createdAt,
+}));
     return ok(res, {
       total,
       page,

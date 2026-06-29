@@ -1,12 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import { CalendarDays, Heart, ShoppingCart, UserRound } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { selectUser } from "@/features/auth/store";
 import { useAppSelector } from "@/store/hooks";
+import type { Gender } from "@/features/auth/types";
 import { formatUserAccountDate, getInitials } from "../utils";
+import { useProfileDocument, useUpdateProfile } from "../hooks";
 import { UserAccountLayout } from "./UserAccountLayout";
 import { UserAccountPageHeader } from "./UserAccountPageHeader";
 import { UserAccountStatusBadge } from "./UserAccountStatusBadge";
@@ -15,6 +28,14 @@ export function UserProfilePage() {
   const t = useTranslations("UserAccount");
   const locale = useLocale();
   const user = useAppSelector(selectUser);
+  const { data: documentCounts } = useProfileDocument();
+  const updateProfile = useUpdateProfile();
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [formValues, setFormValues] = useState({
+    userName: "",
+    phone: "",
+    gender: "Male" as Gender,
+  });
 
   if (!user) {
     return null;
@@ -26,20 +47,46 @@ export function UserProfilePage() {
   const summaryCards = [
     {
       label: t("profile.summary.bookings"),
-      value: user.bookingsCount ?? 0,
+      value: documentCounts?.orders ?? user.bookingsCount ?? 0,
       icon: CalendarDays,
     },
     {
       label: t("profile.summary.orders"),
-      value: user.ordersCount ?? 0,
+      value: documentCounts?.booking ?? user.ordersCount ?? 0,
       icon: ShoppingCart,
     },
     {
       label: t("profile.summary.favorites"),
-      value: user.favoritesCount ?? 0,
+      value: documentCounts?.wishLIST ?? user.favoritesCount ?? 0,
       icon: Heart,
     },
   ];
+
+  function submitProfileUpdate(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    updateProfile.mutate(
+      {
+        userName: formValues.userName.trim(),
+        phone: formValues.phone.trim(),
+        gender: formValues.gender,
+      },
+      {
+        onSuccess: () => {
+          setIsEditOpen(false);
+        },
+      }
+    );
+  }
+
+  function openEditProfile() {
+    setFormValues({
+      userName: user.userName,
+      phone: user.phone,
+      gender: user.gender,
+    });
+    setIsEditOpen(true);
+  }
 
   return (
     <UserAccountLayout>
@@ -64,7 +111,11 @@ export function UserProfilePage() {
                 label={t(`status.${status}`)}
               />
             </div>
-            <Button className="mt-6 w-full gap-2" variant="outline">
+            <Button
+              className="mt-6 w-full gap-2"
+              variant="outline"
+              onClick={openEditProfile}
+            >
               <UserRound className="h-4 w-4" />
               {t("profile.editProfile")}
             </Button>
@@ -121,6 +172,83 @@ export function UserProfilePage() {
           </div>
         </div>
       </div>
+
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent>
+          <form onSubmit={submitProfileUpdate} className="space-y-4">
+            <DialogHeader>
+              <DialogTitle>{t("profile.editProfile")}</DialogTitle>
+              <DialogDescription>
+                {t("profile.editDescription")}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-2">
+              <Label htmlFor="profile-userName">{t("fields.name")}</Label>
+              <Input
+                id="profile-userName"
+                value={formValues.userName}
+                onChange={(event) =>
+                  setFormValues((current) => ({
+                    ...current,
+                    userName: event.target.value,
+                  }))
+                }
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="profile-phone">{t("fields.phone")}</Label>
+              <Input
+                id="profile-phone"
+                value={formValues.phone}
+                onChange={(event) =>
+                  setFormValues((current) => ({
+                    ...current,
+                    phone: event.target.value,
+                  }))
+                }
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="profile-gender">{t("fields.gender")}</Label>
+              <select
+                id="profile-gender"
+                value={formValues.gender}
+                onChange={(event) =>
+                  setFormValues((current) => ({
+                    ...current,
+                    gender: event.target.value as Gender,
+                  }))
+                }
+                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+              >
+                <option value="Male">{t("gender.Male")}</option>
+                <option value="Female">{t("gender.Female")}</option>
+              </select>
+            </div>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={updateProfile.isPending}
+                onClick={() => setIsEditOpen(false)}
+              >
+                {t("actions.cancel")}
+              </Button>
+              <Button type="submit" disabled={updateProfile.isPending}>
+                {updateProfile.isPending
+                  ? t("profile.saving")
+                  : t("profile.saveChanges")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </UserAccountLayout>
   );
 }
