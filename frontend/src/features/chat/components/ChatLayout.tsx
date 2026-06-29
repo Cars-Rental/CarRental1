@@ -1,27 +1,28 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
-import { 
-  Search, 
-  MessageSquare, 
-  Send, 
-  Paperclip, 
-  Smile, 
-  CheckCheck, 
-  Check,
-  User,
-  Package,
-  Calendar,
-  X,
-  Sparkles
-} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { Search, MessageSquare, Send, Paperclip, Smile, CheckCheck, Check, Sparkles, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { useAppSelector } from "@/store/hooks";
-import type { Room, Message, ChatUser } from "../types";
+import type { ChatUser, Room } from "../types";
 import { useUserOrders } from "@/features/user-account/hooks/useUserOrders";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { getAllUsersApi } from "../api/chat.api";
+import { useRouter } from "next/navigation";
 
 interface ChatLayoutProps {
   initialRoomId?: string | null;
@@ -32,12 +33,12 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   const t = useTranslations("Chat");
   const locale = useLocale();
   const { user } = useAppSelector((state) => state.auth);
-  
+
   const {
     rooms,
     messages,
-    activeRoomId,
     activeRoom,
+    activeRoomId,
     typingUsers,
     onlineUsers,
     isLoadingRooms,
@@ -47,44 +48,54 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     sendTypingStart,
     sendTypingStop,
     unreadCounts,
+    socket,
+    createPrivateChat,
   } = useChatSocket();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"all" | "open" | "unread" | "resolved">("all");
   const [inputText, setInputText] = useState("");
   const [resolvedRooms, setResolvedRooms] = useState<string[]>([]);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Fetch orders to associate booking cards with conversations
   const { data: userOrders } = useUserOrders();
+  const router = useRouter();
 
-  // Handle initial active room from URL search params
   useEffect(() => {
-    if (initialRoomId) {
+    if (initialRoomId && activeRoomId !== initialRoomId) {
       selectRoom(initialRoomId);
-    } else if (rooms.length > 0 && !activeRoomId) {
-      // Default to first room if none selected
-      selectRoom(rooms[0]._id);
     }
-  }, [initialRoomId, rooms]);
+  }, [initialRoomId, activeRoomId, selectRoom]);
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typingUsers]);
 
-  // Find the other member in a private room
-  const getParticipant = (room: Room): ChatUser | null => {
-    if (!user) return null;
-    const other = room.members.find((m) => m._id !== user.id);
-    return other || null;
+  const getUserId = () => {
+    if (!user) return "";
+    return user.id ?? (user as any)._id ?? "";
   };
 
-  // Format message timestamp
-  const formatTime = (timeStr: string) => {
-    const date = new Date(timeStr);
+  const getMemberId = (member: ChatUser | string) => {
+    if (typeof member === "string") return member;
+    return member._id ?? (member as any).id ?? "";
+  };
+
+  const isSamePerson = (member: ChatUser | string) => {
+    const memberId = getMemberId(member);
+    const userId = getUserId();
+    return memberId !== "" && userId !== "" && memberId === userId;
+  };
+
+  const getParticipant = (room: Room): ChatUser | null => {
+    if (!user) return null;
+    return (
+      room.members.find((member) => !isSamePerson(member)) as ChatUser | undefined) || null;
+  };
+
+  const formatTime = (value: string) => {
+    const date = new Date(value);
     return date.toLocaleTimeString(locale === "ar" ? "ar-EG" : "en-US", {
       hour: "numeric",
       minute: "2-digit",
@@ -92,19 +103,16 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     });
   };
 
-  const formatDateLabel = (timeStr: string) => {
-    const date = new Date(timeStr);
+  const formatDate = (value: string) => {
+    const date = new Date(value);
     return date.toLocaleDateString(locale === "ar" ? "ar-EG" : "en-US", {
       day: "numeric",
       month: "long",
     });
   };
 
-  // Handle typing input
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
-    
-    // Trigger typing:start
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(event.target.value);
     sendTypingStart();
 
     if (typingTimeoutRef.current) {
@@ -113,7 +121,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
 
     typingTimeoutRef.current = setTimeout(() => {
       sendTypingStop();
-    }, 2000);
+    }, 1500);
   };
 
   const handleSend = () => {
@@ -123,350 +131,388 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     sendTypingStop();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
       handleSend();
     }
   };
 
-  // Toggle resolved room locally
   const toggleResolved = (roomId: string) => {
     setResolvedRooms((prev) =>
-      prev.includes(roomId) ? prev.filter((id) => id !== roomId) : [...prev, roomId]
+      prev.includes(roomId) ? prev.filter((id) => id !== roomId) : [...prev, roomId],
     );
   };
 
-  // Find booking/order corresponding to the participant
-  const getRelatedOrder = (room: Room) => {
-    const participant = getParticipant(room);
-    if (!participant || !userOrders) return null;
-    // Find if there is an order where the customer or owner matches the participant
-    return userOrders.find(
-      (order) =>
-        order.owner._id === participant._id || 
-        order.user._id === participant._id
-    );
-  };
-
-  const relatedOrder = activeRoom ? getRelatedOrder(activeRoom) : null;
-
-  // Filter and search rooms
   const filteredRooms = rooms.filter((room) => {
     const participant = getParticipant(room);
     if (!participant) return false;
-
-    // Search query match
-    const nameMatch = participant.userName.toLowerCase().includes(searchQuery.toLowerCase());
-    const lastMsgMatch = room.lastMessage?.content?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
-    const matchesSearch = nameMatch || lastMsgMatch;
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      participant.userName.toLowerCase().includes(query) ||
+      (room.lastMessage?.content?.toLowerCase().includes(query) ?? false);
 
     if (!matchesSearch) return false;
 
-    // Tab filter match
     const isResolved = resolvedRooms.includes(room._id);
     if (activeTab === "resolved") return isResolved;
     if (activeTab === "open") return !isResolved;
     if (activeTab === "unread") return (unreadCounts[room._id] || 0) > 0;
-    
-    return true; // "all"
+    return true;
   });
 
+  // new UI: create chat (private/group)
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [usersList, setUsersList] = useState<ChatUser[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [groupName, setGroupName] = useState("");
+  const [createError, setCreateError] = useState<string | null>(null);
+
+  const fetchUsers = async () => {
+    try {
+      const users = await getAllUsersApi();
+      setUsersList(users);
+    } catch (err) {
+      console.error("Failed to fetch users", err);
+    }
+  };
+
+  const handleToggleUser = (id: string) => {
+    setSelectedUserIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
+  };
+
+  const handleCreate = () => {
+    setCreateError(null);
+    if (selectedUserIds.length === 0) {
+      setCreateError(t("selectAtLeastOne") || "Please select at least one contact to start chat.");
+      return;
+    }
+
+    if (!socket) {
+      setCreateError(t("socketNotConnected") || "Socket is not connected. Please refresh the page.");
+      return;
+    }
+
+    if (selectedUserIds.length === 1) {
+      // private chat
+      const targetUserId = selectedUserIds[0];
+      const handleError = (error: { message?: string }) => {
+        setCreateError(error?.message || t("createRoomFailed") || "Failed to create the room.");
+        socket.off("error", handleError);
+      };
+
+      socket.once("error", handleError);
+      createPrivateChat(targetUserId);
+      setIsDialogOpen(false);
+      setSelectedUserIds([]);
+      return;
+    }
+
+    const name = groupName || "Group";
+
+    const handleRoomCreated = ({ room }: { room: Room }) => {
+      const redirectPath = `/${locale}/chat?roomId=${room._id}`;
+      router.push(redirectPath);
+      socket.off("room:created", handleRoomCreated);
+      socket.off("error", handleError);
+    };
+
+    const handleError = (error: { message?: string }) => {
+      setCreateError(error?.message || t("createRoomFailed") || "Failed to create the room.");
+      socket.off("room:created", handleRoomCreated);
+      socket.off("error", handleError);
+    };
+
+    socket.once("room:created", handleRoomCreated);
+    socket.once("error", handleError);
+    socket.emit("room:createGroup", { name, memberIds: selectedUserIds });
+
+    setIsDialogOpen(false);
+    setSelectedUserIds([]);
+    setGroupName("");
+  };
+
   return (
-    <div className={cn(
-      "flex bg-slate-50 dark:bg-slate-950 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl overflow-hidden shadow-sm",
-      isDashboard ? "h-[calc(100vh-120px)]" : "h-[70vh] min-h-[500px]"
-    )}>
-      {/* 1. SIDEBAR - ROOMS LIST */}
-      <div className="w-full sm:w-[320px] lg:w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 shrink-0">
-        {/* Search */}
+    <div dir={locale === "ar" ? "rtl" : "ltr"} className="h-full flex min-h-0 gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950">
+      <div className="h-full w-full max-w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
         <div className="p-4 border-b border-slate-100 dark:border-slate-800/80">
           <div className="relative">
             <input
               type="text"
-              placeholder={t("searchPlaceholder")}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-2.5 ps-10 pe-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder={t("searchPlaceholder")}
+              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
-            <Search className="absolute start-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            {/* floating + moved to bottom-right for better UX */}
           </div>
         </div>
-
-        {/* Tab Filters */}
-        <div className="flex px-3 py-2 gap-1 border-b border-slate-100 dark:border-slate-800/80 overflow-x-auto scrollbar-none shrink-0">
+        <div className="flex gap-1 overflow-x-auto border-b border-slate-100 dark:border-slate-800/80 p-3">
           {(["all", "open", "unread", "resolved"] as const).map((tab) => (
             <button
               key={tab}
+              type="button"
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all",
+                "rounded-2xl px-3 py-1.5 text-xs font-bold transition",
                 activeTab === tab
                   ? "bg-[var(--primary)] text-white"
-                  : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800"
+                  : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800",
               )}
             >
               {t(tab)}
             </button>
           ))}
         </div>
-
-        {/* Rooms Listing */}
         <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
           {isLoadingRooms ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-3 p-4 animate-pulse">
-                <div className="size-12 rounded-full bg-slate-100 dark:bg-slate-800 shrink-0" />
+            Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-3 p-4 animate-pulse">
+                <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-3 w-28 bg-slate-100 dark:bg-slate-800 rounded" />
-                  <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded" />
+                  <div className="h-3 w-24 rounded bg-slate-100 dark:bg-slate-800" />
+                  <div className="h-3 w-full rounded bg-slate-100 dark:bg-slate-800" />
                 </div>
               </div>
             ))
           ) : filteredRooms.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 px-4 text-center text-slate-400">
-              <MessageSquare className="size-10 mb-2 stroke-[1.5]" />
+            <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 p-6 text-slate-400">
+              <MessageSquare className="h-10 w-10 stroke-[1.5]" />
               <p className="text-xs font-bold">{t("noRooms")}</p>
             </div>
           ) : (
             filteredRooms.map((room) => {
               const participant = getParticipant(room);
               if (!participant) return null;
-              
               const isSelected = room._id === activeRoomId;
-              const isOnline = onlineUsers.has(participant._id);
-              const unreadCount = unreadCounts[room._id] || 0;
-              const initials = participant.userName.split(" ").map(w => w[0]).join("").toUpperCase().slice(0,2);
+              const initials = participant.userName
+                .split(" ")
+                .map((part) => part[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase();
+              const unread = unreadCounts[room._id] || 0;
+              const lastMessage = room.lastMessage?.content || t("noMessagesYet");
 
               return (
-                <div
+                <button
                   key={room._id}
+                  type="button"
                   onClick={() => selectRoom(room._id)}
                   className={cn(
-                    "flex items-center gap-3 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors relative",
-                    isSelected && "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-[var(--primary)]"
+                    "flex w-full items-center gap-3 p-4 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/40",
+                    isSelected && "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-[var(--primary)]",
                   )}
                 >
-                  {/* Avatar */}
                   <div className="relative shrink-0">
-                    <div className="size-12 rounded-full bg-[var(--primary)]/10 dark:bg-emerald-400/10 flex items-center justify-center text-[var(--primary)] dark:text-emerald-400 font-extrabold text-sm select-none">
+                    <div className="h-12 w-12 grid place-items-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)] font-bold dark:bg-emerald-400/10 dark:text-emerald-400">
                       {initials}
                     </div>
-                    {isOnline && (
-                      <span className="absolute bottom-0 end-0 size-3 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
+                    {onlineUsers.has(participant._id) && (
+                      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
                     )}
                   </div>
-
-                  {/* Name + last message preview */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-baseline gap-2">
-                      <h3 className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="truncate text-xs font-bold text-slate-800 dark:text-slate-100">
                         {participant.userName}
                       </h3>
-                      {room.lastMessage && (
-                        <span className="text-[10px] text-slate-400 font-medium">
+                      {room.lastMessage?.createdAt && (
+                        <span className="text-[10px] text-slate-400">
                           {formatTime(room.lastMessage.createdAt)}
                         </span>
                       )}
                     </div>
-                    
-                    <p className="text-xs text-slate-400 dark:text-slate-500 truncate mt-1">
-                      {room.lastMessage?.content || "Sent an attachment"}
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 truncate">
+                      {lastMessage}
                     </p>
                   </div>
-
-                  {/* Badges */}
-                  <div className="flex flex-col gap-1.5 items-end">
-                    {resolvedRooms.includes(room._id) && (
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-400">
-                        {t("resolved")}
-                      </span>
-                    )}
-                    {unreadCount > 0 && (
-                      <span className="size-5 rounded-full bg-[var(--primary)] text-white text-[10px] font-bold flex items-center justify-center">
-                        {unreadCount}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                  {unread > 0 && (
+                    <span className="h-5 w-5 grid place-items-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-white">
+                      {unread}
+                    </span>
+                  )}
+                </button>
               );
             })
           )}
         </div>
       </div>
-
-      {/* 2. CHAT VIEWPORT */}
-      <div className="flex-1 flex flex-col bg-slate-50/50 dark:bg-slate-950/20 relative">
-        {activeRoom ? (
-          <>
-            {/* Chat Header */}
-            <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 shrink-0">
-              <div className="flex items-center gap-3">
-                <div>
-                  <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100">
-                    {getParticipant(activeRoom)?.userName}
-                  </h2>
-                  <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
-                    <span className={cn(
-                      "size-2 rounded-full inline-block",
-                      onlineUsers.has(getParticipant(activeRoom)?._id || "") ? "bg-emerald-400" : "bg-slate-300 dark:bg-slate-700"
-                    )} />
-                    {onlineUsers.has(getParticipant(activeRoom)?._id || "") ? t("online") : t("offline")}
-                  </p>
-                </div>
-              </div>
-
-              {/* Resolved button */}
-              <button
-                onClick={() => toggleResolved(activeRoom._id)}
-                className={cn(
-                  "text-xs font-bold px-4 py-2 rounded-xl transition-all border",
-                  resolvedRooms.includes(activeRoom._id)
-                    ? "bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-800 dark:border-slate-700"
-                    : "bg-[var(--primary)]/10 border-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/20"
-                )}
-              >
-                {t("markAsResolved")}
-              </button>
-            </div>
-
-            {/* Message Viewport */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              {isLoadingMessages ? (
-                <div className="h-full flex items-center justify-center text-slate-400">
-                  <span className="animate-spin size-6 border-2 border-t-transparent border-[var(--primary)] rounded-full" />
-                </div>
-              ) : (
-                <>
-                  {messages.map((message, idx) => {
-                    const isMe = message.sender._id === user?.id;
-                    const showDate = idx === 0 || formatDateLabel(messages[idx-1].createdAt) !== formatDateLabel(message.createdAt);
-                    
-                    return (
-                      <React.Fragment key={message._id}>
-                        {showDate && (
-                          <div className="flex justify-center my-3 shrink-0">
-                            <span className="text-[10px] font-bold bg-slate-200/50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 px-3 py-1 rounded-full">
-                              {formatDateLabel(message.createdAt)}
-                            </span>
-                          </div>
-                        )}
-
-                        <div className={cn(
-                          "flex gap-3 max-w-[80%]",
-                          isMe ? "ms-auto flex-row-reverse" : ""
-                        )}>
-                          {/* Chat bubble */}
-                          <div className="flex flex-col">
-                            <div className={cn(
-                              "rounded-2xl px-4 py-2.5 text-xs font-medium shadow-sm leading-relaxed",
-                              isMe 
-                                ? "bg-[var(--primary)] text-white rounded-te-none" 
-                                : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/30 dark:border-slate-700/30 rounded-ts-none"
-                            )}>
-                              {message.content}
-                            </div>
-                            
-                            <span className={cn(
-                              "text-[9px] text-slate-400 mt-1 flex items-center gap-1 font-medium",
-                              isMe ? "justify-end" : "justify-start"
-                            )}>
-                              {formatTime(message.createdAt)}
-                              {isMe && (
-                                message.readBy.length > 1 ? (
-                                  <CheckCheck className="size-3 text-emerald-400 shrink-0" />
-                                ) : (
-                                  <Check className="size-3 text-slate-300 dark:text-slate-600 shrink-0" />
-                                )
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      </React.Fragment>
-                    );
-                  })}
-
-                  {/* DYNAMIC RELATED ORDER / BOOKING CARD IN CONVERSATION STREAM */}
-                  {relatedOrder && (
-                    <div className="flex justify-center my-4">
-                      <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-4 shadow-sm w-full max-w-sm flex items-center gap-4 hover:scale-[1.01] transition-transform">
-                        {relatedOrder.car.carimage?.[0]?.secure_url && (
-                          <div className="relative size-16 rounded-2xl overflow-hidden shrink-0 bg-slate-100">
-                            <Image
-                              src={relatedOrder.car.carimage[0].secure_url}
-                              alt={relatedOrder.car.carname}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
-                            {relatedOrder.car.carname}
-                          </h4>
-                          <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
-                            {t("rentBooking")} #{relatedOrder._id.slice(-6).toUpperCase()}
-                          </p>
-                          <span className="inline-block mt-2 text-[9px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/20">
-                            {t("activeBooking")}
-                          </span>
-                        </div>
+      <div className="flex-1 flex min-h-0 flex-col bg-slate-50 dark:bg-slate-950">
+        <div className="h-16 flex items-center justify-between gap-4 border-b border-slate-200/60 bg-white px-6 dark:border-slate-800/60 dark:bg-slate-900">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+              {t("conversations")}
+            </p>
+            <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">
+              {activeRoom
+                ? activeRoom.type === "group"
+                  ? activeRoom.name || t("groupChat")
+                  : getParticipant(activeRoom)?.userName || t("selectConversation")
+                : t("selectConversation")}
+            </h1>
+          </div>
+          {activeRoom && (
+            <button
+              type="button"
+              onClick={() => toggleResolved(activeRoom._id)}
+              className={cn(
+                "rounded-2xl px-4 py-2 text-xs font-bold transition border",
+                resolvedRooms.includes(activeRoom._id)
+                  ? "bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-800 dark:border-slate-700"
+                  : "bg-[var(--primary)]/10 border-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/20",
+              )}
+            >
+              {t("markAsResolved")}
+            </button>
+          )}
+        </div>
+        <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-4">
+          {activeRoom ? (
+            <>
+              {messages.map((message, index) => {
+                const userId = getUserId();
+                const senderId = message.sender._id ?? (message.sender as any).id ?? "";
+                const isMe = senderId === userId;
+                const showDate = index === 0 || formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt);
+                return (
+                  <React.Fragment key={message._id}>
+                    {showDate && (
+                      <div className="flex justify-center my-3 shrink-0">
+                        <span className="rounded-full bg-slate-200 px-3 py-1 text-[10px] font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                          {formatDate(message.createdAt)}
+                        </span>
+                      </div>
+                    )}
+                    <div className={cn(
+                      "flex items-end gap-3",
+                      isMe ? "justify-end" : "justify-start",
+                    )}>
+                      <div className={cn(
+                        "max-w-[80%] rounded-3xl px-4 py-3 text-xs leading-6 shadow-sm",
+                        isMe
+                          ? "bg-[var(--primary)] text-white rounded-br-none"
+                          : "bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-bl-none",
+                      )}>
+                        {message.content}
                       </div>
                     </div>
-                  )}
-
-                  {/* Typing Indicator */}
-                  {typingUsers.length > 0 && (
-                    <div className="flex gap-2 items-center text-[10px] font-bold text-slate-400 dark:text-slate-500 animate-pulse">
-                      <Sparkles className="size-3 text-[var(--primary)] shrink-0" />
-                      <span>
-                        {typingUsers.map((u) => u.userName).join(", ")} {t("typing")}
-                      </span>
+                    <div className={cn(
+                      "flex items-center gap-2 text-[10px] font-medium",
+                      isMe ? "justify-end text-slate-400" : "justify-start text-slate-500 dark:text-slate-400",
+                    )}>
+                      <span>{formatTime(message.createdAt)}</span>
+                      {isMe && (
+                        message.readBy.length > 1 ? (
+                          <CheckCheck className="h-3 w-3 text-emerald-400" />
+                        ) : (
+                          <Check className="h-3 w-3 text-slate-300 dark:text-slate-600" />
+                        )
+                      )}
                     </div>
-                  )}
-
-                  <div ref={messagesEndRef} />
-                </>
+                  </React.Fragment>
+                );
+              })}
+              {typingUsers.length > 0 && (
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 animate-pulse">
+                  <Sparkles className="h-3 w-3 text-[var(--primary)]" />
+                  <span>{typingUsers.map((u) => u.userName).join(", ")} {t("typing")}</span>
+                </div>
               )}
+              <div ref={messagesEndRef} />
+            </>
+          ) : (
+            <div className="grid min-h-[320px] place-items-center text-center text-slate-500 dark:text-slate-400">
+              <MessageSquare className="mb-4 h-16 w-16 text-slate-300 dark:text-slate-700" />
+              <div>
+                <p className="text-sm font-bold">{t("noActiveRoom")}</p>
+                <p className="mt-2 text-xs text-slate-400">{t("selectRoomHint")}</p>
+              </div>
             </div>
-
-            {/* Input Actions Footer */}
-            <div className="p-4 border-t border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 flex items-center gap-3 shrink-0">
-              {/* Attachment */}
-              <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 rounded-xl transition-colors shrink-0">
-                <Paperclip className="size-4" />
-              </button>
-
-              {/* Emoji */}
-              <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 rounded-xl transition-colors shrink-0">
-                <Smile className="size-4" />
-              </button>
-
-              {/* Text Input */}
-              <input
-                type="text"
-                value={inputText}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                placeholder={t("typeMessage")}
-                className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700/60 rounded-2xl px-4 py-3 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white"
-              />
-
-              {/* Send */}
-              <button
-                onClick={handleSend}
-                disabled={!inputText.trim()}
-                className="bg-[var(--primary)] disabled:opacity-40 disabled:pointer-events-none hover:bg-[var(--primary-dark)] text-white p-3 rounded-2xl shadow-sm transition-all shrink-0 hover:scale-105 active:scale-95"
-              >
-                <Send className="size-4" />
-              </button>
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-slate-400 gap-3">
-            <MessageSquare className="size-16 stroke-[1.2] text-slate-300 dark:text-slate-700" />
-            <p className="text-sm font-bold">{t("noActiveRoom")}</p>
+          )}
+        </div>
+        <div className="border-t border-slate-200/60 bg-white px-4 py-3 dark:border-slate-800/60 dark:bg-slate-900">
+          <div className="flex items-center gap-3">
+            <button className="rounded-2xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
+              <Paperclip className="h-4 w-4" />
+            </button>
+            <button className="rounded-2xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
+              <Smile className="h-4 w-4" />
+            </button>
+            <input
+              type="text"
+              value={inputText}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder={t("typeMessage")}
+              className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] dark:border-slate-700/70 dark:bg-slate-800 dark:text-slate-100"
+            />
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={!inputText.trim()}
+              className="rounded-3xl bg-[var(--primary)] px-4 py-3 text-white transition hover:bg-[var(--primary-dark)] disabled:opacity-50"
+            >
+              <Send className="h-4 w-4" />
+            </button>
           </div>
-        )}
+        </div>
+      </div>
+      {/* Floating action button for new chat */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (open) fetchUsers(); }}>
+          <DialogTrigger render={<Button className="rounded-full p-3 bg-[var(--primary)] text-white shadow-lg hover:opacity-90"><Plus className="h-5 w-5" /></Button>} />
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t("newChat") || "New Chat"}</DialogTitle>
+              <DialogDescription>{t("selectContacts") || "Select contacts to start chat or create group"}</DialogDescription>
+            </DialogHeader>
+
+            <div className="max-h-64 overflow-auto grid gap-2 py-2">
+              {usersList.map((u) => {
+                const isOnline = onlineUsers.has(u._id) || u.isOnline;
+                return (
+                  <label
+                    key={u._id}
+                    className="flex items-center gap-3 px-2 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded"
+                  >
+                    <Checkbox checked={selectedUserIds.includes(u._id)} onCheckedChange={() => handleToggleUser(u._id)} />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium truncate">{u.userName}</span>
+                        <span
+                          className={cn(
+                            "h-2.5 w-2.5 rounded-full",
+                            isOnline ? "bg-emerald-400" : "bg-slate-300",
+                          )}
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="text-xs text-slate-400 truncate">{u.email}</div>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+
+            {createError && (
+              <p className="text-sm text-danger-foreground mt-2">{createError}</p>
+            )}
+
+            {selectedUserIds.length > 1 && (
+              <div className="mt-2">
+                <input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder={t("groupName") || "Group name"} className="w-full rounded-md border px-3 py-2" />
+              </div>
+            )}
+
+            <DialogFooter>
+              <Button onClick={handleCreate}>{t("create") || "Create"}</Button>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                {t("cancel") || "Cancel"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

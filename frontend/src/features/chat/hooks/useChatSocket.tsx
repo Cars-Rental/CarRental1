@@ -12,6 +12,7 @@ import { useAppSelector } from "@/store/hooks";
 import { tokenStorage } from "@/features/auth/utils";
 import { getRoomsApi, getRoomMessagesApi } from "../api/chat.api";
 import type { Room, Message, ChatUser } from "../types";
+import { ROLES } from "@/constants";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 
@@ -113,14 +114,40 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       console.log("Socket disconnected");
     });
 
-    // Real-time events
-    newSocket.on("room:created", ({ room }: { room: Room }) => {
-      setRooms((prev) => {
-        const exists = prev.some((r) => r._id === room._id);
-        if (exists) return prev;
-        return [room, ...prev];
-      });
+    newSocket.on("error", (error) => {
+      console.error("Socket error:", error);
     });
+
+    // Real-time events
+    newSocket.on(
+      "room:created",
+      ({ room, isNew }: { room: Room; isNew?: boolean }) => {
+        setRooms((prev) => {
+          const exists = prev.some((r) => r._id === room._id);
+          if (exists) return prev;
+          return [room, ...prev];
+        });
+
+        // If server created a new private room (e.g. owner accepted an order)
+        // and the current user is the non-trader (customer), redirect them
+        // to the chat page so they can see the new conversation.
+        try {
+          const isMember = room.members?.some?.((m: any) => {
+            if (!m) return false;
+            // member may be object or id string
+            return (m._id ? m._id.toString() : m.toString()) === user?.id;
+          });
+
+          if (isNew && isMember && user?.role !== ROLES.TRADER) {
+            const redirectPath = `/${locale}/chat?roomId=${room._id}`;
+            router.push(redirectPath);
+          }
+        } catch (err) {
+          // ignore navigation errors
+          console.warn("room:created handler error", err);
+        }
+      },
+    );
 
     newSocket.on(
       "message:receive",
@@ -215,8 +242,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
     newSocket.on(
       "users:onlineList",
-      ({ onlineUsers: list }: { onlineUsers: string[] }) => {
-        setOnlineUsers(new Set(list));
+      ({ onlineUsers: list, userIds }: { onlineUsers?: string[]; userIds?: string[] }) => {
+        const payload = list ?? userIds ?? [];
+        setOnlineUsers(new Set(payload));
       },
     );
 
@@ -300,28 +328,25 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   // 7. Start Private Chat (from profile, order, or bookings)
   const createPrivateChat = (targetUserId: string) => {
     if (!socket) return;
-    socket.emit("room:createPrivate", { targetUserId });
 
     const handleRoomCreated = ({ room }: { room: Room }) => {
-      // Find room in our local list or add it
       setRooms((prev) => {
         const exists = prev.some((r) => r._id === room._id);
         if (exists) return prev;
         return [room, ...prev];
       });
 
-      // Redirect to the appropriate chat page
       const redirectPath =
-        user?.role === "trader"
+        user?.role === ROLES.TRADER
           ? `/${locale}/dashboard/messages?roomId=${room._id}`
           : `/${locale}/chat?roomId=${room._id}`;
 
       router.push(redirectPath);
-      // Clean up listener to prevent duplicate firings
       socket.off("room:created", handleRoomCreated);
     };
 
-    socket.on("room:created", handleRoomCreated);
+    socket.once("room:created", handleRoomCreated);
+    socket.emit("room:createPrivate", { targetUserId });
   };
 
   const activeRoom = rooms.find((r) => r._id === activeRoomId) || null;

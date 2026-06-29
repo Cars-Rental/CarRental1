@@ -17,6 +17,7 @@
     "dashboard": "Dashboard",
     "orders": "My Orders",
     "favorites": "Favorites",
+    "messages": "Messages",
     "settings": "Settings"
   },
   "Auth": {
@@ -1111,6 +1112,13 @@
   },
   "Chat": {
     "title": "Conversations",
+    "conversations": "Conversations",
+    "selectConversation": "Select a conversation to start chatting",
+    "selectRoomHint": "Choose a room from the list on the right to view messages",
+    "newChat": "New Chat",
+    "selectContacts": "Select contacts to start a private chat or create a group",
+    "create": "Create",
+    "cancel": "Cancel",
     "searchPlaceholder": "Search for a conversation...",
     "all": "All",
     "open": "Open",
@@ -1125,6 +1133,12 @@
     "online": "Online",
     "offline": "Offline",
     "noActiveRoom": "Select a conversation to start chatting",
+    "noMessagesYet": "No messages yet",
+    "groupChat": "Group chat",
+    "groupName": "Group name",
+    "selectAtLeastOne": "Please select at least one contact.",
+    "socketNotConnected": "Socket is not connected. Refresh the page.",
+    "createRoomFailed": "Could not create chat room. Try again.",
     "startChatWith": "Chat with {name}",
     "noRooms": "No conversations found"
   }

@@ -22,6 +22,7 @@ import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/config/routes";
 import { ROLES } from "@/constants";
 import { useAppSelector } from "@/store/hooks";
+import { MessageSquare } from "lucide-react";
 
 import { useLogout } from "../hooks";
 
@@ -62,6 +63,11 @@ export function ProfileDropdown() {
       icon: Heart,
     },
     {
+      label: t("messages") || "Messages",
+      href: ROUTES.CHAT,
+      icon: MessageSquare,
+    },
+    {
       label: t("settings"),
       href: ROUTES.SETTINGS,
       icon: Settings,
@@ -93,12 +99,20 @@ export function ProfileDropdown() {
         <DropdownMenuSeparator />
 
         {user.role === ROLES.TRADER ? (
-          <Link href={ROUTES.DASHBOARD.ROOT}>
-            <DropdownMenuItem className="cursor-pointer gap-2">
-              <LayoutDashboard className="size-4" />
-              <span>{t("dashboard")}</span>
-            </DropdownMenuItem>
-          </Link>
+          <>
+            <Link href={ROUTES.DASHBOARD.ROOT}>
+              <DropdownMenuItem className="cursor-pointer gap-2">
+                <LayoutDashboard className="size-4" />
+                <span>{t("dashboard")}</span>
+              </DropdownMenuItem>
+            </Link>
+            <Link href={ROUTES.DASHBOARD.MESSAGES}>
+              <DropdownMenuItem className="cursor-pointer gap-2">
+                <MessageSquare className="size-4" />
+                <span>{t("messages")}</span>
+              </DropdownMenuItem>
+            </Link>
+          </>
         ) : (
           accountLinks.map(({ label, href, icon: Icon }) => (
             <Link key={href} href={href}>

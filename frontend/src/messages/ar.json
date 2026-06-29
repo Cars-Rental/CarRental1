@@ -17,7 +17,8 @@
     "dashboard": "لوحة التحكم",
     "orders": "طلباتي",
     "favorites": "المفضلة",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "messages": "الرسائل"
   },
   "Auth": {
     "register": {
@@ -1032,6 +1033,13 @@
   },
   "Chat": {
     "title": "المحادثات",
+    "conversations": "المحادثات",
+    "selectConversation": "اختر محادثة لبدء الدردشة",
+    "selectRoomHint": "اختر غرفة من القائمة على اليمين لعرض الرسائل",
+    "newChat": "محادثة جديدة",
+    "selectContacts": "اختر الأشخاص لبدء محادثة خاصة أو إنشاء مجموعة",
+    "create": "إنشاء",
+    "cancel": "إلغاء",
     "searchPlaceholder": "البحث عن محادثة...",
     "all": "الكل",
     "open": "مفتوحة",
@@ -1046,6 +1054,12 @@
     "online": "متصل الآن",
     "offline": "غير متصل",
     "noActiveRoom": "اختر محادثة لبدء الدردشة",
+    "noMessagesYet": "لا توجد رسائل بعد",
+    "groupChat": "محادثة مجموعة",
+    "groupName": "اسم المجموعة",
+    "selectAtLeastOne": "الرجاء اختيار شخص واحد على الأقل.",
+    "socketNotConnected": "السوكيت غير متصل. أعد تحميل الصفحة.",
+    "createRoomFailed": "فشل إنشاء غرفة الدردشة. حاول مرة أخرى.",
     "startChatWith": "محادثة مع {name}",
     "noRooms": "لم يتم العثور على محادثات"
   }
