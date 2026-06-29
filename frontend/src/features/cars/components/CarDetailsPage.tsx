@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { ChevronRight, Heart, Share2, Star } from "lucide-react";
 import { useDirection } from "@/lib";
@@ -18,6 +18,13 @@ import { CarReviews } from "./CarReviews";
 import { BookingCard } from "./BookingCard";
 import { CarDetailsSkeleton } from "./CarDetailsSkeleton";
 import { ROUTES } from "@/config/routes";
+import {
+  useAddFavorite,
+  useRemoveFavorite,
+  useUserFavorites,
+} from "@/features/user-account/hooks";
+import { useAppSelector } from "@/store/hooks";
+import { selectIsAuthenticated } from "@/features/auth/store";
 
 interface CarDetailsPageProps {
   id: string;
@@ -27,7 +34,14 @@ interface CarDetailsPageProps {
 export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
   const t = useTranslations("CarDetails");
   const { locale } = useDirection();
-  const [isFavorite, setIsFavorite] = React.useState(false);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const { data: favorites = [] } = useUserFavorites({
+    enabled: isAuthenticated,
+  });
+  const addFavorite = useAddFavorite();
+  const removeFavorite = useRemoveFavorite();
+  const isFavorite = favorites.some((favorite) => favorite.id === id);
+  const isFavoritePending = addFavorite.isPending || removeFavorite.isPending;
 
   const rentQuery = useGetRentCarById(mode === "rent" ? id : "");
   const saleQuery = useGetSaleCarById(mode === "sale" ? id : "");
@@ -46,7 +60,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
           </p>
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="text-[var(--primary)] text-sm font-bold hover:underline mt-2 inline-block"
+            className="text-(--primary) text-sm font-bold hover:underline mt-2 inline-block"
           >
             {t("goBack")}
           </Link>
@@ -65,14 +79,14 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
         <nav className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-6 font-medium flex-wrap">
           <Link
             href={`/${locale}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-(--primary) transition-colors"
           >
             {t("breadcrumb.home")}
           </Link>
           <ChevronRight className="size-3 shrink-0" />
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-(--primary) transition-colors"
           >
             {mode === "rent"
               ? t("breadcrumb.rentCars")
@@ -86,7 +100,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* LEFT — Sticky Booking / Price Card */}
-          <div className="w-full lg:w-[300px] shrink-0 lg:sticky lg:top-8">
+          <div className="w-full lg:w-75 shrink-0 lg:sticky lg:top-8">
             <BookingCard
               mode={mode}
               pricePerDay={car.carprice}
@@ -140,13 +154,30 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
               {/* Action icons */}
               <div className="flex items-center gap-2 shrink-0">
                 <button
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      toast.error(t("favoriteLoginRequired"), {
+                        position: "top-left",
+                      });
+                      return;
+                    }
+                    if (isFavoritePending) return;
+                    if (isFavorite) {
+                      removeFavorite.mutate(id);
+                      return;
+                    }
+                    addFavorite.mutate({
+                      carId: id,
+                      carModel: mode === "sale" ? "carBuy" : "carRent",
+                    });
+                  }}
+                  disabled={isFavoritePending}
                   className={`size-10 rounded-full border flex items-center justify-center transition-all duration-200 hover:scale-110 ${
                     isFavorite
                       ? "bg-rose-500 border-rose-500 text-white"
                       : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-500"
                   }`}
-                  aria-label="Toggle favorite"
+                  aria-label={t("toggleFavorite")}
                 >
                   <Heart
                     className={`size-4 ${isFavorite ? "fill-current" : ""}`}

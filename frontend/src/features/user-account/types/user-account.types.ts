@@ -55,12 +55,38 @@ export interface UserFavoriteCar {
   id: string;
   title: string;
   brand: string;
+  name?: string;
   model: string;
   year: number;
   image: string;
   location: string;
   price: number;
   type: "rent" | "sale";
+}
+
+export type WishlistCarModel = "carRent" | "carBuy";
+
+export interface AddFavoriteRequest {
+  carId: string;
+  carModel: WishlistCarModel;
+}
+
+export interface WishlistApiCar {
+  id: string;
+  title: string;
+  brand: string;
+  model: string;
+  name: string;
+  year: number;
+  image: string;
+  location: string;
+  price: number;
+  type: "rent" | "buy" | "sale";
+}
+
+export interface WishlistApiResponse {
+  success: boolean;
+  wishlist: WishlistApiCar[];
 }
 
 export interface UserSettings {

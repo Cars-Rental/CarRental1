@@ -28,10 +28,20 @@ export const API_ENDPOINTS = {
     },
   },
 
+  FAVORITES: "/wishlist",
+  FAVORITES_ADD: "/wishlist/add",
+  FAVORITES_DELETE: (id: string) => `/wishlist/${id}`,
+
   ORDERS: {
     CREATE: "/orders/create",
     GET_BY_ID: (id: string) => `/orders/${id}`,
     DELETE: (id: string) => `/orders/${id}`,
+  },
+
+  ORDER_BUY: {
+    CREATE: "/orderBuy",
+    GET_BY_ID: (id: string) => `/orderBuy/${id}`,
+    MY_ORDERS: "/orderBuy/my-orders",
   },
 
   BOOKINGS: {
@@ -44,6 +54,14 @@ export const API_ENDPOINTS = {
 
   TRADER: {
     DASHBOARD: {
+      OVERVIEW: "/dashboard/overview",
+      RENT_CARS: "/dashboard/rent-cars",
+      BUY_CARS: "/dashboard/buy-cars",
+      RENT_ORDERS: "/dashboard/rent-orders",
+      BUY_ORDERS: "/dashboard/buy-orders",
+      CUSTOMERS: "/dashboard/customers",
+      EARNINGS: "/dashboard/earnings",
+      RECENT_ACTIVITY: "/dashboard/recent-activity",
       STATS: "/trader/dashboard/stats",
       RECENT_BOOKINGS: "/trader/dashboard/recent-bookings",
       RECENT_ORDERS: "/trader/dashboard/recent-orders",
