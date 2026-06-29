@@ -168,7 +168,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
                     }
                     addFavorite.mutate({
                       carId: id,
-                      carModel: mode === "sale" ? "carBuy" : "car",
+                      carModel: mode === "sale" ? "carBuy" : "carRent",
                     });
                   }}
                   disabled={isFavoritePending}
