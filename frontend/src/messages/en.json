@@ -17,6 +17,7 @@
     "dashboard": "Dashboard",
     "orders": "My Orders",
     "favorites": "Favorites",
+    "messages": "Messages",
     "settings": "Settings"
   },
   "Auth": {
@@ -269,6 +270,8 @@
     "mileage": "Mileage",
     "km": "km",
     "viewDetails": "View Details",
+    "toggleFavorite": "Toggle favorite",
+    "favoriteLoginRequired": "Please log in to add cars to your favorites.",
     "rentNow": "Rent Now",
     "buyNow": "Buy Now",
     "badgeAvailable": "Available",
@@ -433,7 +436,9 @@
       "title": "Favorites",
       "description": "View and manage the cars you saved.",
       "location": "Location",
-      "price": "Price"
+      "price": "Price",
+      "empty": "No saved cars yet.",
+      "error": "We couldn't load your saved cars. Please try again."
     },
     "settings": {
       "title": "Settings",
@@ -1029,6 +1034,8 @@
       "smartEntry": "Smart Entry"
     },
     "chat": "Chat",
+    "toggleFavorite": "Toggle favorite",
+    "favoriteLoginRequired": "Please log in to add this car to your favorites.",
     "visitProfile": "Visit Profile",
     "locationTitle": "Car Location",
     "mapPlaceholder": "Map coming soon",
@@ -1038,6 +1045,7 @@
     "egp": "EGP",
     "buyNow": "Buy Now",
     "bookNow": "Book Now",
+    "booking": "Booking ...",
     "noChargeNote": "No charges will be made at this time",
     "preferredDate": "Preferred Date",
     "perDay": "day",
@@ -1101,5 +1109,37 @@
       "expiryRequired": "Enter a valid expiry date",
       "cvvRequired": "Enter a valid CVV"
     }
+  },
+  "Chat": {
+    "title": "Conversations",
+    "conversations": "Conversations",
+    "selectConversation": "Select a conversation to start chatting",
+    "selectRoomHint": "Choose a room from the list on the right to view messages",
+    "newChat": "New Chat",
+    "selectContacts": "Select contacts to start a private chat or create a group",
+    "create": "Create",
+    "cancel": "Cancel",
+    "searchPlaceholder": "Search for a conversation...",
+    "all": "All",
+    "open": "Open",
+    "unread": "Unread",
+    "resolved": "Resolved",
+    "typing": "typing...",
+    "typeMessage": "Type your message here...",
+    "markAsResolved": "Mark as 'Resolved'",
+    "activeBooking": "Active Booking",
+    "rentBooking": "Rental Booking",
+    "buyBooking": "Purchase Request",
+    "online": "Online",
+    "offline": "Offline",
+    "noActiveRoom": "Select a conversation to start chatting",
+    "noMessagesYet": "No messages yet",
+    "groupChat": "Group chat",
+    "groupName": "Group name",
+    "selectAtLeastOne": "Please select at least one contact.",
+    "socketNotConnected": "Socket is not connected. Refresh the page.",
+    "createRoomFailed": "Could not create chat room. Try again.",
+    "startChatWith": "Chat with {name}",
+    "noRooms": "No conversations found"
   }
 }

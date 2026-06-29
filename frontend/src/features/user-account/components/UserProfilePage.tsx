@@ -4,7 +4,8 @@ import { CalendarDays, Heart, ShoppingCart, UserRound } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockUserProfile } from "../utils";
+import { selectUser } from "@/features/auth/store";
+import { useAppSelector } from "@/store/hooks";
 import { formatUserAccountDate, getInitials } from "../utils";
 import { UserAccountLayout } from "./UserAccountLayout";
 import { UserAccountPageHeader } from "./UserAccountPageHeader";
@@ -13,22 +14,29 @@ import { UserAccountStatusBadge } from "./UserAccountStatusBadge";
 export function UserProfilePage() {
   const t = useTranslations("UserAccount");
   const locale = useLocale();
-  const profile = mockUserProfile;
+  const user = useAppSelector(selectUser);
+
+  if (!user) {
+    return null;
+  }
+
+  const status = user.status ?? "active";
+  const joinedAt = user.joinedAt ?? user.createdAt;
 
   const summaryCards = [
     {
       label: t("profile.summary.bookings"),
-      value: profile.bookingsCount,
+      value: user.bookingsCount ?? 0,
       icon: CalendarDays,
     },
     {
       label: t("profile.summary.orders"),
-      value: profile.ordersCount,
+      value: user.ordersCount ?? 0,
       icon: ShoppingCart,
     },
     {
       label: t("profile.summary.favorites"),
-      value: profile.favoritesCount,
+      value: user.favoritesCount ?? 0,
       icon: Heart,
     },
   ];
@@ -44,16 +52,16 @@ export function UserProfilePage() {
         <Card>
           <CardContent className="flex flex-col items-center p-6 text-center">
             <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-foreground">
-              {getInitials(profile.userName)}
+              {getInitials(user.userName)}
             </div>
             <h2 className="mt-4 text-xl font-semibold text-foreground">
-              {profile.userName}
+              {user.userName}
             </h2>
-            <p className="mt-1 text-sm text-muted-foreground">{profile.email}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{user.email}</p>
             <div className="mt-4">
               <UserAccountStatusBadge
-                status={profile.status}
-                label={t(`status.${profile.status}`)}
+                status={status}
+                label={t(`status.${status}`)}
               />
             </div>
             <Button className="mt-6 w-full gap-2" variant="outline">
@@ -72,14 +80,14 @@ export function UserProfilePage() {
             </CardHeader>
             <CardContent className="grid gap-4 sm:grid-cols-2">
               {[
-                { label: t("fields.name"), value: profile.userName },
-                { label: t("fields.email"), value: profile.email },
-                { label: t("fields.phone"), value: profile.phone },
-                { label: t("fields.gender"), value: t(`gender.${profile.gender}`) },
-                { label: t("fields.role"), value: t(`role.${profile.role}`) },
+                { label: t("fields.name"), value: user.userName },
+                { label: t("fields.email"), value: user.email },
+                { label: t("fields.phone"), value: user.phone },
+                { label: t("fields.gender"), value: t(`gender.${user.gender}`) },
+                { label: t("fields.role"), value: t(`role.${user.role}`) },
                 {
                   label: t("fields.joinedAt"),
-                  value: formatUserAccountDate(profile.joinedAt, locale),
+                  value: joinedAt ? formatUserAccountDate(joinedAt, locale) : "-",
                 },
               ].map((item) => (
                 <div key={item.label} className="rounded-md border border-border p-4">

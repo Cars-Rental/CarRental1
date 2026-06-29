@@ -28,10 +28,20 @@ export const API_ENDPOINTS = {
     },
   },
 
+  FAVORITES: "/wishlist",
+  FAVORITES_ADD: "/wishlist/add",
+  FAVORITES_DELETE: (id: string) => `/wishlist/${id}`,
+
   ORDERS: {
     CREATE: "/orders/create",
     GET_BY_ID: (id: string) => `/orders/${id}`,
     DELETE: (id: string) => `/orders/${id}`,
+  },
+
+  ORDER_BUY: {
+    CREATE: "/orderBuy",
+    GET_BY_ID: (id: string) => `/orderBuy/${id}`,
+    MY_ORDERS: "/orderBuy/my-orders",
   },
 
   BOOKINGS: {

@@ -28,6 +28,8 @@ export const ROUTES = {
 
   SETTINGS: "/settings",
 
+  CHAT: "/chat",
+
   DASHBOARD: {
     ROOT: "/dashboard",
     OVERVIEW: "/dashboard",
