@@ -3,26 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Search, MessageSquare, Send, Paperclip, Smile, CheckCheck, Check, Sparkles, Plus } from "lucide-react";
+import { Search, MessageSquare, Send, Paperclip, Smile, CheckCheck, Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { useAppSelector } from "@/store/hooks";
 import type { ChatUser, Room } from "../types";
 import { useUserOrders } from "@/features/user-account/hooks/useUserOrders";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { getAllUsersApi } from "../api/chat.api";
-import { useRouter } from "next/navigation";
 
 interface ChatLayoutProps {
   initialRoomId?: string | null;
@@ -48,8 +34,6 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     sendTypingStart,
     sendTypingStop,
     unreadCounts,
-    socket,
-    createPrivateChat,
   } = useChatSocket();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,7 +44,6 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { data: userOrders } = useUserOrders();
-  const router = useRouter();
 
   useEffect(() => {
     if (initialRoomId && activeRoomId !== initialRoomId) {
@@ -72,26 +55,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typingUsers]);
 
-  const getUserId = () => {
-    if (!user) return "";
-    return user.id ?? (user as any)._id ?? "";
-  };
-
-  const getMemberId = (member: ChatUser | string) => {
-    if (typeof member === "string") return member;
-    return member._id ?? (member as any).id ?? "";
-  };
-
-  const isSamePerson = (member: ChatUser | string) => {
-    const memberId = getMemberId(member);
-    const userId = getUserId();
-    return memberId !== "" && userId !== "" && memberId === userId;
-  };
-
   const getParticipant = (room: Room): ChatUser | null => {
     if (!user) return null;
-    return (
-      room.members.find((member) => !isSamePerson(member)) as ChatUser | undefined) || null;
+    return room.members.find((member) => member._id !== user.id) || null;
   };
 
   const formatTime = (value: string) => {
@@ -160,80 +126,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     return true;
   });
 
-  // new UI: create chat (private/group)
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [usersList, setUsersList] = useState<ChatUser[]>([]);
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-  const [groupName, setGroupName] = useState("");
-  const [createError, setCreateError] = useState<string | null>(null);
-
-  const fetchUsers = async () => {
-    try {
-      const users = await getAllUsersApi();
-      setUsersList(users);
-    } catch (err) {
-      console.error("Failed to fetch users", err);
-    }
-  };
-
-  const handleToggleUser = (id: string) => {
-    setSelectedUserIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
-  };
-
-  const handleCreate = () => {
-    setCreateError(null);
-    if (selectedUserIds.length === 0) {
-      setCreateError(t("selectAtLeastOne") || "Please select at least one contact to start chat.");
-      return;
-    }
-
-    if (!socket) {
-      setCreateError(t("socketNotConnected") || "Socket is not connected. Please refresh the page.");
-      return;
-    }
-
-    if (selectedUserIds.length === 1) {
-      // private chat
-      const targetUserId = selectedUserIds[0];
-      const handleError = (error: { message?: string }) => {
-        setCreateError(error?.message || t("createRoomFailed") || "Failed to create the room.");
-        socket.off("error", handleError);
-      };
-
-      socket.once("error", handleError);
-      createPrivateChat(targetUserId);
-      setIsDialogOpen(false);
-      setSelectedUserIds([]);
-      return;
-    }
-
-    const name = groupName || "Group";
-
-    const handleRoomCreated = ({ room }: { room: Room }) => {
-      const redirectPath = `/${locale}/chat?roomId=${room._id}`;
-      router.push(redirectPath);
-      socket.off("room:created", handleRoomCreated);
-      socket.off("error", handleError);
-    };
-
-    const handleError = (error: { message?: string }) => {
-      setCreateError(error?.message || t("createRoomFailed") || "Failed to create the room.");
-      socket.off("room:created", handleRoomCreated);
-      socket.off("error", handleError);
-    };
-
-    socket.once("room:created", handleRoomCreated);
-    socket.once("error", handleError);
-    socket.emit("room:createGroup", { name, memberIds: selectedUserIds });
-
-    setIsDialogOpen(false);
-    setSelectedUserIds([]);
-    setGroupName("");
-  };
-
   return (
-    <div dir={locale === "ar" ? "rtl" : "ltr"} className="h-full flex min-h-0 gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950">
-      <div className="h-full w-full max-w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
+    <div dir={locale === "ar" ? "rtl" : "ltr"} className="flex min-h-[70vh] gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950">
+      <div className="w-full max-w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
         <div className="p-4 border-b border-slate-100 dark:border-slate-800/80">
           <div className="relative">
             <input
@@ -244,7 +139,6 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               className="w-full rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            {/* floating + moved to bottom-right for better UX */}
           </div>
         </div>
         <div className="flex gap-1 overflow-x-auto border-b border-slate-100 dark:border-slate-800/80 p-3">
@@ -338,18 +232,14 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
           )}
         </div>
       </div>
-      <div className="flex-1 flex min-h-0 flex-col bg-slate-50 dark:bg-slate-950">
+      <div className="flex-1 flex flex-col bg-slate-50 dark:bg-slate-950">
         <div className="h-16 flex items-center justify-between gap-4 border-b border-slate-200/60 bg-white px-6 dark:border-slate-800/60 dark:bg-slate-900">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
               {t("conversations")}
             </p>
             <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              {activeRoom
-                ? activeRoom.type === "group"
-                  ? activeRoom.name || t("groupChat")
-                  : getParticipant(activeRoom)?.userName || t("selectConversation")
-                : t("selectConversation")}
+              {activeRoom ? getParticipant(activeRoom)?.userName : t("selectConversation")}
             </h1>
           </div>
           {activeRoom && (
@@ -367,13 +257,11 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
             </button>
           )}
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {activeRoom ? (
             <>
               {messages.map((message, index) => {
-                const userId = getUserId();
-                const senderId = message.sender._id ?? (message.sender as any).id ?? "";
-                const isMe = senderId === userId;
+                const isMe = message.sender._id === user?.id;
                 const showDate = index === 0 || formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt);
                 return (
                   <React.Fragment key={message._id}>
@@ -385,30 +273,32 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                       </div>
                     )}
                     <div className={cn(
-                      "flex items-end gap-3",
-                      isMe ? "justify-end" : "justify-start",
+                      "flex gap-3 max-w-[80%]",
+                      isMe ? "ml-auto flex-row-reverse" : "",
                     )}>
-                      <div className={cn(
-                        "max-w-[80%] rounded-3xl px-4 py-3 text-xs leading-6 shadow-sm",
-                        isMe
-                          ? "bg-[var(--primary)] text-white rounded-br-none"
-                          : "bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-bl-none",
-                      )}>
-                        {message.content}
+                      <div className="flex flex-col">
+                        <div className={cn(
+                          "rounded-3xl px-4 py-3 text-xs leading-6",
+                          isMe
+                            ? "bg-[var(--primary)] text-white rounded-te-none"
+                            : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-ts-none",
+                        )}>
+                          {message.content}
+                        </div>
+                        <div className={cn(
+                          "mt-1 flex items-center gap-2 text-[9px] font-medium",
+                          isMe ? "justify-end text-slate-400" : "justify-start text-slate-500 dark:text-slate-400",
+                        )}>
+                          <span>{formatTime(message.createdAt)}</span>
+                          {isMe && (
+                            message.readBy.length > 1 ? (
+                              <CheckCheck className="h-3 w-3 text-emerald-400" />
+                            ) : (
+                              <Check className="h-3 w-3 text-slate-300 dark:text-slate-600" />
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className={cn(
-                      "flex items-center gap-2 text-[10px] font-medium",
-                      isMe ? "justify-end text-slate-400" : "justify-start text-slate-500 dark:text-slate-400",
-                    )}>
-                      <span>{formatTime(message.createdAt)}</span>
-                      {isMe && (
-                        message.readBy.length > 1 ? (
-                          <CheckCheck className="h-3 w-3 text-emerald-400" />
-                        ) : (
-                          <Check className="h-3 w-3 text-slate-300 dark:text-slate-600" />
-                        )
-                      )}
                     </div>
                   </React.Fragment>
                 );
@@ -457,62 +347,6 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
             </button>
           </div>
         </div>
-      </div>
-      {/* Floating action button for new chat */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (open) fetchUsers(); }}>
-          <DialogTrigger render={<Button className="rounded-full p-3 bg-[var(--primary)] text-white shadow-lg hover:opacity-90"><Plus className="h-5 w-5" /></Button>} />
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t("newChat") || "New Chat"}</DialogTitle>
-              <DialogDescription>{t("selectContacts") || "Select contacts to start chat or create group"}</DialogDescription>
-            </DialogHeader>
-
-            <div className="max-h-64 overflow-auto grid gap-2 py-2">
-              {usersList.map((u) => {
-                const isOnline = onlineUsers.has(u._id) || u.isOnline;
-                return (
-                  <label
-                    key={u._id}
-                    className="flex items-center gap-3 px-2 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded"
-                  >
-                    <Checkbox checked={selectedUserIds.includes(u._id)} onCheckedChange={() => handleToggleUser(u._id)} />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium truncate">{u.userName}</span>
-                        <span
-                          className={cn(
-                            "h-2.5 w-2.5 rounded-full",
-                            isOnline ? "bg-emerald-400" : "bg-slate-300",
-                          )}
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <div className="text-xs text-slate-400 truncate">{u.email}</div>
-                    </div>
-                  </label>
-                );
-              })}
-            </div>
-
-            {createError && (
-              <p className="text-sm text-danger-foreground mt-2">{createError}</p>
-            )}
-
-            {selectedUserIds.length > 1 && (
-              <div className="mt-2">
-                <input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder={t("groupName") || "Group name"} className="w-full rounded-md border px-3 py-2" />
-              </div>
-            )}
-
-            <DialogFooter>
-              <Button onClick={handleCreate}>{t("create") || "Create"}</Button>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                {t("cancel") || "Cancel"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );

@@ -17,8 +17,10 @@ import dotenv from "dotenv";
 import wishlistroute from "../src/modules/wishlist/withlist.route.js";
 import dashboardroute from "../src/modules/Dashboard-trader/dashboard.route.js";
 import reviewRoutes from "../src/modules/review/review.route.js";
-import jwt from "jsonwebtoken";
-import { handleSocketConnection } from "./sockets/onlineUsers.js";
+import { userModel } from "./DB/model/user.model.js";
+import { socketAuthMiddleware } from "./sockets/socket.auth.js";
+import { registerChatEvents } from "./sockets/chat.socket.js";
+import { addUser, removeUser, getAllOnlineUserIds } from "./sockets/onlineUsers.js";
 dotenv.config();
 
 import ratelimit from "express-rate-limit";
@@ -69,25 +71,22 @@ const bootstrap = (app, express, io) => {
   app.use("/reviews", reviewRoutes );
   app.use(globalErrorhandling);
 
-  
   app.set("io", io);
 
- 
-  io.use((socket, next) => {
-    const token = socket.handshake.auth?.token;
-    if (!token) return next(new Error("No token provided"));
-    try {
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      socket.user = decoded;
-      next();
-    } catch (err) {
-      next(new Error("Invalid token"));
-    }
-  });
+  io.use(socketAuthMiddleware);
 
+  io.on("connection", async (socket) => {
+    const userId = socket.user._id.toString();
 
-  io.on("connection", (socket) => {
-    handleSocketConnection(io, socket);
+    addUser(userId, socket.id);
+    userModel.findByIdAndUpdate(userId, { isOnline: true, socketId: socket.id }).exec();
+    socket.broadcast.emit("user:online", { userId });
+
+    socket.emit("users:onlineList", {
+      userIds: getAllOnlineUserIds(),
+    });
+
+    registerChatEvents(io, socket);
   });
 
   ConnectDB();
