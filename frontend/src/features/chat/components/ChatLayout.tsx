@@ -91,6 +91,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
       room.members.find((member) => !isSamePerson(member)) as ChatUser | undefined) || null;
   };
 
+  const isUserOnline = (chatUser: ChatUser | null) =>
+    !!chatUser && (onlineUsers.has(chatUser._id) || chatUser.isOnline === true);
+
   const formatTime = (value: string) => {
     const date = new Date(value);
     return date.toLocaleTimeString(locale === "ar" ? "ar-EG" : "en-US", {
@@ -156,6 +159,14 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     if (activeTab === "unread") return (unreadCounts[room._id] || 0) > 0;
     return true;
   });
+
+  const totalUnreadCount = Object.values(unreadCounts).reduce(
+    (total, count) => total + count,
+    0,
+  );
+  const activeParticipant =
+    activeRoom && activeRoom.type === "private" ? getParticipant(activeRoom) : null;
+  const activeParticipantOnline = isUserOnline(activeParticipant);
 
   // new UI: create chat (private/group)
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -259,7 +270,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                   : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800",
               )}
             >
-              {t(tab)}
+              {tab === "unread" && totalUnreadCount > 0
+                ? `${t(tab)} (${totalUnreadCount > 99 ? "99+" : totalUnreadCount})`
+                : t(tab)}
             </button>
           ))}
         </div>
@@ -292,6 +305,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                 .toUpperCase();
               const unread = unreadCounts[room._id] || 0;
               const lastMessage = room.lastMessage?.content || t("noMessagesYet");
+              const participantOnline = isUserOnline(participant);
 
               return (
                 <button
@@ -307,9 +321,12 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                     <div className="h-12 w-12 grid place-items-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)] font-bold dark:bg-emerald-400/10 dark:text-emerald-400">
                       {initials}
                     </div>
-                    {onlineUsers.has(participant._id) && (
-                      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
-                    )}
+                    <span
+                      className={cn(
+                        "absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-slate-900",
+                        participantOnline ? "bg-emerald-400" : "bg-slate-300 dark:bg-slate-600",
+                      )}
+                    />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
@@ -347,9 +364,20 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               {activeRoom
                 ? activeRoom.type === "group"
                   ? activeRoom.name || t("groupChat")
-                  : getParticipant(activeRoom)?.userName || t("selectConversation")
+                  : activeParticipant?.userName || t("selectConversation")
                 : t("selectConversation")}
             </h1>
+            {activeParticipant && (
+              <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                <span
+                  className={cn(
+                    "size-2 rounded-full",
+                    activeParticipantOnline ? "bg-emerald-400" : "bg-slate-300 dark:bg-slate-600",
+                  )}
+                />
+                {activeParticipantOnline ? t("online") : t("offline")}
+              </p>
+            )}
           </div>
           {activeRoom && (
             <button

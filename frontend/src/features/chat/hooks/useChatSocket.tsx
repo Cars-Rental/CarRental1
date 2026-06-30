@@ -16,6 +16,7 @@ import type { Room, Message, ChatUser } from "../types";
 import { ROLES } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import { env } from "@/config/env";
 
 interface ChatContextType {
   socket: Socket | null;
@@ -41,7 +42,23 @@ interface ChatContextType {
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-const SOCKET_URL = "http://localhost:3000";
+const getUserIdValue = (userLike?: ChatUser | string | null) => {
+  if (!userLike) return "";
+  if (typeof userLike === "string") return userLike;
+  return (userLike as ChatUser & { id?: string })._id ?? (userLike as ChatUser & { id?: string }).id ?? "";
+};
+
+const sortRoomsByActivity = (rooms: Room[]) =>
+  [...rooms].sort(
+    (a, b) =>
+      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+  );
+
+const buildUnreadCounts = (rooms: Room[]) =>
+  rooms.reduce<Record<string, number>>((counts, room) => {
+    counts[room._id] = room.unreadCount ?? 0;
+    return counts;
+  }, {});
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -63,10 +80,28 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
   const socketRef = useRef<Socket | null>(null);
   const activeRoomIdRef = useRef<string | null>(null);
+  const roomsRef = useRef<Room[]>([]);
+  const joinedRoomsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     activeRoomIdRef.current = activeRoomId;
   }, [activeRoomId]);
+
+  useEffect(() => {
+    roomsRef.current = rooms;
+  }, [rooms]);
+
+  const joinRoom = useCallback((roomId: string) => {
+    const currentSocket = socketRef.current;
+    if (!currentSocket || joinedRoomsRef.current.has(roomId)) return;
+
+    currentSocket.emit("room:join", { roomId });
+    joinedRoomsRef.current.add(roomId);
+  }, []);
+
+  const joinKnownRooms = useCallback(() => {
+    roomsRef.current.forEach((room) => joinRoom(room._id));
+  }, [joinRoom]);
 
   // 1. Fetch Rooms Rest API
   const fetchRooms = useCallback(async () => {
@@ -74,7 +109,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     setIsLoadingRooms(true);
     try {
       const data = await getRoomsApi();
-      setRooms(data);
+      setRooms(sortRoomsByActivity(data));
+      setUnreadCounts(buildUnreadCounts(data));
     } catch (err) {
       console.error("Error fetching rooms", err);
     } finally {
@@ -90,9 +126,17 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setRooms([]);
         setMessages([]);
         setActiveRoomId(null);
+        setUnreadCounts({});
+        setOnlineUsers(new Set());
+        joinedRoomsRef.current.clear();
       });
     }
   }, [fetchRooms, isAuthenticated]);
+
+  useEffect(() => {
+    if (!socket) return;
+    joinKnownRooms();
+  }, [joinKnownRooms, rooms, socket]);
 
   // 2. Manage Socket.io Connection
   useEffect(() => {
@@ -108,13 +152,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     const token = tokenStorage.getAccessToken();
     if (!token) return;
 
-    const newSocket = io(SOCKET_URL, {
+    const newSocket = io(env.apiBaseUrl, {
       auth: { token },
       transports: ["websocket", "polling"],
     });
 
     newSocket.on("connect", () => {
       console.log("Socket connected");
+      joinedRoomsRef.current.clear();
+      joinKnownRooms();
     });
 
     newSocket.on("disconnect", () => {
@@ -132,8 +178,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setRooms((prev) => {
           const exists = prev.some((r) => r._id === room._id);
           if (exists) return prev;
-          return [room, ...prev];
+          return sortRoomsByActivity([room, ...prev]);
         });
+        joinRoom(room._id);
 
         // If server created a new private room (e.g. owner accepted an order)
         // and the current user is the non-trader (customer), redirect them
@@ -161,6 +208,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       "message:receive",
       (message: Message & { totalMembers?: number }) => {
         const currentRoomId = activeRoomIdRef.current;
+        const currentUserId = user?.id ?? (user as { _id?: string } | null)?._id ?? "";
+        const senderId = getUserIdValue(message.sender);
+        const isOwnMessage = currentUserId !== "" && senderId === currentUserId;
 
         // Update room lastMessage in rooms list
         setRooms((prev) => {
@@ -176,11 +226,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
             lastMessage: message,
             updatedAt: message.createdAt,
           };
-          // Sort rooms by updatedAt
-          return updatedRooms.sort(
-            (a, b) =>
-              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-          );
+          return sortRoomsByActivity(updatedRooms);
         });
 
         // Handle message streaming to active room viewport
@@ -192,7 +238,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
           });
           // Emit mark as read
           newSocket.emit("message:read", { roomId: message.room });
-        } else {
+        } else if (!isOwnMessage) {
           // Increment unread count for other rooms
           setUnreadCounts((prev) => ({
             ...prev,
@@ -274,15 +320,17 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
     socketRef.current = newSocket;
     setSocket(newSocket);
+    const joinedRooms = joinedRoomsRef.current;
 
     return () => {
       newSocket.disconnect();
       if (socketRef.current === newSocket) {
         socketRef.current = null;
       }
+      joinedRooms.clear();
       setSocket(null);
     };
-  }, [fetchRooms, isAuthenticated, locale, router, user]);
+  }, [fetchRooms, isAuthenticated, joinKnownRooms, joinRoom, locale, router, user]);
 
   // 3. Mark active room unread as 0 on activation
   const markAsRead = (roomId: string) => {
