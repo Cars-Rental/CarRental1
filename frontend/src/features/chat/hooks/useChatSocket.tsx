@@ -82,6 +82,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const activeRoomIdRef = useRef<string | null>(null);
   const roomsRef = useRef<Room[]>([]);
   const joinedRoomsRef = useRef<Set<string>>(new Set());
+  const receivedMessageIdsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     activeRoomIdRef.current = activeRoomId;
@@ -129,6 +130,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setUnreadCounts({});
         setOnlineUsers(new Set());
         joinedRoomsRef.current.clear();
+        receivedMessageIdsRef.current.clear();
       });
     }
   }, [fetchRooms, isAuthenticated]);
@@ -207,6 +209,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     newSocket.on(
       "message:receive",
       (message: Message & { totalMembers?: number }) => {
+        if (receivedMessageIdsRef.current.has(message._id)) return;
+        receivedMessageIdsRef.current.add(message._id);
+
         const currentRoomId = activeRoomIdRef.current;
         const currentUserId = user?.id ?? (user as { _id?: string } | null)?._id ?? "";
         const senderId = getUserIdValue(message.sender);
@@ -217,13 +222,19 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
           const roomIdx = prev.findIndex((r) => r._id === message.room);
           if (roomIdx === -1) {
             // If room not in list, we could trigger refetch rooms
-            fetchRooms();
+            void fetchRooms();
             return prev;
           }
           const updatedRooms = [...prev];
+          const nextUnreadCount =
+            message.room === currentRoomId || isOwnMessage
+              ? 0
+              : (updatedRooms[roomIdx].unreadCount ?? 0) + 1;
+
           updatedRooms[roomIdx] = {
             ...updatedRooms[roomIdx],
             lastMessage: message,
+            unreadCount: nextUnreadCount,
             updatedAt: message.createdAt,
           };
           return sortRoomsByActivity(updatedRooms);
@@ -321,6 +332,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     socketRef.current = newSocket;
     setSocket(newSocket);
     const joinedRooms = joinedRoomsRef.current;
+    const receivedMessageIds = receivedMessageIdsRef.current;
 
     return () => {
       newSocket.disconnect();
@@ -328,6 +340,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         socketRef.current = null;
       }
       joinedRooms.clear();
+      receivedMessageIds.clear();
       setSocket(null);
     };
   }, [fetchRooms, isAuthenticated, joinKnownRooms, joinRoom, locale, router, user]);
@@ -341,6 +354,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       [roomId]: 0,
     }));
+    setRooms((prev) =>
+      prev.map((room) =>
+        room._id === roomId ? { ...room, unreadCount: 0 } : room,
+      ),
+    );
   };
 
   // 4. Select / Join active room
@@ -352,6 +370,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     try {
       socket.emit("room:join", { roomId });
       const msgs = await getRoomMessagesApi(roomId);
+      msgs.forEach((message) => receivedMessageIdsRef.current.add(message._id));
       setMessages(msgs);
       markAsRead(roomId);
     } catch (err) {

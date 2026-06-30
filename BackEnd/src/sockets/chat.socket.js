@@ -122,10 +122,20 @@ export const registerChatEvents = (io, socket) => {
       await roomModel.findByIdAndUpdate(roomId, { lastMessage: message._id });
 
       const populated = await message.populate("sender", MEMBER_FIELDS);
-
-      io.to(roomId).emit(SOCKET_EVENTS.MESSAGE_RECEIVE, {
+      const payload = {
         ...populated.toObject(),
         totalMembers: room.members.length,
+      };
+
+      const memberSocketIds = new Set();
+      room.members.forEach((member) => {
+        getSocketIds(member._id.toString()).forEach((socketId) => {
+          memberSocketIds.add(socketId);
+        });
+      });
+
+      memberSocketIds.forEach((socketId) => {
+        io.to(socketId).emit(SOCKET_EVENTS.MESSAGE_RECEIVE, payload);
       });
 
     
