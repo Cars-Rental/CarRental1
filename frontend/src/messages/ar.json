@@ -848,6 +848,7 @@
       "totalSpent": "إجمالي الإنفاق",
       "rating": "التقييم",
       "comment": "التعليق",
+      "notAvailable": "غير متاح",
       "actions": "الإجراءات"
     },
     "status": {
@@ -985,9 +986,15 @@
       "bookingVolume": "حجم الحجوزات",
       "topCars": "السيارات الأعلى أداءً",
       "carMeta": "{views} مشاهدة / {conversion}% معدل التحويل",
+      "carBookings": "{count} حجوزات",
+      "carSales": "{count} مبيعات",
       "kpis": {
         "monthlyRevenue": "الإيرادات الشهرية",
-        "monthlyRevenueHelper": "استنادًا إلى بيانات تجريبية للإيجارات والمبيعات",
+        "monthlyRevenueHelper": "استنادًا إلى بيانات الإيجارات والمبيعات",
+        "totalRentRevenue": "إيرادات الإيجار",
+        "totalRentRevenueHelper": "إجمالي إيرادات حجوزات الإيجار",
+        "totalBuyRevenue": "إيرادات البيع",
+        "totalBuyRevenueHelper": "إجمالي إيرادات طلبات الشراء",
         "totalViews": "مشاهدات الإعلانات",
         "totalViewsHelper": "عبر جميع الإعلانات النشطة",
         "conversionRate": "معدل التحويل",
@@ -1008,6 +1015,9 @@
         "sales": "إيرادات البيع",
         "returningCustomers": "العملاء العائدون"
       }
+    },
+    "reviews": {
+      "ratingCount": "تقييمات {rating} نجوم"
     },
     "settings": {
       "accountInformation": "معلومات الحساب",

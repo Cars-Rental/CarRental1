@@ -39,6 +39,8 @@ export function useTraderRecentActivity() {
   return useQuery({
     queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY,
     queryFn: api.getTraderRecentActivity,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
   });
 }
 
@@ -95,6 +97,7 @@ export function useUpdateBookingStatus() {
       toast.success(t("actions.bookingStatusUpdated"));
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.BOOKINGS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_BOOKINGS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY });
     },
     onError: (error: Error) => {
       toast.error(error.message || t("actions.bookingStatusUpdateFailed"));
@@ -118,6 +121,7 @@ export function useUpdateOrderStatus() {
       toast.success(t("actions.orderStatusUpdated"));
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.ORDERS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ORDERS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY });
     },
     onError: (error: Error) => {
       toast.error(error.message || t("actions.orderStatusUpdateFailed"));
@@ -132,10 +136,10 @@ export function useTraderCustomers() {
   });
 }
 
-export function useTraderReviews() {
+export function useTraderReviews(page = 1, limit = 20) {
   return useQuery({
-    queryKey: QUERY_KEYS.TRADER.REVIEWS,
-    queryFn: api.getTraderReviews,
+    queryKey: QUERY_KEYS.TRADER.REVIEWS(page, limit),
+    queryFn: () => api.getTraderReviews(page, limit),
   });
 }
 
@@ -143,5 +147,12 @@ export function useTraderEarnings() {
   return useQuery({
     queryKey: QUERY_KEYS.TRADER.EARNINGS,
     queryFn: api.getTraderEarnings,
+  });
+}
+
+export function useTraderAnalytics() {
+  return useQuery({
+    queryKey: QUERY_KEYS.TRADER.ANALYTICS,
+    queryFn: api.getTraderAnalytics,
   });
 }
