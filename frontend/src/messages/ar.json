@@ -546,22 +546,70 @@
       "settings": "الإعدادات"
     },
     "pages": {
-      "overview": { "title": "لوحة المدير", "description": "تابع نمو المنصة والبلاغات والإيرادات وآخر النشاطات." },
-      "users": { "title": "المستخدمون", "description": "إدارة حسابات العملاء وحالة الوصول والنشاط." },
-      "traders": { "title": "التجار", "description": "مراجعة حسابات التجار وحالة التحقق والسيارات والأرباح." },
-      "rentalCars": { "title": "سيارات الإيجار", "description": "إدارة إعلانات الإيجار عبر التجار والتصنيفات والمواقع." },
-      "saleCars": { "title": "سيارات للبيع", "description": "إدارة إعلانات البيع وحالة توفرها في السوق." },
-      "bookings": { "title": "الحجوزات", "description": "متابعة حجوزات الإيجار بين العملاء والتجار." },
-      "orders": { "title": "الطلبات", "description": "متابعة طلبات الشراء والمدفوعات وحالة الطلب." },
-      "reviews": { "title": "التقييمات", "description": "مراجعة تقييمات العملاء على مستوى المنصة." },
-      "reports": { "title": "البلاغات", "description": "حل بلاغات المحتوى والحسابات من المجتمع." },
-      "payments": { "title": "المدفوعات", "description": "مراجعة الإيرادات والعمولات والسحوبات والمعاملات." },
-      "verifications": { "title": "طلبات التحقق", "description": "قبول أو رفض مستندات التجار قبل تفعيل الوصول للسوق." },
-      "notifications": { "title": "الإشعارات", "description": "إنشاء رسائل عامة ومراجعة سجل الإشعارات." },
-      "categories": { "title": "التصنيفات", "description": "إدارة تصنيفات السيارات والماركات والموديلات." },
-      "locations": { "title": "المواقع", "description": "إدارة الدول والمدن المتاحة في المنصة." },
-      "promotions": { "title": "العروض", "description": "إدارة الكوبونات والخصومات والسيارات والتجار المميزين." },
-      "settings": { "title": "الإعدادات", "description": "ضبط المنصة والأمان والمدفوعات والعمولة واللغة." }
+      "overview": {
+        "title": "لوحة المدير",
+        "description": "تابع نمو المنصة والبلاغات والإيرادات وآخر النشاطات."
+      },
+      "users": {
+        "title": "المستخدمون",
+        "description": "إدارة حسابات العملاء وحالة الوصول والنشاط."
+      },
+      "traders": {
+        "title": "التجار",
+        "description": "مراجعة حسابات التجار وحالة التحقق والسيارات والأرباح."
+      },
+      "rentalCars": {
+        "title": "سيارات الإيجار",
+        "description": "إدارة إعلانات الإيجار عبر التجار والتصنيفات والمواقع."
+      },
+      "saleCars": {
+        "title": "سيارات للبيع",
+        "description": "إدارة إعلانات البيع وحالة توفرها في السوق."
+      },
+      "bookings": {
+        "title": "الحجوزات",
+        "description": "متابعة حجوزات الإيجار بين العملاء والتجار."
+      },
+      "orders": {
+        "title": "الطلبات",
+        "description": "متابعة طلبات الشراء والمدفوعات وحالة الطلب."
+      },
+      "reviews": {
+        "title": "التقييمات",
+        "description": "مراجعة تقييمات العملاء على مستوى المنصة."
+      },
+      "reports": {
+        "title": "البلاغات",
+        "description": "حل بلاغات المحتوى والحسابات من المجتمع."
+      },
+      "payments": {
+        "title": "المدفوعات",
+        "description": "مراجعة الإيرادات والعمولات والسحوبات والمعاملات."
+      },
+      "verifications": {
+        "title": "طلبات التحقق",
+        "description": "قبول أو رفض مستندات التجار قبل تفعيل الوصول للسوق."
+      },
+      "notifications": {
+        "title": "الإشعارات",
+        "description": "إنشاء رسائل عامة ومراجعة سجل الإشعارات."
+      },
+      "categories": {
+        "title": "التصنيفات",
+        "description": "إدارة تصنيفات السيارات والماركات والموديلات."
+      },
+      "locations": {
+        "title": "المواقع",
+        "description": "إدارة الدول والمدن المتاحة في المنصة."
+      },
+      "promotions": {
+        "title": "العروض",
+        "description": "إدارة الكوبونات والخصومات والسيارات والتجار المميزين."
+      },
+      "settings": {
+        "title": "الإعدادات",
+        "description": "ضبط المنصة والأمان والمدفوعات والعمولة واللغة."
+      }
     },
     "stats": {
       "totalUsers": "إجمالي المستخدمين",
@@ -583,7 +631,14 @@
       "orders": "رسم الطلبات",
       "ordersDescription": "حجم طلبات الشراء حسب الشهر."
     },
-    "months": { "jan": "يناير", "feb": "فبراير", "mar": "مارس", "apr": "أبريل", "may": "مايو", "jun": "يونيو" },
+    "months": {
+      "jan": "يناير",
+      "feb": "فبراير",
+      "mar": "مارس",
+      "apr": "أبريل",
+      "may": "مايو",
+      "jun": "يونيو"
+    },
     "sections": {
       "latestUsers": "أحدث المستخدمين",
       "latestTraders": "أحدث التجار",
@@ -594,8 +649,16 @@
       "quickActionsDescription": "مهام إدارية جاهزة لربطها لاحقا بالواجهة الخلفية.",
       "notificationHistory": "سجل الإشعارات"
     },
-    "filters": { "search": "ابحث بالاسم أو البريد أو السيارة أو التاجر...", "status": "الحالة", "apply": "تطبيق الفلاتر" },
-    "pagination": { "summary": "عرض نتائج تجريبية 1-10", "previous": "السابق", "next": "التالي" },
+    "filters": {
+      "search": "ابحث بالاسم أو البريد أو السيارة أو التاجر...",
+      "status": "الحالة",
+      "apply": "تطبيق الفلاتر"
+    },
+    "pagination": {
+      "summary": "عرض نتائج تجريبية 1-10",
+      "previous": "السابق",
+      "next": "التالي"
+    },
     "tables": {
       "avatar": "الصورة",
       "name": "الاسم",
@@ -638,7 +701,8 @@
       "message": "الرسالة",
       "audience": "الجمهور",
       "value": "القيمة",
-      "endsAt": "تاريخ الانتهاء"
+      "endsAt": "تاريخ الانتهاء",
+      "recipient": "المستلم"
     },
     "actions": {
       "view": "عرض",
@@ -661,14 +725,38 @@
       "createPromotion": "إنشاء عرض",
       "reviewReports": "مراجعة البلاغات"
     },
+    "users": {
+      "deleteTitle": "حذف المستخدم؟",
+      "deleteDescription": "هل أنت متأكد أنك تريد حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف المستخدم بنجاح",
+      "deleteError": "تعذر حذف المستخدم",
+      "banSuccess": "تم حظر المستخدم بنجاح",
+      "banError": "تعذر حظر المستخدم",
+      "unbanSuccess": "تم تفعيل المستخدم بنجاح",
+      "unbanError": "تعذر تفعيل المستخدم"
+    },
+    "traders": {
+      "deleteTitle": "حذف التاجر؟",
+      "deleteDescription": "هل أنت متأكد أنك تريد حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف التاجر بنجاح",
+      "deleteError": "تعذر حذف التاجر",
+      "banSuccess": "تم حظر التاجر بنجاح",
+      "banError": "تعذر حظر التاجر",
+      "unbanSuccess": "تم تفعيل التاجر بنجاح",
+      "unbanError": "تعذر تفعيل التاجر",
+      "approveSuccess": "تم قبول التاجر بنجاح",
+      "approveError": "تعذر قبول التاجر"
+    },
     "status": {
       "active": "نشط",
       "inactive": "غير نشط",
+      "banned": "محظور",
       "pending": "معلق",
       "suspended": "موقوف",
       "approved": "مقبول",
       "rejected": "مرفوض",
       "resolved": "محلول",
+      "accepted": "مقبول",
       "open": "مفتوح",
       "hidden": "مخفي",
       "cancelled": "ملغي",
@@ -680,13 +768,41 @@
       "processing": "قيد المعالجة",
       "dismissed": "متجاهل",
       "sent": "مرسل",
-      "draft": "مسودة"
+      "draft": "مسودة",
+      "read": "مقروء"
     },
-    "targetType": { "car": "سيارة", "review": "تقييم", "trader": "تاجر", "user": "مستخدم" },
-    "transactionType": { "booking": "حجز", "order": "طلب", "withdrawal": "سحب", "commission": "عمولة" },
-    "audience": { "all": "الكل", "users": "المستخدمون", "traders": "التجار" },
-    "dictionaryType": { "category": "تصنيف", "brand": "ماركة", "model": "موديل", "country": "دولة", "city": "مدينة" },
-    "promotionType": { "coupon": "كوبون", "discount": "خصم", "featuredCar": "سيارة مميزة", "featuredTrader": "تاجر مميز" },
+    "targetType": {
+      "car": "سيارة",
+      "review": "تقييم",
+      "trader": "تاجر",
+      "user": "مستخدم"
+    },
+    "transactionType": {
+      "booking": "حجز",
+      "order": "طلب",
+      "withdrawal": "سحب",
+      "commission": "عمولة"
+    },
+    "audience": {
+      "all": "الكل",
+      "users": "المستخدمون",
+      "traders": "التجار",
+      "user": "مستخدم",
+      "trader": "تاجر"
+    },
+    "dictionaryType": {
+      "category": "تصنيف",
+      "brand": "ماركة",
+      "model": "موديل",
+      "country": "دولة",
+      "city": "مدينة"
+    },
+    "promotionType": {
+      "coupon": "كوبون",
+      "discount": "خصم",
+      "featuredCar": "سيارة مميزة",
+      "featuredTrader": "تاجر مميز"
+    },
     "payments": {
       "totalRevenue": "إجمالي الإيرادات",
       "platformCommission": "عمولة المنصة",
@@ -697,7 +813,9 @@
       "createTitle": "إنشاء إشعار",
       "createDescription": "جهز إشعارا للمنصة للمستخدمين أو التجار أو الجميع.",
       "titlePlaceholder": "عنوان الإشعار",
-      "messagePlaceholder": "نص الإشعار"
+      "messagePlaceholder": "نص الإشعار",
+      "createSuccess": "تم إرسال الإشعار بنجاح",
+      "createError": "تعذر إرسال الإشعار"
     },
     "settings": {
       "general": "عام",
@@ -722,6 +840,35 @@
     "validation": {
       "required": "هذا الحقل مطلوب",
       "email": "أدخل بريدا إلكترونيا صحيحا"
+    },
+    "cars": {
+      "detailsTitle": "تفاصيل سيارة الإيجار",
+      "detailsEmpty": "تعذر تحميل تفاصيل سيارة الإيجار.",
+      "loadingDetails": "جاري تحميل تفاصيل السيارة...",
+      "deleteTitle": "حذف سيارة الإيجار؟",
+      "deleteDescription": "هل أنت متأكد أنك تريد حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف سيارة الإيجار بنجاح",
+      "deleteError": "تعذر حذف سيارة الإيجار",
+      "suspendSuccess": "تم إيقاف سيارة الإيجار بنجاح",
+      "suspendError": "تعذر إيقاف سيارة الإيجار"
+    },
+    "bookings": {
+      "detailsTitle": "تفاصيل الحجز",
+      "detailsEmpty": "تعذر تحميل تفاصيل الحجز.",
+      "loadingDetails": "جاري تحميل تفاصيل الحجز...",
+      "cancelSuccess": "تم إلغاء الحجز بنجاح",
+      "cancelError": "تعذر إلغاء الحجز"
+    },
+    "orders": {
+      "detailsTitle": "تفاصيل الطلب",
+      "detailsEmpty": "تعذر تحميل تفاصيل الطلب.",
+      "loadingDetails": "جاري تحميل تفاصيل الطلب...",
+      "cancelSuccess": "تم إلغاء الطلب بنجاح",
+      "cancelError": "تعذر إلغاء الطلب"
+    },
+    "reviews": {
+      "deleteSuccess": "تم حذف التقييم بنجاح",
+      "deleteError": "تعذر حذف التقييم"
     }
   },
   "TraderDashboard": {
@@ -1118,7 +1265,7 @@
     "sessionSuccessMessage": "جلسة المحادثة مع مالك {car} نشطة الآن. يمكنك مناقشة تفاصيل الشراء مباشرة.",
     "redirecting": "جاري إعادة التوجيه...",
     "errorLoading": "فشل تحميل تفاصيل الطلب",
-    "startChatWith":"ابدا المحادثة",
+    "startChatWith": "ابدا المحادثة",
     "goBack": "العودة للسيارات",
     "breadcrumb": {
       "home": "الرئيسية",
