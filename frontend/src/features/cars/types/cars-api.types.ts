@@ -55,6 +55,8 @@ export interface RawCar {
   owner: CarOwner | null;
   carimage: CarImage[];
   isavailable: string;
+  quantity?: number;
+  status?: "available" | "sold";
   createdAt: string;
   updatedAt: string;
 }

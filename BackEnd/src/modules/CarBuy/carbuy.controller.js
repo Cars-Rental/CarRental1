@@ -170,12 +170,14 @@ export const getcaralls = async (req, res, next) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
+    const filter = { status: "available", quantity: { $gt: 0 } };
 
-    const totalCars = await carbuymodel.countDocuments();
+    const totalCars = await carbuymodel.countDocuments(filter);
 
     const cars = await carbuymodel
-      .find()
+      .find(filter)
       .populate("owner", POPULATE_OWNER)
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 

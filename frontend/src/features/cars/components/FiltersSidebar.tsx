@@ -18,6 +18,8 @@ import {
 import { BrandCombobox } from "./BrandCombobox";
 import type { BodyType, CarsFilterState, FuelType, Transmission } from "../types/cars-api.types";
 
+const YEAR_OPTIONS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
+
 export function FiltersSidebar() {
   const t = useTranslations("Cars");
   const dispatch = useAppDispatch();
@@ -171,7 +173,7 @@ export function FiltersSidebar() {
             }
             className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
           >
-            {[2020, 2021, 2022, 2023, 2024, 2025].map((y) => (
+            {YEAR_OPTIONS.map((y) => (
               <option key={y} value={y} className="bg-white dark:bg-slate-900">
                 {y}
               </option>
@@ -186,7 +188,7 @@ export function FiltersSidebar() {
             }
             className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
           >
-            {[2020, 2021, 2022, 2023, 2024, 2025].map((y) => (
+            {YEAR_OPTIONS.map((y) => (
               <option key={y} value={y} className="bg-white dark:bg-slate-900">
                 {y}
               </option>

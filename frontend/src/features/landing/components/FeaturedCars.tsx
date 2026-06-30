@@ -23,6 +23,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
 
   const rentQuery = useGetAllRentCars();
   const saleQuery = useGetAllSaleCars();
+  console.log(saleQuery)
 
   const { cars, isLoading } =
     mode === "rent"
