@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDirection } from "@/lib";
 
-import { useLogin } from "../hooks";
+import { useGoogleLogin, useLogin } from "../hooks";
 import { createLoginSchema, type LoginSchema } from "../schemas";
 import { PasswordField } from "./PasswordField";
 
@@ -27,6 +27,7 @@ export function LoginForm() {
   const t = useTranslations("Auth.login");
   const loginSchema = createLoginSchema(t);
   const { isRTL } = useDirection();
+  const startGoogleLogin = useGoogleLogin();
 
   const socialProviders = [
     {
@@ -159,6 +160,7 @@ export function LoginForm() {
             variant="outline"
             type="button"
             className="group h-12 flex-row-reverse justify-center gap-3 border-zinc-200 bg-white text-zinc-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5 hover:shadow-md"
+            onClick={key === "google" ? startGoogleLogin : undefined}
           >
             <Icon
               className={`size-5 transition-transform duration-300 group-hover:scale-110`}

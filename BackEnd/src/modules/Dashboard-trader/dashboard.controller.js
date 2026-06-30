@@ -395,14 +395,12 @@ export const getReviews = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page = Number(req.query.page) || 1;
+    const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
+    const skip  = (page - 1) * limit;
 
-   
     const traderCars = await carModel.distinct("_id", { owner: traderId });
 
-    
     const filter = { carRent: { $in: traderCars } };
     if (req.query.rating) filter.rating = Number(req.query.rating);
 
@@ -418,13 +416,14 @@ export const getReviews = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .lean(),
+
       reviewModel.aggregate([
         { $match: filter },
         {
           $group: {
             _id: null,
             avgRating: { $avg: "$rating" },
-            total: { $sum: 1 },
+            total:  { $sum: 1 },
             stars5: { $sum: { $cond: [{ $eq: ["$rating", 5] }, 1, 0] } },
             stars4: { $sum: { $cond: [{ $eq: ["$rating", 4] }, 1, 0] } },
             stars3: { $sum: { $cond: [{ $eq: ["$rating", 3] }, 1, 0] } },
@@ -435,16 +434,17 @@ export const getReviews = async (req, res, next) => {
       ]),
     ]);
 
-   const formattedReviews = reviews.map((review) => ({
-  id:           review._id,
-  customerId:   review.userId?._id      || "",  
-  customerName: review.userId?.userName || "",  
-  carId:        review.carRent?._id     || "",
-  carTitle: `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
-  rating:    review.rating,
-  comment:   review.comment,
-  createdAt: review.createdAt,
-}));
+    const formattedReviews = reviews.map((review) => ({
+      id:           review._id,
+      customerId:   review.userId?._id     || "",
+      customerName: review.userId?.userName || "",
+      carId:        review.carRent?._id    || "",
+      carTitle:     `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
+      rating:       review.rating,
+      comment:      review.comment,
+      createdAt:    review.createdAt ?? new mongoose.Types.ObjectId(review._id).getTimestamp(),
+    }));
+
     return ok(res, {
       total,
       page,

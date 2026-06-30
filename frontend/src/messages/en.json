@@ -102,6 +102,12 @@
         "passwordInvalid": "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number."
       }
     },
+    "googleCallback": {
+      "title": "Completing Google sign in",
+      "description": "Please wait while we securely finish signing you in.",
+      "success": "Google sign in successful",
+      "failed": "Google sign in failed"
+    },
     "forgotPassword": {
       "title": "Forgot password?",
       "subtitle": "Enter your email and we will send you a reset link",

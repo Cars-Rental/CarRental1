@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     RESEND_CODE: "/auth/resend-code",
     RESET_PASSWORD: "/auth/reset-password",
     ME: "/auth/me",
+    GOOGLE: "/auth/google",
     DOCUMENT: "/auth/document",
     UPDATE_PROFILE: "/auth/update-profile",
   },
