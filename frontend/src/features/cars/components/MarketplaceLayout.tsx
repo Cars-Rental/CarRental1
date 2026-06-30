@@ -103,7 +103,7 @@ export function MarketplaceLayout({
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            className="flex lg:hidden items-center justify-center gap-2 h-11 px-4 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 text-sm font-semibold text-slate-700 dark:text-slate-350 hover:bg-slate-50 transition-colors flex-1 md:flex-initial"
+            className="flex lg:hidden items-center justify-center gap-2 h-11 px-4 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex-1 md:flex-initial"
           >
             <SlidersHorizontal className="size-4" />
             <span>{t("filters")}</span>
@@ -113,7 +113,7 @@ export function MarketplaceLayout({
           <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="flex items-center gap-2">
-                <ArrowUpDown className="size-4 text-slate-450" />
+                <ArrowUpDown className="size-4 text-slate-400" />
                 <span className="text-slate-400 dark:text-slate-500 text-xs uppercase font-bold tracking-wider">
                   {t("sortBy")}:
                 </span>
@@ -153,7 +153,7 @@ export function MarketplaceLayout({
         {/* Mobile Sidebar Modal/Overlay */}
         {mobileSidebarOpen && (
           <div className="fixed inset-0 z-50 lg:hidden bg-slate-950/40 backdrop-blur-xs flex justify-end">
-            <div className="w-80 h-full bg-white dark:bg-slate-950 p-6 overflow-y-auto shadow-2xl relative animate-in slide-in-from-right duration-250">
+            <div className="w-80 h-full bg-white dark:bg-slate-950 p-6 overflow-y-auto shadow-2xl relative animate-in slide-in-from-right duration-250 border-s border-slate-200 dark:border-slate-800">
               <button
                 onClick={() => setMobileSidebarOpen(false)}
                 className="absolute top-4 end-4 p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
@@ -198,13 +198,13 @@ export function MarketplaceLayout({
           ) : totalCount === 0 ? (
             /* Empty State */
             <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
-              <div className="size-16 bg-slate-50 dark:bg-slate-905 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-600 mb-4 border border-slate-100 dark:border-slate-850">
+              <div className="size-16 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-500 mb-4 border border-slate-100 dark:border-slate-700">
                 <SlidersHorizontal className="size-8" />
               </div>
               <h3 className="text-lg font-bold text-slate-800 dark:text-white">
                 {t("noCarsFound")}
               </h3>
-              <p className="text-sm text-slate-450 dark:text-slate-550 mt-1 max-w-sm">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm">
                 Try adjustment of selection filters or keyword search.
               </p>
             </div>
@@ -220,7 +220,7 @@ export function MarketplaceLayout({
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                className="size-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-650 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
+                className="size-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
                 aria-label="Previous Page"
               >
                 {isRTL ? (
@@ -241,7 +241,7 @@ export function MarketplaceLayout({
                     className={`size-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all cursor-pointer ${
                       isActive
                         ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/10"
-                        : "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-650 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
+                        : "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
                     }`}
                   >
                     {pageNum}
@@ -253,7 +253,7 @@ export function MarketplaceLayout({
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
-                className="size-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-650 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
+                className="size-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
                 aria-label="Next Page"
               >
                 {isRTL ? (

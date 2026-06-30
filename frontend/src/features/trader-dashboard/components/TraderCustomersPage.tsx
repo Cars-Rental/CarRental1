@@ -66,7 +66,7 @@ export function TraderCustomersPage() {
         description={t("pages.customers.description")}
       />
 
-      <Card className="mb-6">
+      <Card className="mb-6 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
         <CardContent className="grid gap-3 p-4 lg:grid-cols-[minmax(260px,1fr)_160px_160px]">
           <Input
             value={searchQuery}
@@ -75,6 +75,7 @@ export function TraderCustomersPage() {
               resetPage();
             }}
             placeholder={t("filters.searchCustomers")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <Input
             type="number"
@@ -85,6 +86,7 @@ export function TraderCustomersPage() {
               resetPage();
             }}
             placeholder={t("filters.minOrders")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <Input
             type="number"
@@ -95,6 +97,7 @@ export function TraderCustomersPage() {
               resetPage();
             }}
             placeholder={t("filters.minSpent")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
         </CardContent>
       </Card>
@@ -117,10 +120,10 @@ export function TraderCustomersPage() {
               header: t("tables.customer"),
               cell: (customer) => (
                 <div>
-                  <div className="font-medium text-foreground">
+                  <div className="font-medium text-foreground dark:text-slate-100">
                     {customer.name}
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-muted-foreground dark:text-slate-400">
                     {customer.email}
                   </div>
                 </div>
@@ -158,7 +161,7 @@ export function TraderCustomersPage() {
               },
             ]}
           />
-          <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
             <span>
               {t("pagination.summary", {
                 current:

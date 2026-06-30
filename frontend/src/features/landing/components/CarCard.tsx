@@ -3,9 +3,7 @@ import Link from "next/link";
 import {
   Star,
   Users,
-  ShieldAlert,
   Sparkles,
-  Briefcase,
   Settings,
 } from "lucide-react";
 import type { Car } from "../types/landing.types";

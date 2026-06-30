@@ -60,7 +60,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
           </p>
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="text-(--primary) text-sm font-bold hover:underline mt-2 inline-block"
+            className="text-[var(--primary)] text-sm font-bold hover:underline mt-2 inline-block"
           >
             {t("goBack")}
           </Link>
@@ -79,14 +79,14 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
         <nav className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-6 font-medium flex-wrap">
           <Link
             href={`/${locale}`}
-            className="hover:text-(--primary) transition-colors"
+            className="hover:text-[var(--primary)] transition-colors"
           >
             {t("breadcrumb.home")}
           </Link>
           <ChevronRight className="size-3 shrink-0" />
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="hover:text-(--primary) transition-colors"
+            className="hover:text-[var(--primary)] transition-colors"
           >
             {mode === "rent"
               ? t("breadcrumb.rentCars")
@@ -175,7 +175,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
                   className={`size-10 rounded-full border flex items-center justify-center transition-all duration-200 hover:scale-110 ${
                     isFavorite
                       ? "bg-rose-500 border-rose-500 text-white"
-                      : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-500"
+                      : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
                   aria-label={t("toggleFavorite")}
                 >
@@ -183,7 +183,7 @@ export function CarDetailsPage({ id, mode }: CarDetailsPageProps) {
                     className={`size-4 ${isFavorite ? "fill-current" : ""}`}
                   />
                 </button>
-                <button className="size-10 rounded-full border bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-500 flex items-center justify-center hover:scale-110 transition-all duration-200">
+                <button className="size-10 rounded-full border bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-110 transition-all duration-200">
                   <Share2 className="size-4" />
                 </button>
               </div>

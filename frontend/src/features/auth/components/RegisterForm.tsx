@@ -82,7 +82,7 @@ export function RegisterForm() {
       />
       <div className="space-y-2">
         <Label
-          className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+          className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
           htmlFor="userName"
         >
           {t("fullName")}
@@ -93,6 +93,7 @@ export function RegisterForm() {
           placeholder={t("fullNamePlaceholder")}
           aria-invalid={!!errors.userName}
           endIcon={<UserRound className="size-5" />}
+          className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         {errors.userName && (
           <p className="text-xs font-medium text-destructive">
@@ -103,7 +104,7 @@ export function RegisterForm() {
 
       <div className="space-y-2">
         <Label
-          className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+          className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
           htmlFor="email"
         >
           {t("email")}
@@ -115,6 +116,7 @@ export function RegisterForm() {
           placeholder={t("emailPlaceholder")}
           aria-invalid={!!errors.email}
           endIcon={<Mail className="size-5" />}
+          className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         {errors.email && (
           <p className="text-xs font-medium text-destructive">
@@ -125,7 +127,7 @@ export function RegisterForm() {
 
       <div className="space-y-2">
         <Label
-          className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+          className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
           htmlFor="phone"
         >
           {t("phone")}
@@ -135,6 +137,7 @@ export function RegisterForm() {
           id="phone"
           placeholder={t("phonePlaceholder")}
           aria-invalid={!!errors.phone}
+          className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         {errors.phone && (
           <p className="text-xs font-medium text-destructive">
@@ -172,7 +175,7 @@ export function RegisterForm() {
         <Checkbox id="terms" />
         <Label
           htmlFor="terms"
-          className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+          className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
         >
           {t("terms")}
         </Label>
@@ -190,7 +193,7 @@ export function RegisterForm() {
       </Button>
 
       <div className="flex items-center justify-center gap-2">
-        <span className="text-sm text-zinc-600">{t("alreadyHaveAccount")}</span>
+        <span className="text-sm text-zinc-600 dark:text-slate-400">{t("alreadyHaveAccount")}</span>
 
         <Link
           href="/login"

@@ -90,7 +90,7 @@ export function TraderBookingsPage() {
         description={t("pages.bookings.description")}
       />
 
-      <Card className="mb-6">
+      <Card className="mb-6 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
         <CardContent className="grid gap-3 p-4 lg:grid-cols-[minmax(260px,1fr)_180px_150px_150px]">
           <Input
             value={searchQuery}
@@ -99,6 +99,7 @@ export function TraderBookingsPage() {
               resetPage();
             }}
             placeholder={t("filters.searchOrders")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <select
             value={statusFilter}
@@ -106,7 +107,7 @@ export function TraderBookingsPage() {
               setStatusFilter(event.target.value as "all" | TraderBooking["status"]);
               resetPage();
             }}
-            className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
           >
             <option value="all">{t("filters.allStatuses")}</option>
             <option value="pending">{t("status.pending")}</option>
@@ -125,6 +126,7 @@ export function TraderBookingsPage() {
               resetPage();
             }}
             placeholder={t("filters.minPrice")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <Input
             type="number"
@@ -135,6 +137,7 @@ export function TraderBookingsPage() {
               resetPage();
             }}
             placeholder={t("filters.maxPrice")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
         </CardContent>
       </Card>
@@ -197,7 +200,7 @@ export function TraderBookingsPage() {
 
                 if (booking.status !== "pending") {
                   return (
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-muted-foreground dark:text-slate-400">
                       {t("actions.noActions")}
                     </span>
                   );
@@ -266,7 +269,7 @@ function TablePagination({
   t: ReturnType<typeof useTranslations<"TraderDashboard">>;
 }) {
   return (
-    <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+    <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
       <span>
         {t("pagination.summary", {
           current: totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1,

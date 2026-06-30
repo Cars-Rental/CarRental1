@@ -42,7 +42,7 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">{t("email")}</Label>
+        <Label htmlFor="email" className="text-sm font-semibold text-zinc-700 dark:text-slate-200">{t("email")}</Label>
 
         <Input
           {...register("email")}
@@ -51,6 +51,7 @@ export function ForgotPasswordForm() {
           placeholder={t("emailPlaceholder")}
           aria-invalid={!!errors.email}
           startIcon={<Mail className="size-5" />}
+          className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
 
         {errors.email && (
@@ -72,7 +73,7 @@ export function ForgotPasswordForm() {
       </Button>
 
       <div className="flex items-center justify-center gap-2">
-        <span className="text-sm text-zinc-600 dark:text-zinc-400">
+        <span className="text-sm text-zinc-600 dark:text-slate-400">
           {t("rememberPassword")}
         </span>
 

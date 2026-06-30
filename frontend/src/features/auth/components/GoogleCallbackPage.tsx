@@ -73,14 +73,14 @@ export function GoogleCallbackPage() {
   }, [dispatch, router, searchParams, t]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 dark:bg-slate-950">
       <div className="flex flex-col items-center gap-4 text-center">
         <LoaderCircle className="size-8 animate-spin text-primary" />
         <div>
-          <h1 className="text-xl font-semibold text-foreground">
+          <h1 className="text-xl font-semibold text-foreground dark:text-slate-100">
             {t("title")}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground dark:text-slate-400">
             {t("description")}
           </p>
         </div>

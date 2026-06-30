@@ -5,7 +5,7 @@ import { AboutCTA } from "./AboutCTA";
 
 export function AboutPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background dark:bg-slate-950">
       <AboutHero />
       <AboutMission />
       <AboutValues />

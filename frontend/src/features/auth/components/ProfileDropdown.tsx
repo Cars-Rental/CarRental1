@@ -77,7 +77,7 @@ export function ProfileDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="h-10 rounded-full outline-none">
-        <span className="inline-flex h-10 items-center gap-2 rounded-full px-2 transition-colors hover:bg-accent">
+        <span className="inline-flex h-10 items-center gap-2 rounded-full px-2 transition-colors hover:bg-accent dark:text-slate-100 dark:hover:bg-slate-800">
           <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
             {initials}
           </span>
@@ -88,12 +88,12 @@ export function ProfileDropdown() {
         </span>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-64">
+      <DropdownMenuContent align="end" className="w-64 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="px-3 py-2">
-          <p className="truncate text-sm font-semibold text-foreground">
+          <p className="truncate text-sm font-semibold text-foreground dark:text-slate-100">
             {user.userName}
           </p>
-          <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+          <p className="truncate text-xs text-muted-foreground dark:text-slate-400">{user.email}</p>
         </div>
 
         <DropdownMenuSeparator />
@@ -101,13 +101,13 @@ export function ProfileDropdown() {
         {user.role === ROLES.TRADER ? (
           <>
             <Link href={ROUTES.DASHBOARD.ROOT}>
-              <DropdownMenuItem className="cursor-pointer gap-2">
+              <DropdownMenuItem className="cursor-pointer gap-2 dark:text-slate-200 dark:hover:bg-slate-800">
                 <LayoutDashboard className="size-4" />
                 <span>{t("dashboard")}</span>
               </DropdownMenuItem>
             </Link>
             <Link href={ROUTES.DASHBOARD.MESSAGES}>
-              <DropdownMenuItem className="cursor-pointer gap-2">
+              <DropdownMenuItem className="cursor-pointer gap-2 dark:text-slate-200 dark:hover:bg-slate-800">
                 <MessageSquare className="size-4" />
                 <span>{t("messages")}</span>
               </DropdownMenuItem>
@@ -116,7 +116,7 @@ export function ProfileDropdown() {
         ) : (
           accountLinks.map(({ label, href, icon: Icon }) => (
             <Link key={href} href={href}>
-              <DropdownMenuItem className="cursor-pointer gap-2">
+              <DropdownMenuItem className="cursor-pointer gap-2 dark:text-slate-200 dark:hover:bg-slate-800">
                 <Icon className="size-4" />
                 <span>{label}</span>
               </DropdownMenuItem>

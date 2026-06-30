@@ -14,7 +14,7 @@ export function AboutMission() {
   ];
 
   return (
-    <section className="bg-muted/30 px-6 py-20 lg:py-28">
+    <section className="bg-muted/30 px-6 py-20 dark:bg-slate-900 lg:py-28">
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <motion.div
@@ -25,13 +25,13 @@ export function AboutMission() {
             <div className="mb-6 flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <Target className="size-6" />
             </div>
-            <h2 className="text-3xl font-bold md:text-4xl">
+            <h2 className="text-3xl font-bold text-slate-950 dark:text-slate-100 md:text-4xl">
               {t("mission.title")}
             </h2>
-            <p className="mt-4 text-xl font-medium text-foreground">
+            <p className="mt-4 text-xl font-medium text-foreground dark:text-slate-200">
               {t("mission.subtitle")}
             </p>
-            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed dark:text-slate-400">
               <p>{t("mission.desc1")}</p>
               <p>{t("mission.desc2")}</p>
             </div>
@@ -47,7 +47,7 @@ export function AboutMission() {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className="rounded-3xl border bg-card p-8 text-center shadow-sm"
+                className="rounded-3xl border border-slate-200 bg-card p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-950/60"
               >
                 <div className="mb-2 text-4xl font-extrabold text-primary">
                   {stat.value}

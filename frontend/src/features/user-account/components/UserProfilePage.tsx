@@ -96,15 +96,15 @@ export function UserProfilePage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.5fr]">
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardContent className="flex flex-col items-center p-6 text-center">
             <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-foreground">
               {getInitials(user.userName)}
             </div>
-            <h2 className="mt-4 text-xl font-semibold text-foreground">
+            <h2 className="mt-4 text-xl font-semibold text-foreground dark:text-slate-100">
               {user.userName}
             </h2>
-            <p className="mt-1 text-sm text-muted-foreground">{user.email}</p>
+            <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">{user.email}</p>
             <div className="mt-4">
               <UserAccountStatusBadge
                 status={status}
@@ -123,9 +123,9 @@ export function UserProfilePage() {
         </Card>
 
         <div className="space-y-6">
-          <Card>
+          <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
             <CardHeader>
-              <CardTitle className="text-base">
+              <CardTitle className="text-base text-slate-950 dark:text-slate-100">
                 {t("profile.personalInfo")}
               </CardTitle>
             </CardHeader>
@@ -141,11 +141,11 @@ export function UserProfilePage() {
                   value: joinedAt ? formatUserAccountDate(joinedAt, locale) : "-",
                 },
               ].map((item) => (
-                <div key={item.label} className="rounded-md border border-border p-4">
-                  <p className="text-xs font-medium text-muted-foreground">
+                <div key={item.label} className="rounded-md border border-border bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-800/60">
+                  <p className="text-xs font-medium text-muted-foreground dark:text-slate-400">
                     {item.label}
                   </p>
-                  <p className="mt-1 text-sm font-semibold text-foreground">
+                  <p className="mt-1 text-sm font-semibold text-foreground dark:text-slate-100">
                     {item.value}
                   </p>
                 </div>
@@ -155,16 +155,16 @@ export function UserProfilePage() {
 
           <div className="grid gap-4 sm:grid-cols-3">
             {summaryCards.map((item) => (
-              <Card key={item.label}>
+              <Card key={item.label} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
                 <CardContent className="flex items-center gap-3 p-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary dark:bg-emerald-400/10 dark:text-emerald-400">
                     <item.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-xl font-semibold text-foreground">
+                    <p className="text-xl font-semibold text-foreground dark:text-slate-100">
                       {item.value}
                     </p>
-                    <p className="text-xs text-muted-foreground">{item.label}</p>
+                    <p className="text-xs text-muted-foreground dark:text-slate-400">{item.label}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -174,17 +174,17 @@ export function UserProfilePage() {
       </div>
 
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent>
+        <DialogContent className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
           <form onSubmit={submitProfileUpdate} className="space-y-4">
             <DialogHeader>
-              <DialogTitle>{t("profile.editProfile")}</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="dark:text-slate-100">{t("profile.editProfile")}</DialogTitle>
+              <DialogDescription className="dark:text-slate-400">
                 {t("profile.editDescription")}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-2">
-              <Label htmlFor="profile-userName">{t("fields.name")}</Label>
+              <Label htmlFor="profile-userName" className="dark:text-slate-200">{t("fields.name")}</Label>
               <Input
                 id="profile-userName"
                 value={formValues.userName}
@@ -195,11 +195,12 @@ export function UserProfilePage() {
                   }))
                 }
                 required
+                className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="profile-phone">{t("fields.phone")}</Label>
+              <Label htmlFor="profile-phone" className="dark:text-slate-200">{t("fields.phone")}</Label>
               <Input
                 id="profile-phone"
                 value={formValues.phone}
@@ -210,11 +211,12 @@ export function UserProfilePage() {
                   }))
                 }
                 required
+                className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="profile-gender">{t("fields.gender")}</Label>
+              <Label htmlFor="profile-gender" className="dark:text-slate-200">{t("fields.gender")}</Label>
               <select
                 id="profile-gender"
                 value={formValues.gender}
@@ -224,7 +226,7 @@ export function UserProfilePage() {
                     gender: event.target.value as Gender,
                   }))
                 }
-                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
               >
                 <option value="Male">{t("gender.Male")}</option>
                 <option value="Female">{t("gender.Female")}</option>
