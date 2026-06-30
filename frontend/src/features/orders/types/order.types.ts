@@ -94,3 +94,18 @@ export interface UpdateOrderStatusRequest {
   status: Extract<OrderStatus, "accepted" | "rejected" | "completed">;
   rejectionReason?: string;
 }
+
+export interface CreatePaymentRequest {
+  orderId: string;
+  type: OrderMode;
+  redirectUrl?: string;
+}
+
+export interface CreatePaymentResponse {
+  success: boolean;
+  iframeUrl: string;
+  paymentToken: string;
+  paymobOrderId: number;
+  message?: string;
+  error?: unknown;
+}

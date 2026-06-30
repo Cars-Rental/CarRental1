@@ -41,6 +41,7 @@ export const API_ENDPOINTS = {
     UPDATE_STATUS: (id: string) => `/orders/${id}/status`,
     CANCEL: (id: string) => `/orders/${id}/cancel`,
     DELETE: (id: string) => `/orders/${id}`,
+    PAYMENT: "/orders/payment",
   },
 
   ORDER_BUY: {

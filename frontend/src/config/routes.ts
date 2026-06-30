@@ -32,6 +32,11 @@ export const ROUTES = {
 
   CHAT: "/chat",
 
+  PAYMENT: {
+    ROOT: "/payment",
+    RETURN: "/payment/return",
+  },
+
   DASHBOARD: {
     ROOT: "/dashboard",
     OVERVIEW: "/dashboard",

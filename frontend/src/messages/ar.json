@@ -807,7 +807,9 @@
       "totalRevenue": "إجمالي الإيرادات",
       "platformCommission": "عمولة المنصة",
       "pendingWithdrawals": "سحوبات معلقة",
-      "completedWithdrawals": "سحوبات مكتملة"
+      "completedWithdrawals": "سحوبات مكتملة",
+      "gatewayFormSubtitle": "سوف تكمل الدفعات بطرق احتياطية من Paymob",
+      "sessionGatewayFormSubtitle": "سوف تكمل رسوم الجلسة بطرق احتياطية من Paymob"
     },
     "notifications": {
       "createTitle": "إنشاء إشعار",
@@ -1243,6 +1245,11 @@
     "formTitle": "تفاصيل الدفع",
     "formSubtitle": "أدخل بيانات بطاقتك لإتمام الحجز",
     "sessionFormSubtitle": "أدخل بيانات بطاقتك لفتح جلسة محادثة",
+    "gatewayFormSubtitle": "ستكمل الدفع بأمان من خلال Paymob",
+    "sessionGatewayFormSubtitle": "ستكمل رسوم الجلسة بأمان من خلال Paymob",
+    "gatewayTitle": "دفع آمن عبر Paymob",
+    "gatewaySubtitle": "أكمل الدفع داخل إطار الدفع الآمن بالأسفل",
+    "openGateway": "فتح صفحة الدفع",
     "sessionNotice": "بدفع رسوم 300 ج.م، ستفتح جلسة محادثة خاصة مع مالك السيارة لمناقشة تفاصيل الشراء والاتفاق على الشروط.",
     "cardName": "اسم حامل البطاقة",
     "cardNamePlaceholder": "الاسم على البطاقة",
@@ -1263,6 +1270,14 @@
     "successMessage": "تم حجز {car} لك من {from} إلى {to}. إجمالي المدفوع: {amount} ج.م",
     "sessionSuccessTitle": "تم فتح الجلسة!",
     "sessionSuccessMessage": "جلسة المحادثة مع مالك {car} نشطة الآن. يمكنك مناقشة تفاصيل الشراء مباشرة.",
+    "returnSuccessTitle": "تم قبول الدفع",
+    "returnSuccessMessage": "تم إتمام عملية الدفع بنجاح.",
+    "returnFailedTitle": "لم يكتمل الدفع",
+    "returnFailedMessage": "لم نتمكن من تأكيد عملية الدفع. حاول مرة أخرى.",
+    "viewOrders": "عرض الطلبات",
+    "backHome": "العودة للرئيسية",
+    "paidAmount": "المبلغ المدفوع",
+    "transactionId": "رقم العملية",
     "redirecting": "جاري إعادة التوجيه...",
     "errorLoading": "فشل تحميل تفاصيل الطلب",
     "startChatWith": "ابدا المحادثة",
@@ -1277,7 +1292,8 @@
       "nameRequired": "اسم حامل البطاقة مطلوب",
       "cardRequired": "أدخل رقم بطاقة صالح مكون من 16 رقم",
       "expiryRequired": "أدخل تاريخ انتهاء صالح",
-      "cvvRequired": "أدخل CVV صالح"
+      "cvvRequired": "أدخل CVV صالح",
+      "gatewayFailed": "فشل بدء عملية الدفع. حاول مرة أخرى."
     }
   },
   "Chat": {

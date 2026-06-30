@@ -463,40 +463,46 @@ async function createOrder(authToken, amount) {
   return response.data.id;
 }
 // STEP 3
-async function createPaymentKey(authToken, orderId, amount) {
+async function createPaymentKey(authToken, orderId, amount, redirectionUrl) {
+  const paymentPayload = {
+    auth_token: authToken,
+    amount_cents: amount * 100,
+    expiration: 3600,
+    order_id: orderId,
+    currency: "EGP",
+    integration_id: Number(PAYMOB_INTEGRATION_ID),
+
+    billing_data: {
+      apartment: "NA",
+      email: "customer@example.com",
+      floor: "NA",
+      first_name: "Customer",
+      street: "NA",
+      building: "NA",
+      phone_number: "01000000000",
+      shipping_method: "NA",
+      postal_code: "NA",
+      city: "NA",
+      country: "EG",
+      last_name: "User",
+      state: "NA",
+    },
+  };
+
+  if (typeof redirectionUrl === "string" && redirectionUrl.trim()) {
+    paymentPayload.redirection_url = redirectionUrl.trim();
+  }
+
   const response = await axios.post(
     `${PAYMOB_API_URL}/acceptance/payment_keys`,
-    {
-      auth_token: authToken,
-      amount_cents: amount * 100,
-      expiration: 3600,
-      order_id: orderId,
-      currency: "EGP",
-      integration_id: Number(PAYMOB_INTEGRATION_ID),
-
-      billing_data: {
-        apartment: "NA",
-        email: "customer@example.com",
-        floor: "NA",
-        first_name: "Customer",
-        street: "NA",
-        building: "NA",
-        phone_number: "01000000000",
-        shipping_method: "NA",
-        postal_code: "NA",
-        city: "NA",
-        country: "EG",
-        last_name: "User",
-        state: "NA",
-      },
-    },
+    paymentPayload,
   );
   return response.data.token;
 }
 
 export const createPayment = async (req, res) => {
   try {
-    const { orderId, type } = req.body;
+    const { orderId, type, redirectUrl } = req.body;
     let order = await orderModel.findById(orderId);
     if (!order) {
       order = await orderBuyModel.findById(orderId);
@@ -513,7 +519,12 @@ export const createPayment = async (req, res) => {
 
     const authToken = await getAuthToken();
     const paymobOrderId = await createOrder(authToken, amount);
-    const paymentKey = await createPaymentKey(authToken, paymobOrderId, amount);
+    const paymentKey = await createPaymentKey(
+      authToken,
+      paymobOrderId,
+      amount,
+      redirectUrl,
+    );
 
     const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${paymentKey}`;
 

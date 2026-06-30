@@ -808,7 +808,9 @@
       "totalRevenue": "Total Revenue",
       "platformCommission": "Platform Commission",
       "pendingWithdrawals": "Pending Withdrawals",
-      "completedWithdrawals": "Completed Withdrawals"
+      "completedWithdrawals": "Completed Withdrawals",
+      "gatewayFormSubtitle": "You will complete payment securely through Paymob",
+      "sessionGatewayFormSubtitle": "You will complete the session fee securely through Paymob"
     },
     "notifications": {
       "createTitle": "Create notification",
@@ -1245,6 +1247,11 @@
     "formTitle": "Payment Details",
     "formSubtitle": "Enter your card information to complete the rental",
     "sessionFormSubtitle": "Enter your card information to open a chat session",
+    "gatewayFormSubtitle": "You will complete payment securely through Paymob",
+    "sessionGatewayFormSubtitle": "You will complete the session fee securely through Paymob",
+    "gatewayTitle": "Secure Paymob Checkout",
+    "gatewaySubtitle": "Complete your payment in the secure checkout frame below",
+    "openGateway": "Open payment page",
     "sessionNotice": "By paying this 300 EGP fee, you will open a private chat session with the car owner to discuss purchase details and agree on terms.",
     "cardName": "Cardholder Name",
     "cardNamePlaceholder": "Name on card",
@@ -1265,6 +1272,14 @@
     "successMessage": "{car} is reserved for you from {from} to {to}. Total paid: {amount} EGP",
     "sessionSuccessTitle": "Session Opened!",
     "sessionSuccessMessage": "Your chat session with the owner of {car} is now active. You can discuss purchase details directly.",
+    "returnSuccessTitle": "Payment approved",
+    "returnSuccessMessage": "Your payment was completed successfully.",
+    "returnFailedTitle": "Payment not completed",
+    "returnFailedMessage": "We could not confirm this payment. Please try again.",
+    "viewOrders": "View orders",
+    "backHome": "Back home",
+    "paidAmount": "Paid amount",
+    "transactionId": "Transaction ID",
     "redirecting": "Redirecting you...",
     "errorLoading": "Failed to load order details",
     "startChatWith": "Start Chat",
@@ -1279,7 +1294,8 @@
       "nameRequired": "Cardholder name is required",
       "cardRequired": "Enter a valid 16-digit card number",
       "expiryRequired": "Enter a valid expiry date",
-      "cvvRequired": "Enter a valid CVV"
+      "cvvRequired": "Enter a valid CVV",
+      "gatewayFailed": "Failed to start payment. Please try again."
     }
   },
   "Chat": {
