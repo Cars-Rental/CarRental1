@@ -231,7 +231,7 @@ export interface TraderDashboardActivityItem {
   user: {
     _id: string;
     userName: string;
-  };
+  } | null;
   carprice?: number;
   totalPrice?: number;
   status: string;

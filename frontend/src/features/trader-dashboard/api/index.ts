@@ -136,9 +136,9 @@ const mapDashboardActivity = (
 ): TraderRecentActivity => ({
   id: activity._id,
   type: activity.type,
-  customerName: activity.user.userName,
-  carTitle: activity.car.carname,
-  image: activity.car.carimage[0]?.secure_url ?? "",
+  customerName: activity.user?.userName ?? "Deleted user",
+  carTitle: activity.car?.carname ?? "Unknown car",
+  image: activity.car?.carimage?.[0]?.secure_url ?? "",
   amount: activity.totalPrice ?? activity.carprice ?? 0,
   status: normalizeDashboardStatus(activity.status),
   createdAt: activity.createdAt,
