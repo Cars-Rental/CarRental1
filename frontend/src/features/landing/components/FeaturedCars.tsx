@@ -36,7 +36,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
 
   return (
     <section
-      className="py-20 bg-white dark:bg-slate-900"
+      className="py-20 bg-white dark:bg-slate-950"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container mx-auto">
@@ -45,7 +45,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
               {title}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-medium">
+            <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-400 font-medium">
               {subtitle}
             </p>
           </div>
@@ -67,7 +67,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className="h-80 bg-slate-100 dark:bg-slate-800 rounded-3xl animate-pulse"
+                className="h-80 bg-slate-100 dark:bg-slate-900 rounded-3xl animate-pulse"
               />
             ))}
           </div>

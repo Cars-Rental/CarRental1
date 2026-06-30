@@ -29,27 +29,27 @@ export function TraderReviewsPage() {
       />
 
       <div className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-medium text-muted-foreground dark:text-slate-400">
               {t("stats.averageRating")}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold">
+            <div className="text-2xl font-semibold text-slate-950 dark:text-slate-100">
               {t("stats.ratingValue", { value: data?.average ?? 0 })}
             </div>
           </CardContent>
         </Card>
         {(["5", "4", "3"] as const).map((rating) => (
-          <Card key={rating}>
+          <Card key={rating} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-medium text-muted-foreground dark:text-slate-400">
                 {t("reviews.ratingCount", { rating })}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-semibold">
+              <div className="text-2xl font-semibold text-slate-950 dark:text-slate-100">
                 {data?.distribution[rating] ?? 0}
               </div>
             </CardContent>
@@ -104,7 +104,7 @@ export function TraderReviewsPage() {
       )}
 
       {reviews.length > 0 ? (
-        <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <span>
             {t("pagination.summary", {
               current: data?.total === 0 ? 0 : (currentPage - 1) * pageSize + 1,

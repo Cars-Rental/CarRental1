@@ -11,7 +11,7 @@ export function AboutCTA() {
   const { isRTL } = useDirection();
 
   return (
-    <section className="px-6 py-24">
+    <section className="px-6 py-24 dark:bg-slate-950">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -29,7 +29,7 @@ export function AboutCTA() {
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/cars"
-              className="inline-flex h-14 w-full items-center justify-center rounded-full bg-background px-8 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-muted sm:w-auto"
+              className="inline-flex h-14 w-full items-center justify-center rounded-full bg-background px-8 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-muted dark:bg-slate-100 dark:hover:bg-white sm:w-auto"
             >
               {t("cta.buttonRent")} {isRTL ? <ArrowLeft className="ms-2 size-4" /> : <ArrowRight className="ms-2 size-4" />}
             </Link>

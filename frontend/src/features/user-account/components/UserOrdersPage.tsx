@@ -57,15 +57,15 @@ export function UserOrdersPage() {
 
       <div className="space-y-4">
         {isLoading && (
-          <Card>
-            <CardContent className="p-6 text-sm text-muted-foreground">
+          <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
+            <CardContent className="p-6 text-sm text-muted-foreground dark:text-slate-400">
               {t("orders.loading")}
             </CardContent>
           </Card>
         )}
 
         {isError && (
-          <Card>
+          <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
             <CardContent className="p-6 text-sm text-destructive">
               {t("orders.error")}
             </CardContent>
@@ -73,8 +73,8 @@ export function UserOrdersPage() {
         )}
 
         {!isLoading && !isError && orders.length === 0 && (
-          <Card>
-            <CardContent className="p-6 text-sm text-muted-foreground">
+          <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
+            <CardContent className="p-6 text-sm text-muted-foreground dark:text-slate-400">
               {t("orders.empty")}
             </CardContent>
           </Card>
@@ -92,9 +92,9 @@ export function UserOrdersPage() {
             cancelOrder.isPending && cancelOrder.variables?.id === order._id;
 
           return (
-            <Card key={order._id}>
+            <Card key={order._id} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
               <CardContent className="grid gap-4 p-4 md:grid-cols-[160px_1fr_auto] md:items-center">
-                <div className="relative aspect-video overflow-hidden rounded-md bg-muted">
+                <div className="relative aspect-video overflow-hidden rounded-md bg-muted dark:bg-slate-800">
                   <Image
                     src={carImage}
                     alt={carTitle}
@@ -104,7 +104,7 @@ export function UserOrdersPage() {
                 </div>
 
                 <div>
-                  <h2 className="font-semibold text-foreground">{carTitle}</h2>
+                  <h2 className="font-semibold text-foreground dark:text-slate-100">{carTitle}</h2>
                   <div className="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
                     <Info
                       label={t("orders.salePrice")}
@@ -170,10 +170,10 @@ export function UserOrdersPage() {
           }
         }}
       >
-        <DialogContent>
+        <DialogContent className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
           <DialogHeader>
-            <DialogTitle>{t("orders.cancelTitle")}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="dark:text-slate-100">{t("orders.cancelTitle")}</DialogTitle>
+            <DialogDescription className="dark:text-slate-400">
               {t("orders.cancelDescription")}
             </DialogDescription>
           </DialogHeader>
@@ -181,7 +181,7 @@ export function UserOrdersPage() {
           <div className="space-y-2">
             <label
               htmlFor="cancellation-reason"
-              className="text-sm font-medium text-foreground"
+              className="text-sm font-medium text-foreground dark:text-slate-200"
             >
               {t("orders.cancellationReason")}
             </label>
@@ -190,7 +190,7 @@ export function UserOrdersPage() {
               value={cancellationReason}
               onChange={(event) => setCancellationReason(event.target.value)}
               placeholder={t("orders.cancellationReasonPlaceholder")}
-              className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+              className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
             />
           </div>
 
@@ -227,8 +227,8 @@ export function UserOrdersPage() {
 function Info({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="mt-1 font-medium text-foreground">{value}</p>
+      <p className="text-xs text-muted-foreground dark:text-slate-400">{label}</p>
+      <p className="mt-1 font-medium text-foreground dark:text-slate-100">{value}</p>
     </div>
   );
 }

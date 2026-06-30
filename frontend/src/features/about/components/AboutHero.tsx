@@ -8,7 +8,7 @@ export function AboutHero() {
 
   return (
     <section className="relative overflow-hidden px-6 pt-32 pb-24 text-center lg:pt-40 lg:pb-32">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background dark:from-emerald-900/20 dark:via-slate-950 dark:to-slate-950"></div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -17,10 +17,10 @@ export function AboutHero() {
         <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-primary">
           {t("eyebrow")}
         </p>
-        <h1 className="text-4xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
+        <h1 className="text-4xl font-extrabold tracking-tight text-slate-950 dark:text-slate-100 md:text-6xl lg:text-7xl">
           {t("title")}
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground dark:text-slate-300">
           {t("description")}
         </p>
       </motion.div>

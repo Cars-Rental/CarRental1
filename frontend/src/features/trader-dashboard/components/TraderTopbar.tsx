@@ -32,7 +32,7 @@ export function TraderTopbar({
   const { mutate: logout, isPending } = useLogout();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6 shadow-sm">
+    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -58,7 +58,7 @@ export function TraderTopbar({
             )}
           </span>
         </Button>
-        <h2 className="text-lg font-semibold text-foreground">
+        <h2 className="text-lg font-semibold text-foreground dark:text-slate-100">
           {/* We can potentially display the current page title here */}
           {t("sidebar.overview")}
         </h2>
@@ -75,12 +75,12 @@ export function TraderTopbar({
           disabled={isPending}
           onClick={() => logout()}
         >
-          <LogOut className="h-5 w-5 text-muted-foreground" />
+          <LogOut className="h-5 w-5 text-muted-foreground dark:text-slate-400" />
           <span className="sr-only">{navT("logout")}</span>
         </Button>
         
-        <div className="flex items-center gap-2 border-l border-border pl-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+        <div className="flex items-center gap-2 border-l border-border pl-4 dark:border-slate-800">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 dark:bg-emerald-400/10">
             <User className="h-4 w-4 text-primary" />
           </div>
         </div>
@@ -119,8 +119,8 @@ function TraderNotificationsMenu({ label }: { label: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="rounded-md outline-none">
-        <span className="relative inline-flex size-10 items-center justify-center rounded-md transition-colors hover:bg-accent">
-          <Bell className="h-5 w-5 text-muted-foreground" />
+        <span className="relative inline-flex size-10 items-center justify-center rounded-md transition-colors hover:bg-accent dark:hover:bg-slate-800">
+          <Bell className="h-5 w-5 text-muted-foreground dark:text-slate-400" />
           {unreadCount > 0 && (
             <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground">
               {unreadCount > 9 ? "9+" : unreadCount}
@@ -130,11 +130,11 @@ function TraderNotificationsMenu({ label }: { label: string }) {
         </span>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-80 p-0">
+      <DropdownMenuContent align="end" className="w-80 border-slate-200 bg-white p-0 dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <div>
-            <p className="text-sm font-semibold text-foreground">{label}</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm font-semibold text-foreground dark:text-slate-100">{label}</p>
+            <p className="text-xs text-muted-foreground dark:text-slate-400">
               {unreadCount > 0
                 ? `${unreadCount} unread`
                 : "No unread notifications"}
@@ -157,7 +157,7 @@ function TraderNotificationsMenu({ label }: { label: string }) {
 
         <div className="max-h-96 overflow-y-auto py-1">
           {isLoading ? (
-            <div className="px-4 py-6 text-center text-sm text-muted-foreground">
+            <div className="px-4 py-6 text-center text-sm text-muted-foreground dark:text-slate-400">
               Loading notifications...
             </div>
           ) : unreadNotifications.length > 0 ? (
@@ -165,25 +165,25 @@ function TraderNotificationsMenu({ label }: { label: string }) {
               <button
                 key={notification._id}
                 type="button"
-                className="flex w-full gap-3 px-4 py-3 text-left transition-colors hover:bg-accent focus:bg-accent focus:outline-none"
+                className="flex w-full gap-3 px-4 py-3 text-left transition-colors hover:bg-accent focus:bg-accent focus:outline-none dark:hover:bg-slate-800 dark:focus:bg-slate-800"
                 onClick={() => openNotification(notification)}
               >
                 <span className="mt-1 size-2 rounded-full bg-destructive" />
                 <span className="min-w-0 flex-1">
-                  <span className="line-clamp-1 text-sm font-semibold text-foreground">
+                  <span className="line-clamp-1 text-sm font-semibold text-foreground dark:text-slate-100">
                     {notification.title}
                   </span>
-                  <span className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                  <span className="mt-1 line-clamp-2 text-xs text-muted-foreground dark:text-slate-400">
                     {notification.message}
                   </span>
-                  <span className="mt-2 block text-[11px] text-muted-foreground">
+                  <span className="mt-2 block text-[11px] text-muted-foreground dark:text-slate-500">
                     {formatNotificationTime(notification.createdAt)}
                   </span>
                 </span>
               </button>
             ))
           ) : (
-            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+            <div className="px-4 py-8 text-center text-sm text-muted-foreground dark:text-slate-400">
               You are all caught up.
             </div>
           )}

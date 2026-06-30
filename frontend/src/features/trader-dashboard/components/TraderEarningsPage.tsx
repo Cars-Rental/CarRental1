@@ -25,7 +25,7 @@ export function TraderEarningsPage() {
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-3">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Card key={index}>
+            <Card key={index} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
               <CardHeader>
                 <Skeleton className="h-4 w-32" />
               </CardHeader>
@@ -52,14 +52,14 @@ export function TraderEarningsPage() {
                 value: earnings.totalEarnings,
               },
             ].map((item) => (
-              <Card key={item.label}>
+              <Card key={item.label} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
                 <CardHeader>
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                  <CardTitle className="text-sm font-medium text-muted-foreground dark:text-slate-400">
                     {item.label}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-semibold text-foreground">
+                  <div className="text-2xl font-semibold text-foreground dark:text-slate-100">
                     {formatDashboardCurrency(item.value, locale)}
                   </div>
                 </CardContent>
@@ -70,18 +70,18 @@ export function TraderEarningsPage() {
           {earningsBreakdown && (
             <div className="grid gap-4 md:grid-cols-2">
               {(["rent", "buy"] as const).map((key) => (
-                <Card key={key}>
+                <Card key={key} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
                   <CardHeader>
-                    <CardTitle className="text-base">
+                    <CardTitle className="text-base text-slate-950 dark:text-slate-100">
                       {t(`earnings.breakdown.${key}`)}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground dark:text-slate-400">
                         {t("earnings.earned")}
                       </p>
-                      <p className="mt-1 text-lg font-semibold text-foreground">
+                      <p className="mt-1 text-lg font-semibold text-foreground dark:text-slate-100">
                         {formatDashboardCurrency(
                           earningsBreakdown[key].earned,
                           locale
@@ -89,10 +89,10 @@ export function TraderEarningsPage() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground dark:text-slate-400">
                         {t("earnings.pending")}
                       </p>
-                      <p className="mt-1 text-lg font-semibold text-foreground">
+                      <p className="mt-1 text-lg font-semibold text-foreground dark:text-slate-100">
                         {formatDashboardCurrency(
                           earningsBreakdown[key].pending,
                           locale

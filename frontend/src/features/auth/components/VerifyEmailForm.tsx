@@ -93,9 +93,9 @@ export function VerifyEmailForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div className="rounded-xl border bg-muted/40 p-4 text-center">
-        <p className="text-sm text-muted-foreground">{t("sentTo")}</p>
-        <p className="mt-1 font-semibold text-foreground">{maskedEmail}</p>
+      <div className="rounded-xl border border-slate-200 bg-muted/40 p-4 text-center dark:border-slate-800 dark:bg-slate-800/60">
+        <p className="text-sm text-muted-foreground dark:text-slate-400">{t("sentTo")}</p>
+        <p className="mt-1 font-semibold text-foreground dark:text-slate-100">{maskedEmail}</p>
       </div>
 
       <div className="space-y-2">
@@ -168,7 +168,7 @@ export function VerifyEmailForm() {
                     inputMode="numeric"
                     maxLength={1}
                     aria-invalid={!!errors.otp}
-                    className="size-11 sm:size-14 rounded-lg text-center text-md sm:text-lg font-bold"
+                    className="size-11 sm:size-14 rounded-lg text-center text-md sm:text-lg font-bold dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
                   />
                 ))}
               </div>
@@ -194,7 +194,7 @@ export function VerifyEmailForm() {
       </Button>
 
       <div className="flex items-center justify-center flex-col gap-1 text-sm">
-        <p className="text-[#3E4947] dark:text-zinc-400">{t("notReceived")}</p>
+        <p className="text-[#3E4947] dark:text-slate-400">{t("notReceived")}</p>
 
         <Button
           type="button"

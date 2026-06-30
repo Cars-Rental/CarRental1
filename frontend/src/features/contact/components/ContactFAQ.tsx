@@ -16,7 +16,7 @@ export function ContactFAQ() {
     <SharedFAQSection
       title={t("faq.title")}
       faqs={faqs}
-      className="bg-muted/30 px-6 py-24"
+      className="bg-muted/30 px-6 py-24 dark:bg-slate-950"
     />
   );
 }

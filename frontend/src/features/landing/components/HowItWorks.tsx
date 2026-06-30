@@ -28,7 +28,7 @@ export function HowItWorks() {
 
   return (
     <section
-      className="py-20 bg-slate-50 dark:bg-slate-900/40"
+      className="py-20 bg-slate-50 dark:bg-slate-950"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container-main text-center">
@@ -48,7 +48,7 @@ export function HowItWorks() {
                 className="flex flex-col items-center text-center px-4 group"
               >
                 {/* Circular Icon Container */}
-                <div className="w-16 h-16 rounded-full bg-cyan-50 dark:bg-slate-800 border-2 border-cyan-100 dark:border-slate-700 flex items-center justify-center text-[var(--primary)] mb-6 shadow-sm group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white group-hover:border-[var(--primary)] transition-all duration-300">
+                <div className="w-16 h-16 rounded-full bg-cyan-50 dark:bg-slate-900 border-2 border-cyan-100 dark:border-slate-800 flex items-center justify-center text-[var(--primary)] dark:text-emerald-400 mb-6 shadow-sm group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white group-hover:border-[var(--primary)] transition-all duration-300">
                   <Icon className="size-6 transition-colors duration-300" />
                 </div>
 

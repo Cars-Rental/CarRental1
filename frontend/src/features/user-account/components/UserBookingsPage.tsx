@@ -32,7 +32,7 @@ function formatCurrency(amount: number, locale: string) {
 
 function OrderCardSkeleton() {
   return (
-    <Card>
+    <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
       <CardContent className="grid gap-4 p-4 md:grid-cols-[160px_1fr_auto] md:items-center">
         <div className="aspect-video rounded-md bg-slate-100 dark:bg-slate-800 animate-pulse" />
         <div className="flex flex-col gap-2">
@@ -52,10 +52,10 @@ function OrderCard({ order, locale }: { order: Order; locale: string }) {
   const totalPrice = order.totalPrice ?? 0;
 
   return (
-    <Card>
+    <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
       <CardContent className="grid gap-4 p-4 md:grid-cols-[160px_1fr_auto] md:items-center">
         {/* Car image */}
-        <div className="relative aspect-video overflow-hidden rounded-md bg-muted">
+        <div className="relative aspect-video overflow-hidden rounded-md bg-muted dark:bg-slate-800">
           {image ? (
             <Image
               src={image}
@@ -65,15 +65,15 @@ function OrderCard({ order, locale }: { order: Order; locale: string }) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800">
-              <Package className="size-8 text-slate-300" />
+              <Package className="size-8 text-slate-300 dark:text-slate-600" />
             </div>
           )}
         </div>
 
         {/* Order info */}
         <div>
-          <h2 className="font-semibold text-foreground">{order.car.carname}</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <h2 className="font-semibold text-foreground dark:text-slate-100">{order.car.carname}</h2>
+          <p className="text-xs text-muted-foreground mt-0.5 dark:text-slate-400">
             {order.car.carbrand}
           </p>
           <div className="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
@@ -122,8 +122,8 @@ function OrderCard({ order, locale }: { order: Order; locale: string }) {
 function Info({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="mt-1 font-medium text-foreground">{value}</p>
+      <p className="text-xs text-muted-foreground dark:text-slate-400">{label}</p>
+      <p className="mt-1 font-medium text-foreground dark:text-slate-100">{value}</p>
     </div>
   );
 }
@@ -152,16 +152,16 @@ export function UserBookingsPage() {
 
         {/* Error */}
         {isError && (
-          <div className="text-center py-12 text-sm text-muted-foreground">
+          <div className="rounded-2xl border border-slate-200 bg-white py-12 text-center text-sm text-muted-foreground dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-400">
             {t("bookings.errorLoading")}
           </div>
         )}
 
         {/* Empty */}
         {!isLoading && !isError && (!orders || orders.length === 0) && (
-          <div className="text-center py-12 flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 rounded-2xl border border-slate-200 bg-white py-12 text-center dark:border-slate-800 dark:bg-slate-900/90">
             <CalendarDays className="size-10 text-slate-300 dark:text-slate-600" />
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground dark:text-slate-400">
               {t("bookings.empty")}
             </p>
             <Button

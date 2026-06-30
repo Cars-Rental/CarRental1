@@ -69,7 +69,7 @@ export function TraderAnalyticsPage() {
         />
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           {Array.from({ length: 5 }).map((_, index) => (
-            <Card key={index}>
+            <Card key={index} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
               <CardHeader>
                 <Skeleton className="h-4 w-28" />
               </CardHeader>
@@ -178,18 +178,18 @@ export function TraderAnalyticsPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {kpis.map((item) => (
-          <Card key={item.label}>
+          <Card key={item.label} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-medium text-muted-foreground dark:text-slate-400">
                 {item.label}
               </CardTitle>
               <item.icon className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-semibold text-foreground">
+              <div className="text-2xl font-semibold text-foreground dark:text-slate-100">
                 {item.value}
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                 {item.helper}
               </p>
             </CardContent>
@@ -198,9 +198,9 @@ export function TraderAnalyticsPage() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.7fr_1fr]">
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="text-base text-slate-950 dark:text-slate-100">
               {t("analytics.revenueTrend")}
             </CardTitle>
           </CardHeader>
@@ -208,7 +208,7 @@ export function TraderAnalyticsPage() {
             <div className="overflow-x-auto">
               <svg
                 viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-                className="h-64 min-w-[640px] text-muted-foreground"
+                className="h-64 min-w-[640px] text-muted-foreground dark:text-slate-400"
                 role="img"
                 aria-label={t("analytics.revenueTrend")}
               >
@@ -224,7 +224,7 @@ export function TraderAnalyticsPage() {
                       x2={chartWidth - chartPadding}
                       y1={y}
                       y2={y}
-                      className="stroke-border"
+                      className="stroke-border dark:stroke-slate-800"
                       strokeWidth="1"
                     />
                   );
@@ -261,7 +261,7 @@ export function TraderAnalyticsPage() {
                         cx={x}
                         cy={y}
                         r="5"
-                        className="fill-background stroke-primary"
+                        className="fill-background stroke-primary dark:fill-slate-900"
                         strokeWidth="3"
                       />
                       <text
@@ -280,14 +280,14 @@ export function TraderAnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="text-base text-slate-950 dark:text-slate-100">
               {t("analytics.revenueMix")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div className="flex h-4 overflow-hidden rounded-full bg-muted">
+            <div className="flex h-4 overflow-hidden rounded-full bg-muted dark:bg-slate-800">
               {revenueMix.map((segment) => (
                 <div
                   key={segment.label}
@@ -306,9 +306,9 @@ export function TraderAnalyticsPage() {
                     <span
                       className={cn("h-2.5 w-2.5 rounded-full", segment.colorClass)}
                     />
-                    <span>{segment.label}</span>
+                    <span className="text-slate-700 dark:text-slate-300">{segment.label}</span>
                   </div>
-                  <span className="font-medium text-foreground">
+                  <span className="font-medium text-foreground dark:text-slate-100">
                     {segment.value}%
                   </span>
                 </div>
@@ -319,9 +319,9 @@ export function TraderAnalyticsPage() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_1.2fr]">
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="text-base text-slate-950 dark:text-slate-100">
               {t("analytics.bookingVolume")}
             </CardTitle>
           </CardHeader>
@@ -339,7 +339,7 @@ export function TraderAnalyticsPage() {
                     }}
                     title={String(point.count)}
                   />
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground dark:text-slate-400">
                     {formatMonth(point.month, locale)}
                   </span>
                 </div>
@@ -348,9 +348,9 @@ export function TraderAnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="text-base text-slate-950 dark:text-slate-100">
               {t("analytics.topCars")}
             </CardTitle>
           </CardHeader>
@@ -359,18 +359,18 @@ export function TraderAnalyticsPage() {
               <div key={car.id} className="space-y-2">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-sm font-medium text-foreground">
+                    <div className="text-sm font-medium text-foreground dark:text-slate-100">
                       {car.title}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-muted-foreground dark:text-slate-400">
                       {car.meta}
                     </div>
                   </div>
-                  <div className="text-sm font-semibold text-foreground">
+                  <div className="text-sm font-semibold text-foreground dark:text-slate-100">
                     {formatDashboardCurrency(car.revenue, locale)}
                   </div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
+                <div className="h-2 overflow-hidden rounded-full bg-muted dark:bg-slate-800">
                   <div
                     className="h-full rounded-full bg-primary"
                     style={{

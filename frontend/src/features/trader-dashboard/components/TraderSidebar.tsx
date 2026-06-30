@@ -50,14 +50,14 @@ export function TraderSidebar({
   return (
     <aside
       className={cn(
-        "flex h-screen flex-col border-r border-border bg-card shadow-sm transition-[width] duration-300",
+        "flex h-screen flex-col border-r border-border bg-card shadow-sm transition-[width] duration-300 dark:border-slate-800 dark:bg-slate-900",
         isCollapsed ? "w-20" : "w-64",
         className
       )}
     >
       <div
         className={cn(
-          "flex h-16 items-center border-b border-border px-6",
+          "flex h-16 items-center border-b border-border px-6 dark:border-slate-800",
           isCollapsed && "justify-center px-3"
         )}
       >
@@ -91,8 +91,8 @@ export function TraderSidebar({
                   "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isCollapsed && "justify-center gap-0 px-2",
                   isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
                 )}
               >
                 <Icon className="h-5 w-5 shrink-0" />

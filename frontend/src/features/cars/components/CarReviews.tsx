@@ -44,8 +44,9 @@ interface CarReviewsProps {
   carId: string; // ready for real reviews API call
 }
 
-export function CarReviews({ carId: _ }: CarReviewsProps) {
+export function CarReviews({ carId }: CarReviewsProps) {
   const t = useTranslations("CarDetails");
+  void carId;
 
   return (
     <div>

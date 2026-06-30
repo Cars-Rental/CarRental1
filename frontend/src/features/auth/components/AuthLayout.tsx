@@ -16,11 +16,7 @@ export function AuthLayout({
   visualContent,
   visualSide = "left",
 }: AuthLayoutProps) {
-  const visual = (
-    <AuthVisualPanel>
-      {visualContent}
-    </AuthVisualPanel>
-  );
+  const visual = <AuthVisualPanel>{visualContent}</AuthVisualPanel>;
 
   const card = (
     <AuthCard title={title} subtitle={subtitle}>
@@ -29,7 +25,7 @@ export function AuthLayout({
   );
 
   return (
-    <main className="grid min-h-screen bg-[#F7FAF8] lg:grid-cols-2 dark:bg-zinc-950">
+    <main className="grid min-h-screen bg-[#F7FAF8] text-slate-950 dark:bg-slate-950 dark:text-slate-100 lg:grid-cols-2">
       {visualSide === "left" && visual}
 
       <section className="flex items-center justify-center px-6 py-15">

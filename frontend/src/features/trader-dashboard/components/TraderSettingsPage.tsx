@@ -20,9 +20,9 @@ export function TraderSettingsPage() {
       />
 
       {user ? (
-        <Card>
+        <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="text-base text-slate-950 dark:text-slate-100">
               {t("settings.accountInformation")}
             </CardTitle>
           </CardHeader>
@@ -33,11 +33,11 @@ export function TraderSettingsPage() {
               { label: t("settings.phone"), value: user.phone },
               { label: t("settings.role"), value: user.role },
             ].map((item) => (
-              <div key={item.label} className="rounded-md border border-border p-4">
-                <div className="text-xs font-medium text-muted-foreground">
+              <div key={item.label} className="rounded-md border border-border bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-800/60">
+                <div className="text-xs font-medium text-muted-foreground dark:text-slate-400">
                   {item.label}
                 </div>
-                <div className="mt-1 text-sm font-medium text-foreground">
+                <div className="mt-1 text-sm font-medium text-foreground dark:text-slate-100">
                   {item.value}
                 </div>
               </div>

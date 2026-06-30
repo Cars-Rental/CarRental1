@@ -71,7 +71,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="space-y-2">
         <Label
-          className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+          className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
           htmlFor="email"
         >
           {t("email")}
@@ -84,6 +84,7 @@ export function LoginForm() {
           placeholder={t("emailPlaceholder")}
           aria-invalid={!!errors.email}
           startIcon={<Mail className="size-5" />}
+          className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
 
         {errors.email && (
@@ -96,7 +97,7 @@ export function LoginForm() {
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-3">
           <Label
-            className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+            className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
             htmlFor="password"
           >
             {t("password")}
@@ -124,7 +125,7 @@ export function LoginForm() {
         <Checkbox id="remember" />
         <Label
           htmlFor="remember"
-          className="text-sm font-semibold text-zinc-700 dark:text-zinc-200"
+          className="text-sm font-semibold text-zinc-700 dark:text-slate-200"
         >
           {t("rememberMe")}
         </Label>
@@ -143,11 +144,11 @@ export function LoginForm() {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
+          <span className="w-full border-t border-slate-200 dark:border-slate-800" />
         </div>
 
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
+          <span className="bg-white px-2 text-muted-foreground dark:bg-slate-950 dark:text-slate-400">
             {t("or")}
           </span>
         </div>
@@ -159,7 +160,7 @@ export function LoginForm() {
             key={key}
             variant="outline"
             type="button"
-            className="group h-12 flex-row-reverse justify-center gap-3 border-zinc-200 bg-white text-zinc-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5 hover:shadow-md"
+            className="group h-12 flex-row-reverse justify-center gap-3 border-zinc-200 bg-white text-zinc-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:hover:border-emerald-700 dark:hover:bg-slate-800"
             onClick={key === "google" ? startGoogleLogin : undefined}
           >
             <Icon
@@ -171,7 +172,7 @@ export function LoginForm() {
       </div>
 
       <div className="flex items-center justify-center gap-2">
-        <span className="text-sm text-zinc-600 dark:text-zinc-400">
+        <span className="text-sm text-zinc-600 dark:text-slate-400">
           {t("dontHaveAccount")}
         </span>
 

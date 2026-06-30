@@ -154,7 +154,7 @@ export function BookingCard({
   // --- SALE MODE ---
   if (mode === "sale") {
     return (
-      <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-6 shadow-sm flex flex-col gap-5">
+      <div className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col gap-5">
         <div>
           <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">
             {t("salePrice")}
@@ -195,7 +195,7 @@ export function BookingCard({
 
   // --- RENT MODE ---
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
+    <div className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-1">
@@ -218,7 +218,7 @@ export function BookingCard({
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             selectingFrom
               ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
-              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300"
+              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
           <CalendarIcon className="size-3.5 shrink-0" />
@@ -232,7 +232,7 @@ export function BookingCard({
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             !selectingFrom
               ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
-              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300"
+              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
           <CalendarIcon className="size-3.5 shrink-0" />
@@ -322,7 +322,7 @@ export function BookingCard({
       <button
         onClick={handleBookNow}
         disabled={isPending}
-        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-(--primary-dark) text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-(--primary)/20 hover:shadow-(--primary)/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
       >
         {isPending ? (
           <Loader2 className="size-4 animate-spin" />

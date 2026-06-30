@@ -267,12 +267,12 @@ export function TraderCarDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
+      <DialogContent className="max-h-[90vh] overflow-y-auto border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="dark:text-slate-100">
             {isEditMode ? t("carForm.editTitle") : t("carForm.addTitle")}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="dark:text-slate-400">
             {type === "rent"
               ? t("carForm.rentDescription")
               : t("carForm.saleDescription")}
@@ -281,16 +281,16 @@ export function TraderCarDialog({
 
         <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
           <div className="space-y-3">
-            <Label htmlFor="images">{t("carForm.images")}</Label>
+            <Label htmlFor="images" className="dark:text-slate-200">{t("carForm.images")}</Label>
             <label
               htmlFor="images"
-              className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-border bg-muted/30 p-4 text-center transition hover:border-primary/50 hover:bg-muted/50"
+              className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-border bg-muted/30 p-4 text-center transition hover:border-primary/50 hover:bg-muted/50 dark:border-slate-700 dark:bg-slate-800/40 dark:hover:border-emerald-600 dark:hover:bg-slate-800/70"
             >
-              <ImagePlus className="mb-2 h-6 w-6 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground">
+              <ImagePlus className="mb-2 h-6 w-6 text-muted-foreground dark:text-slate-400" />
+              <span className="text-sm font-medium text-foreground dark:text-slate-100">
                 {t("carForm.uploadImages")}
               </span>
-              <span className="mt-1 text-xs text-muted-foreground">
+              <span className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                 {t("carForm.uploadImagesHint")}
               </span>
               <input
@@ -312,7 +312,7 @@ export function TraderCarDialog({
                 {imagePreviews.map((image, index) => (
                   <div
                     key={image.id}
-                    className="relative aspect-video overflow-hidden rounded-md border border-border bg-muted"
+                    className="relative aspect-video overflow-hidden rounded-md border border-border bg-muted dark:border-slate-700 dark:bg-slate-800"
                   >
                     <Image
                       src={image.src}
@@ -387,7 +387,7 @@ export function TraderCarDialog({
             >
               <select
                 id="location"
-                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
                 {...register("location")}
               >
                 {EGYPT_LOCATIONS.map((location) => (
@@ -503,7 +503,7 @@ interface FieldProps {
 function Field({ children, error, id, label }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className="dark:text-slate-200">{label}</Label>
       {children}
       {error && <p className="text-xs font-medium text-destructive">{error}</p>}
     </div>
@@ -526,7 +526,7 @@ function OptionSelect<T extends string>({
   return (
     <select
       id={id}
-      className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+      className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
       {...register}
     >
       {options.map((option) => (

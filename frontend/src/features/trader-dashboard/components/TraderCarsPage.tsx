@@ -272,19 +272,20 @@ const visibleCars = localCars ?? cars;
         onSubmit={handleSubmitCar}
       />
 
-      <Card className="mb-6">
+      <Card className="mb-6 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
         <CardContent className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-[1fr_180px_180px_150px_150px]">
           <Input
             value={searchQuery}
             onChange={(event) => updateSearchQuery(event.target.value)}
             placeholder={t("filters.searchCars")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <select
             value={statusFilter}
             onChange={(event) =>
               updateStatusFilter(event.target.value as "all" | TraderCar["status"])
             }
-            className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
           >
             <option value="all">{t("filters.allStatuses")}</option>
             <option value="active">{t("status.active")}</option>
@@ -299,7 +300,7 @@ const visibleCars = localCars ?? cars;
                 event.target.value as "all" | AddCarRequest["location"]
               )
             }
-            className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
           >
             <option value="all">{t("filters.allLocations")}</option>
             {EGYPT_LOCATIONS.map((location) => (
@@ -314,6 +315,7 @@ const visibleCars = localCars ?? cars;
             value={minPrice}
             onChange={(event) => updateMinPrice(event.target.value)}
             placeholder={t("filters.minPrice")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <Input
             type="number"
@@ -321,6 +323,7 @@ const visibleCars = localCars ?? cars;
             value={maxPrice}
             onChange={(event) => updateMaxPrice(event.target.value)}
             placeholder={t("filters.maxPrice")}
+            className="dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
         </CardContent>
       </Card>
@@ -343,7 +346,7 @@ const visibleCars = localCars ?? cars;
               header: t("tables.car"),
               cell: (car) => (
                 <div className="flex items-center gap-3">
-                  <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-md bg-muted">
+                  <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-md bg-muted dark:bg-slate-800">
                     {car.image ? (
                       <Image
                         src={car.image}
@@ -354,13 +357,13 @@ const visibleCars = localCars ?? cars;
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center">
-                        <Car className="h-4 w-4 text-muted-foreground" />
+                        <Car className="h-4 w-4 text-muted-foreground dark:text-slate-500" />
                       </div>
                     )}
                   </div>
                   <div>
-                    <div className="font-medium text-foreground">{car.title}</div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="font-medium text-foreground dark:text-slate-100">{car.title}</div>
+                    <div className="text-xs text-muted-foreground dark:text-slate-400">
                       {car.brand} {car.model} - {car.year}
                     </div>
                   </div>
@@ -432,7 +435,7 @@ const visibleCars = localCars ?? cars;
             },
             ]}
           />
-          <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
             <span>
               {t("pagination.summary", {
                 current: filteredCars.length === 0 ? 0 : (safeCurrentPage - 1) * pageSize + 1,

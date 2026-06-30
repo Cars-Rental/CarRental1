@@ -3,7 +3,6 @@
 import React from "react";
 import { Search, MapPin, Calendar, CircleDollarSign, Filter, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useDirection } from "@/lib";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   selectMarketplaceMode,
@@ -17,11 +16,10 @@ import {
   setSaleSearch,
 } from "../store";
 import { BrandCombobox } from "./BrandCombobox";
-import type { Transmission, FuelType, BodyType } from "../types/cars.types";
+import type { BodyType, CarsFilterState, FuelType, Transmission } from "../types/cars-api.types";
 
 export function FiltersSidebar() {
   const t = useTranslations("Cars");
-  const { isRTL } = useDirection();
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMarketplaceMode);
   
@@ -41,7 +39,7 @@ export function FiltersSidebar() {
     }
   };
 
-  const updateFilters = (updated: any) => {
+  const updateFilters = (updated: Partial<CarsFilterState>) => {
     if (mode === "rent") {
       dispatch(setRentFilters(updated));
     } else {
@@ -63,7 +61,7 @@ export function FiltersSidebar() {
   const seatOptions = [0, 4, 5, 7];
 
   return (
-    <aside className="w-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
+    <aside className="w-full bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
         <div className="flex items-center gap-2">
@@ -74,7 +72,7 @@ export function FiltersSidebar() {
         </div>
         <button
           onClick={handleReset}
-          className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-[var(--primary)] dark:text-slate-450 dark:hover:text-emerald-400 transition-colors py-1 px-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/40"
+          className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-[var(--primary)] dark:text-slate-400 dark:hover:text-emerald-400 transition-colors py-1 px-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/40"
         >
           <RefreshCw className="size-3" />
           {t("clearFilters")}
@@ -92,7 +90,7 @@ export function FiltersSidebar() {
             placeholder={t("searchPlaceholder")}
             value={search}
             onChange={handleSearchChange}
-            className="w-full h-11 ps-10 pe-4 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none transition-colors"
+            className="w-full h-11 ps-10 pe-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none transition-colors"
           />
           <Search className="absolute top-1/2 start-3.5 -translate-y-1/2 size-4 text-slate-400 dark:text-slate-500" />
         </div>
@@ -115,7 +113,7 @@ export function FiltersSidebar() {
             placeholder={t("locationPlaceholder")}
             value={filters.location}
             onChange={(e) => updateFilters({ location: e.target.value })}
-            className="w-full h-11 ps-10 pe-4 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none transition-colors"
+            className="w-full h-11 ps-10 pe-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none transition-colors"
           />
           <MapPin className="absolute top-1/2 start-3.5 -translate-y-1/2 size-4 text-slate-400 dark:text-slate-500" />
         </div>
@@ -138,7 +136,7 @@ export function FiltersSidebar() {
                   priceRange: { ...filters.priceRange, min: Number(e.target.value) },
                 })
               }
-              className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
+              className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
             />
           </div>
           <div className="relative">
@@ -151,7 +149,7 @@ export function FiltersSidebar() {
                   priceRange: { ...filters.priceRange, max: Number(e.target.value) },
                 })
               }
-              className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
+              className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
             />
           </div>
         </div>
@@ -171,7 +169,7 @@ export function FiltersSidebar() {
                 yearRange: { ...filters.yearRange, min: Number(e.target.value) },
               })
             }
-            className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
+            className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
           >
             {[2020, 2021, 2022, 2023, 2024, 2025].map((y) => (
               <option key={y} value={y} className="bg-white dark:bg-slate-900">
@@ -186,7 +184,7 @@ export function FiltersSidebar() {
                 yearRange: { ...filters.yearRange, max: Number(e.target.value) },
               })
             }
-            className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
+            className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
           >
             {[2020, 2021, 2022, 2023, 2024, 2025].map((y) => (
               <option key={y} value={y} className="bg-white dark:bg-slate-900">
@@ -212,7 +210,7 @@ export function FiltersSidebar() {
                 className={`flex-1 py-2 px-3 border rounded-xl text-xs font-semibold transition-colors cursor-pointer text-center ${
                   isActive
                     ? "bg-emerald-500 text-white border-emerald-500 shadow-sm shadow-emerald-550/20"
-                    : "bg-slate-50 dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+                    : "bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                 }`}
               >
                 {option === "" ? t("any") : t(option)}
@@ -230,7 +228,7 @@ export function FiltersSidebar() {
         <select
           value={filters.fuelType}
           onChange={(e) => updateFilters({ fuelType: e.target.value as FuelType | "" })}
-          className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
+          className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
         >
           {fuelTypes.map((type) => (
             <option key={type} value={type} className="bg-white dark:bg-slate-900">
@@ -248,7 +246,7 @@ export function FiltersSidebar() {
         <select
           value={filters.bodyType}
           onChange={(e) => updateFilters({ bodyType: e.target.value as BodyType | "" })}
-          className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
+          className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
         >
           {bodyTypes.map((type) => (
             <option key={type} value={type} className="bg-white dark:bg-slate-900">
@@ -273,7 +271,7 @@ export function FiltersSidebar() {
                 className={`py-2 px-1.5 border rounded-xl text-xs font-semibold text-center cursor-pointer transition-colors ${
                   isActive
                     ? "bg-emerald-500 text-white border-emerald-500"
-                    : "bg-slate-50 dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-650 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+                    : "bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                 }`}
               >
                 {opt === 0 ? t("any") : opt}
