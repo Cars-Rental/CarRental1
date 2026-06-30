@@ -356,9 +356,18 @@
     "title": "We’re here to help you",
     "description": "Have a question about renting, selling, or listing a car? Send us a message and our team will contact you.",
     "info": {
-      "phone": { "title": "Phone", "value": "+20 100 000 0000" },
-      "email": { "title": "Email", "value": "info@rento.com" },
-      "address": { "title": "Address", "value": "Cairo, Egypt" }
+      "phone": {
+        "title": "Phone",
+        "value": "+20 100 000 0000"
+      },
+      "email": {
+        "title": "Email",
+        "value": "info@rento.com"
+      },
+      "address": {
+        "title": "Address",
+        "value": "Cairo, Egypt"
+      }
     },
     "form": {
       "name": "Your name",
@@ -693,7 +702,8 @@
       "message": "Message",
       "audience": "Audience",
       "value": "Value",
-      "endsAt": "Ends At"
+      "endsAt": "Ends At",
+      "recipient": "Recipient"
     },
     "actions": {
       "view": "View",
@@ -716,14 +726,38 @@
       "createPromotion": "Create promotion",
       "reviewReports": "Review reports"
     },
+    "users": {
+      "deleteTitle": "Delete user?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "User deleted successfully",
+      "deleteError": "Could not delete user",
+      "banSuccess": "User banned successfully",
+      "banError": "Could not ban user",
+      "unbanSuccess": "User activated successfully",
+      "unbanError": "Could not activate user"
+    },
+    "traders": {
+      "deleteTitle": "Delete trader?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "Trader deleted successfully",
+      "deleteError": "Could not delete trader",
+      "banSuccess": "Trader banned successfully",
+      "banError": "Could not ban trader",
+      "unbanSuccess": "Trader activated successfully",
+      "unbanError": "Could not activate trader",
+      "approveSuccess": "Trader approved successfully",
+      "approveError": "Could not approve trader"
+    },
     "status": {
       "active": "Active",
       "inactive": "Inactive",
+      "banned": "Banned",
       "pending": "Pending",
       "suspended": "Suspended",
       "approved": "Approved",
       "rejected": "Rejected",
       "resolved": "Resolved",
+      "accepted": "Accepted",
       "open": "Open",
       "hidden": "Hidden",
       "cancelled": "Cancelled",
@@ -735,7 +769,8 @@
       "processing": "Processing",
       "dismissed": "Dismissed",
       "sent": "Sent",
-      "draft": "Draft"
+      "draft": "Draft",
+      "read": "Read"
     },
     "targetType": {
       "car": "Car",
@@ -752,7 +787,9 @@
     "audience": {
       "all": "All",
       "users": "Users",
-      "traders": "Traders"
+      "traders": "Traders",
+      "user": "User",
+      "trader": "Trader"
     },
     "dictionaryType": {
       "category": "Category",
@@ -777,7 +814,9 @@
       "createTitle": "Create notification",
       "createDescription": "Prepare a platform notification for users, traders, or everyone.",
       "titlePlaceholder": "Notification title",
-      "messagePlaceholder": "Notification message"
+      "messagePlaceholder": "Notification message",
+      "createSuccess": "Notification sent successfully",
+      "createError": "Could not send notification"
     },
     "settings": {
       "general": "General",
@@ -802,6 +841,35 @@
     "validation": {
       "required": "This field is required",
       "email": "Enter a valid email address"
+    },
+    "cars": {
+      "detailsTitle": "Rental car details",
+      "detailsEmpty": "Could not load rental car details.",
+      "loadingDetails": "Loading car details...",
+      "deleteTitle": "Delete rental car?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "Rental car deleted successfully",
+      "deleteError": "Could not delete rental car",
+      "suspendSuccess": "Rental car suspended successfully",
+      "suspendError": "Could not suspend rental car"
+    },
+    "bookings": {
+      "detailsTitle": "Booking details",
+      "detailsEmpty": "Could not load booking details.",
+      "loadingDetails": "Loading booking details...",
+      "cancelSuccess": "Booking cancelled successfully",
+      "cancelError": "Could not cancel booking"
+    },
+    "orders": {
+      "detailsTitle": "Order details",
+      "detailsEmpty": "Could not load order details.",
+      "loadingDetails": "Loading order details...",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Could not cancel order"
+    },
+    "reviews": {
+      "deleteSuccess": "Review deleted successfully",
+      "deleteError": "Could not delete review"
     }
   },
   "TraderDashboard": {
@@ -1199,7 +1267,7 @@
     "sessionSuccessMessage": "Your chat session with the owner of {car} is now active. You can discuss purchase details directly.",
     "redirecting": "Redirecting you...",
     "errorLoading": "Failed to load order details",
-    "startChatWith":"Start Chat",
+    "startChatWith": "Start Chat",
     "goBack": "Go back to cars",
     "breadcrumb": {
       "home": "Home",
