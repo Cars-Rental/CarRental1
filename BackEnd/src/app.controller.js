@@ -28,7 +28,7 @@ const limiter = ratelimit({
   message: "too many request please try again after 20 min",
 });
 
-const bootstrap = (app, express, io) => {  
+const bootstrap = (app, express, io) => {
   app.use(express.json());
   app.use(helmet());
   app.use(
@@ -66,13 +66,11 @@ const bootstrap = (app, express, io) => {
   app.use("/orderBuy", orderBuy);
   app.use("/chat", chatroute);
   app.use("/wishlist", wishlistroute);
-  app.use("/reviews", reviewRoutes );
+  app.use("/reviews", reviewRoutes);
   app.use(globalErrorhandling);
 
-  
   app.set("io", io);
 
- 
   io.use((socket, next) => {
     const token = socket.handshake.auth?.token;
     if (!token) return next(new Error("No token provided"));
@@ -84,7 +82,6 @@ const bootstrap = (app, express, io) => {
       next(new Error("Invalid token"));
     }
   });
-
 
   io.on("connection", (socket) => {
     handleSocketConnection(io, socket);
