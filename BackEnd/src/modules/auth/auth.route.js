@@ -6,6 +6,7 @@ import { emailExist } from "../../middleware/userExist.js";
 import passport from "./passport.config.js";
 import { googleRedirect, getProfile, logout } from "./auth.controller.js";
 // import upload from "./../../middleware/multer.middleware.js";
+import upload from "../../utlis/cloudinary/multer.js";
 import { auth as verifyToken } from "../../middleware/verifyToken.js";
 
 const router = express.Router();
@@ -55,4 +56,10 @@ router.post(
 );
 router.patch("/update-profile", verifyToken, auth.updateProfiles);
 router.get("/document", verifyToken, auth.countDocument);
+router.patch(
+  "/profile-image",
+  verifyToken,
+  upload.single("image"),
+  auth.uploadProfileImage,
+);
 export default router;
