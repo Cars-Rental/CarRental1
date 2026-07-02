@@ -503,26 +503,21 @@ export const uploadProfileImage = async (req, res, next) => {
       });
     }
 
-    // Delete old image
     if (user.profileImage?.public_id) {
       await cloudinary.uploader.destroy(user.profileImage.public_id);
     }
 
-    // Upload new image
     const { secure_url, public_id } = await cloudinary.uploader.upload(
       req.file.path,
       {
         folder: "CarRental/Profile",
       },
     );
-
     user.profileImage = {
       secure_url,
       public_id,
     };
-
     await user.save();
-
     return res.status(200).json({
       success: true,
       message: "Profile image updated successfully",
