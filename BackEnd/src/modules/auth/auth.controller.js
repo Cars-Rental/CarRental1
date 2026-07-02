@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import { orderBuyModel } from "../../DB/model/orderBuy.model.js";
 import { orderModel } from "../../DB/model/order.model.js";
 import { wishlistModel } from "../../DB/wishlist.model.js";
-
+import cloudinary from "../../utlis/cloudinary/cloudinary.js";
 export const register = async (req, res, next) => {
   const { userName, email, password, phone, role, gender } = req.body;
 
@@ -484,4 +484,46 @@ export const countDocument = async (req, res, next) => {
     booking,
     wishLIST,
   });
+};
+export const uploadProfileImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Image is required",
+      });
+    }
+
+    const user = await userModel.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.profileImage?.public_id) {
+      await cloudinary.uploader.destroy(user.profileImage.public_id);
+    }
+
+    const { secure_url, public_id } = await cloudinary.uploader.upload(
+      req.file.path,
+      {
+        folder: "CarRental/Profile",
+      },
+    );
+    user.profileImage = {
+      secure_url,
+      public_id,
+    };
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Profile image updated successfully",
+      profileImage: user.profileImage,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
