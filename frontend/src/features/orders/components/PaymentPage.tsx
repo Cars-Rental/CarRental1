@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { ChevronRight, AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useDirection } from "@/lib";
 import {
   ChatProvider,
@@ -37,7 +36,6 @@ function PaymentSkeleton() {
 function PaymentRoute({ orderId, mode }: PaymentPageProps) {
   const t = useTranslations("Payment");
   const { locale } = useDirection();
-  const router = useRouter();
   const { createPrivateChat } = useChatSocket();
 
   const { data: response, isLoading, isError } = useGetOrderById(orderId, mode);
@@ -47,12 +45,6 @@ function PaymentRoute({ orderId, mode }: PaymentPageProps) {
     if (order) {
       createPrivateChat(order.owner._id);
     }
-  };
-
-  const handleGoBack = () => {
-    router.push(
-      `/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`,
-    );
   };
 
   if (isLoading) return <PaymentSkeleton />;

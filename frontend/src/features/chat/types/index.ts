@@ -35,6 +35,7 @@ export interface Room {
   admin?: string;
   avatar?: string;
   lastMessage?: Message;
+  unreadCount?: number;
   createdAt: string;
   updatedAt: string;
 }

@@ -100,15 +100,15 @@ function SettingsSection({
   title,
 }: SettingsSectionProps) {
   return (
-    <Card>
+    <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
+        <CardTitle className="flex items-center gap-2 text-base text-slate-950 dark:text-slate-100">
           <Icon className="h-5 w-5 text-primary" />
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-muted-foreground dark:text-slate-400">{description}</p>
         {children}
       </CardContent>
     </Card>
@@ -125,9 +125,9 @@ function SettingState({
   const t = useTranslations("UserAccount");
 
   return (
-    <div className="flex items-center justify-between rounded-md border border-border p-3">
-      <span>{label}</span>
-      <span className="text-xs font-medium text-muted-foreground">
+    <div className="flex items-center justify-between rounded-md border border-border bg-slate-50/70 p-3 dark:border-slate-800 dark:bg-slate-800/60">
+      <span className="text-slate-700 dark:text-slate-200">{label}</span>
+      <span className="text-xs font-medium text-muted-foreground dark:text-slate-400">
         {enabled ? t("settings.enabled") : t("settings.disabled")}
       </span>
     </div>

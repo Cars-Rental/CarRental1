@@ -18,11 +18,11 @@ export function TraderDashboardLayout({
   const { isRTL } = useDirection();
 
   return (
-    <div className="fixed inset-0 flex h-dvh w-full overflow-hidden bg-background text-foreground">
+    <div className="fixed inset-0 flex h-dvh w-full overflow-hidden bg-background text-foreground dark:bg-slate-950 dark:text-slate-100">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm dark:bg-slate-950/80 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -52,7 +52,7 @@ export function TraderDashboardLayout({
           isSidebarCollapsed={isSidebarCollapsed}
         />
 
-        <main className="min-h-0 flex-1 overflow-y-auto bg-muted/20 p-6 md:p-8">
+        <main className="min-h-0 flex-1 overflow-y-auto bg-muted/20 p-6 dark:bg-slate-950 md:p-8">
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>

@@ -7,3 +7,4 @@ export * from "./verify-email";
 export * from "./resend-code";
 export * from "./reset-password";
 export * from "./me";
+export * from "./google";

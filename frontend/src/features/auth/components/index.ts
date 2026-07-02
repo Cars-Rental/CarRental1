@@ -15,3 +15,4 @@ export * from "./VerifyEmailVisualContent";
 export * from "./ResetPasswordVisualCotent";
 export * from "./ProfileDropdown";
 export * from "./AuthInitializer";
+export * from "./GoogleCallbackPage";

@@ -20,7 +20,7 @@ export function FAQSection() {
         title={t("title")}
         subtitle={t("subtitle")}
         faqs={faqs}
-        className="py-20 bg-white dark:bg-slate-900 px-6"
+        className="py-20 bg-white dark:bg-slate-950 px-6"
       />
     </div>
   );

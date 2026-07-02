@@ -63,8 +63,8 @@ export function ResetPasswordForm() {
         startIcon={<LockKeyhole className="size-5" />}
       />
 
-      <div className="rounded-xl bg-[#F1F4F3] p-4 text-sm text-muted-foreground">
-        <p className="mb-3 font-medium text-foreground">
+      <div className="rounded-xl border border-slate-200 bg-[#F1F4F3] p-4 text-sm text-muted-foreground dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400">
+        <p className="mb-3 font-medium text-foreground dark:text-slate-100">
           {t("requirementsTitle")}
         </p>
 

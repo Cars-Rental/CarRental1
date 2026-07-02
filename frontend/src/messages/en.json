@@ -3,6 +3,19 @@
     "title": "Car Rental & Marketplace",
     "description": "Book or list your car easily"
   },
+  "RealtimeNotifications": {
+    "notifications": "Notifications",
+    "rentAcceptedTitle": "Rental order accepted",
+    "rentAcceptedDescription": "The trader accepted your rental order.",
+    "buyAcceptedTitle": "Purchase order accepted",
+    "buyAcceptedDescription": "The trader accepted your purchase order and a chat room is ready.",
+    "openChat": "Open chat",
+    "unreadCount": "{count} unread",
+    "noUnread": "No unread notifications",
+    "readAll": "Read all",
+    "loading": "Loading notifications...",
+    "caughtUp": "You are all caught up."
+  },
   "Navigation": {
     "home": "Home",
     "about": "About",
@@ -88,6 +101,12 @@
         "emailInvalid": "Please enter a valid email address",
         "passwordInvalid": "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number."
       }
+    },
+    "googleCallback": {
+      "title": "Completing Google sign in",
+      "description": "Please wait while we securely finish signing you in.",
+      "success": "Google sign in successful",
+      "failed": "Google sign in failed"
     },
     "forgotPassword": {
       "title": "Forgot password?",
@@ -337,9 +356,18 @@
     "title": "We’re here to help you",
     "description": "Have a question about renting, selling, or listing a car? Send us a message and our team will contact you.",
     "info": {
-      "phone": { "title": "Phone", "value": "+20 100 000 0000" },
-      "email": { "title": "Email", "value": "info@rento.com" },
-      "address": { "title": "Address", "value": "Cairo, Egypt" }
+      "phone": {
+        "title": "Phone",
+        "value": "+20 100 000 0000"
+      },
+      "email": {
+        "title": "Email",
+        "value": "info@rento.com"
+      },
+      "address": {
+        "title": "Address",
+        "value": "Cairo, Egypt"
+      }
     },
     "form": {
       "name": "Your name",
@@ -366,7 +394,9 @@
     },
     "actions": {
       "viewDetails": "View details",
-      "removeFavorite": "Remove favorite"
+      "removeFavorite": "Remove favorite",
+      "cancel": "Cancel",
+      "keepOrder": "Keep order"
     },
     "fields": {
       "name": "Name",
@@ -390,6 +420,8 @@
       "inactive": "Inactive",
       "pending": "Pending",
       "confirmed": "Confirmed",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
       "completed": "Completed",
       "cancelled": "Cancelled",
       "processing": "Processing",
@@ -410,6 +442,9 @@
       "description": "Manage your personal information and account overview.",
       "editProfile": "Edit profile",
       "personalInfo": "Personal information",
+      "editDescription": "Update your name, phone, and gender.",
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
       "summary": {
         "bookings": "Bookings",
         "orders": "Orders",
@@ -423,14 +458,29 @@
       "returnDate": "Return date",
       "totalDays": "Total days",
       "totalPrice": "Total price",
-      "daysValue": "{count} days"
+      "daysValue": "{count} days",
+      "empty": "No bookings yet.",
+      "browseBookings": "Browse bookings",
+      "browseRentals": "Browse rentals"
     },
     "orders": {
       "title": "My Orders",
       "description": "Review your purchase orders and payment status.",
       "salePrice": "Sale price",
       "orderDate": "Order date",
-      "paymentStatus": "Payment status"
+      "paymentStatus": "Payment status",
+      "orderStatus": "Order status",
+      "loading": "Loading orders...",
+      "empty": "No orders yet.",
+      "error": "We couldn't load your orders. Please try again.",
+      "unknownCar": "Car",
+      "cancellationReasonPrompt": "Why do you want to cancel this order? Optional.",
+      "cancelTitle": "Cancel order",
+      "cancelDescription": "You can add a reason for cancelling this order. This step cannot be undone after confirmation.",
+      "cancellationReason": "Cancellation reason",
+      "cancellationReasonPlaceholder": "Write a reason, optional",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Failed to cancel order"
     },
     "favorites": {
       "title": "Favorites",
@@ -652,7 +702,8 @@
       "message": "Message",
       "audience": "Audience",
       "value": "Value",
-      "endsAt": "Ends At"
+      "endsAt": "Ends At",
+      "recipient": "Recipient"
     },
     "actions": {
       "view": "View",
@@ -675,14 +726,38 @@
       "createPromotion": "Create promotion",
       "reviewReports": "Review reports"
     },
+    "users": {
+      "deleteTitle": "Delete user?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "User deleted successfully",
+      "deleteError": "Could not delete user",
+      "banSuccess": "User banned successfully",
+      "banError": "Could not ban user",
+      "unbanSuccess": "User activated successfully",
+      "unbanError": "Could not activate user"
+    },
+    "traders": {
+      "deleteTitle": "Delete trader?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "Trader deleted successfully",
+      "deleteError": "Could not delete trader",
+      "banSuccess": "Trader banned successfully",
+      "banError": "Could not ban trader",
+      "unbanSuccess": "Trader activated successfully",
+      "unbanError": "Could not activate trader",
+      "approveSuccess": "Trader approved successfully",
+      "approveError": "Could not approve trader"
+    },
     "status": {
       "active": "Active",
       "inactive": "Inactive",
+      "banned": "Banned",
       "pending": "Pending",
       "suspended": "Suspended",
       "approved": "Approved",
       "rejected": "Rejected",
       "resolved": "Resolved",
+      "accepted": "Accepted",
       "open": "Open",
       "hidden": "Hidden",
       "cancelled": "Cancelled",
@@ -694,7 +769,8 @@
       "processing": "Processing",
       "dismissed": "Dismissed",
       "sent": "Sent",
-      "draft": "Draft"
+      "draft": "Draft",
+      "read": "Read"
     },
     "targetType": {
       "car": "Car",
@@ -711,7 +787,9 @@
     "audience": {
       "all": "All",
       "users": "Users",
-      "traders": "Traders"
+      "traders": "Traders",
+      "user": "User",
+      "trader": "Trader"
     },
     "dictionaryType": {
       "category": "Category",
@@ -730,13 +808,17 @@
       "totalRevenue": "Total Revenue",
       "platformCommission": "Platform Commission",
       "pendingWithdrawals": "Pending Withdrawals",
-      "completedWithdrawals": "Completed Withdrawals"
+      "completedWithdrawals": "Completed Withdrawals",
+      "gatewayFormSubtitle": "You will complete payment securely through Paymob",
+      "sessionGatewayFormSubtitle": "You will complete the session fee securely through Paymob"
     },
     "notifications": {
       "createTitle": "Create notification",
       "createDescription": "Prepare a platform notification for users, traders, or everyone.",
       "titlePlaceholder": "Notification title",
-      "messagePlaceholder": "Notification message"
+      "messagePlaceholder": "Notification message",
+      "createSuccess": "Notification sent successfully",
+      "createError": "Could not send notification"
     },
     "settings": {
       "general": "General",
@@ -761,6 +843,35 @@
     "validation": {
       "required": "This field is required",
       "email": "Enter a valid email address"
+    },
+    "cars": {
+      "detailsTitle": "Rental car details",
+      "detailsEmpty": "Could not load rental car details.",
+      "loadingDetails": "Loading car details...",
+      "deleteTitle": "Delete rental car?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "Rental car deleted successfully",
+      "deleteError": "Could not delete rental car",
+      "suspendSuccess": "Rental car suspended successfully",
+      "suspendError": "Could not suspend rental car"
+    },
+    "bookings": {
+      "detailsTitle": "Booking details",
+      "detailsEmpty": "Could not load booking details.",
+      "loadingDetails": "Loading booking details...",
+      "cancelSuccess": "Booking cancelled successfully",
+      "cancelError": "Could not cancel booking"
+    },
+    "orders": {
+      "detailsTitle": "Order details",
+      "detailsEmpty": "Could not load order details.",
+      "loadingDetails": "Loading order details...",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Could not cancel order"
+    },
+    "reviews": {
+      "deleteSuccess": "Review deleted successfully",
+      "deleteError": "Could not delete review"
     }
   },
   "TraderDashboard": {
@@ -887,6 +998,7 @@
       "totalSpent": "Total Spent",
       "rating": "Rating",
       "comment": "Comment",
+      "notAvailable": "Not available",
       "actions": "Actions"
     },
     "status": {
@@ -949,7 +1061,15 @@
       "addCar": "Add Car",
       "updateCar": "Update Car",
       "deleteCar": "Delete Car",
-      "cancel": "Cancel"
+      "accept": "Accept",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "noActions": "No actions",
+      "rejectionReasonPrompt": "Why do you want to reject this order? Optional.",
+      "bookingStatusUpdated": "Booking status updated",
+      "bookingStatusUpdateFailed": "Failed to update booking status",
+      "orderStatusUpdated": "Order status updated",
+      "orderStatusUpdateFailed": "Failed to update order status"
     },
     "carForm": {
       "addTitle": "Add Car",
@@ -1016,9 +1136,15 @@
       "bookingVolume": "Booking Volume",
       "topCars": "Top Performing Cars",
       "carMeta": "{views} views / {conversion}% conversion",
+      "carBookings": "{count} bookings",
+      "carSales": "{count} sales",
       "kpis": {
         "monthlyRevenue": "Monthly Revenue",
-        "monthlyRevenueHelper": "From mock rental and sales activity",
+        "monthlyRevenueHelper": "From rental and sales activity",
+        "totalRentRevenue": "Rental Revenue",
+        "totalRentRevenueHelper": "Total revenue from rental bookings",
+        "totalBuyRevenue": "Sale Revenue",
+        "totalBuyRevenueHelper": "Total revenue from purchase orders",
         "totalViews": "Listing Views",
         "totalViewsHelper": "Across top active listings",
         "conversionRate": "Conversion Rate",
@@ -1039,6 +1165,9 @@
         "sales": "Sale Revenue",
         "returningCustomers": "Returning Customers"
       }
+    },
+    "reviews": {
+      "ratingCount": "{rating} star reviews"
     },
     "settings": {
       "accountInformation": "Account Information",
@@ -1077,6 +1206,8 @@
     "chat": "Chat",
     "toggleFavorite": "Toggle favorite",
     "favoriteLoginRequired": "Please log in to add this car to your favorites.",
+    "bookingLoginRequired": "You must be logged in to book this car.",
+    "buyLoginRequired": "You must be logged in to buy this car.",
     "visitProfile": "Visit Profile",
     "locationTitle": "Car Location",
     "mapPlaceholder": "Map coming soon",
@@ -1101,6 +1232,7 @@
     "errorLoading": "Failed to load car details",
     "goBack": "Go back to cars",
     "reviews": "reviews",
+    "startChatWith": "Chat with {name}",
     "breadcrumb": {
       "home": "Home",
       "rentCars": "Rent Cars",
@@ -1115,6 +1247,11 @@
     "formTitle": "Payment Details",
     "formSubtitle": "Enter your card information to complete the rental",
     "sessionFormSubtitle": "Enter your card information to open a chat session",
+    "gatewayFormSubtitle": "You will complete payment securely through Paymob",
+    "sessionGatewayFormSubtitle": "You will complete the session fee securely through Paymob",
+    "gatewayTitle": "Secure Paymob Checkout",
+    "gatewaySubtitle": "Complete your payment in the secure checkout frame below",
+    "openGateway": "Open payment page",
     "sessionNotice": "By paying this 300 EGP fee, you will open a private chat session with the car owner to discuss purchase details and agree on terms.",
     "cardName": "Cardholder Name",
     "cardNamePlaceholder": "Name on card",
@@ -1135,8 +1272,17 @@
     "successMessage": "{car} is reserved for you from {from} to {to}. Total paid: {amount} EGP",
     "sessionSuccessTitle": "Session Opened!",
     "sessionSuccessMessage": "Your chat session with the owner of {car} is now active. You can discuss purchase details directly.",
+    "returnSuccessTitle": "Payment approved",
+    "returnSuccessMessage": "Your payment was completed successfully.",
+    "returnFailedTitle": "Payment not completed",
+    "returnFailedMessage": "We could not confirm this payment. Please try again.",
+    "viewOrders": "View orders",
+    "backHome": "Back home",
+    "paidAmount": "Paid amount",
+    "transactionId": "Transaction ID",
     "redirecting": "Redirecting you...",
     "errorLoading": "Failed to load order details",
+    "startChatWith": "Start Chat",
     "goBack": "Go back to cars",
     "breadcrumb": {
       "home": "Home",
@@ -1148,7 +1294,8 @@
       "nameRequired": "Cardholder name is required",
       "cardRequired": "Enter a valid 16-digit card number",
       "expiryRequired": "Enter a valid expiry date",
-      "cvvRequired": "Enter a valid CVV"
+      "cvvRequired": "Enter a valid CVV",
+      "gatewayFailed": "Failed to start payment. Please try again."
     }
   },
   "Chat": {

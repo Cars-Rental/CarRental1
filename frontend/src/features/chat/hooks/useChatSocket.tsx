@@ -1,6 +1,7 @@
 "use client";
 
 import React, {
+  useCallback,
   createContext,
   useContext,
   useEffect,
@@ -13,8 +14,9 @@ import { tokenStorage } from "@/features/auth/utils";
 import { getRoomsApi, getRoomMessagesApi } from "../api/chat.api";
 import type { Room, Message, ChatUser } from "../types";
 import { ROLES } from "@/constants";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import { env } from "@/config/env";
 
 interface ChatContextType {
   socket: Socket | null;
@@ -40,11 +42,26 @@ interface ChatContextType {
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-const SOCKET_URL = "http://localhost:3000";
+const getUserIdValue = (userLike?: ChatUser | string | null) => {
+  if (!userLike) return "";
+  if (typeof userLike === "string") return userLike;
+  return (userLike as ChatUser & { id?: string })._id ?? (userLike as ChatUser & { id?: string }).id ?? "";
+};
+
+const sortRoomsByActivity = (rooms: Room[]) =>
+  [...rooms].sort(
+    (a, b) =>
+      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+  );
+
+const buildUnreadCounts = (rooms: Room[]) =>
+  rooms.reduce<Record<string, number>>((counts, room) => {
+    counts[room._id] = room.unreadCount ?? 0;
+    return counts;
+  }, {});
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const locale = useLocale();
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
@@ -61,39 +78,75 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
+  const socketRef = useRef<Socket | null>(null);
   const activeRoomIdRef = useRef<string | null>(null);
-  activeRoomIdRef.current = activeRoomId;
+  const roomsRef = useRef<Room[]>([]);
+  const joinedRoomsRef = useRef<Set<string>>(new Set());
+  const receivedMessageIdsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    activeRoomIdRef.current = activeRoomId;
+  }, [activeRoomId]);
+
+  useEffect(() => {
+    roomsRef.current = rooms;
+  }, [rooms]);
+
+  const joinRoom = useCallback((roomId: string) => {
+    const currentSocket = socketRef.current;
+    if (!currentSocket || joinedRoomsRef.current.has(roomId)) return;
+
+    currentSocket.emit("room:join", { roomId });
+    joinedRoomsRef.current.add(roomId);
+  }, []);
+
+  const joinKnownRooms = useCallback(() => {
+    roomsRef.current.forEach((room) => joinRoom(room._id));
+  }, [joinRoom]);
 
   // 1. Fetch Rooms Rest API
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
     if (!isAuthenticated) return;
     setIsLoadingRooms(true);
     try {
       const data = await getRoomsApi();
-      setRooms(data);
+      setRooms(sortRoomsByActivity(data));
+      setUnreadCounts(buildUnreadCounts(data));
     } catch (err) {
       console.error("Error fetching rooms", err);
     } finally {
       setIsLoadingRooms(false);
     }
-  };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchRooms();
+      void Promise.resolve().then(fetchRooms);
     } else {
-      setRooms([]);
-      setMessages([]);
-      setActiveRoomId(null);
+      queueMicrotask(() => {
+        setRooms([]);
+        setMessages([]);
+        setActiveRoomId(null);
+        setUnreadCounts({});
+        setOnlineUsers(new Set());
+        joinedRoomsRef.current.clear();
+        receivedMessageIdsRef.current.clear();
+      });
     }
-  }, [isAuthenticated]);
+  }, [fetchRooms, isAuthenticated]);
+
+  useEffect(() => {
+    if (!socket) return;
+    joinKnownRooms();
+  }, [joinKnownRooms, rooms, socket]);
 
   // 2. Manage Socket.io Connection
   useEffect(() => {
     if (!isAuthenticated || !user) {
-      if (socket) {
-        socket.disconnect();
-        setSocket(null);
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+        queueMicrotask(() => setSocket(null));
       }
       return;
     }
@@ -101,13 +154,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     const token = tokenStorage.getAccessToken();
     if (!token) return;
 
-    const newSocket = io(SOCKET_URL, {
+    const newSocket = io(env.apiBaseUrl, {
       auth: { token },
       transports: ["websocket", "polling"],
     });
 
     newSocket.on("connect", () => {
       console.log("Socket connected");
+      joinedRoomsRef.current.clear();
+      joinKnownRooms();
     });
 
     newSocket.on("disconnect", () => {
@@ -125,17 +180,19 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setRooms((prev) => {
           const exists = prev.some((r) => r._id === room._id);
           if (exists) return prev;
-          return [room, ...prev];
+          return sortRoomsByActivity([room, ...prev]);
         });
+        joinRoom(room._id);
 
         // If server created a new private room (e.g. owner accepted an order)
         // and the current user is the non-trader (customer), redirect them
         // to the chat page so they can see the new conversation.
         try {
-          const isMember = room.members?.some?.((m: any) => {
+          const isMember = room.members?.some?.((m: ChatUser | string) => {
             if (!m) return false;
             // member may be object or id string
-            return (m._id ? m._id.toString() : m.toString()) === user?.id;
+            const memberId = typeof m === "string" ? m : m._id;
+            return memberId.toString() === user?.id;
           });
 
           if (isNew && isMember && user?.role !== ROLES.TRADER) {
@@ -152,27 +209,35 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     newSocket.on(
       "message:receive",
       (message: Message & { totalMembers?: number }) => {
+        if (receivedMessageIdsRef.current.has(message._id)) return;
+        receivedMessageIdsRef.current.add(message._id);
+
         const currentRoomId = activeRoomIdRef.current;
+        const currentUserId = user?.id ?? (user as { _id?: string } | null)?._id ?? "";
+        const senderId = getUserIdValue(message.sender);
+        const isOwnMessage = currentUserId !== "" && senderId === currentUserId;
 
         // Update room lastMessage in rooms list
         setRooms((prev) => {
           const roomIdx = prev.findIndex((r) => r._id === message.room);
           if (roomIdx === -1) {
             // If room not in list, we could trigger refetch rooms
-            fetchRooms();
+            void fetchRooms();
             return prev;
           }
           const updatedRooms = [...prev];
+          const nextUnreadCount =
+            message.room === currentRoomId || isOwnMessage
+              ? 0
+              : (updatedRooms[roomIdx].unreadCount ?? 0) + 1;
+
           updatedRooms[roomIdx] = {
             ...updatedRooms[roomIdx],
             lastMessage: message,
+            unreadCount: nextUnreadCount,
             updatedAt: message.createdAt,
           };
-          // Sort rooms by updatedAt
-          return updatedRooms.sort(
-            (a, b) =>
-              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-          );
+          return sortRoomsByActivity(updatedRooms);
         });
 
         // Handle message streaming to active room viewport
@@ -184,7 +249,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
           });
           // Emit mark as read
           newSocket.emit("message:read", { roomId: message.room });
-        } else {
+        } else if (!isOwnMessage) {
           // Increment unread count for other rooms
           setUnreadCounts((prev) => ({
             ...prev,
@@ -264,13 +329,21 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       });
     });
 
+    socketRef.current = newSocket;
     setSocket(newSocket);
+    const joinedRooms = joinedRoomsRef.current;
+    const receivedMessageIds = receivedMessageIdsRef.current;
 
     return () => {
       newSocket.disconnect();
+      if (socketRef.current === newSocket) {
+        socketRef.current = null;
+      }
+      joinedRooms.clear();
+      receivedMessageIds.clear();
       setSocket(null);
     };
-  }, [isAuthenticated, user]);
+  }, [fetchRooms, isAuthenticated, joinKnownRooms, joinRoom, locale, router, user]);
 
   // 3. Mark active room unread as 0 on activation
   const markAsRead = (roomId: string) => {
@@ -281,6 +354,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       [roomId]: 0,
     }));
+    setRooms((prev) =>
+      prev.map((room) =>
+        room._id === roomId ? { ...room, unreadCount: 0 } : room,
+      ),
+    );
   };
 
   // 4. Select / Join active room
@@ -292,6 +370,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     try {
       socket.emit("room:join", { roomId });
       const msgs = await getRoomMessagesApi(roomId);
+      msgs.forEach((message) => receivedMessageIdsRef.current.add(message._id));
       setMessages(msgs);
       markAsRead(roomId);
     } catch (err) {

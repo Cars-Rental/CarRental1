@@ -3,12 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { ImagePlus, X } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import {
-  useForm,
-  useWatch,
-  type UseFormRegisterReturn,
-} from "react-hook-form";
+import { useMemo, useState, type ChangeEvent } from "react";
+import { useForm, useWatch, type UseFormRegisterReturn } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -40,12 +36,20 @@ interface TraderCarDialogProps {
   open: boolean;
   type: TraderCarType;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: AddCarRequest) => Promise<void> | void;
+  onSubmit: (data: AddCarRequest, imageFiles: File[]) => Promise<void> | void;
+}
+
+interface ImagePreview {
+  id: string;
+  src: string;
+  file?: File;
 }
 
 type TraderCarFormValues = AddCarRequest;
 
-type TraderDashboardTranslator = ReturnType<typeof useTranslations<"TraderDashboard">>;
+type TraderDashboardTranslator = ReturnType<
+  typeof useTranslations<"TraderDashboard">
+>;
 
 const defaultValues: TraderCarFormValues = {
   carbrand: "",
@@ -123,7 +127,7 @@ function carToFormValues(car?: TraderCar | null): TraderCarFormValues {
 
 function getTransmissionLabel(
   option: Transmission,
-  t: TraderDashboardTranslator
+  t: TraderDashboardTranslator,
 ) {
   return option === "automatic"
     ? t("carForm.transmissionOptions.automatic")
@@ -163,6 +167,7 @@ export function TraderCarDialog({
   onSubmit,
 }: TraderCarDialogProps) {
   const t = useTranslations("TraderDashboard");
+  const initialValues = useMemo(() => carToFormValues(car), [car]);
   const schema = useMemo(() => createTraderCarFormSchema(t), [t]);
   const isEditMode = Boolean(car);
 
@@ -170,74 +175,104 @@ export function TraderCarDialog({
     handleSubmit,
     control,
     register,
-    reset,
     setValue,
     formState: { errors },
   } = useForm<TraderCarFormValues>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: initialValues,
   });
 
-  useEffect(() => {
-    const values = carToFormValues(car);
-    reset(values);
-  }, [car, open, reset]);
+  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>(() =>
+    initialValues.images.map((src) => ({
+      id: src,
+      src,
+    })),
+  );
+
+  const imageFiles = useMemo(
+    () =>
+      imagePreviews
+        .filter((image): image is ImagePreview & { file: File } =>
+          Boolean(image.file),
+        )
+        .map((image) => image.file),
+    [imagePreviews],
+  );
 
   const selectedBrand = useWatch({ control, name: "carbrand" });
   const selectedBrands = selectedBrand ? [selectedBrand] : [];
-  const imagePreviews = useWatch({ control, name: "images" }) ?? [];
 
   function handleBrandChange(brands: string[]) {
     const nextBrand = brands.at(-1) ?? "";
-    setValue("carbrand", nextBrand, { shouldDirty: true, shouldValidate: true });
-  }
-
-  function handleImagesChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(event.target.files ?? []);
-    if (files.length === 0) return;
-
-    Promise.all(
-      files.map(
-        (file) =>
-          new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(String(reader.result));
-            reader.onerror = () => reject(reader.error);
-            reader.readAsDataURL(file);
-          })
-      )
-    ).then((images) => {
-      const nextImages = [...imagePreviews, ...images];
-      setValue("images", nextImages, {
-        shouldDirty: true,
-        shouldValidate: true,
-      });
-    });
-
-    event.target.value = "";
-  }
-
-  function removeImage(index: number) {
-    const nextImages = imagePreviews.filter((_, imageIndex) => imageIndex !== index);
-    setValue("images", nextImages, {
+    setValue("carbrand", nextBrand, {
       shouldDirty: true,
       shouldValidate: true,
     });
   }
 
+  function handleImagesChange(event: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length === 0) return;
+
+    const nextPreviews = files.map((file) => ({
+      id: `${file.name}-${Date.now()}-${Math.random()}`,
+      src: URL.createObjectURL(file),
+      file,
+    }));
+
+    const nextImagePreviews = [...imagePreviews, ...nextPreviews];
+    setImagePreviews(nextImagePreviews);
+    setValue(
+      "images",
+      nextImagePreviews.map((image) => image.src),
+      {
+        shouldDirty: true,
+        shouldValidate: true,
+      },
+    );
+    event.target.value = "";
+  }
+
+  function removeImage(index: number) {
+    const removed = imagePreviews[index];
+    const nextPreviews = imagePreviews.filter(
+      (_, imageIndex) => imageIndex !== index,
+    );
+
+    if (removed?.file) {
+      URL.revokeObjectURL(removed.src);
+    }
+
+    setImagePreviews(nextPreviews);
+    setValue(
+      "images",
+      nextPreviews.map((image) => image.src),
+      {
+        shouldDirty: true,
+        shouldValidate: true,
+      },
+    );
+  }
+
   async function submitForm(data: TraderCarFormValues) {
-    await onSubmit(data);
+    await onSubmit(
+      {
+        ...data,
+        images: imagePreviews.map((image) => image.src),
+      },
+      imageFiles,
+    );
     onOpenChange(false);
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
+      <DialogContent className="max-h-[90vh] overflow-y-auto border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="dark:text-slate-100">
             {isEditMode ? t("carForm.editTitle") : t("carForm.addTitle")}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="dark:text-slate-400">
             {type === "rent"
               ? t("carForm.rentDescription")
               : t("carForm.saleDescription")}
@@ -246,16 +281,16 @@ export function TraderCarDialog({
 
         <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
           <div className="space-y-3">
-            <Label htmlFor="images">{t("carForm.images")}</Label>
+            <Label htmlFor="images" className="dark:text-slate-200">{t("carForm.images")}</Label>
             <label
               htmlFor="images"
-              className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-border bg-muted/30 p-4 text-center transition hover:border-primary/50 hover:bg-muted/50"
+              className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-border bg-muted/30 p-4 text-center transition hover:border-primary/50 hover:bg-muted/50 dark:border-slate-700 dark:bg-slate-800/40 dark:hover:border-emerald-600 dark:hover:bg-slate-800/70"
             >
-              <ImagePlus className="mb-2 h-6 w-6 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground">
+              <ImagePlus className="mb-2 h-6 w-6 text-muted-foreground dark:text-slate-400" />
+              <span className="text-sm font-medium text-foreground dark:text-slate-100">
                 {t("carForm.uploadImages")}
               </span>
-              <span className="mt-1 text-xs text-muted-foreground">
+              <span className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                 {t("carForm.uploadImagesHint")}
               </span>
               <input
@@ -276,11 +311,11 @@ export function TraderCarDialog({
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {imagePreviews.map((image, index) => (
                   <div
-                    key={`${image}-${index}`}
-                    className="relative aspect-video overflow-hidden rounded-md border border-border bg-muted"
+                    key={image.id}
+                    className="relative aspect-video overflow-hidden rounded-md border border-border bg-muted dark:border-slate-700 dark:bg-slate-800"
                   >
                     <Image
-                      src={image}
+                      src={image.src}
                       alt={t("carForm.imagePreview")}
                       fill
                       className="object-cover"
@@ -294,7 +329,9 @@ export function TraderCarDialog({
                       onClick={() => removeImage(index)}
                     >
                       <X className="h-3 w-3" />
-                      <span className="sr-only">{t("carForm.removeImage")}</span>
+                      <span className="sr-only">
+                        {t("carForm.removeImage")}
+                      </span>
                     </Button>
                   </div>
                 ))}
@@ -350,7 +387,7 @@ export function TraderCarDialog({
             >
               <select
                 id="location"
-                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+                className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
                 {...register("location")}
               >
                 {EGYPT_LOCATIONS.map((location) => (
@@ -364,7 +401,9 @@ export function TraderCarDialog({
             <Field
               id="carprice"
               label={
-                type === "rent" ? t("carForm.rentPrice") : t("carForm.salePrice")
+                type === "rent"
+                  ? t("carForm.rentPrice")
+                  : t("carForm.salePrice")
               }
               error={errors.carprice?.message}
             >
@@ -439,11 +478,12 @@ export function TraderCarDialog({
             <Button
               type="button"
               variant="outline"
+              size="lg"
               onClick={() => onOpenChange(false)}
             >
               {t("actions.cancel")}
             </Button>
-            <Button type="submit">
+            <Button type="submit" size="lg">
               {isEditMode ? t("actions.updateCar") : t("actions.addCar")}
             </Button>
           </DialogFooter>
@@ -463,7 +503,7 @@ interface FieldProps {
 function Field({ children, error, id, label }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className="dark:text-slate-200">{label}</Label>
       {children}
       {error && <p className="text-xs font-medium text-destructive">{error}</p>}
     </div>
@@ -486,7 +526,7 @@ function OptionSelect<T extends string>({
   return (
     <select
       id={id}
-      className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+      className="h-12 w-full rounded-md border border-input bg-background px-4 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100"
       {...register}
     >
       {options.map((option) => (

@@ -1,15 +1,15 @@
 import { cn } from "@/lib/utils";
 
 const STATUS_STYLES = {
-  active: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  confirmed: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  completed: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  paid: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  processing: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
-  pending: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  inactive: "bg-muted text-muted-foreground",
-  cancelled: "bg-destructive/10 text-destructive",
-  refunded: "bg-muted text-muted-foreground",
+  active: "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300",
+  confirmed: "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300",
+  completed: "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300",
+  paid: "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300",
+  processing: "bg-sky-500/10 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300",
+  pending: "bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300",
+  inactive: "bg-muted text-muted-foreground dark:bg-slate-800 dark:text-slate-400",
+  cancelled: "bg-destructive/10 text-destructive dark:bg-rose-500/15 dark:text-rose-300",
+  refunded: "bg-muted text-muted-foreground dark:bg-slate-800 dark:text-slate-400",
 } as const;
 
 type KnownStatus = keyof typeof STATUS_STYLES;
@@ -26,7 +26,7 @@ export function UserAccountStatusBadge({
   const style =
     status in STATUS_STYLES
       ? STATUS_STYLES[status as KnownStatus]
-      : "bg-muted text-muted-foreground";
+      : "bg-muted text-muted-foreground dark:bg-slate-800 dark:text-slate-400";
 
   return (
     <span

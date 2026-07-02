@@ -1,78 +1,179 @@
 import { axiosInstance } from "@/services";
 import type { ApiResponse } from "@/types";
 import type {
-  AdminBooking,
-  AdminCar,
+  AdminBookingDetail,
+  AdminBookingsResponse,
+  AdminCarDetail,
+  AdminCarsResponse,
   AdminCategoryItem,
-  AdminDashboardStats,
+  AdminOverviewResponse,
   AdminListParams,
-  AdminNotification,
-  AdminOrder,
+  AdminNotificationsResponse,
+  AdminOrderDetail,
+  AdminOrdersResponse,
   AdminPaymentSummary,
   AdminPromotion,
   AdminReport,
-  AdminReview,
+  AdminReviewsResponse,
   AdminSettings,
   AdminTrader,
+  AdminTradersResponse,
   AdminUser,
+  AdminUsersResponse,
   AdminVerificationRequest,
+  CreateAdminNotificationRequest,
   UpdateAdminSettingsRequest,
 } from "../types";
 
 const withParams = (params?: AdminListParams) => ({ params });
 
-export async function getAdminOverviewApi(): Promise<AdminDashboardStats> {
+export async function getAdminOverviewApi(): Promise<AdminOverviewResponse> {
   const response =
-    await axiosInstance.get<ApiResponse<AdminDashboardStats>>("/admin/overview");
+    await axiosInstance.get<ApiResponse<AdminOverviewResponse>>("/admin/overview");
   return response.data.data;
 }
 
 export async function getAdminUsersApi(params?: AdminListParams) {
-  const response = await axiosInstance.get<ApiResponse<AdminUser[]>>(
+  const response = await axiosInstance.get<ApiResponse<AdminUsersResponse>>(
     "/admin/users",
     withParams(params)
   );
   return response.data.data;
 }
 
+export async function deleteAdminUserApi(id: string): Promise<void> {
+  await axiosInstance.delete<ApiResponse<null>>(`/admin/users/${id}`);
+}
+
+export async function banAdminUserApi(id: string): Promise<AdminUser> {
+  const response = await axiosInstance.patch<ApiResponse<AdminUser>>(
+    `/admin/users/${id}/ban`
+  );
+  return response.data.data;
+}
+
+export async function unbanAdminUserApi(id: string): Promise<AdminUser> {
+  const response = await axiosInstance.patch<ApiResponse<AdminUser>>(
+    `/admin/users/${id}/unban`
+  );
+  return response.data.data;
+}
+
 export async function getAdminTradersApi(params?: AdminListParams) {
-  const response = await axiosInstance.get<ApiResponse<AdminTrader[]>>(
+  const response = await axiosInstance.get<ApiResponse<AdminTradersResponse>>(
     "/admin/traders",
     withParams(params)
   );
   return response.data.data;
 }
 
+export async function deleteAdminTraderApi(id: string): Promise<void> {
+  await axiosInstance.delete<ApiResponse<null>>(`/admin/traders/${id}`);
+}
+
+export async function banAdminTraderApi(id: string): Promise<AdminTrader> {
+  const response = await axiosInstance.patch<ApiResponse<AdminTrader>>(
+    `/admin/traders/${id}/ban`
+  );
+  return response.data.data;
+}
+
+export async function unbanAdminTraderApi(id: string): Promise<AdminTrader> {
+  const response = await axiosInstance.patch<ApiResponse<AdminTrader>>(
+    `/admin/traders/${id}/unban`
+  );
+  return response.data.data;
+}
+
+export async function approveAdminTraderApi(id: string): Promise<AdminTrader> {
+  const response = await axiosInstance.patch<ApiResponse<AdminTrader>>(
+    `/admin/traders/${id}/approve`
+  );
+  return response.data.data;
+}
+
 export async function getAdminCarsApi(type: "rent" | "sale", params?: AdminListParams) {
-  const response = await axiosInstance.get<ApiResponse<AdminCar[]>>(
+  const response = await axiosInstance.get<ApiResponse<AdminCarsResponse>>(
     `/admin/cars/${type}`,
     withParams(params)
   );
   return response.data.data;
 }
 
+export async function getAdminRentalCarByIdApi(id: string): Promise<AdminCarDetail> {
+  const response = await axiosInstance.get<ApiResponse<AdminCarDetail>>(
+    `/admin/cars/rent/${id}`
+  );
+  return response.data.data;
+}
+
+export async function deleteAdminRentalCarApi(id: string): Promise<void> {
+  await axiosInstance.delete<ApiResponse<null>>(`/admin/cars/rent/${id}`);
+}
+
+export async function suspendAdminRentalCarApi(
+  id: string
+): Promise<AdminCarDetail> {
+  const response = await axiosInstance.patch<ApiResponse<AdminCarDetail>>(
+    `/admin/cars/rent/${id}/suspend`
+  );
+  return response.data.data;
+}
+
 export async function getAdminBookingsApi(params?: AdminListParams) {
-  const response = await axiosInstance.get<ApiResponse<AdminBooking[]>>(
+  const response = await axiosInstance.get<ApiResponse<AdminBookingsResponse>>(
     "/admin/bookings",
     withParams(params)
   );
   return response.data.data;
 }
 
+export async function getAdminBookingByIdApi(id: string): Promise<AdminBookingDetail> {
+  const response = await axiosInstance.get<ApiResponse<AdminBookingDetail>>(
+    `/admin/bookings/${id}`
+  );
+  return response.data.data;
+}
+
+export async function cancelAdminBookingApi(id: string): Promise<AdminBookingDetail> {
+  const response = await axiosInstance.patch<ApiResponse<AdminBookingDetail>>(
+    `/admin/bookings/${id}/cancel`
+  );
+  return response.data.data;
+}
+
 export async function getAdminOrdersApi(params?: AdminListParams) {
-  const response = await axiosInstance.get<ApiResponse<AdminOrder[]>>(
+  const response = await axiosInstance.get<ApiResponse<AdminOrdersResponse>>(
     "/admin/orders",
     withParams(params)
   );
   return response.data.data;
 }
 
+export async function getAdminOrderByIdApi(id: string): Promise<AdminOrderDetail> {
+  const response = await axiosInstance.get<ApiResponse<AdminOrderDetail>>(
+    `/admin/orders/${id}`
+  );
+  return response.data.data;
+}
+
+export async function cancelAdminOrderApi(id: string): Promise<AdminOrderDetail> {
+  const response = await axiosInstance.patch<ApiResponse<AdminOrderDetail>>(
+    `/admin/orders/${id}/cancel`
+  );
+  return response.data.data;
+}
+
 export async function getAdminReviewsApi(params?: AdminListParams) {
-  const response = await axiosInstance.get<ApiResponse<AdminReview[]>>(
+  const response = await axiosInstance.get<ApiResponse<AdminReviewsResponse>>(
     "/admin/reviews",
     withParams(params)
   );
   return response.data.data;
+}
+
+export async function deleteAdminReviewApi(id: string): Promise<void> {
+  await axiosInstance.delete<ApiResponse<null>>(`/admin/reviews/${id}`);
 }
 
 export async function getAdminReportsApi(params?: AdminListParams) {
@@ -96,17 +197,18 @@ export async function getAdminVerificationRequestsApi() {
   return response.data.data;
 }
 
-export async function getAdminNotificationsApi() {
-  const response = await axiosInstance.get<ApiResponse<AdminNotification[]>>(
-    "/admin/notifications"
+export async function getAdminNotificationsApi(params?: AdminListParams) {
+  const response = await axiosInstance.get<ApiResponse<AdminNotificationsResponse>>(
+    "/admin/notifications",
+    withParams(params)
   );
   return response.data.data;
 }
 
 export async function createAdminNotificationApi(
-  data: Omit<AdminNotification, "id" | "createdAt" | "status">
+  data: CreateAdminNotificationRequest
 ) {
-  const response = await axiosInstance.post<ApiResponse<AdminNotification>>(
+  const response = await axiosInstance.post<ApiResponse<{ count: number }>>(
     "/admin/notifications",
     data
   );

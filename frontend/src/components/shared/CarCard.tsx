@@ -38,7 +38,7 @@ export function CarCard({ car, mode }: CarCardProps) {
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
-      className="group bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
+      className="group bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
     >
       <div className="relative h-48 w-full select-none bg-slate-50 dark:bg-slate-900/60 overflow-hidden">
         <Link
@@ -78,7 +78,7 @@ export function CarCard({ car, mode }: CarCardProps) {
           className={`absolute bottom-4 inset-e-4 size-9 rounded-full flex items-center justify-center border shadow-md backdrop-blur-md cursor-pointer transition-all duration-200 ${
             isFavorite
               ? "bg-rose-500 border-rose-500 text-white hover:scale-110"
-              : "bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-750 text-slate-550 dark:text-slate-350 hover:bg-white dark:hover:bg-slate-800 hover:scale-110"
+              : "bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:scale-110"
           }`}
           aria-label={t("toggleFavorite")}
         >
@@ -100,7 +100,7 @@ export function CarCard({ car, mode }: CarCardProps) {
           <div className="flex justify-between items-start gap-2 mb-3">
             <Link
               href={`/${locale}/cars/${car._id}?mode=${mode}`}
-              className="text-base font-bold text-slate-800 dark:text-slate-100 hover:text-primary dark:hover:text-emerald-450 transition-colors line-clamp-1 flex-1"
+              className="text-base font-bold text-slate-800 dark:text-slate-100 hover:text-primary dark:hover:text-white transition-colors line-clamp-1 flex-1"
             >
               {car.carname}
             </Link>
@@ -117,7 +117,7 @@ export function CarCard({ car, mode }: CarCardProps) {
             <span>{car.location}</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800/40 p-3 rounded-2xl text-slate-550 dark:text-slate-400 font-medium mb-5">
+          <div className="grid grid-cols-3 gap-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 p-3 rounded-2xl text-slate-500 dark:text-slate-300 font-medium mb-5">
             <div className="flex flex-col items-center justify-center gap-1 text-[11px] text-center border-e border-slate-200/50 dark:border-slate-800/50">
               <Settings className="size-4 text-primary dark:text-emerald-400 mb-0.5" />
               <span className="line-clamp-1">{car.Transmission}</span>
@@ -152,15 +152,9 @@ export function CarCard({ car, mode }: CarCardProps) {
           </div>
 
           <div className="flex gap-2 w-full">
-            {/* <Link
-              href={`/${locale}/cars/${car._id}?mode=${mode}`}
-              className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl transition-all border border-slate-250 dark:border-slate-750 flex items-center justify-center"
-            >
-              {t("viewDetails")}
-            </Link> */}
             <Link
               href={`/${locale}/cars/${car._id}?mode=${mode}`}
-              className="flex-1 bg-primary hover:bg-(--primary-dark) text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-(--primary)/10 hover:shadow-(--primary)/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
+              className="flex-1 bg-primary hover:bg-[var(--primary-dark)] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
             >
               {mode === "rent" ? t("rentNow") : t("buyNow")}
             </Link>

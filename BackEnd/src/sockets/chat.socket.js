@@ -80,6 +80,15 @@ export const registerChatEvents = (io, socket) => {
   });
 
   
+  const isValidAttachment = (attachment) => {
+    if (!attachment) return true;
+    const isUrlValid =
+      typeof attachment.url === "string" && attachment.url.trim().length > 0;
+    const allowedTypes = ["image", "file", "video"];
+    const isTypeValid = allowedTypes.includes(attachment.type);
+    return isUrlValid && isTypeValid;
+  };
+
   socket.on(SOCKET_EVENTS.MESSAGE_SEND, async ({ roomId, content, attachment }) => {
     try {
       const room = await roomModel
@@ -88,6 +97,18 @@ export const registerChatEvents = (io, socket) => {
 
       if (!room || !room.members.some((m) => m._id.toString() === userId)) {
         return socket.emit(SOCKET_EVENTS.ERROR, { message: "Not authorized" });
+      }
+
+      if (!content?.trim() && !isValidAttachment(attachment)) {
+        return socket.emit(SOCKET_EVENTS.ERROR, {
+          message: "Message content or valid attachment is required",
+        });
+      }
+
+      if (attachment && !isValidAttachment(attachment)) {
+        return socket.emit(SOCKET_EVENTS.ERROR, {
+          message: "Invalid attachment format",
+        });
       }
 
       const message = await messageModel.create({
@@ -101,10 +122,20 @@ export const registerChatEvents = (io, socket) => {
       await roomModel.findByIdAndUpdate(roomId, { lastMessage: message._id });
 
       const populated = await message.populate("sender", MEMBER_FIELDS);
-
-      io.to(roomId).emit(SOCKET_EVENTS.MESSAGE_RECEIVE, {
+      const payload = {
         ...populated.toObject(),
         totalMembers: room.members.length,
+      };
+
+      const memberSocketIds = new Set();
+      room.members.forEach((member) => {
+        getSocketIds(member._id.toString()).forEach((socketId) => {
+          memberSocketIds.add(socketId);
+        });
+      });
+
+      memberSocketIds.forEach((socketId) => {
+        io.to(socketId).emit(SOCKET_EVENTS.MESSAGE_RECEIVE, payload);
       });
 
     

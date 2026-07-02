@@ -20,7 +20,7 @@ export interface CarsFeatureState {
 const initialRentFilters: CarsFilterState = {
   brands: [],
   priceRange: { min: 0, max: 10000 },
-  yearRange: { min: 2020, max: 2025 },
+  yearRange: { min: 2020, max: 2026 },
   transmission: "",
   fuelType: "",
   bodyType: "",
@@ -31,7 +31,7 @@ const initialRentFilters: CarsFilterState = {
 const initialSaleFilters: CarsFilterState = {
   brands: [],
   priceRange: { min: 0, max: 10000000 },
-  yearRange: { min: 2020, max: 2025 },
+  yearRange: { min: 2020, max: 2026 },
   transmission: "",
   fuelType: "",
   bodyType: "",

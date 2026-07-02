@@ -3,11 +3,14 @@
 import React, { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { CalendarIcon, Key, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDirection } from "@/lib";
 import { useCreateOrder } from "@/features/orders/hooks/useCreateOrder";
 import { useCreateBuyOrder } from "@/features/orders/hooks/useCreateBuyOrder";
+import { selectIsAuthenticated } from "@/features/auth/store";
+import { useAppSelector } from "@/store/hooks";
 
 interface BookingCardProps {
   mode: "rent" | "sale";
@@ -59,6 +62,7 @@ export function BookingCard({
   const t = useTranslations("CarDetails");
   const router = useRouter();
   const { locale } = useDirection();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -114,6 +118,14 @@ export function BookingCard({
 
   const handleBookNow = () => {
     setErrorMessage(null);
+
+    if (!isAuthenticated) {
+      toast.error(t("bookingLoginRequired"), {
+        position: "top-left",
+      });
+      return;
+    }
+
     createOrder({
       car: carId,
       startDate: toISODateString(fromDate),
@@ -123,6 +135,14 @@ export function BookingCard({
 
   const handleBuyNow = () => {
     setErrorMessage(null);
+
+    if (!isAuthenticated) {
+      toast.error(t("buyLoginRequired"), {
+        position: "top-left",
+      });
+      return;
+    }
+
     createBuyOrder({ car: carId });
   };
 
@@ -134,7 +154,7 @@ export function BookingCard({
   // --- SALE MODE ---
   if (mode === "sale") {
     return (
-      <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-6 shadow-sm flex flex-col gap-5">
+      <div className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col gap-5">
         <div>
           <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">
             {t("salePrice")}
@@ -160,6 +180,12 @@ export function BookingCard({
           {t("buyNow")}
         </button>
 
+        {errorMessage && (
+          <div className="text-xs text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800/40 rounded-xl px-3 py-2 text-center font-medium">
+            {errorMessage}
+          </div>
+        )}
+
         <p className="text-[10px] text-slate-400 dark:text-slate-500 text-center">
           {t("noChargeNote")}
         </p>
@@ -169,7 +195,7 @@ export function BookingCard({
 
   // --- RENT MODE ---
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
+    <div className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-1">
@@ -192,19 +218,21 @@ export function BookingCard({
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             selectingFrom
               ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
-              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300"
+              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
           <CalendarIcon className="size-3.5 shrink-0" />
           <span>{formatDate(fromDate)}</span>
         </button>
-        <span className="text-slate-400 text-xs shrink-0">→</span>
+        <span className="text-slate-400 text-xs shrink-0">
+          {locale === "ar" ? "←" : "→"}
+        </span>
         <button
           onClick={() => setSelectingFrom(false)}
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             !selectingFrom
               ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
-              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300"
+              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
           <CalendarIcon className="size-3.5 shrink-0" />
@@ -234,8 +262,14 @@ export function BookingCard({
               "bg-slate-100 dark:bg-slate-800 text-slate-400 line-through cursor-not-allowed",
             inRange:
               "bg-[var(--primary)]/10 text-[var(--primary)] rounded-none",
-            rangeStart: "bg-[var(--primary)] text-white rounded-l-full",
-            rangeEnd: "bg-[var(--primary)] text-white rounded-r-full",
+            rangeStart:
+              locale === "ar"
+                ? "bg-[var(--primary)] text-white rounded-r-full"
+                : "bg-[var(--primary)] text-white rounded-l-full",
+            rangeEnd:
+              locale === "ar"
+                ? "bg-[var(--primary)] text-white rounded-l-full"
+                : "bg-[var(--primary)] text-white rounded-r-full",
           }}
           className="w-full"
         />
@@ -244,7 +278,7 @@ export function BookingCard({
       {/* Legend */}
       <div className="flex items-center gap-4 text-[10px] text-slate-400 dark:text-slate-500 font-medium">
         <span className="flex items-center gap-1">
-          <span className="size-2 rounded-full bg-[var(--primary)] inline-block" />
+          <span className="size-2 rounded-full bg-primary inline-block" />
           {t("legend.selected")}
         </span>
         <span className="flex items-center gap-1">
@@ -288,7 +322,7 @@ export function BookingCard({
       <button
         onClick={handleBookNow}
         disabled={isPending}
-        className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
       >
         {isPending ? (
           <Loader2 className="size-4 animate-spin" />

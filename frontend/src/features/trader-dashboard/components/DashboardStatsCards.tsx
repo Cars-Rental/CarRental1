@@ -25,7 +25,7 @@ export function DashboardStatsCards({ stats, isLoading }: DashboardStatsCardsPro
     return (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i}>
+          <Card key={i} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Skeleton className="h-4 w-[100px]" />
               <Skeleton className="h-4 w-4" />
@@ -81,15 +81,15 @@ export function DashboardStatsCards({ stats, isLoading }: DashboardStatsCardsPro
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
-        <Card key={item.title}>
+        <Card key={item.title} className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-sm font-medium text-muted-foreground dark:text-slate-400">
               {item.title}
             </CardTitle>
             <item.icon className={`h-4 w-4 ${item.color}`} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{item.value}</div>
+            <div className="text-2xl font-bold text-slate-950 dark:text-slate-100">{item.value}</div>
           </CardContent>
         </Card>
       ))}

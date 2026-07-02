@@ -450,7 +450,8 @@ export const getBookings = async (req, res, next) => {
     const paginated = filtered.slice(skip, skip + limitNum);
 
     const data = paginated.map((b) => ({
-      id: toDisplayId("BK", b._id),
+      id: b._id,
+      idBk: toDisplayId("BK", b._id),
       customerName: b.user?.userName || "",
       traderName: b.owner?.userName || "",
       carTitle: b.car ? `${b.car.carbrand} ${b.car.carname}` : "",
@@ -498,7 +499,7 @@ export const getBookingById = async (req, res, next) => {
 export const cancelBooking = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { cancellationReason } = req.body;
+    const { cancellationReason } = req.body || {};
 
     const booking = await orderModel.findByIdAndUpdate(
       id,
@@ -618,9 +619,15 @@ export const updateRentalCar = async (req, res, next) => {
     ];
 
     const updates = {};
+    const body = req.body || {};
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) updates[field] = req.body[field];
+      if (body[field] !== undefined) {
+        updates[field] = body[field];
+      }
     });
+    // allowedFields.forEach((field) => {
+    //   if (req.body[field] !== undefined) updates[field] = req.body[field];
+    // });
 
     const car = await carModel.findByIdAndUpdate(req.params.id, updates, {
       new: true,
@@ -865,7 +872,8 @@ export const getOrders = async (req, res, next) => {
     const paginated = filtered.slice(skip, skip + limitNum);
 
     const data = paginated.map((o) => ({
-      id: toDisplayId("ORD", o._id),
+      id: o._id,
+      id_ORD: toDisplayId("ORD", o._id),
       customerName: o.user?.userName || "",
       traderName: o.owner?.userName || "",
       carTitle: o.car ? `${o.car.carbrand} ${o.car.carname}` : "",
@@ -909,7 +917,7 @@ export const getOrderById = async (req, res, next) => {
 export const cancelOrder = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { cancellationReason } = req.body;
+    const { cancellationReason } = req.body || {};
 
     const order = await orderBuyModel.findByIdAndUpdate(
       id,
@@ -938,7 +946,7 @@ export const getReviews = async (req, res, next) => {
 
     const allReviews = await reviewModel
       .find()
-      .populate("user", "userName")
+      .populate("userId", "userName")
       .populate("carRent", "carname carmodel carbrand")
       .sort({ createdAt: -1 })
       .lean();
@@ -948,7 +956,7 @@ export const getReviews = async (req, res, next) => {
       const q = search.toLowerCase();
       filtered = allReviews.filter(
         (r) =>
-          r.user?.userName?.toLowerCase().includes(q) ||
+          r.userId?.userName?.toLowerCase().includes(q) ||
           r.carRent?.carname?.toLowerCase().includes(q)
       );
     }
@@ -958,7 +966,7 @@ export const getReviews = async (req, res, next) => {
 
     const data = paginated.map((r) => ({
       id: r._id,
-      customerName: r.user?.userName || "",
+      customerName: r.userId?.userName || "",
       carTitle: r.carRent ? `${r.carRent.carbrand} ${r.carRent.carname}` : "",
       carModel: r.carRent?.carmodel || "",
       rating: r.rating,

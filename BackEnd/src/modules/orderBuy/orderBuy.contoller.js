@@ -4,6 +4,7 @@ import { createNotification } from "../../services/notification.service.js";
 import { NOTIFICATION_TYPES, ENTITY_TYPES } from "../../constants/notification.types.js";
 import { roomModel } from "../../DB/model/room.model.js";
 import { getSocketIds } from "../../sockets/onlineUsers.js";
+import mongoose from "mongoose";
 
 const POPULATE_CAR = "carbrand carname carmodel carprice carimage owner quantity status";
 const POPULATE_USER = "userName email phone role";
@@ -124,13 +125,12 @@ export const getAllOrdersBuy = async (req, res, next) => {
       filter.status = req.query.status;
     }
 
-    
     if (req.query.userId) {
-      filter.user = req.query.userId;
+      filter.user = new mongoose.Types.ObjectId(req.query.userId);
     }
 
     if (req.query.ownerId) {
-      filter.owner = req.query.ownerId;
+      filter.owner = new mongoose.Types.ObjectId(req.query.ownerId);
     }
 
     const totalOrders = await orderBuyModel.countDocuments(filter);
@@ -164,10 +164,15 @@ export const getMyOrdersBuy = async (req, res, next) => {
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
 
-    const filter = { user: req.user.id };
+    const sample = await orderBuyModel.findOne({});
+console.log("sample:", JSON.stringify(sample, null, 2));
+console.log("req.user.id:", req.user.id);
+
+    const filter = { user: new mongoose.Types.ObjectId(req.user.id) };
     if (req.query.status) filter.status = req.query.status;
 
     const totalOrders = await orderBuyModel.countDocuments(filter);
+    
 
     const orders = await orderBuyModel
       .find(filter)

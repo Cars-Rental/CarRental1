@@ -19,7 +19,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
   const { isRTL } = useDirection();
 
   return (
-    <div className="relative grid h-12 grid-cols-2 rounded-lg bg-zinc-100 p-1">
+    <div className="relative grid h-12 grid-cols-2 rounded-lg bg-zinc-100 p-1 dark:bg-slate-800/70 dark:ring-1 dark:ring-slate-700">
       <motion.div
         layoutId="active-role"
         transition={{
@@ -46,7 +46,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
           "relative z-10 rounded-md text-sm font-semibold transition-colors duration-300",
           value === ROLES.USER
             ? "text-white"
-            : "text-zinc-600 hover:text-zinc-900",
+            : "text-zinc-600 hover:text-zinc-900 dark:text-slate-300 dark:hover:text-white",
         )}
       >
         {t("user")}
@@ -59,7 +59,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
           "relative z-10 rounded-md text-sm font-semibold transition-colors duration-300",
           value === ROLES.TRADER
             ? "text-white"
-            : "text-zinc-600 hover:text-zinc-900",
+            : "text-zinc-600 hover:text-zinc-900 dark:text-slate-300 dark:hover:text-white",
         )}
       >
         {t("trader")}

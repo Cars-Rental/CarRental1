@@ -20,7 +20,13 @@ export interface OrderUser {
   role: string;
 }
 
-export type OrderStatus = "pending" | "confirmed" | "cancelled" | "completed";
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "accepted"
+  | "rejected"
+  | "cancelled"
+  | "completed";
 
 export interface Order {
   _id: string;
@@ -76,4 +82,30 @@ export interface DeleteOrderResponse {
   success: boolean;
   message: string;
   data: Order;
+}
+
+export interface CancelOrderRequest {
+  id: string;
+  cancellationReason?: string;
+}
+
+export interface UpdateOrderStatusRequest {
+  id: string;
+  status: Extract<OrderStatus, "accepted" | "rejected" | "completed">;
+  rejectionReason?: string;
+}
+
+export interface CreatePaymentRequest {
+  orderId: string;
+  type: OrderMode;
+  redirectUrl?: string;
+}
+
+export interface CreatePaymentResponse {
+  success: boolean;
+  iframeUrl: string;
+  paymentToken: string;
+  paymobOrderId: number;
+  message?: string;
+  error?: unknown;
 }

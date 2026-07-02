@@ -6,6 +6,29 @@ import {
   ENTITY_TYPES,
 } from "../../constants/notification.types.js";
 
+const normalizeCarBuyEnum = (value) => {
+  if (typeof value !== "string") return value;
+
+  const normalized = value.trim().toLowerCase();
+  const lookup = {
+    petrol: "Petrol",
+    diesel: "Diesel",
+    electric: "Electric",
+    hybrid: "Hybrid",
+    sedan: "Sedan",
+    suv: "SUV",
+    hatchback: "Hatchback",
+    coupe: "Coupe",
+    pickup: "Pickup",
+    van: "Van",
+    convertible: "Convertible",
+    automatic: "Automatic",
+    manual: "Manual",
+  };
+
+  return lookup[normalized] ?? value;
+};
+
 const POPULATE_OWNER = "userName email phone role";
 
 export const addcarTobuy = async (req, res, next) => {
@@ -23,6 +46,10 @@ export const addcarTobuy = async (req, res, next) => {
       Body_Type,
       Transmission,
     } = req.body;
+
+    const normalizedFuel = normalizeCarBuyEnum(fuel);
+    const normalizedBodyType = normalizeCarBuyEnum(Body_Type);
+    const normalizedTransmission = normalizeCarBuyEnum(Transmission);
 
     const ownerId = req.user?.id || req.user?._id;
 
@@ -60,10 +87,10 @@ export const addcarTobuy = async (req, res, next) => {
       carname,
       carprice,
       distance,
-      fuel,
+      fuel: normalizedFuel,
       seatCount,
-      Body_Type,
-      Transmission,
+      Body_Type: normalizedBodyType,
+      Transmission: normalizedTransmission,
       owner: ownerId,
       carimage: uploadedImages,
     });
@@ -143,12 +170,14 @@ export const getcaralls = async (req, res, next) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
+    const filter = { status: "available", quantity: { $gt: 0 } };
 
-    const totalCars = await carbuymodel.countDocuments();
+    const totalCars = await carbuymodel.countDocuments(filter);
 
     const cars = await carbuymodel
-      .find()
+      .find(filter)
       .populate("owner", POPULATE_OWNER)
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
@@ -183,6 +212,10 @@ export const updatecarbyid = async (req, res, next) => {
       Body_Type,
       Transmission,
     } = req.body;
+
+    const normalizedFuel = normalizeCarBuyEnum(fuel);
+    const normalizedBodyType = normalizeCarBuyEnum(Body_Type);
+    const normalizedTransmission = normalizeCarBuyEnum(Transmission);
 
     const car = await carbuymodel.findById(id);
 
@@ -230,10 +263,10 @@ export const updatecarbyid = async (req, res, next) => {
           carname,
           carprice,
           distance,
-          fuel,
+          fuel: normalizedFuel,
           seatCount,
-          Body_Type,
-          Transmission,
+          Body_Type: normalizedBodyType,
+          Transmission: normalizedTransmission,
           carimage: imageData,
         },
         {

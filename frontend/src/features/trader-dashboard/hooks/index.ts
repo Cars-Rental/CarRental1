@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { QUERY_KEYS } from "@/constants";
+import { updateBuyOrderStatusApi, updateOrderStatusApi } from "@/features/orders/api";
 import * as api from "../api";
+
+export { useTraderNotifications } from "./useTraderNotifications";
 
 export function useTraderOverview() {
   return useQuery({
@@ -34,6 +39,8 @@ export function useTraderRecentActivity() {
   return useQuery({
     queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY,
     queryFn: api.getTraderRecentActivity,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
   });
 }
 
@@ -82,12 +89,18 @@ export function useTraderBookings() {
 }
 
 export function useUpdateBookingStatus() {
+  const t = useTranslations("TraderDashboard");
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.updateBookingStatus,
+    mutationFn: updateOrderStatusApi,
     onSuccess: () => {
+      toast.success(t("actions.bookingStatusUpdated"));
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.BOOKINGS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_BOOKINGS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("actions.bookingStatusUpdateFailed"));
     },
   });
 }
@@ -100,12 +113,18 @@ export function useTraderOrders() {
 }
 
 export function useUpdateOrderStatus() {
+  const t = useTranslations("TraderDashboard");
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.updateOrderStatus,
+    mutationFn: updateBuyOrderStatusApi,
     onSuccess: () => {
+      toast.success(t("actions.orderStatusUpdated"));
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.ORDERS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ORDERS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRADER.RECENT_ACTIVITY });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("actions.orderStatusUpdateFailed"));
     },
   });
 }
@@ -117,10 +136,10 @@ export function useTraderCustomers() {
   });
 }
 
-export function useTraderReviews() {
+export function useTraderReviews(page = 1, limit = 20) {
   return useQuery({
-    queryKey: QUERY_KEYS.TRADER.REVIEWS,
-    queryFn: api.getTraderReviews,
+    queryKey: QUERY_KEYS.TRADER.REVIEWS(page, limit),
+    queryFn: () => api.getTraderReviews(page, limit),
   });
 }
 
@@ -128,5 +147,12 @@ export function useTraderEarnings() {
   return useQuery({
     queryKey: QUERY_KEYS.TRADER.EARNINGS,
     queryFn: api.getTraderEarnings,
+  });
+}
+
+export function useTraderAnalytics() {
+  return useQuery({
+    queryKey: QUERY_KEYS.TRADER.ANALYTICS,
+    queryFn: api.getTraderAnalytics,
   });
 }

@@ -30,7 +30,12 @@ export const getAllOnlineUserIds = () =>
 
 
 export const handleSocketConnection = (io, socket) => {
-  const userId = socket.user.id; 
+  // derive a stable string id from either `_id` or `id`
+  const userId = (socket.user && (socket.user._id || socket.user.id))
+    ? (socket.user._id ? socket.user._id.toString() : socket.user.id.toString())
+    : null;
+
+  if (!userId) return;
 
   addUser(userId, socket.id);
 

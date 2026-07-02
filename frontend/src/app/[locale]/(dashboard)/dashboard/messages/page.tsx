@@ -1,17 +1,19 @@
-import { MessageSquare } from "lucide-react";
-import { getTranslations } from "next-intl/server";
-import { TraderPlaceholderPage } from "@/features/trader-dashboard/components";
+import { ChatProvider } from "@/features/chat/hooks/useChatSocket";
+import { ChatLayout } from "@/features/chat/components/ChatLayout";
 
-export default async function MessagesPage() {
-  const t = await getTranslations("TraderDashboard");
+type MessagesPageProps = {
+  searchParams?: Promise<{ roomId?: string }>;
+};
+
+export default async function MessagesPage({ searchParams }: MessagesPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const initialRoomId = resolvedSearchParams?.roomId ?? null;
 
   return (
-    <TraderPlaceholderPage
-      icon={MessageSquare}
-      title={t("pages.messages.title")}
-      description={t("pages.messages.description")}
-      emptyTitle={t("empty.messages.title")}
-      emptyDescription={t("empty.messages.description")}
-    />
+    <ChatProvider>
+      <div className="h-[calc(100vh-7rem)] min-h-[640px] overflow-hidden rounded-2xl bg-slate-50 dark:bg-slate-950">
+        <ChatLayout initialRoomId={initialRoomId} isDashboard />
+      </div>
+    </ChatProvider>
   );
 }

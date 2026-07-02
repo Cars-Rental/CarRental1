@@ -9,6 +9,8 @@ export const ROUTES = {
     FORGOT_PASSWORD: "/forgot-password",
     VERIFY_EMAIL: "/verify-email",
     RESET_PASSWORD: "/reset-password",
+    GOOGLE_CALLBACK: "/google/callback",
+    GOOGLE_AUTH_CALLBACK: "/auth/google/callback",
   },
 
   CARS: {
@@ -29,6 +31,11 @@ export const ROUTES = {
   SETTINGS: "/settings",
 
   CHAT: "/chat",
+
+  PAYMENT: {
+    ROOT: "/payment",
+    RETURN: "/payment/return",
+  },
 
   DASHBOARD: {
     ROOT: "/dashboard",

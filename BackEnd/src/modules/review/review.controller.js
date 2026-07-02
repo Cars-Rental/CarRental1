@@ -1,11 +1,10 @@
 import { reviewModel } from "../../DB/model/review.model.js";
+import {orderModel} from "../../DB/model/order.model.js"
 import { createReviewSchema, updateReviewSchema } from "./review.validation.js";
-
 
 export const createReview = async (req, res) => {
   try {
     const { error, value } = createReviewSchema.validate(req.body);
-
     if (error) {
       return res.status(400).json({
         success: false,
@@ -13,22 +12,35 @@ export const createReview = async (req, res) => {
       });
     }
 
-    
+  
+    const completedOrder = await orderModel.findOne({
+      user: req.user._id,
+      car: value.carRent,
+      status: "completed",
+    });
+
+    if (!completedOrder) {
+      return res.status(403).json({
+        success: false,
+        message: "لا يمكنك كتابة review إلا بعد إتمام الإيجار",
+      });
+    }
     const existingReview = await reviewModel.findOne({
       user: req.user._id,
-      carRent: value.carRent,
+      order: completedOrder._id,
     });
 
     if (existingReview) {
       return res.status(409).json({
         success: false,
-        message: " أنت بالفعل عملت review لهذه السيارة",
+        message: "أنت بالفعل عملت review لهذه الرحلة",
       });
     }
 
     const newReview = new reviewModel({
       user: req.user._id,
       carRent: value.carRent,
+      order: completedOrder._id,  
       rating: value.rating,
       comment: value.comment,
     });
@@ -39,13 +51,13 @@ export const createReview = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: " Review تم إضافته بنجاح",
+      message: "تم إضافة الـ Review بنجاح",
       data: newReview,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: " خطأ في سيرفر",
+      message: "خطأ في السيرفر",
       error: error.message,
     });
   }

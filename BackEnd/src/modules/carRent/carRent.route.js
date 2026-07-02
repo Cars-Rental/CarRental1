@@ -17,8 +17,8 @@ router.get("/getallcar", cars.getallcar);
 router.patch(
   "/update/:id",
   auth,
-  validation(carvalidation.updateCar),
   upload.array("image", 4),
+  validation(carvalidation.updateCar),
   cars.updatecar,
 );
 router.get("/getbyid/:id", cars.getbyid);

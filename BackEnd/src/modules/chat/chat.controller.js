@@ -1,12 +1,14 @@
 import { roomModel } from "../../DB/model/room.model.js";
 import { messageModel } from "../../DB/model/message.model.js";
 import { userModel } from "../../DB/model/user.model.js";
+import mongoose from "mongoose";
 
 const MEMBER_FIELDS = "userName email avatar bio isOnline lastSeen";
 
 
 export const getMyRooms = async (req, res, next) => {
   const userId = req.user?.id || req.user?._id;
+  const userObjectId = new mongoose.Types.ObjectId(userId);
 
   const rooms = await roomModel
     .find({ members: userId })
@@ -16,9 +18,31 @@ export const getMyRooms = async (req, res, next) => {
       path: "lastMessage",
       populate: { path: "sender", select: MEMBER_FIELDS },
     })
-    .sort({ updatedAt: -1 });
+    .sort({ updatedAt: -1 })
+    .lean();
 
-  res.status(200).json({ message: "rooms fetched", rooms });
+  const unreadCounts = await messageModel.aggregate([
+    {
+      $match: {
+        room: { $in: rooms.map((room) => room._id) },
+        sender: { $ne: userObjectId },
+        readBy: { $ne: userObjectId },
+        isDeleted: false,
+      },
+    },
+    { $group: { _id: "$room", count: { $sum: 1 } } },
+  ]);
+
+  const unreadByRoom = new Map(
+    unreadCounts.map((item) => [item._id.toString(), item.count])
+  );
+
+  const roomsWithUnread = rooms.map((room) => ({
+    ...room,
+    unreadCount: unreadByRoom.get(room._id.toString()) || 0,
+  }));
+
+  res.status(200).json({ message: "rooms fetched", rooms: roomsWithUnread });
 };
 
 

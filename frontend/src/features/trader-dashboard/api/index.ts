@@ -12,9 +12,14 @@ import type {
   TraderDashboardCustomersResponse,
   TraderDashboardCustomerItem,
   TraderDashboardEarningsResponse,
+  TraderDashboardAnalyticsResponse,
   TraderDashboardRecentActivityResponse,
   TraderDashboardActivityItem,
+  TraderDashboardReviewsResponse,
+  TraderDashboardReviewItem,
   TraderRecentActivity,
+  TraderNotification,
+  TraderNotificationsResponse,
   TraderBooking, 
   TraderOrder,
   TraderCar,
@@ -27,23 +32,6 @@ import type {
   TraderReview,
   TraderEarnings
 } from "../types";
-import {
-  mockTraderBookings,
-  mockTraderCars,
-  mockTraderDashboardStats,
-  mockTraderOrders,
-  mockTraderReviews,
-  toMockPaginatedResponse,
-} from "../utils";
-
-const USE_MOCK_TRADER_DASHBOARD = true;
-const MOCK_DELAY_MS = 250;
-
-const resolveMock = async <T>(data: T): Promise<T> =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve(data), MOCK_DELAY_MS);
-  });
-
 const mapDashboardCarStatus = (status?: string): TraderCar["status"] => {
   const normalized = status?.toLowerCase();
 
@@ -130,14 +118,27 @@ const mapDashboardEarnings = (
   monthlyBreakdown: earnings.monthlyBreakdown,
 });
 
+const mapDashboardReview = (
+  review: TraderDashboardReviewItem
+): TraderReview => ({
+  id: review.id,
+  customerId: review.customerId,
+  carId: review.carId,
+  rating: review.rating,
+  comment: review.comment,
+  createdAt: review.createdAt,
+  customerName: review.customerName,
+  carTitle: review.carTitle,
+});
+
 const mapDashboardActivity = (
   activity: TraderDashboardActivityItem
 ): TraderRecentActivity => ({
   id: activity._id,
   type: activity.type,
-  customerName: activity.user.userName,
-  carTitle: activity.car.carname,
-  image: activity.car.carimage[0]?.secure_url ?? "",
+  customerName: activity.user?.userName ?? "Deleted user",
+  carTitle: activity.car?.carname ?? "Unknown car",
+  image: activity.car?.carimage?.[0]?.secure_url ?? "",
   amount: activity.totalPrice ?? activity.carprice ?? 0,
   status: normalizeDashboardStatus(activity.status),
   createdAt: activity.createdAt,
@@ -153,28 +154,16 @@ export const getTraderOverview = async (): Promise<TraderOverviewResponse> => {
 };
 
 export const getDashboardStats = async (): Promise<TraderDashboardStats> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(mockTraderDashboardStats);
-  }
-
   const response = await axiosInstance.get(API_ENDPOINTS.TRADER.DASHBOARD.STATS);
   return response.data.data;
 };
 
 export const getRecentBookings = async (): Promise<TraderBooking[]> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(mockTraderBookings.slice(0, 5));
-  }
-
   const response = await axiosInstance.get(API_ENDPOINTS.TRADER.DASHBOARD.RECENT_BOOKINGS);
   return response.data.data;
 };
 
 export const getRecentOrders = async (): Promise<TraderOrder[]> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(mockTraderOrders.slice(0, 5));
-  }
-
   const response = await axiosInstance.get(API_ENDPOINTS.TRADER.DASHBOARD.RECENT_ORDERS);
   return response.data.data;
 };
@@ -204,53 +193,21 @@ export const getTraderCars = async (type?: string): Promise<PaginatedResponse<Tr
     };
   }
 
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    const cars = type
-      ? mockTraderCars.filter((car) => car.type === type)
-      : mockTraderCars;
-
-    return resolveMock(toMockPaginatedResponse(cars));
-  }
-
   const response = await axiosInstance.get(API_ENDPOINTS.TRADER.CARS.GET_ALL, { params: { type } });
   return response.data.data;
 };
 
 export const createTraderCar = async (data: CreateTraderCarRequest): Promise<TraderCar> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock({
-      ...data,
-      id: `mock-car-${Date.now()}`,
-      image: data.images[0] ?? "",
-    });
-  }
-
   const response = await axiosInstance.post(API_ENDPOINTS.TRADER.CARS.ADD, data);
   return response.data.data;
 };
 
 export const updateTraderCar = async ({ id, data }: { id: string; data: UpdateTraderCarRequest }): Promise<TraderCar> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    const currentCar = mockTraderCars.find((car) => car.id === id) ?? mockTraderCars[0];
-
-    return resolveMock({
-      ...currentCar,
-      ...data,
-      id,
-      image: data.images?.[0] ?? currentCar.image,
-    });
-  }
-
   const response = await axiosInstance.patch(API_ENDPOINTS.TRADER.CARS.UPDATE(id), data);
   return response.data.data;
 };
 
 export const deleteTraderCar = async (id: string): Promise<void> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    await resolveMock(id);
-    return;
-  }
-
   await axiosInstance.delete(API_ENDPOINTS.TRADER.CARS.DELETE(id));
 };
 
@@ -271,13 +228,6 @@ export const getTraderBookings = async (): Promise<PaginatedResponse<TraderBooki
 };
 
 export const updateBookingStatus = async ({ id, data }: { id: string; data: UpdateBookingStatusRequest }): Promise<TraderBooking> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    const booking =
-      mockTraderBookings.find((item) => item.id === id) ?? mockTraderBookings[0];
-
-    return resolveMock({ ...booking, status: data.status });
-  }
-
   const response = await axiosInstance.patch(API_ENDPOINTS.TRADER.BOOKINGS.UPDATE_STATUS(id), data);
   return response.data.data;
 };
@@ -299,13 +249,6 @@ export const getTraderOrders = async (): Promise<PaginatedResponse<TraderOrder>>
 };
 
 export const updateOrderStatus = async ({ id, data }: { id: string; data: UpdateOrderStatusRequest }): Promise<TraderOrder> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    const order =
-      mockTraderOrders.find((item) => item.id === id) ?? mockTraderOrders[0];
-
-    return resolveMock({ ...order, status: data.status });
-  }
-
   const response = await axiosInstance.patch(API_ENDPOINTS.TRADER.ORDERS.UPDATE_STATUS(id), data);
   return response.data.data;
 };
@@ -328,13 +271,27 @@ export const getTraderCustomers = async (): Promise<PaginatedResponse<TraderCust
   };
 };
 
-export const getTraderReviews = async (): Promise<PaginatedResponse<TraderReview>> => {
-  if (USE_MOCK_TRADER_DASHBOARD) {
-    return resolveMock(toMockPaginatedResponse(mockTraderReviews));
-  }
+export const getTraderReviews = async (
+  page = 1,
+  limit = 20
+): Promise<PaginatedResponse<TraderReview> & TraderDashboardReviewsResponse["stats"]> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardReviewsResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.REVIEWS, { params: { page, limit } });
 
-  const response = await axiosInstance.get(API_ENDPOINTS.TRADER.REVIEWS);
-  return response.data.data;
+  return {
+    data: response.data.data.reviews.map(mapDashboardReview),
+    total: response.data.data.total,
+    page: response.data.data.page,
+    limit: response.data.data.limit,
+    totalPages: Math.max(
+      1,
+      Math.ceil(response.data.data.total / response.data.data.limit)
+    ),
+    average: response.data.data.stats.average,
+    distribution: response.data.data.stats.distribution,
+  };
 };
 
 export const getTraderEarnings = async (): Promise<TraderEarnings> => {
@@ -345,6 +302,15 @@ export const getTraderEarnings = async (): Promise<TraderEarnings> => {
   return mapDashboardEarnings(response.data.data);
 };
 
+export const getTraderAnalytics = async (): Promise<TraderDashboardAnalyticsResponse> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderDashboardAnalyticsResponse;
+  }>(API_ENDPOINTS.TRADER.DASHBOARD.ANALYTICS);
+
+  return response.data.data;
+};
+
 export const getTraderRecentActivity = async (): Promise<TraderRecentActivity[]> => {
   const response = await axiosInstance.get<{
     success: boolean;
@@ -352,4 +318,60 @@ export const getTraderRecentActivity = async (): Promise<TraderRecentActivity[]>
   }>(API_ENDPOINTS.TRADER.DASHBOARD.RECENT_ACTIVITY);
 
   return response.data.data.activities.map(mapDashboardActivity);
+};
+
+export const getTraderNotifications = async (
+  page = 1,
+  limit = 20
+): Promise<TraderNotificationsResponse> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderNotification[];
+    total: number;
+    page: number;
+    limit: number;
+  }>(API_ENDPOINTS.NOTIFICATIONS.ROOT, { params: { page, limit } });
+
+  return {
+    notifications: response.data.data,
+    total: response.data.total,
+    page: response.data.page,
+    limit: response.data.limit,
+  };
+};
+
+export const getUnreadTraderNotifications = async (): Promise<{
+  notifications: TraderNotification[];
+  count: number;
+}> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    data: TraderNotification[];
+    count: number;
+  }>(API_ENDPOINTS.NOTIFICATIONS.UNREAD);
+
+  return {
+    notifications: response.data.data,
+    count: response.data.count,
+  };
+};
+
+export const markTraderNotificationAsRead = async (
+  id: string
+): Promise<TraderNotification> => {
+  const response = await axiosInstance.patch<{
+    success: boolean;
+    data: TraderNotification;
+  }>(API_ENDPOINTS.NOTIFICATIONS.MARK_READ(id));
+
+  return response.data.data;
+};
+
+export const markAllTraderNotificationsAsRead = async (): Promise<number> => {
+  const response = await axiosInstance.patch<{
+    success: boolean;
+    updated: number;
+  }>(API_ENDPOINTS.NOTIFICATIONS.READ_ALL);
+
+  return response.data.updated;
 };

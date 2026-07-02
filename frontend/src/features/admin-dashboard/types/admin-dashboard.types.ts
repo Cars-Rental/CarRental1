@@ -1,6 +1,7 @@
 export type AdminEntityStatus =
   | "active"
   | "inactive"
+  | "banned"
   | "pending"
   | "suspended"
   | "approved"
@@ -22,8 +23,28 @@ export interface AdminDashboardStats {
   totalOrders: number;
   monthlyRevenue: number;
   platformCommission: number;
-  pendingVerifications: number;
-  openReports: number;
+  pendingVerifications?: number;
+  openReports?: number;
+}
+
+export interface AdminOverviewPerson {
+  id: string;
+  name: string;
+  status: string;
+}
+
+export interface AdminOverviewActivity {
+  id: string;
+  customerName: string;
+  status: string;
+}
+
+export interface AdminOverviewResponse {
+  stats: AdminDashboardStats;
+  recentUsers: AdminOverviewPerson[];
+  recentTraders: AdminOverviewPerson[];
+  recentBookings: AdminOverviewActivity[];
+  recentOrders: AdminOverviewActivity[];
 }
 
 export interface AdminChartPoint {
@@ -38,10 +59,22 @@ export interface AdminUser {
   name: string;
   email: string;
   phone: string;
-  status: "active" | "suspended" | "inactive";
+  status: "active" | "banned" | "suspended" | "inactive";
   createdAt: string;
-  totalBookings: number;
-  totalOrders: number;
+  totalBookings?: number;
+  totalOrders?: number;
+}
+
+export interface AdminPagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface AdminUsersResponse {
+  users: AdminUser[];
+  pagination: AdminPagination;
 }
 
 export interface AdminTrader {
@@ -50,53 +83,182 @@ export interface AdminTrader {
   ownerName: string;
   email: string;
   phone: string;
-  verificationStatus: "pending" | "approved" | "rejected";
+  status?: "active" | "banned" | "pending" | "approved" | "rejected";
+  verificationStatus?: "pending" | "approved" | "rejected";
   carsCount: number;
   earnings: number;
   joinedAt: string;
+  rentCarsCount?: number;
+  saleCarsCount?: number;
+}
+
+export interface AdminTradersResponse {
+  traders: AdminTrader[];
+  pagination: AdminPagination;
 }
 
 export interface AdminCar {
   id: string;
   title: string;
-  image: string;
+  image: string | null;
   traderName: string;
   category: string;
-  status: "active" | "pending" | "suspended" | "sold";
-  type: "rent" | "sale";
+  status: string;
+  type?: "rent" | "sale";
   price: number;
   location: string;
+  fuel?: string;
+  transmission?: string;
+  seatCount?: number;
+}
+
+export interface AdminCarsResponse {
+  cars: AdminCar[];
+  pagination: AdminPagination;
+}
+
+export interface AdminCarDetail {
+  _id: string;
+  carbrand: string;
+  carname: string;
+  carmodel: string;
+  year: number;
+  location: string;
+  distance?: string;
+  carprice: number;
+  fuel: string;
+  seatCount: number;
+  Body_Type: string;
+  Transmission: string;
+  owner:
+    | string
+    | {
+        _id: string;
+        userName: string;
+        email: string;
+        phone: string;
+      };
+  carimage: Array<{
+    secure_url: string;
+    public_id: string;
+    _id: string;
+  }>;
+  isavailable: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AdminBooking {
   id: string;
+  idBk?: string;
   customerName: string;
   traderName: string;
   carTitle: string;
-  pickupDate: string;
-  returnDate: string;
-  price: number;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
+  carModel?: string;
+  startDate?: string;
+  endDate?: string;
+  totalDays?: number;
+  priceperDay?: number;
+  totalPrice?: number;
+  pickupDate?: string;
+  returnDate?: string;
+  price?: number;
+  status: string;
+}
+
+export interface AdminBookingsResponse {
+  bookings: AdminBooking[];
+  pagination: AdminPagination;
 }
 
 export interface AdminOrder {
   id: string;
+  id_ORD?: string;
   customerName: string;
   traderName: string;
   carTitle: string;
+  carModel?: string;
   price: number;
-  paymentStatus: "pending" | "paid" | "failed";
-  orderStatus: "pending" | "processing" | "completed" | "cancelled";
+  paymentStatus?: "pending" | "paid" | "failed";
+  orderStatus?: "pending" | "processing" | "completed" | "cancelled";
+  status?: string;
+}
+
+export interface AdminOrdersResponse {
+  orders: AdminOrder[];
+  pagination: AdminPagination;
+}
+
+export interface AdminPersonDetail {
+  _id: string;
+  userName: string;
+  email: string;
+  phone: string;
+}
+
+export interface AdminOrderCarDetail {
+  _id: string;
+  carbrand?: string;
+  carname?: string;
+  carmodel?: string;
+  year?: number;
+  location?: string;
+  carprice?: number;
+  distance?: string;
+  fuel?: string;
+  seatCount?: number;
+  Body_Type?: string;
+  Transmission?: string;
+  carimage?: Array<{
+    secure_url: string;
+    public_id: string;
+    _id: string;
+  }>;
+}
+
+export interface AdminBookingDetail {
+  _id: string;
+  displayId: string;
+  car: AdminOrderCarDetail | null;
+  user: AdminPersonDetail | null;
+  owner: AdminPersonDetail | null;
+  startDate: string;
+  endDate: string;
+  totalDays: number;
+  priceperDay: number;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminOrderDetail {
+  _id: string;
+  displayId: string;
+  car: AdminOrderCarDetail | null;
+  user: AdminPersonDetail | null;
+  owner: AdminPersonDetail | null;
+  carprice: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AdminReview {
   id: string;
   customerName: string;
   carTitle: string;
+  carModel?: string;
   rating: number;
-  review: string;
-  date: string;
-  status: "active" | "hidden";
+  comment?: string;
+  review?: string;
+  date?: string;
+  status?: "active" | "hidden";
+}
+
+export interface AdminReviewsResponse {
+  reviews: AdminReview[];
+  pagination: AdminPagination;
 }
 
 export interface AdminReport {
@@ -144,9 +306,21 @@ export interface AdminNotification {
   id: string;
   title: string;
   message: string;
-  audience: "all" | "users" | "traders";
+  audience: "all" | "users" | "traders" | "user" | "trader";
+  recipientName?: string;
   createdAt: string;
-  status: "sent" | "draft";
+  status: "sent" | "draft" | "read";
+}
+
+export interface AdminNotificationsResponse {
+  notifications: AdminNotification[];
+  pagination: AdminPagination;
+}
+
+export interface CreateAdminNotificationRequest {
+  title: string;
+  message: string;
+  audience: "all" | "users" | "traders";
 }
 
 export interface AdminCategoryItem {
@@ -180,6 +354,7 @@ export interface AdminListParams {
   search?: string;
   status?: string;
   page?: number;
+  limit?: number;
 }
 
 export type UpdateAdminSettingsRequest = Partial<AdminSettings>;

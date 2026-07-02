@@ -266,7 +266,8 @@ export const getBuyOrders = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page = Number(req.query.page) || 1;
+
+    const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
 
@@ -278,7 +279,7 @@ export const getBuyOrders = async (req, res, next) => {
       orderBuyModel
         .find(filter)
         .populate("user", "userName")
-        .populate("car", "carmodel year")
+        .populate("car", "carname carmodel year")
         .select("carprice createdAt status")
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -289,11 +290,12 @@ export const getBuyOrders = async (req, res, next) => {
     const formattedOrders = orders.map((order) => ({
       id: order._id,
       customer: order.user?.userName || "",
-      car: `${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
+      car: `${order.car?.carname || ""} ${order.car?.carmodel || ""} ${order.car?.year || ""}`.trim(),
       carprice: order.carprice,
       createdAt: order.createdAt,
       status: order.status,
     }));
+
 
     return ok(res, { total, page, limit, orders: formattedOrders });
   } catch (error) {
@@ -393,9 +395,9 @@ export const getReviews = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
-    const page = Number(req.query.page) || 1;
+    const page  = Number(req.query.page)  || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
+    const skip  = (page - 1) * limit;
 
     const traderCars = await carModel.distinct("_id", { owner: traderId });
 
@@ -414,13 +416,14 @@ export const getReviews = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .lean(),
+
       reviewModel.aggregate([
         { $match: filter },
         {
           $group: {
             _id: null,
             avgRating: { $avg: "$rating" },
-            total: { $sum: 1 },
+            total:  { $sum: 1 },
             stars5: { $sum: { $cond: [{ $eq: ["$rating", 5] }, 1, 0] } },
             stars4: { $sum: { $cond: [{ $eq: ["$rating", 4] }, 1, 0] } },
             stars3: { $sum: { $cond: [{ $eq: ["$rating", 3] }, 1, 0] } },
@@ -432,16 +435,16 @@ export const getReviews = async (req, res, next) => {
     ]);
 
     const formattedReviews = reviews.map((review) => ({
-      id: review._id,
-      customerId: review.userId?._id || "",
+      id:           review._id,
+      customerId:   review.userId?._id     || "",
       customerName: review.userId?.userName || "",
-      carId: review.carRent?._id || "",
-      carTitle:
-        `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
-      rating: review.rating,
-      comment: review.comment,
-      createdAt: review.createdAt,
+      carId:        review.carRent?._id    || "",
+      carTitle:     `${review.carRent?.carbrand || ""} ${review.carRent?.carname || ""} ${review.carRent?.carmodel || ""} ${review.carRent?.year || ""}`.trim(),
+      rating:       review.rating,
+      comment:      review.comment,
+      createdAt:    review.createdAt ?? new mongoose.Types.ObjectId(review._id).getTimestamp(),
     }));
+
     return ok(res, {
       total,
       page,
@@ -466,6 +469,7 @@ export const getAnalytics = async (req, res, next) => {
   try {
     const traderId = new mongoose.Types.ObjectId(req.user.id);
 
+   
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 

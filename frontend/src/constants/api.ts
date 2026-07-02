@@ -9,6 +9,9 @@ export const API_ENDPOINTS = {
     RESEND_CODE: "/auth/resend-code",
     RESET_PASSWORD: "/auth/reset-password",
     ME: "/auth/me",
+    GOOGLE: "/auth/google",
+    DOCUMENT: "/auth/document",
+    UPDATE_PROFILE: "/auth/update-profile",
   },
 
   CARS: {
@@ -35,17 +38,30 @@ export const API_ENDPOINTS = {
   ORDERS: {
     CREATE: "/orders/create",
     GET_BY_ID: (id: string) => `/orders/${id}`,
+    UPDATE_STATUS: (id: string) => `/orders/${id}/status`,
+    CANCEL: (id: string) => `/orders/${id}/cancel`,
     DELETE: (id: string) => `/orders/${id}`,
+    PAYMENT: "/orders/payment",
   },
 
   ORDER_BUY: {
     CREATE: "/orderBuy",
     GET_BY_ID: (id: string) => `/orderBuy/${id}`,
     MY_ORDERS: "/orderBuy/my-orders",
+    UPDATE_STATUS: (id: string) => `/orderBuy/${id}/status`,
+    CANCEL: (id: string) => `/orderBuy/${id}/cancel`,
   },
 
   BOOKINGS: {
     ROOT: "/bookings",
+  },
+
+  NOTIFICATIONS: {
+    ROOT: "/notifications",
+    UNREAD: "/notifications/unread",
+    READ_ALL: "/notifications/read-all",
+    MARK_READ: (id: string) => `/notifications/${id}/read`,
+    DELETE: (id: string) => `/notifications/${id}`,
   },
 
   USERS: {
@@ -62,6 +78,8 @@ export const API_ENDPOINTS = {
       CUSTOMERS: "/dashboard/customers",
       EARNINGS: "/dashboard/earnings",
       RECENT_ACTIVITY: "/dashboard/recent-activity",
+      ANALYTICS: "/dashboard/analytics",
+      REVIEWS: "/dashboard/reviews",
       STATS: "/trader/dashboard/stats",
       RECENT_BOOKINGS: "/trader/dashboard/recent-bookings",
       RECENT_ORDERS: "/trader/dashboard/recent-orders",

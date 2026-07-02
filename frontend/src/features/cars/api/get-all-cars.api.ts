@@ -2,8 +2,13 @@ import { axiosInstance } from "@/services";
 import { API_ENDPOINTS } from "@/constants/api";
 import type { GetAllCarsRawResponse } from "../types/cars-api.types";
 
-async function fetchAllPages(endpoint: string): Promise<GetAllCarsRawResponse> {
-  const first = await axiosInstance.get<GetAllCarsRawResponse>(endpoint);
+async function fetchAllPages(
+  endpoint: string,
+  limit = 9,
+): Promise<GetAllCarsRawResponse> {
+  const first = await axiosInstance.get<GetAllCarsRawResponse>(endpoint, {
+    params: { page: 1, limit },
+  });
   const firstData = first.data;
 
   if (firstData.totalPages <= 1) return firstData;
@@ -16,7 +21,7 @@ async function fetchAllPages(endpoint: string): Promise<GetAllCarsRawResponse> {
   const rest = await Promise.all(
     remainingPages.map((page) =>
       axiosInstance.get<GetAllCarsRawResponse>(endpoint, {
-        params: { page },
+        params: { page, limit },
       }),
     ),
   );

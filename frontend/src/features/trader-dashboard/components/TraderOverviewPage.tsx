@@ -49,7 +49,7 @@ export function TraderOverviewPage() {
 
       <div className="mt-8 grid gap-6 xl:grid-cols-2">
         <section>
-          <h2 className="mb-3 text-base font-semibold text-foreground">
+          <h2 className="mb-3 text-base font-semibold text-foreground dark:text-slate-100">
             {t("pages.overview.recentBookings")}
           </h2>
           {bookings.length === 0 && !isLoading ? (
@@ -96,7 +96,7 @@ export function TraderOverviewPage() {
         </section>
 
         <section>
-          <h2 className="mb-3 text-base font-semibold text-foreground">
+          <h2 className="mb-3 text-base font-semibold text-foreground dark:text-slate-100">
             {t("pages.overview.recentOrders")}
           </h2>
           {orders.length === 0 && !isLoading ? (

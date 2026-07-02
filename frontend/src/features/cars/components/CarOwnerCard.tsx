@@ -21,11 +21,11 @@ export function CarOwnerCard({ owner }: CarOwnerCardProps) {
     .slice(0, 2);
 
   return (
-    <div className="flex items-center justify-between gap-4 bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/60 rounded-3xl p-4">
+    <div className="flex items-center justify-between gap-4 bg-slate-50 dark:bg-slate-900/80 border border-slate-100 dark:border-slate-800 rounded-3xl p-4">
       {/* Owner info */}
       <div className="flex items-center gap-3">
         <div className="relative">
-          <div className="size-14 rounded-full bg-(--primary)/10 dark:bg-emerald-400/10 flex items-center justify-center text-(--primary) dark:text-emerald-400 font-extrabold text-lg select-none">
+          <div className="size-14 rounded-full bg-primary/10 dark:bg-emerald-400/10 flex items-center justify-center text-primary dark:text-emerald-400 font-extrabold text-lg select-none">
             {initials}
           </div>
           <span className="absolute bottom-0 inset-e-0 size-3.5 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
@@ -52,7 +52,7 @@ export function CarOwnerCard({ owner }: CarOwnerCardProps) {
           <MessageCircle className="size-3.5" />
           {t("chat")}
         </button>
-        <button className="flex items-center gap-1.5 text-xs font-bold text-white bg-(--primary) hover:bg-(--primary-dark) rounded-xl px-3 py-2 transition-colors">
+        <button className="flex items-center gap-1.5 text-xs font-bold text-white bg-primary hover:bg-[var(--primary-dark)] rounded-xl px-3 py-2 transition-colors">
           <UserCircle2 className="size-3.5" />
           {t("visitProfile")}
         </button>

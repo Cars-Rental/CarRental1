@@ -16,8 +16,8 @@ export function ContactInfo() {
 
   return (
     <div className="space-y-10 lg:col-span-2">
-      <div className="rounded-3xl border bg-card p-8 shadow-sm">
-        <h3 className="mb-8 text-xl font-bold">Contact Information</h3>
+      <div className="rounded-3xl border border-slate-200 bg-card p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
+        <h3 className="mb-8 text-xl font-bold text-slate-950 dark:text-slate-100">Contact Information</h3>
         <div className="space-y-6">
           {items.map(({ icon: Icon, title, value }, index) => (
             <motion.div
@@ -31,21 +31,21 @@ export function ContactInfo() {
                 <Icon className="size-5" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground">{title}</h4>
-                <p className="mt-1 text-sm text-muted-foreground">{value}</p>
+                <h4 className="font-semibold text-foreground dark:text-slate-100">{title}</h4>
+                <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">{value}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Socials */}
-        <div className="mt-10 border-t pt-8">
-          <h4 className="mb-4 font-semibold text-foreground">{t("social.title")}</h4>
-          <div className="flex gap-4 text-muted-foreground">
-            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground"><FaFacebookF className="size-5" /></a>
-            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground"><FaXTwitter className="size-5" /></a>
-            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground"><FaInstagram className="size-5" /></a>
-            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground"><FaLinkedinIn className="size-5" /></a>
+        <div className="mt-10 border-t border-slate-200 pt-8 dark:border-slate-800">
+          <h4 className="mb-4 font-semibold text-foreground dark:text-slate-100">{t("social.title")}</h4>
+          <div className="flex gap-4 text-muted-foreground dark:text-slate-400">
+            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground dark:bg-slate-800 dark:hover:bg-primary"><FaFacebookF className="size-5" /></a>
+            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground dark:bg-slate-800 dark:hover:bg-primary"><FaXTwitter className="size-5" /></a>
+            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground dark:bg-slate-800 dark:hover:bg-primary"><FaInstagram className="size-5" /></a>
+            <a href="#" className="flex size-10 items-center justify-center rounded-full bg-muted transition hover:bg-primary hover:text-primary-foreground dark:bg-slate-800 dark:hover:bg-primary"><FaLinkedinIn className="size-5" /></a>
           </div>
         </div>
       </div>

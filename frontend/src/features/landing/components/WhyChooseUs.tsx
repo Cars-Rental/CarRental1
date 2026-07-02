@@ -45,7 +45,7 @@ export function WhyChooseUs() {
 
   return (
     <section
-      className="py-20 bg-slate-50 dark:bg-slate-900/30"
+      className="py-20 bg-slate-50 dark:bg-slate-950"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container-main">
@@ -82,8 +82,8 @@ export function WhyChooseUs() {
                   key={i}
                   className={`p-6 rounded-2xl border flex flex-col justify-between h-40 transition-all duration-300 ${
                     feat.isSpecial
-                      ? "bg-cyan-50 dark:bg-cyan-950/20 border-cyan-100 dark:border-cyan-900/40 text-slate-800 dark:text-slate-100"
-                      : "bg-[#e2e8f0]/40 dark:bg-slate-800/40 border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-300"
+                      ? "bg-cyan-50 dark:bg-slate-900 border-cyan-100 dark:border-emerald-900/40 text-slate-800 dark:text-slate-100"
+                      : "bg-[#e2e8f0]/40 dark:bg-slate-900/80 border-slate-200/50 dark:border-slate-800 text-slate-700 dark:text-slate-300"
                   }`}
                 >
                   <div className="flex justify-between items-start mb-4">
@@ -94,7 +94,7 @@ export function WhyChooseUs() {
                       className={`p-2 rounded-xl shrink-0 ${
                         feat.isSpecial
                           ? "bg-[#0d9e8f] text-white"
-                          : "bg-slate-200/60 dark:bg-slate-700/60 text-[var(--primary)]"
+                          : "bg-slate-200/60 dark:bg-slate-800 text-[var(--primary)] dark:text-emerald-400"
                       }`}
                     >
                       <Icon className="size-5" />

@@ -19,7 +19,7 @@ export function GenderSelector({ value, onChange, error }: GenderSelectorProps) 
 
   return (
     <fieldset className="space-y-3">
-      <legend className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">
+      <legend className="text-sm font-semibold text-zinc-700 dark:text-slate-200">
         {t("gender")}
       </legend>
 
@@ -31,9 +31,9 @@ export function GenderSelector({ value, onChange, error }: GenderSelectorProps) 
         <label
           htmlFor="male"
           className={cn(
-            "flex cursor-pointer items-center justify-between rounded-xl border p-3 transition-all hover:border-primary",
+            "flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-white/70 p-3 text-slate-700 transition-all hover:border-primary dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:border-emerald-500",
             value === GENDERS.MALE &&
-              "border-primary bg-primary/5 ring-1 ring-primary"
+              "border-primary bg-primary/5 ring-1 ring-primary dark:bg-emerald-950/30"
           )}
         >
           <span>{t("genderOptions.male")}</span>
@@ -43,9 +43,9 @@ export function GenderSelector({ value, onChange, error }: GenderSelectorProps) 
         <label
           htmlFor="female"
           className={cn(
-            "flex cursor-pointer items-center justify-between rounded-xl border p-3 transition-all hover:border-primary",
+            "flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-white/70 p-3 text-slate-700 transition-all hover:border-primary dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:border-emerald-500",
             value === GENDERS.FEMALE &&
-              "border-primary bg-primary/5 ring-1 ring-primary"
+              "border-primary bg-primary/5 ring-1 ring-primary dark:bg-emerald-950/30"
           )}
         >
           <span>{t("genderOptions.female")}</span>
