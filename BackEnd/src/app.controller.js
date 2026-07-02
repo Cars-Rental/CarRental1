@@ -54,6 +54,9 @@ const bootstrap = (app, express, io) => {
   });
 
   app.use(limiter);
+  app.get("/", (req, res) => {
+    res.send("Car Rental API is running");
+  });
   app.use("/auth", authroute);
   app.use("/cars", carsroute);
   app.use("/admin", adminRoute);
