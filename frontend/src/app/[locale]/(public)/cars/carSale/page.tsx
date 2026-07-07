@@ -22,7 +22,7 @@ export default function SaleCarsPage() {
       isError={isError}
       onRetry={() => void refetch()}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {cars.map((car) => (
           <CarCard key={car._id} car={car} mode="sale" />
         ))}

@@ -442,6 +442,7 @@ const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY;
 const PAYMOB_API_URL = process.env.PAYMOB_API_URL;
 const PAYMOB_IFRAME_ID = process.env.PAYMOB_IFRAME_ID;
 const PAYMOB_INTEGRATION_ID = process.env.PAYMOB_INTEGRATION_ID;
+const BUY_SESSION_FEE = 300;
 
 // STEP 1
 async function getAuthToken() {
@@ -515,7 +516,7 @@ export const createPayment = async (req, res) => {
       });
     }
 
-    const amount = type === "rent" ? order.totalPrice : order.carprice;
+    const amount = type === "rent" ? order.totalPrice : BUY_SESSION_FEE;
 
     const authToken = await getAuthToken();
     const paymobOrderId = await createOrder(authToken, amount);

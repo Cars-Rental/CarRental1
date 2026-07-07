@@ -49,7 +49,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
       className="py-20 bg-white dark:bg-slate-950"
       dir={isRTL ? "rtl" : "ltr"}
     >
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="flex items-end justify-between mb-10">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
@@ -73,7 +73,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
@@ -102,7 +102,7 @@ export function FeaturedCars({ mode }: FeaturedCarsProps) {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {cars.map((car) => (
               <CarCard key={car._id} car={car} mode={mode} />
             ))}

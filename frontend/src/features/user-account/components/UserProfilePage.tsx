@@ -80,6 +80,8 @@ export function UserProfilePage() {
   }
 
   function openEditProfile() {
+    if (!user) return;
+
     setFormValues({
       userName: user.userName,
       phone: user.phone,
