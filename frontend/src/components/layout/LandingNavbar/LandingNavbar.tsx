@@ -30,12 +30,12 @@ export function LandingNavbar() {
           : "bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm border-b border-slate-100 dark:border-slate-900/60 py-4"
       }`}
     >
-      <nav className="container max-w-7xl mx-auto flex items-center justify-between">
+      <nav className="container max-w-7xl px-4 mx-auto flex items-center justify-between">
         <Logo />
 
         <DesktopNav />
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-0 sm:gap-2.5">
           <NavbarActions />
 
           <button

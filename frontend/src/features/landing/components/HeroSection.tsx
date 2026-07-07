@@ -47,7 +47,7 @@ export function HeroSection() {
       <div className="container-main relative z-20 w-full text-center">
         {/* Title */}
         <h1
-          className="text-white font-extrabold leading-tight mb-6 drop-shadow-md text-3xl sm:text-4xl md:text-5xl lg:text-6xl whitespace-pre-line"
+          className="text-white font-extrabold leading-tight px-2 sm:px-0 mb-6 drop-shadow-md text-3xl sm:text-4xl md:text-5xl lg:text-6xl whitespace-pre-line"
           style={{
             fontFamily: isRTL ? "var(--font-cairo)" : "var(--font-sans)",
           }}

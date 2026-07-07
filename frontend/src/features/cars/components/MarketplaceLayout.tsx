@@ -92,7 +92,7 @@ export function MarketplaceLayout({
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
 
   return (
-    <div className="container max-w-7xl mx-auto py-10" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="container max-w-7xl mx-auto px-4 py-10" dir={isRTL ? "rtl" : "ltr"}>
       {/* Top Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>

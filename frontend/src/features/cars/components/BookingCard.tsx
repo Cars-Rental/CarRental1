@@ -217,7 +217,7 @@ export function BookingCard({
           onClick={() => setSelectingFrom(true)}
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             selectingFrom
-              ? "border-[var(--primary)] text-primary bg-primary/5"
+              ? "border-primary text-primary bg-primary/5"
               : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
@@ -231,7 +231,7 @@ export function BookingCard({
           onClick={() => setSelectingFrom(false)}
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             !selectingFrom
-              ? "border-[var(--primary)] text-primary bg-primary/5"
+              ? "border-primary text-primary bg-primary/5"
               : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >

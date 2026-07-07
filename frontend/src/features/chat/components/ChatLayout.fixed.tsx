@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import {
   Search,
@@ -147,7 +146,7 @@ export function ChatLayout({
       dir={locale === "ar" ? "rtl" : "ltr"}
       className="flex min-h-[70vh] gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950"
     >
-      <div className="w-full max-w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
+      <div className="w-full max-w-90 flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
         <div className="p-4 border-b border-slate-100 dark:border-slate-800/80">
           <div className="relative">
             <input
@@ -192,7 +191,7 @@ export function ChatLayout({
               </div>
             ))
           ) : filteredRooms.length === 0 ? (
-            <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 p-6 text-slate-400">
+            <div className="flex min-h-60 flex-col items-center justify-center gap-3 p-6 text-slate-400">
               <MessageSquare className="h-10 w-10 stroke-[1.5]" />
               <p className="text-xs font-bold">{t("noRooms")}</p>
             </div>
@@ -219,7 +218,7 @@ export function ChatLayout({
                   className={cn(
                     "flex w-full items-center gap-3 p-4 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/40",
                     isSelected &&
-                      "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-[var(--primary)]",
+                      "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-primary",
                   )}
                 >
                   <div className="relative shrink-0">
@@ -351,7 +350,7 @@ export function ChatLayout({
               <div ref={messagesEndRef} />
             </>
           ) : (
-            <div className="grid min-h-[320px] place-items-center text-center text-slate-500 dark:text-slate-400">
+            <div className="grid min-h-80 place-items-center text-center text-slate-500 dark:text-slate-400">
               <MessageSquare className="mb-4 h-16 w-16 text-slate-300 dark:text-slate-700" />
               <div>
                 <p className="text-sm font-bold">{t("noActiveRoom")}</p>

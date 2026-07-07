@@ -24,7 +24,7 @@ export function NavbarActions() {
   );
 
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-0 sm:gap-2.5">
       <ThemeToggle />
       <LanguageToggle />
       {!isMounted || isLoading ? (
