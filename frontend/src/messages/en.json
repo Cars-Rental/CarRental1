@@ -2,5 +2,1352 @@
   "HomePage": {
     "title": "Car Rental & Marketplace",
     "description": "Book or list your car easily"
+  },
+  "RealtimeNotifications": {
+    "notifications": "Notifications",
+    "rentAcceptedTitle": "Rental order accepted",
+    "rentAcceptedDescription": "The trader accepted your rental order.",
+    "buyAcceptedTitle": "Purchase order accepted",
+    "buyAcceptedDescription": "The trader accepted your purchase order and a chat room is ready.",
+    "openChat": "Open chat",
+    "unreadCount": "{count} unread",
+    "noUnread": "No unread notifications",
+    "readAll": "Read all",
+    "loading": "Loading notifications...",
+    "caughtUp": "You are all caught up."
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "rentCars": "Rent Cars",
+    "buyCars": "Buy Cars",
+    "contact": "Contact",
+    "login": "Login",
+    "signUp": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "bookings": "Bookings",
+    "dashboard": "Dashboard",
+    "orders": "My Orders",
+    "favorites": "Favorites",
+    "messages": "Messages",
+    "settings": "Settings"
+  },
+  "Auth": {
+    "register": {
+      "title": "Biggest car rental platform in Egypt",
+      "title1": "Create a new account",
+      "subtitle": "Create your account to start your journey with us",
+      "trustedCars": "Trusted & inspected vehicles",
+      "bestPrices": "Best prices with full transparency",
+      "support": "24/7 customer support",
+      "copyright": "All rights reserved.",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email address",
+      "emailPlaceholder": "example@rento.com",
+      "phone": "Phone number",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordPlaceholder": "********",
+      "terms": "I agree to the Terms & Conditions and Privacy Policy",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login",
+      "role": {
+        "user": "Customer",
+        "trader": "Car Dealer"
+      },
+      "gender": "Gender",
+      "genderOptions": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "validation": {
+        "userNameMin": "Name must be at least 3 characters",
+        "userNameMax": "Username must not exceed 40 characters",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneInvalid": "Invalid Egyptian phone number",
+        "passwordInvalid": "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number.",
+        "passwordsNotMatch": "Passwords do not match"
+      }
+    },
+    "login": {
+      "title": "Discover the road with safety and ease",
+      "description": "Whether you're planning a leisure trip or a business trip, we offer you a wide range of new and reliable cars with competitive prices in the heart of Cairo.",
+      "title1": "Welcome back",
+      "subtitle": "Login to manage your account and bookings",
+      "carsCount": "+500",
+      "carsDesc": "Available cars",
+      "reviewspercentage": "%98",
+      "reviewsDesc": "Customer reviews",
+      "copyright": "All rights reserved.",
+      "email": "Email address",
+      "emailPlaceholder": "example@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "********",
+      "forgotPassword": "Forgot password?",
+      "rememberMe": "Remember me on this device",
+      "submit": "Login",
+      "submitting": "Logging in...",
+      "or": "or",
+      "loginWithGoogle": "Google",
+      "loginWithFacebook": "Facebook",
+      "dontHaveAccount": "Don't have an account?",
+      "createAccount": "Create a new account",
+      "validation": {
+        "emailInvalid": "Please enter a valid email address",
+        "passwordInvalid": "Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, and one number."
+      }
+    },
+    "googleCallback": {
+      "title": "Completing Google sign in",
+      "description": "Please wait while we securely finish signing you in.",
+      "success": "Google sign in successful",
+      "failed": "Google sign in failed"
+    },
+    "forgotPassword": {
+      "title": "Forgot password?",
+      "subtitle": "Enter your email and we will send you a reset link",
+      "description": "Recover your account securely and continue your journey with Rento without any hassle.",
+      "email": "Email address",
+      "emailPlaceholder": "example@email.com",
+      "submit": "Send reset link",
+      "submitting": "Sending...",
+      "rememberPassword": "Remembered your password?",
+      "login": "Login",
+      "securityTitle": "Security & Trust",
+      "securityDescription": "We ensure a secure account recovery process to keep your personal information and account protected.",
+      "copyright": "All rights reserved.",
+      "validation": {
+        "emailInvalid": "Please enter a valid email address"
+      }
+    },
+    "verifyEmail": {
+      "title": "Welcome to the future of car rentals in Egypt",
+      "title1": "Verify your email",
+      "description": "We are committed to providing you with a hassle-free and secure experience. Please verify your account to start your journey with us.",
+      "subtitle": "Enjoy a safe holiday, manage your account, and continue your journey with Rento.",
+      "copyright": "All rights reserved.",
+      "sentTo": "Verification code sent to",
+      "otpPlaceholder": "000000",
+      "submit": "Verify email",
+      "submitting": "Verifying...",
+      "notReceived": "Didn't receive the code?",
+      "resend": "Resend code",
+      "resendIn": "Resend code in {seconds}s",
+      "validation": {
+        "otpLength": "Verification code must be 6 digits",
+        "otpNumbers": "Verification code must contain numbers only"
+      }
+    },
+    "resetPassword": {
+      "title": "Your safety and comfort on every trip",
+      "title1": "Reset password",
+      "formTitle": "Reset password",
+      "subtitle": "Create a new strong password for your account",
+      "subtitle1": "Confirm your new password.",
+      "description": "We are here to help you recover your account quickly and easily. Set a strong password to ensure the security of your personal information and account.",
+      "password": "New password",
+      "confirmPassword": "Confirm new password",
+      "passwordPlaceholder": "********",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "copyright": "All rights reserved.",
+      "encryptionTitle": "Full encryption",
+      "encryptionDescription": "Your data is protected with modern security standards.",
+      "speedTitle": "Fast update",
+      "speedDescription": "Your password is updated instantly across your account.",
+      "requirementsTitle": "Password must contain:",
+      "requirementMin": "At least 8 characters",
+      "requirementUpperLower": "At least one uppercase and one lowercase letter",
+      "backToLogin": "Back to login",
+      "validation": {
+        "passwordMin": "Password must be at least 8 characters",
+        "passwordUppercase": "Password must contain at least one uppercase letter",
+        "passwordLowercase": "Password must contain at least one lowercase letter",
+        "passwordsNotMatch": "Passwords do not match"
+      }
+    }
+  },
+  "Landing": {
+    "hero": {
+      "title": "Rent Your Perfect Car\nWith Absolute Ease in Egypt",
+      "subtitle": "Choose from hundreds of available cars all over Egypt at competitive prices and exceptional service.",
+      "cityLabel": "City",
+      "cityPlaceholder": "Cairo",
+      "dateLabel": "Date",
+      "datePlaceholder": "Choose Date",
+      "typeLabel": "Car Type",
+      "typePlaceholder": "Family",
+      "searchBtn": "Search for your car"
+    },
+    "stats": {
+      "happyClients": "Active Users",
+      "carsAvailable": "Cars Available",
+      "branches": "Certified Branches"
+    },
+    "howItWorks": {
+      "title": "How Rento Works?",
+      "searchTitle": "Search",
+      "searchDesc": "Choose from categories of cars in your city easily with one click.",
+      "bookTitle": "Book",
+      "bookDesc": "Enter your details, choose the appropriate time, and secure your booking with full safety.",
+      "driveTitle": "Drive",
+      "driveDesc": "Pick up keys from the dealer's location or request delivery to you and start your journey."
+    },
+    "featured": {
+      "titleRent": "Featured Cars",
+      "subtitleRent": "Latest models available for booking now",
+      "titleBuy": "Cars for Sale",
+      "subtitleBuy": "Explore premium vehicles available for purchase",
+      "showAll": "Show All",
+      "seats": "Seats",
+      "bags": "Bags",
+      "automatic": "Automatic",
+      "manual": "Manual",
+      "perDay": "day",
+      "egp": "EGP",
+      "bookNow": "Book Now",
+      "buyNow": "Buy Now",
+      "badgeAvailable": "Available",
+      "badgePremium": "Premium",
+      "loadErrorTitle": "Cars are not available right now",
+      "loadErrorDescription": "We could not reach the server. Please check that the backend is running and try again.",
+      "retry": "Try Again"
+    },
+    "whyUs": {
+      "title": "Why Thousands Choose Rento?",
+      "subtitle": "We don't just offer car rentals; we provide a reliable and enjoyable driving experience, taking care of every detail to guarantee your comfort and safety on every trip.",
+      "check1": "More than 50 pickup points across the country",
+      "check2": "A diverse fleet to suit all budgets",
+      "check3": "Home delivery or airport pickup option",
+      "safeTitle": "Full Safety",
+      "safeDesc": "Comprehensive insurance coverage on all accidents and damages for all cars.",
+      "easyTitle": "Ease & Speed",
+      "easyDesc": "Book your perfect car in less than two minutes via app or website.",
+      "priceTitle": "Best Prices",
+      "priceDesc": "Complete transparency in pricing without any hidden fees or charges.",
+      "supportTitle": "24/7 Support",
+      "supportDesc": "Our customer service team is ready to assist you at any time."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about our services",
+      "q1": "What documents are required for rental?",
+      "a1": "You need a valid driver's license, national ID (or passport for tourists), and a security deposit (which is fully refundable).",
+      "q2": "Is airport car delivery service available?",
+      "a2": "Yes, we offer airport delivery services at Cairo, Alexandria, and other airports. Simply select your terminal during booking.",
+      "q3": "How is the security deposit refunded?",
+      "a3": "The deposit is refunded to your card or cash depending on your initial payment method within 3-5 business days after returning the car safely."
+    },
+    "footer": {
+      "desc": "Egypt's leading car rental & sales platform. Find the best cars at the prices across all of Egypt.",
+      "contactUs": "Contact Us",
+      "downloadText": "Download the app now for a 10% discount on your first booking",
+      "copyright": "Made with love in Egypt | © {year} Rento. All rights reserved."
+    }
+  },
+  "Cars": {
+    "rentTitle": "Cars For Rent",
+    "saleTitle": "Cars For Sale",
+    "searchPlaceholder": "Search by name, brand, or model...",
+    "foundCount": "{count} cars found",
+    "sortBy": "Sort By",
+    "sortNewest": "Newest",
+    "sortOldest": "Oldest",
+    "sortPriceAsc": "Price: Low to High",
+    "sortPriceDesc": "Price: High to Low",
+    "sortPopular": "Most Popular",
+    "filters": "Filters",
+    "clearFilters": "Clear Filters",
+    "brand": "Brand",
+    "searchBrand": "Search Brand...",
+    "noBrandsFound": "No brands found.",
+    "priceRange": "Price Range",
+    "year": "Year",
+    "transmission": "Transmission",
+    "fuelType": "Fuel Type",
+    "bodyType": "Body Type",
+    "seats": "Seats Count",
+    "location": "Location",
+    "any": "Any",
+    "automatic": "Automatic",
+    "manual": "Manual",
+    "petrol": "Petrol",
+    "diesel": "Diesel",
+    "electric": "Electric",
+    "hybrid": "Hybrid",
+    "sedan": "Sedan",
+    "suv": "SUV",
+    "hatchback": "Hatchback",
+    "coupe": "Coupe",
+    "pickup": "Pickup",
+    "van": "Van",
+    "convertible": "Convertible",
+    "egp": "EGP",
+    "perDay": "day",
+    "mileage": "Mileage",
+    "km": "km",
+    "viewDetails": "View Details",
+    "toggleFavorite": "Toggle favorite",
+    "favoriteLoginRequired": "Please log in to add cars to your favorites.",
+    "rentNow": "Rent Now",
+    "buyNow": "Buy Now",
+    "badgeAvailable": "Available",
+    "badgeUnavailable": "Unavailable",
+    "noCarsFound": "No cars match your filters.",
+    "emptyHint": "Try adjusting your filters or search keyword.",
+    "loadErrorTitle": "Could not load cars",
+    "loadErrorDescription": "The backend server is not responding right now. Start the server and try again.",
+    "retry": "Try Again",
+    "detailsTitle": "Car Details",
+    "backToRent": "Back to Rent Page",
+    "backToSale": "Back to Sale Page",
+    "brandModel": "Brand & Model",
+    "rating": "Rating",
+    "availability": "Availability",
+    "description": "Description",
+    "rentPrice": "Rent Price",
+    "salePrice": "Sale Price",
+    "specs": "Specifications",
+    "locationPlaceholder": "Search city...",
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Page"
+  },
+  "About": {
+    "eyebrow": "About Rento",
+    "title": "Egypt’s modern car rental and marketplace platform",
+    "description": "Rento connects customers with trusted car owners and dealers, making renting and buying cars easier, safer, and more transparent.",
+    "cards": {
+      "title": "Why Choose Rento?",
+      "trust": {
+        "title": "Trusted Experience",
+        "desc": "Verified cars, clear pricing, and a smooth booking journey."
+      },
+      "cars": {
+        "title": "Rent & Buy",
+        "desc": "Find cars for short-term rental or purchase from one platform."
+      },
+      "users": {
+        "title": "Built for Egypt",
+        "desc": "Designed for Egyptian cities, customers, and local car dealers."
+      }
+    },
+    "mission": {
+      "title": "Our Mission",
+      "subtitle": "Driving the future of mobility in Egypt",
+      "desc1": "We believe that renting or buying a car should be as simple as booking a flight. No more hidden fees, complicated paperwork, or unreliable dealers.",
+      "desc2": "By building a transparent, digital-first marketplace, we are empowering thousands of Egyptians to find their perfect ride with confidence and ease."
+    },
+    "stats": {
+      "users": "10k+",
+      "usersLabel": "Happy Customers",
+      "cars": "500+",
+      "carsLabel": "Vehicles Available",
+      "cities": "15+",
+      "citiesLabel": "Cities Covered"
+    },
+    "cta": {
+      "title": "Ready to hit the road?",
+      "desc": "Join thousands of users who have found their perfect car on Rento.",
+      "buttonRent": "Browse Cars for Rent",
+      "buttonBuy": "Browse Cars for Sale"
+    }
+  },
+  "Contact": {
+    "eyebrow": "Contact Us",
+    "title": "We’re here to help you",
+    "description": "Have a question about renting, selling, or listing a car? Send us a message and our team will contact you.",
+    "info": {
+      "phone": {
+        "title": "Phone",
+        "value": "+20 100 000 0000"
+      },
+      "email": {
+        "title": "Email",
+        "value": "info@rento.com"
+      },
+      "address": {
+        "title": "Address",
+        "value": "Cairo, Egypt"
+      }
+    },
+    "form": {
+      "name": "Your name",
+      "email": "Email address",
+      "message": "Your message",
+      "submit": "Send message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "How fast do you respond?",
+      "a1": "Our team typically responds within 2-4 hours during regular business hours.",
+      "q2": "Do you have physical offices?",
+      "a2": "Yes, our main headquarters is in Cairo, but our services cover major cities across Egypt.",
+      "q3": "Can I contact you on WhatsApp?",
+      "a3": "Absolutely! You can reach out to our support number via WhatsApp for quicker assistance."
+    },
+    "social": {
+      "title": "Follow Us"
+    }
+  },
+  "UserAccount": {
+    "auth": {
+      "checking": "Checking account access..."
+    },
+    "actions": {
+      "viewDetails": "View details",
+      "removeFavorite": "Remove favorite",
+      "cancel": "Cancel",
+      "keepOrder": "Keep order"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "gender": "Gender",
+      "role": "Role",
+      "joinedAt": "Joined"
+    },
+    "gender": {
+      "Male": "Male",
+      "Female": "Female"
+    },
+    "role": {
+      "User": "Customer",
+      "Trader": "Trader",
+      "Admin": "Admin"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "processing": "Processing",
+      "paid": "Paid",
+      "refunded": "Refunded"
+    },
+    "paymentStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "refunded": "Refunded"
+    },
+    "carType": {
+      "rent": "Rent",
+      "sale": "Sale"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your personal information and account overview.",
+      "editProfile": "Edit profile",
+      "personalInfo": "Personal information",
+      "editDescription": "Update your name, phone, and gender.",
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
+      "summary": {
+        "bookings": "Bookings",
+        "orders": "Orders",
+        "favorites": "Favorites"
+      }
+    },
+    "bookings": {
+      "title": "My Bookings",
+      "description": "Track your rental bookings and trip details.",
+      "pickupDate": "Pickup date",
+      "returnDate": "Return date",
+      "totalDays": "Total days",
+      "totalPrice": "Total price",
+      "daysValue": "{count} days",
+      "empty": "No bookings yet.",
+      "browseBookings": "Browse bookings",
+      "browseRentals": "Browse rentals"
+    },
+    "orders": {
+      "title": "My Orders",
+      "description": "Review your purchase orders and payment status.",
+      "salePrice": "Sale price",
+      "orderDate": "Order date",
+      "paymentStatus": "Payment status",
+      "orderStatus": "Order status",
+      "loading": "Loading orders...",
+      "empty": "No orders yet.",
+      "error": "We couldn't load your orders. Please try again.",
+      "unknownCar": "Car",
+      "cancellationReasonPrompt": "Why do you want to cancel this order? Optional.",
+      "cancelTitle": "Cancel order",
+      "cancelDescription": "You can add a reason for cancelling this order. This step cannot be undone after confirmation.",
+      "cancellationReason": "Cancellation reason",
+      "cancellationReasonPlaceholder": "Write a reason, optional",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Failed to cancel order"
+    },
+    "favorites": {
+      "title": "Favorites",
+      "description": "View and manage the cars you saved.",
+      "location": "Location",
+      "price": "Price",
+      "empty": "No saved cars yet.",
+      "error": "We couldn't load your saved cars. Please try again."
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Control account preferences, notifications, language, and theme.",
+      "profileDescription": "Update your profile details when account editing is available.",
+      "securityDescription": "Manage password and account security options.",
+      "notificationsDescription": "Choose how Rento can contact you.",
+      "languageDescription": "Switch between English and Arabic.",
+      "themeDescription": "Switch between light and dark mode.",
+      "dangerDescription": "Sensitive account actions will appear here.",
+      "manageProfile": "Manage profile",
+      "changePassword": "Change password",
+      "emailNotifications": "Email notifications",
+      "smsNotifications": "SMS notifications",
+      "marketingNotifications": "Marketing notifications",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "deleteAccount": "Delete account",
+      "sections": {
+        "profile": "Profile settings",
+        "security": "Security",
+        "notifications": "Notifications",
+        "language": "Language",
+        "theme": "Theme",
+        "dangerZone": "Danger zone"
+      }
+    }
+  },
+  "AdminDashboard": {
+    "auth": {
+      "checking": "Checking admin access..."
+    },
+    "topbar": {
+      "title": "Overview",
+      "toggleMenu": "Toggle menu",
+      "notifications": "Notifications",
+      "collapseSidebar": "Collapse sidebar",
+      "expandSidebar": "Expand sidebar"
+    },
+    "sidebar": {
+      "overview": "Overview",
+      "users": "Users",
+      "traders": "Traders",
+      "rentalCars": "Rental Cars",
+      "saleCars": "Cars For Sale",
+      "bookings": "Bookings",
+      "orders": "Orders",
+      "reviews": "Reviews",
+      "reports": "Reports",
+      "payments": "Payments",
+      "verifications": "Verification Requests",
+      "notifications": "Notifications",
+      "categories": "Categories",
+      "locations": "Locations",
+      "promotions": "Promotions",
+      "settings": "Settings"
+    },
+    "pages": {
+      "overview": {
+        "title": "Admin Overview",
+        "description": "Monitor platform growth, moderation queues, revenue, and recent activity."
+      },
+      "users": {
+        "title": "Users",
+        "description": "Manage customer accounts, access state, and activity history."
+      },
+      "traders": {
+        "title": "Traders",
+        "description": "Review trader accounts, verification status, cars, and earnings."
+      },
+      "rentalCars": {
+        "title": "Rental Cars",
+        "description": "Moderate rental listings across traders, categories, and locations."
+      },
+      "saleCars": {
+        "title": "Cars For Sale",
+        "description": "Moderate sale listings and marketplace availability."
+      },
+      "bookings": {
+        "title": "Bookings",
+        "description": "Track rental bookings between customers and traders."
+      },
+      "orders": {
+        "title": "Orders",
+        "description": "Track purchase orders, payments, and order progress."
+      },
+      "reviews": {
+        "title": "Reviews",
+        "description": "Moderate customer reviews across the platform."
+      },
+      "reports": {
+        "title": "Reports",
+        "description": "Resolve content and account reports from the community."
+      },
+      "payments": {
+        "title": "Payments",
+        "description": "Review revenue, commission, withdrawals, and transactions."
+      },
+      "verifications": {
+        "title": "Verification Requests",
+        "description": "Approve or reject trader documents before marketplace access."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Create broadcasts and review notification history."
+      },
+      "categories": {
+        "title": "Categories",
+        "description": "Manage car categories, brands, and models."
+      },
+      "locations": {
+        "title": "Locations",
+        "description": "Manage countries and cities available on the platform."
+      },
+      "promotions": {
+        "title": "Promotions",
+        "description": "Manage coupons, discounts, featured cars, and featured traders."
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Configure platform, security, payments, commission, and localization."
+      }
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalTraders": "Total Traders",
+      "activeRentalCars": "Active Rental Cars",
+      "carsForSale": "Cars For Sale",
+      "totalBookings": "Total Bookings",
+      "totalOrders": "Total Orders",
+      "monthlyRevenue": "Monthly Revenue",
+      "platformCommission": "Platform Commission",
+      "pendingVerifications": "Pending Verifications",
+      "openReports": "Open Reports"
+    },
+    "charts": {
+      "revenue": "Revenue chart",
+      "revenueDescription": "Monthly gross marketplace revenue.",
+      "bookings": "Bookings chart",
+      "bookingsDescription": "Rental booking volume by month.",
+      "orders": "Orders chart",
+      "ordersDescription": "Purchase order volume by month."
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun"
+    },
+    "sections": {
+      "latestUsers": "Latest registered users",
+      "latestTraders": "Latest traders",
+      "latestBookings": "Latest bookings",
+      "latestOrders": "Latest orders",
+      "recentReports": "Recent reports",
+      "quickActions": "Quick actions",
+      "quickActionsDescription": "Common admin workflows prepared for future API actions.",
+      "notificationHistory": "Notification history"
+    },
+    "filters": {
+      "search": "Search by name, email, car, or trader...",
+      "status": "Status",
+      "apply": "Apply filters"
+    },
+    "pagination": {
+      "summary": "Showing mock results 1-10",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "tables": {
+      "avatar": "Avatar",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "createdAt": "Created At",
+      "totalBookings": "Total Bookings",
+      "totalOrders": "Total Orders",
+      "actions": "Actions",
+      "business": "Business",
+      "owner": "Owner",
+      "verification": "Verification",
+      "carsCount": "Cars Count",
+      "earnings": "Earnings",
+      "joinedAt": "Joined Date",
+      "car": "Car",
+      "trader": "Trader",
+      "category": "Category",
+      "price": "Price",
+      "bookingId": "Booking ID",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "pickup": "Pickup",
+      "return": "Return",
+      "paymentStatus": "Payment Status",
+      "orderStatus": "Order Status",
+      "rating": "Rating",
+      "review": "Review",
+      "date": "Date",
+      "reporter": "Reporter",
+      "target": "Target",
+      "reason": "Reason",
+      "transactionId": "Transaction ID",
+      "type": "Type",
+      "amount": "Amount",
+      "submittedAt": "Submitted At",
+      "documents": "Documents",
+      "title": "Title",
+      "message": "Message",
+      "audience": "Audience",
+      "value": "Value",
+      "endsAt": "Ends At",
+      "recipient": "Recipient"
+    },
+    "actions": {
+      "view": "View",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "delete": "Delete",
+      "approve": "Approve",
+      "reject": "Reject",
+      "viewProfile": "View Profile",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "hide": "Hide",
+      "resolve": "Resolve",
+      "dismiss": "Dismiss",
+      "deleteContent": "Delete Content",
+      "viewDocuments": "View Documents",
+      "createNotification": "Create notification",
+      "broadcast": "Broadcast",
+      "addItem": "Add item",
+      "createPromotion": "Create promotion",
+      "reviewReports": "Review reports"
+    },
+    "users": {
+      "deleteTitle": "Delete user?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "User deleted successfully",
+      "deleteError": "Could not delete user",
+      "banSuccess": "User banned successfully",
+      "banError": "Could not ban user",
+      "unbanSuccess": "User activated successfully",
+      "unbanError": "Could not activate user"
+    },
+    "traders": {
+      "deleteTitle": "Delete trader?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "Trader deleted successfully",
+      "deleteError": "Could not delete trader",
+      "banSuccess": "Trader banned successfully",
+      "banError": "Could not ban trader",
+      "unbanSuccess": "Trader activated successfully",
+      "unbanError": "Could not activate trader",
+      "approveSuccess": "Trader approved successfully",
+      "approveError": "Could not approve trader"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "banned": "Banned",
+      "pending": "Pending",
+      "suspended": "Suspended",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "resolved": "Resolved",
+      "accepted": "Accepted",
+      "open": "Open",
+      "hidden": "Hidden",
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "paid": "Paid",
+      "failed": "Failed",
+      "sold": "Sold",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "dismissed": "Dismissed",
+      "sent": "Sent",
+      "draft": "Draft",
+      "read": "Read"
+    },
+    "targetType": {
+      "car": "Car",
+      "review": "Review",
+      "trader": "Trader",
+      "user": "User"
+    },
+    "transactionType": {
+      "booking": "Booking",
+      "order": "Order",
+      "withdrawal": "Withdrawal",
+      "commission": "Commission"
+    },
+    "audience": {
+      "all": "All",
+      "users": "Users",
+      "traders": "Traders",
+      "user": "User",
+      "trader": "Trader"
+    },
+    "dictionaryType": {
+      "category": "Category",
+      "brand": "Brand",
+      "model": "Model",
+      "country": "Country",
+      "city": "City"
+    },
+    "promotionType": {
+      "coupon": "Coupon",
+      "discount": "Discount",
+      "featuredCar": "Featured Car",
+      "featuredTrader": "Featured Trader"
+    },
+    "payments": {
+      "totalRevenue": "Total Revenue",
+      "platformCommission": "Platform Commission",
+      "pendingWithdrawals": "Pending Withdrawals",
+      "completedWithdrawals": "Completed Withdrawals",
+      "gatewayFormSubtitle": "You will complete payment securely through Paymob",
+      "sessionGatewayFormSubtitle": "You will complete the session fee securely through Paymob"
+    },
+    "notifications": {
+      "createTitle": "Create notification",
+      "createDescription": "Prepare a platform notification for users, traders, or everyone.",
+      "titlePlaceholder": "Notification title",
+      "messagePlaceholder": "Notification message",
+      "createSuccess": "Notification sent successfully",
+      "createError": "Could not send notification"
+    },
+    "settings": {
+      "general": "General",
+      "platform": "Platform",
+      "security": "Security",
+      "email": "Email",
+      "notifications": "Notifications",
+      "payments": "Payments",
+      "commission": "Commission",
+      "localization": "Localization"
+    },
+    "settingsDescriptions": {
+      "general": "Application name and public identity.",
+      "platform": "Marketplace operating mode and controls.",
+      "security": "Admin review and protection settings.",
+      "email": "Support and transactional sender configuration.",
+      "notifications": "Platform notification preferences.",
+      "payments": "Withdrawal and payment handling rules.",
+      "commission": "Marketplace commission rate.",
+      "localization": "Supported languages and direction behavior."
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Enter a valid email address"
+    },
+    "cars": {
+      "detailsTitle": "Rental car details",
+      "detailsEmpty": "Could not load rental car details.",
+      "loadingDetails": "Loading car details...",
+      "deleteTitle": "Delete rental car?",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "deleteSuccess": "Rental car deleted successfully",
+      "deleteError": "Could not delete rental car",
+      "suspendSuccess": "Rental car suspended successfully",
+      "suspendError": "Could not suspend rental car"
+    },
+    "bookings": {
+      "detailsTitle": "Booking details",
+      "detailsEmpty": "Could not load booking details.",
+      "loadingDetails": "Loading booking details...",
+      "cancelSuccess": "Booking cancelled successfully",
+      "cancelError": "Could not cancel booking"
+    },
+    "orders": {
+      "detailsTitle": "Order details",
+      "detailsEmpty": "Could not load order details.",
+      "loadingDetails": "Loading order details...",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Could not cancel order"
+    },
+    "reviews": {
+      "deleteSuccess": "Review deleted successfully",
+      "deleteError": "Could not delete review"
+    }
+  },
+  "TraderDashboard": {
+    "auth": {
+      "checking": "Checking dashboard access..."
+    },
+    "topbar": {
+      "toggleMenu": "Toggle menu",
+      "notifications": "Notifications",
+      "collapseSidebar": "Collapse sidebar",
+      "expandSidebar": "Expand sidebar"
+    },
+    "sidebar": {
+      "overview": "Overview",
+      "rentalCars": "Rental Cars",
+      "saleCars": "Sale Cars",
+      "bookings": "Bookings",
+      "orders": "Orders",
+      "customers": "Customers",
+      "reviews": "Reviews",
+      "recentActivity": "Recent Activity",
+      "messages": "Messages",
+      "analytics": "Analytics",
+      "earnings": "Earnings",
+      "settings": "Settings"
+    },
+    "pages": {
+      "overview": {
+        "title": "Overview",
+        "description": "Monitor revenue, demand, and recent customer activity.",
+        "recentBookings": "Recent Bookings",
+        "recentOrders": "Recent Orders",
+        "recentActivity": "Recent Activity"
+      },
+      "rentalCars": {
+        "title": "Rental Cars",
+        "description": "Manage cars available for daily rental."
+      },
+      "saleCars": {
+        "title": "Sale Cars",
+        "description": "Manage vehicles listed for purchase."
+      },
+      "bookings": {
+        "title": "Bookings",
+        "description": "Track rental requests and booking status."
+      },
+      "orders": {
+        "title": "Orders",
+        "description": "Review purchase offers and sales pipeline."
+      },
+      "customers": {
+        "title": "Customers",
+        "description": "View customer activity across bookings and orders."
+      },
+      "reviews": {
+        "title": "Reviews",
+        "description": "Read customer feedback for your listed cars."
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "description": "Track the latest rental and purchase activity across your cars."
+      },
+      "messages": {
+        "title": "Messages",
+        "description": "Customer conversations will appear here."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Performance charts and trends will appear here."
+      },
+      "earnings": {
+        "title": "Earnings",
+        "description": "Track available, pending, and lifetime earnings."
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Review account details for your trader profile."
+      }
+    },
+    "stats": {
+      "totalRevenue": "Total Revenue",
+      "activeRentals": "Active Rentals",
+      "pendingBookings": "Pending Bookings",
+      "completedOrders": "Completed Orders",
+      "totalCustomers": "Total Customers",
+      "averageRating": "Average Rating",
+      "ratingValue": "{value} / 5"
+    },
+    "filters": {
+      "searchCars": "Search by car name, model, or location...",
+      "searchOrders": "Search by customer, car, or order ID...",
+      "searchCustomers": "Search by name, email, or phone...",
+      "allStatuses": "All statuses",
+      "allLocations": "All locations",
+      "minPrice": "Min price",
+      "maxPrice": "Max price",
+      "minOrders": "Min orders",
+      "minSpent": "Min spent"
+    },
+    "pagination": {
+      "summary": "Showing {current}-{end} of {total} cars",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {totalPages}"
+    },
+    "tables": {
+      "customer": "Customer",
+      "car": "Car",
+      "total": "Total",
+      "offer": "Offer",
+      "status": "Status",
+      "location": "Location",
+      "price": "Price",
+      "salePrice": "Sale Price",
+      "specs": "Specs",
+      "specsValue": "{transmission} / {fuelType} / {seats} seats",
+      "specsValueShort": "{transmission} / {seats} seats",
+      "dates": "Dates",
+      "dateRange": "{start} - {end}",
+      "createdAt": "Created",
+      "phone": "Phone",
+      "activity": "Activity",
+      "customerActivity": "{bookings} bookings / {orders} orders",
+      "totalSpent": "Total Spent",
+      "rating": "Rating",
+      "comment": "Comment",
+      "notAvailable": "Not available",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "maintenance": "Maintenance",
+      "sold": "Sold",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "rejected": "Rejected",
+      "negotiating": "Negotiating",
+      "accepted": "Accepted",
+      "failed": "Failed"
+    },
+    "empty": {
+      "cars": {
+        "title": "No cars found",
+        "description": "Listed cars will appear here after they are added."
+      },
+      "bookings": {
+        "title": "No bookings yet",
+        "description": "Rental bookings will appear here when customers reserve your cars."
+      },
+      "orders": {
+        "title": "No orders yet",
+        "description": "Purchase offers will appear here when customers contact you."
+      },
+      "customers": {
+        "title": "No customers yet",
+        "description": "Customers will appear here after bookings or orders are created."
+      },
+      "reviews": {
+        "title": "No reviews yet",
+        "description": "Customer reviews will appear here after completed trips or purchases."
+      },
+      "messages": {
+        "title": "Messages are coming soon",
+        "description": "This placeholder is ready for the messaging workflow."
+      },
+      "analytics": {
+        "title": "Analytics are coming soon",
+        "description": "This placeholder is ready for charts and performance insights."
+      },
+      "earnings": {
+        "title": "No earnings data",
+        "description": "Earnings will appear here once transactions are available."
+      },
+      "activity": {
+        "title": "No recent activity",
+        "description": "Recent rent and buy activity will appear here."
+      },
+      "settings": {
+        "title": "No account details",
+        "description": "Account details will appear after your profile loads."
+      }
+    },
+    "actions": {
+      "addCar": "Add Car",
+      "updateCar": "Update Car",
+      "deleteCar": "Delete Car",
+      "accept": "Accept",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "noActions": "No actions",
+      "rejectOrderTitle": "Reject order",
+      "rejectOrderDescription": "Add the rejection reason before rejecting this purchase request.",
+      "rejectBookingTitle": "Reject booking",
+      "rejectBookingDescription": "Add the rejection reason before rejecting this booking request.",
+      "rejectionReasonPrompt": "Why do you want to reject this request?",
+      "rejectionReasonLabel": "Rejection reason",
+      "rejectionReasonPlaceholder": "Write the reason clearly for the customer...",
+      "rejectionReasonRequired": "Rejection reason is required.",
+      "bookingStatusUpdated": "Booking status updated",
+      "bookingStatusUpdateFailed": "Failed to update booking status",
+      "orderStatusUpdated": "Order status updated",
+      "orderStatusUpdateFailed": "Failed to update order status"
+    },
+    "carForm": {
+      "addTitle": "Add Car",
+      "editTitle": "Update Car",
+      "rentDescription": "Add or update a car available for rent.",
+      "saleDescription": "Add or update a car listed for sale.",
+      "name": "Car Name",
+      "model": "Model",
+      "year": "Year",
+      "location": "Location",
+      "rentPrice": "Rent Price",
+      "salePrice": "Sale Price",
+      "transmission": "Transmission",
+      "fuel": "Fuel Type",
+      "bodyType": "Body Type",
+      "seats": "Seats",
+      "distance": "Distance",
+      "images": "Images",
+      "uploadImages": "Upload car images",
+      "uploadImagesHint": "Choose one or more images to preview before saving.",
+      "imagePreview": "Car image preview",
+      "removeImage": "Remove image",
+      "transmissionOptions": {
+        "automatic": "Automatic",
+        "manual": "Manual"
+      },
+      "fuelOptions": {
+        "petrol": "Petrol",
+        "diesel": "Diesel",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      },
+      "bodyOptions": {
+        "sedan": "Sedan",
+        "suv": "SUV",
+        "hatchback": "Hatchback",
+        "coupe": "Coupe",
+        "pickup": "Pickup",
+        "van": "Van",
+        "convertible": "Convertible"
+      }
+    },
+    "earnings": {
+      "availableBalance": "Available Balance",
+      "pendingBalance": "Pending Balance",
+      "totalEarnings": "Total Earnings",
+      "earned": "Earned",
+      "pending": "Pending",
+      "breakdown": {
+        "rent": "Rental earnings",
+        "buy": "Sale earnings"
+      }
+    },
+    "activity": {
+      "title": "Latest platform activity",
+      "type": {
+        "buy_order": "Buy order",
+        "rent_order": "Rent order"
+      }
+    },
+    "analytics": {
+      "revenueTrend": "Revenue Trend",
+      "revenueMix": "Revenue Mix",
+      "bookingVolume": "Booking Volume",
+      "topCars": "Top Performing Cars",
+      "carMeta": "{views} views / {conversion}% conversion",
+      "carBookings": "{count} bookings",
+      "carSales": "{count} sales",
+      "kpis": {
+        "monthlyRevenue": "Monthly Revenue",
+        "monthlyRevenueHelper": "From rental and sales activity",
+        "totalRentRevenue": "Rental Revenue",
+        "totalRentRevenueHelper": "Total revenue from rental bookings",
+        "totalBuyRevenue": "Sale Revenue",
+        "totalBuyRevenueHelper": "Total revenue from purchase orders",
+        "totalViews": "Listing Views",
+        "totalViewsHelper": "Across top active listings",
+        "conversionRate": "Conversion Rate",
+        "conversionRateHelper": "Average inquiry-to-deal rate",
+        "completedDemand": "Open Demand",
+        "completedDemandHelper": "Pending bookings plus completed orders"
+      },
+      "months": {
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun"
+      },
+      "sources": {
+        "rentals": "Rental Revenue",
+        "sales": "Sale Revenue",
+        "returningCustomers": "Returning Customers"
+      }
+    },
+    "reviews": {
+      "ratingCount": "{rating} star reviews"
+    },
+    "settings": {
+      "accountInformation": "Account Information",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role"
+    },
+    "validation": {
+      "titleMin": "Title must be at least 3 characters",
+      "required": "This field is required",
+      "invalidYear": "Enter a valid year",
+      "positivePrice": "Price must be greater than zero",
+      "positiveSeats": "Seats must be greater than zero",
+      "descriptionMin": "Description must be at least 10 characters",
+      "imagesMin": "Add at least one image"
+    }
+  },
+  "CarDetails": {
+    "available": "Available",
+    "condition": "Condition",
+    "excellent": "Excellent",
+    "type": "Type",
+    "year": "Year",
+    "modelLabel": "Model",
+    "brand": "Brand",
+    "seats": "Seats",
+    "featuresTitle": "Features & Amenities",
+    "features": {
+      "ac": "Air Conditioning",
+      "fuelSaver": "Fuel Saver",
+      "gps": "GPS Navigation",
+      "bluetooth": "Bluetooth",
+      "smartEntry": "Smart Entry"
+    },
+    "chat": "Chat",
+    "toggleFavorite": "Toggle favorite",
+    "favoriteLoginRequired": "Please log in to add this car to your favorites.",
+    "bookingLoginRequired": "You must be logged in to book this car.",
+    "buyLoginRequired": "You must be logged in to buy this car.",
+    "visitProfile": "Visit Profile",
+    "locationTitle": "Car Location",
+    "mapPlaceholder": "Map coming soon",
+    "reviewsTitle": "Customer Reviews",
+    "viewAll": "View All",
+    "salePrice": "Sale Price",
+    "egp": "EGP",
+    "buyNow": "Buy Now",
+    "bookNow": "Book Now",
+    "booking": "Booking ...",
+    "noChargeNote": "No charges will be made at this time",
+    "preferredDate": "Preferred Date",
+    "perDay": "day",
+    "days": "days",
+    "serviceFee": "Service Fee",
+    "total": "Total",
+    "legend": {
+      "selected": "Selected",
+      "reserved": "Reserved",
+      "available": "Available"
+    },
+    "errorLoading": "Failed to load car details",
+    "goBack": "Go back to cars",
+    "reviews": "reviews",
+    "startChatWith": "Chat with {name}",
+    "breadcrumb": {
+      "home": "Home",
+      "rentCars": "Rent Cars",
+      "saleCars": "Sale Cars"
+    }
+  },
+  "Payment": {
+    "pageTitle": "Complete Your Payment",
+    "pageSubtitle": "Secure payment to confirm your rental",
+    "sessionPageTitle": "Open a Chat Session",
+    "sessionPageSubtitle": "Pay a one-time fee to connect with the seller",
+    "formTitle": "Payment Details",
+    "formSubtitle": "Enter your card information to complete the rental",
+    "sessionFormSubtitle": "Enter your card information to open a chat session",
+    "gatewayFormSubtitle": "You will complete payment securely through Paymob",
+    "sessionGatewayFormSubtitle": "You will complete the session fee securely through Paymob",
+    "gatewayTitle": "Secure Paymob Checkout",
+    "gatewaySubtitle": "Complete your payment in the secure checkout frame below",
+    "openGateway": "Open payment page",
+    "sessionNotice": "By paying this 300 EGP fee, you will open a private chat session with the car owner to discuss purchase details and agree on terms.",
+    "cardName": "Cardholder Name",
+    "cardNamePlaceholder": "Name on card",
+    "cardNumber": "Card Number",
+    "expiry": "Expiry Date",
+    "cvv": "CVV",
+    "payNow": "Pay",
+    "processing": "Processing...",
+    "secure": "Secure",
+    "secureNote": "Your payment is encrypted and secure",
+    "egp": "EGP",
+    "days": "days",
+    "serviceFee": "Service Fee",
+    "totalDue": "Total Due",
+    "sessionFeeNote": "One-time session fee to connect with seller",
+    "sessionFeeDesc": "This fee opens a private chat with the car owner",
+    "successTitle": "Booking Confirmed!",
+    "successMessage": "{car} is reserved for you from {from} to {to}. Total paid: {amount} EGP",
+    "sessionSuccessTitle": "Session Opened!",
+    "sessionSuccessMessage": "Your chat session with the owner of {car} is now active. You can discuss purchase details directly.",
+    "returnSuccessTitle": "Payment approved",
+    "returnSuccessMessage": "Your payment was completed successfully.",
+    "returnFailedTitle": "Payment not completed",
+    "returnFailedMessage": "We could not confirm this payment. Please try again.",
+    "viewOrders": "View orders",
+    "backHome": "Back home",
+    "paidAmount": "Paid amount",
+    "transactionId": "Transaction ID",
+    "redirecting": "Redirecting you...",
+    "errorLoading": "Failed to load order details",
+    "startChatWith": "Start Chat",
+    "goBack": "Go back to cars",
+    "breadcrumb": {
+      "home": "Home",
+      "rentCars": "Rent Cars",
+      "saleCars": "Sale Cars",
+      "payment": "Payment"
+    },
+    "errors": {
+      "nameRequired": "Cardholder name is required",
+      "cardRequired": "Enter a valid 16-digit card number",
+      "expiryRequired": "Enter a valid expiry date",
+      "cvvRequired": "Enter a valid CVV",
+      "gatewayFailed": "Failed to start payment. Please try again."
+    }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist, may have moved, or the link is no longer valid.",
+    "home": "Go Home",
+    "browseCars": "Browse Cars"
+  },
+  "Chat": {
+    "title": "Conversations",
+    "conversations": "Conversations",
+    "selectConversation": "Select a conversation to start chatting",
+    "selectRoomHint": "Choose a room from the list on the right to view messages",
+    "newChat": "New Chat",
+    "selectContacts": "Select contacts to start a private chat or create a group",
+    "create": "Create",
+    "cancel": "Cancel",
+    "searchPlaceholder": "Search for a conversation...",
+    "all": "All",
+    "open": "Open",
+    "unread": "Unread",
+    "resolved": "Resolved",
+    "typing": "typing...",
+    "typeMessage": "Type your message here...",
+    "markAsResolved": "Mark as 'Resolved'",
+    "activeBooking": "Active Booking",
+    "rentBooking": "Rental Booking",
+    "buyBooking": "Purchase Request",
+    "online": "Online",
+    "offline": "Offline",
+    "noActiveRoom": "Select a conversation to start chatting",
+    "noMessagesYet": "No messages yet",
+    "groupChat": "Group chat",
+    "groupName": "Group name",
+    "selectAtLeastOne": "Please select at least one contact.",
+    "socketNotConnected": "Socket is not connected. Refresh the page.",
+    "createRoomFailed": "Could not create chat room. Try again.",
+    "startChatWith": "Chat with {name}",
+    "noRooms": "No conversations found"
   }
 }

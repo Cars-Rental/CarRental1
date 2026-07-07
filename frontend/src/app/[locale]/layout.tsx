@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
+import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cairo, Noto_Serif } from "next/font/google";
 import { getMessages } from "next-intl/server";
 import { AppProviders } from "@/providers/app-providers";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Car Rental",
+  description: "Car Rental & Marketplace Platform",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +22,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+});
+
+const notoSerif = Noto_Serif({
+  subsets: ["latin"],
+  variable: "--font-noto-serif",
+  display: "swap",
+});
+
 export default async function LocaleLayout({
   children,
   params,
@@ -24,22 +42,22 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  const messages = await getMessages();
+  if (!hasLocale(routing.locales, locale)) notFound();
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  const messages = await getMessages();
   const direction = locale === "ar" ? "rtl" : "ltr";
 
   return (
     <html
       lang={locale}
       dir={direction}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${geistMono.variable} ${cairo.variable} ${notoSerif.variable} h-full antialiased`}
     >
-      <body>
+      <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <AppProviders>{children}</AppProviders>
+          <AppProviders key={locale}>{children}</AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

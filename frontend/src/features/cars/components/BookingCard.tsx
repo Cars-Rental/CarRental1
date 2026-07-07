@@ -1,0 +1,340 @@
+"use client";
+
+import React, { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import { CalendarIcon, Key, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useDirection } from "@/lib";
+import { useCreateOrder } from "@/features/orders/hooks/useCreateOrder";
+import { useCreateBuyOrder } from "@/features/orders/hooks/useCreateBuyOrder";
+import { selectIsAuthenticated } from "@/features/auth/store";
+import { useAppSelector } from "@/store/hooks";
+
+interface BookingCardProps {
+  mode: "rent" | "sale";
+  pricePerDay?: number;
+  priceTotal?: number;
+  blockedDates?: Date[];
+  carId: string;
+}
+
+const SERVICE_FEE = 150;
+
+function isSameDay(a: Date, b: Date) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
+function isDateBlocked(date: Date, blockedDates: Date[]) {
+  return blockedDates.some((blocked) => isSameDay(date, blocked));
+}
+
+function daysBetween(from: Date, to: Date) {
+  return Math.max(
+    1,
+    Math.ceil((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)),
+  );
+}
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-EG", {
+    day: "numeric",
+    month: "long",
+  });
+}
+
+function toISODateString(date: Date): string {
+  return date.toISOString().split("T")[0];
+}
+
+export function BookingCard({
+  mode,
+  pricePerDay = 0,
+  priceTotal = 0,
+  blockedDates = [],
+  carId,
+}: BookingCardProps) {
+  const t = useTranslations("CarDetails");
+  const router = useRouter();
+  const { locale } = useDirection();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const [fromDate, setFromDate] = useState<Date>(today);
+  const [toDate, setToDate] = useState<Date>(tomorrow);
+  const [selectingFrom, setSelectingFrom] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const { mutate: createOrder, isPending: isRentPending } = useCreateOrder({
+    onSuccess: (orderId) => {
+      router.push(`/${locale}/payment?orderId=${orderId}&mode=${mode}`);
+    },
+    onError: (message) => {
+      setErrorMessage(message);
+    },
+  });
+
+  const { mutate: createBuyOrder, isPending: isBuyPending } = useCreateBuyOrder(
+    {
+      onSuccess: (orderId) => {
+        router.push(`/${locale}/payment?orderId=${orderId}&mode=${mode}`);
+      },
+      onError: (message) => {
+        setErrorMessage(message);
+      },
+    },
+  );
+
+  const handleDateSelect = (date: Date | undefined) => {
+    if (!date) return;
+    if (isDateBlocked(date, blockedDates)) return;
+    setErrorMessage(null);
+
+    if (selectingFrom) {
+      setFromDate(date);
+      const newTo = new Date(date);
+      newTo.setDate(date.getDate() + 1);
+      setToDate(newTo);
+      setSelectingFrom(false);
+    } else {
+      if (date <= fromDate) {
+        setFromDate(date);
+        setSelectingFrom(false);
+      } else {
+        setToDate(date);
+        setSelectingFrom(true);
+      }
+    }
+  };
+
+  const handleBookNow = () => {
+    setErrorMessage(null);
+
+    if (!isAuthenticated) {
+      toast.error(t("bookingLoginRequired"), {
+        position: "top-left",
+      });
+      return;
+    }
+
+    createOrder({
+      car: carId,
+      startDate: toISODateString(fromDate),
+      endDate: toISODateString(toDate),
+    });
+  };
+
+  const handleBuyNow = () => {
+    setErrorMessage(null);
+
+    if (!isAuthenticated) {
+      toast.error(t("buyLoginRequired"), {
+        position: "top-left",
+      });
+      return;
+    }
+
+    createBuyOrder({ car: carId });
+  };
+
+  const totalDays = daysBetween(fromDate, toDate);
+  const subtotal = pricePerDay * totalDays;
+  const grandTotal = subtotal + SERVICE_FEE;
+  const isPending = mode === "rent" ? isRentPending : isBuyPending;
+
+  // --- SALE MODE ---
+  if (mode === "sale") {
+    return (
+      <div className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col gap-5">
+        <div>
+          <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">
+            {t("salePrice")}
+          </p>
+          <p className="text-3xl font-extrabold text-slate-800 dark:text-white">
+            {priceTotal.toLocaleString()}
+            <span className="text-sm font-semibold text-slate-400 dark:text-slate-500 ms-1">
+              {t("egp")}
+            </span>
+          </p>
+        </div>
+
+        <button
+          onClick={handleBuyNow}
+          disabled={isPending}
+          className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+        >
+          {isPending ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Key className="size-4" />
+          )}
+          {t("buyNow")}
+        </button>
+
+        {errorMessage && (
+          <div className="text-xs text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800/40 rounded-xl px-3 py-2 text-center font-medium">
+            {errorMessage}
+          </div>
+        )}
+
+        <p className="text-[10px] text-slate-400 dark:text-slate-500 text-center">
+          {t("noChargeNote")}
+        </p>
+      </div>
+    );
+  }
+
+  // --- RENT MODE ---
+  return (
+    <div className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
+      {/* Price */}
+      <div>
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-extrabold text-slate-800 dark:text-white">
+            {pricePerDay.toLocaleString()}
+          </span>
+          <span className="text-sm text-slate-400 dark:text-slate-500 font-semibold">
+            {t("egp")} / {t("perDay")}
+          </span>
+        </div>
+        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
+          {t("preferredDate")}
+        </p>
+      </div>
+
+      {/* Date selectors */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setSelectingFrom(true)}
+          className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
+            selectingFrom
+              ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
+              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
+          }`}
+        >
+          <CalendarIcon className="size-3.5 shrink-0" />
+          <span>{formatDate(fromDate)}</span>
+        </button>
+        <span className="text-slate-400 text-xs shrink-0">
+          {locale === "ar" ? "←" : "→"}
+        </span>
+        <button
+          onClick={() => setSelectingFrom(false)}
+          className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
+            !selectingFrom
+              ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
+              : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
+          }`}
+        >
+          <CalendarIcon className="size-3.5 shrink-0" />
+          <span>{formatDate(toDate)}</span>
+        </button>
+      </div>
+
+      {/* Calendar */}
+      <div className="rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+        <Calendar
+          mode="single"
+          selected={selectingFrom ? fromDate : toDate}
+          onSelect={handleDateSelect}
+          disabled={(date) => {
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            return d < today || isDateBlocked(date, blockedDates);
+          }}
+          modifiers={{
+            booked: blockedDates,
+            inRange: (date) => date > fromDate && date < toDate,
+            rangeStart: fromDate,
+            rangeEnd: toDate,
+          }}
+          modifiersClassNames={{
+            booked:
+              "bg-slate-100 dark:bg-slate-800 text-slate-400 line-through cursor-not-allowed",
+            inRange:
+              "bg-[var(--primary)]/10 text-[var(--primary)] rounded-none",
+            rangeStart:
+              locale === "ar"
+                ? "bg-[var(--primary)] text-white rounded-r-full"
+                : "bg-[var(--primary)] text-white rounded-l-full",
+            rangeEnd:
+              locale === "ar"
+                ? "bg-[var(--primary)] text-white rounded-l-full"
+                : "bg-[var(--primary)] text-white rounded-r-full",
+          }}
+          className="w-full"
+        />
+      </div>
+
+      {/* Legend */}
+      <div className="flex items-center gap-4 text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+        <span className="flex items-center gap-1">
+          <span className="size-2 rounded-full bg-primary inline-block" />
+          {t("legend.selected")}
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="size-2 rounded-full bg-rose-400 inline-block" />
+          {t("legend.reserved")}
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="size-2 rounded-full bg-slate-300 dark:bg-slate-600 inline-block" />
+          {t("legend.available")}
+        </span>
+      </div>
+
+      {/* Price breakdown */}
+      <div className="flex flex-col gap-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+        <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+          <span>
+            {pricePerDay.toLocaleString()} {t("egp")} × {totalDays} {t("days")}
+          </span>
+          <span className="font-semibold">{subtotal.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+          <span>{t("serviceFee")}</span>
+          <span className="font-semibold">{SERVICE_FEE}</span>
+        </div>
+        <div className="flex justify-between text-sm font-extrabold text-slate-800 dark:text-white border-t border-slate-100 dark:border-slate-800 pt-2 mt-1">
+          <span>{t("total")}</span>
+          <span>
+            {grandTotal.toLocaleString()} {t("egp")}
+          </span>
+        </div>
+      </div>
+
+      {/* Error message */}
+      {errorMessage && (
+        <div className="text-xs text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800/40 rounded-xl px-3 py-2 text-center font-medium">
+          {errorMessage}
+        </div>
+      )}
+
+      {/* CTA */}
+      <button
+        onClick={handleBookNow}
+        disabled={isPending}
+        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+      >
+        {isPending ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          <Key className="size-4" />
+        )}
+        {isPending ? t("booking") : t("bookNow")}
+      </button>
+
+      <p className="text-[10px] text-slate-400 dark:text-slate-500 text-center">
+        {t("noChargeNote")}
+      </p>
+    </div>
+  );
+}

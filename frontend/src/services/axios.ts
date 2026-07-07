@@ -1,9 +1,21 @@
 import axios from "axios";
+import { env } from "@/config/env";
 
-export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+const axiosInstance = axios.create({
+  baseURL: env.apiBaseUrl,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+axiosInstance.interceptors.request.use((config) => {
+  if (config.data instanceof FormData) {
+    if (config.headers) {
+      delete config.headers["Content-Type"];
+    }
+  }
+  return config;
+});
+
+export default axiosInstance;

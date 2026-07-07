@@ -2,5 +2,1350 @@
   "HomePage": {
     "title": "منصة تأجير وبيع السيارات",
     "description": "احجز أو اعرض سيارتك بسهولة"
+  },
+  "RealtimeNotifications": {
+    "notifications": "الإشعارات",
+    "rentAcceptedTitle": "تم قبول طلب الإيجار",
+    "rentAcceptedDescription": "وافق التاجر على طلب الإيجار الخاص بك.",
+    "buyAcceptedTitle": "تم قبول طلب الشراء",
+    "buyAcceptedDescription": "وافق التاجر على طلب الشراء وتم تجهيز غرفة المحادثة.",
+    "openChat": "فتح المحادثة",
+    "unreadCount": "{count} غير مقروء",
+    "noUnread": "لا توجد إشعارات غير مقروءة",
+    "readAll": "تحديد الكل كمقروء",
+    "loading": "جاري تحميل الإشعارات...",
+    "caughtUp": "لا توجد إشعارات جديدة."
+  },
+  "Navigation": {
+    "home": "الرئيسية",
+    "rentCars": "إيجار السيارات",
+    "buyCars": "بيع السيارات",
+    "about": "من نحن",
+    "contact": "تواصل معنا",
+    "login": "تسجيل الدخول",
+    "signUp": "انشاء حساب",
+    "logout": "تسجيل الخروج",
+    "profile": "الصفحة الشخصية",
+    "bookings": "الحجوزات",
+    "dashboard": "لوحة التحكم",
+    "orders": "طلباتي",
+    "favorites": "المفضلة",
+    "settings": "الإعدادات",
+    "messages": "الرسائل"
+  },
+  "Auth": {
+    "register": {
+      "title": "أكبر منصة لتأجير السيارات في مصر",
+      "title1": "إنشاء حساب جديد",
+      "subtitle": "قم بإنشاء   حسابك للبدء في رحلتك معنا",
+      "trustedCars": "سيارات موثوقة ومفحوصة بدقة",
+      "bestPrices": "أفضل الأسعار وشفافية كاملة",
+      "support": "دعم فني متاح على مدار الساعة",
+      "copyright": "جميع الحقوق محفوظة.",
+      "fullName": "الاسم بالكامل",
+      "fullNamePlaceholder": "أدخل الاسم بالكامل",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "example@rento.com",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "passwordPlaceholder": "********",
+      "terms": "أوافق على الشروط والأحكام وسياسة الخصوصية",
+      "submit": "إنشاء حساب",
+      "submitting": "جاري إنشاء الحساب...",
+      "alreadyHaveAccount": "لديك حساب بالفعل؟",
+      "login": "تسجيل الدخول",
+      "role": {
+        "user": "مستأجر",
+        "trader": "تاجر سيارات"
+      },
+      "gender": "الجنس",
+      "genderOptions": {
+        "male": "ذكر",
+        "female": "أنثى"
+      },
+      "validation": {
+        "userNameMin": "يجب أن يكون الاسم 3 أحرف على الأقل",
+        "userNameMax": "يجب ألا يزيد اسم المستخدم عن 40 حرفًا",
+        "emailInvalid": "برجاء إدخال بريد إلكتروني صحيح",
+        "phoneInvalid": "رقم الهاتف المصري غير صحيح",
+        "passwordInvalid": "يجب أن تتكون كلمة المرور من 8 إلى 16 حرفًا، وتحتوي على حرف كبير وحرف صغير ورقم.",
+        "passwordsNotMatch": "كلمتا المرور غير متطابقتين"
+      }
+    },
+    "login": {
+      "title": "استكشف الطريق\nبأمان وراحة",
+      "description": "سواء كنت تخطط لرحلة عائلية أو مهمة عمل، نوفر لك أسطولاً من السيارات الحديثة والآمنة بأسعار تنافسية في قلب القاهرة.",
+      "title1": "مرحبًا بك مجددًا",
+      "subtitle": "قم بتسجيل الدخول للوصول الي حسابك وادارة حجوزاتك ",
+      "carsCount": "+500",
+      "carsDesc": "سيارة متاحة",
+      "reviewspercentage": "%98",
+      "reviewsDesc": "تقييم العملاء",
+      "copyright": "جميع الحقوق محفوظة.",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "example@email.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "********",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "rememberMe": "تذكرني على هذا الجهاز",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري تسجيل الدخول...",
+      "or": "أو",
+      "loginWithGoogle": "Google",
+      "loginWithFacebook": "Facebook",
+      "dontHaveAccount": "ليس لديك حساب؟",
+      "createAccount": "قم بإنشاء حساب جديد",
+      "validation": {
+        "emailInvalid": "برجاء إدخال بريد إلكتروني صحيح",
+        "passwordInvalid": "يجب أن تتكون كلمة المرور من 8 إلى 16 حرفًا، وتحتوي على حرف كبير وحرف صغير ورقم."
+      }
+    },
+    "googleCallback": {
+      "title": "جاري إكمال تسجيل الدخول عبر Google",
+      "description": "يرجى الانتظار بينما نكمل تسجيل دخولك بأمان.",
+      "success": "تم تسجيل الدخول عبر Google بنجاح",
+      "failed": "فشل تسجيل الدخول عبر Google"
+    },
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور؟",
+      "subtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور الخاصة بك.",
+      "description": "استمتع بتجربة آمنة وسهلة لاستعادة حسابك ومتابعة رحلتك مع Rento.",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "example@email.com",
+      "submit": "إرسال رابط إعادة التعيين",
+      "submitting": "جاري الإرسال...",
+      "rememberPassword": "تذكرت كلمة المرور؟",
+      "login": "تسجيل الدخول",
+      "securityTitle": "أمان وموثوقية",
+      "securityDescription": "نضمن لك عملية استعادة حساب آمنة بالكامل لحماية بياناتك ومعلوماتك الشخصية.",
+      "copyright": "جميع الحقوق محفوظة.",
+      "validation": {
+        "emailInvalid": "برجاء إدخال بريد إلكتروني صحيح"
+      }
+    },
+    "verifyEmail": {
+      "title": "أهلاً بك في مستقبل تأجير السيارات في مصر",
+      "title1": "تأكيد البريد الإلكتروني",
+      "description": "نحن نؤمن بأن الوصول إلى وسيلة نقل مريحة وآمنة يجب أن يكون بسيطاً بضغطة زرواحدة. قم بتأكيد حسابك لتبدأ رحلتك معنا.",
+      "subtitle": "استمتع بتجربة آمنة وسهلة لاستعادة حسابك ومتابعة رحلتك مع Rento.",
+      "copyright": "جميع الحقوق محفوظة.",
+      "sentTo": "تم إرسال رمز التأكيد إلى",
+      "otpPlaceholder": "000000",
+      "submit": "تأكيد البريد",
+      "submitting": "جاري التأكيد...",
+      "notReceived": "لم تستلم الرمز؟",
+      "resend": "إعادة إرسال الرمز",
+      "resendIn": "إعادة الإرسال خلال {seconds} ثانية",
+      "validation": {
+        "otpLength": "رمز التأكيد يجب أن يكون 6 أرقام",
+        "otpNumbers": "رمز التأكيد يجب أن يحتوي على أرقام فقط"
+      }
+    },
+    "resetPassword": {
+      "title": "أمانك وراحتك في كل رحلة",
+      "title1": "إعادة تعيين كلمة المرور",
+      "subtitle1": "قم بإدخال كلمة المرور الجديدة الخاصة بك.",
+      "formTitle": "إعادة تعيين كلمة المرور",
+      "subtitle": "أنشئ كلمة مرور قوية جديدة لحسابك",
+      "description": "نحن هنا لمساعدتك على استعادة حسابك بسرعة وسهولة. اختر كلمة مرور قوية لحماية بياناتك ومعلوماتك الشخصية.",
+      "password": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "passwordPlaceholder": "********",
+      "submit": "إعادة تعيين كلمة المرور",
+      "submitting": "جاري التعيين...",
+      "copyright": "جميع الحقوق محفوظة.",
+      "encryptionTitle": "تشفير كامل",
+      "encryptionDescription": "بياناتك محمية بأحدث معايير الأمان.",
+      "speedTitle": "سرعة التنفيذ",
+      "speedDescription": "يتم تحديث كلمة المرور فورًا داخل حسابك.",
+      "requirementsTitle": "يجب أن تحتوي كلمة المرور على:",
+      "requirementMin": "8 أحرف على الأقل",
+      "requirementUpperLower": "حرف كبير وحرف صغير واحد على الأقل",
+      "backToLogin": "العودة لتسجيل الدخول",
+      "validation": {
+        "passwordMin": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+        "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+        "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+        "passwordsNotMatch": "كلمتا المرور غير متطابقتين"
+      }
+    }
+  },
+  "Landing": {
+    "hero": {
+      "title": "استأجر سيارتك المثالية\nبكل سهولة في مصر",
+      "subtitle": "اختر من بين مئات السيارات المتاحة في جميع أنحاء مصر بأسعار تنافسية وخدمة استثنائية.",
+      "cityLabel": "المدينة",
+      "cityPlaceholder": "القاهرة",
+      "dateLabel": "التاريخ",
+      "datePlaceholder": "اختر الموعد",
+      "typeLabel": "نوع السيارة",
+      "typePlaceholder": "عائلية",
+      "searchBtn": "ابحث عن سيارتك"
+    },
+    "stats": {
+      "happyClients": "مستخدم نشط",
+      "carsAvailable": "سيارة متاحة",
+      "branches": "فرع معتمد"
+    },
+    "howItWorks": {
+      "title": "كيف يعمل Rento؟",
+      "searchTitle": "ابحث",
+      "searchDesc": "اختر من بين فئات السيارات في مدينتك بكل سهولة وبضغطة واحدة.",
+      "bookTitle": "احجز",
+      "bookDesc": "أدخل بياناتك، اختر الموعد المناسب، وأمن حجزك بأمان كامل.",
+      "driveTitle": "اقود",
+      "driveDesc": "استلم مفاتيحك من موقع التاجر أو اطلب توصيلها إليك وابدأ رحلتك."
+    },
+    "featured": {
+      "titleRent": "سيارات مميزة",
+      "subtitleRent": "أحدث الموديلات المتاحة للحجز الآن",
+      "titleBuy": "سيارات للبيع",
+      "subtitleBuy": "تصفح مجموعة من أفضل السيارات المعروضة للبيع",
+      "showAll": "عرض الكل",
+      "seats": "مقاعد",
+      "bags": "حقائب",
+      "automatic": "أوتوماتيك",
+      "manual": "مانيوال",
+      "perDay": "يوم",
+      "egp": "ج.م",
+      "bookNow": "احجز الآن",
+      "buyNow": "شراء الآن",
+      "badgeAvailable": "متاح",
+      "badgePremium": "مميز",
+      "loadErrorTitle": "السيارات غير متاحة الآن",
+      "loadErrorDescription": "تعذر الاتصال بالخادم. تأكد أن الباك إند يعمل ثم حاول مرة أخرى.",
+      "retry": "حاول مرة أخرى"
+    },
+    "whyUs": {
+      "title": "لماذا يختار الآلاف Rento؟",
+      "subtitle": "نحن لا نوفر مجرد سيارات للإيجار، بل نقدم تجربة قيادة ممتعة وموثوقة. نهتم بكل التفاصيل لضمان راحتك وأمانك في كل رحلة.",
+      "check1": "أكثر من 50 نقطة استلام في أنحاء الجمهورية",
+      "check2": "أسطول متنوع يناسب جميع الميزانيات",
+      "check3": "إمكانية التوصيل لباب المنزل أو المطار",
+      "safeTitle": "أمان كامل",
+      "safeDesc": "تأمين شامل على جميع الحوادث والأضرار لجميع السيارات.",
+      "easyTitle": "سهولة وسرعة",
+      "easyDesc": "احجز سيارتك في أقل من دقيقتين عبر التطبيق أو الموقع.",
+      "priceTitle": "أفضل الأسعار",
+      "priceDesc": "شفافية كاملة في الأسعار بدون أي رسوم خفية.",
+      "supportTitle": "دعم 24/7",
+      "supportDesc": "فريق خدمة العملاء جاهز لمساعدتك في أي وقت."
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "subtitle": "كل ما تحتاج لمعرفته عن خدماتنا",
+      "q1": "ما هي المستندات المطلوبة للاستئجار؟",
+      "a1": "يجب توفر رخصة قيادة سارية المفعول، بطاقة الرقم القومي (أو جواز السفر للسياح)، ومبلغ التأمين (المسترد بالكامل).",
+      "q2": "هل تتوفر خدمة توصيل السيارة للمطار؟",
+      "a2": "نعم، نقدم خدمة توصيل واستلام السيارات في مطار القاهرة، مطار برج العرب والمطارات الأخرى. يرجى تحديد مبنى الركاب أثناء الحجز.",
+      "q3": "كيف يتم استرداد مبلغ التأمين؟",
+      "a3": "يتم رد مبلغ التأمين تلقائيًا إلى بطاقتك أو نقدًا وفقًا لطريقة الدفع الأصلية في غضون 3 إلى 5 أيام عمل من تاريخ استرداد السيارة بحالة سليمة."
+    },
+    "footer": {
+      "desc": "منصة تأجير وبيع السيارات الأولى في مصر. نوفر لك أفضل السيارات بأفضل الأسعار في جميع أنحاء جمهورية مصر العربية.",
+      "contactUs": "تواصل معنا",
+      "downloadText": "حمل التطبيق الآن للحصول على خصم 10% على حجزك الأول",
+      "copyright": "صنع بكل حب في مصر | © {year} Rento. جميع الحقوق محفوظة."
+    }
+  },
+  "Cars": {
+    "rentTitle": "سيارات للإيجار",
+    "saleTitle": "سيارات للبيع",
+    "searchPlaceholder": "ابحث عن طريق الاسم، الماركة، أو الموديل...",
+    "foundCount": "تم العثور على {count} سيارة",
+    "sortBy": "ترتيب حسب",
+    "sortNewest": "الأحدث موديلاً",
+    "sortOldest": "الأقدم موديلاً",
+    "sortPriceAsc": "السعر: من الأقل للأعلى",
+    "sortPriceDesc": "السعر: من الأعلى للأقل",
+    "sortPopular": "الأكثر تقييماً",
+    "filters": "تصفية النتائج",
+    "clearFilters": "مسح التصفية",
+    "brand": "الماركة",
+    "searchBrand": "ابحث عن ماركة...",
+    "noBrandsFound": "لم يتم العثور على ماركات.",
+    "priceRange": "نطاق السعر",
+    "year": "سنة الصنع",
+    "transmission": "ناقل الحركة",
+    "fuelType": "نوع الوقود",
+    "bodyType": "هيكل السيارة",
+    "seats": "عدد المقاعد",
+    "location": "الموقع",
+    "any": "الكل",
+    "automatic": "أوتوماتيك",
+    "manual": "مانيوال",
+    "petrol": "بنزين",
+    "diesel": "ديزل",
+    "electric": "كهرباء",
+    "hybrid": "هجين",
+    "sedan": "سيدان",
+    "suv": "سيارة رياضية (SUV)",
+    "hatchback": "هاتشباك",
+    "coupe": "كوبيه",
+    "pickup": "بيك أب",
+    "van": "فان",
+    "convertible": "كابريوليه (مكشوفة)",
+    "egp": "ج.م",
+    "perDay": "يوم",
+    "mileage": "المسافة المقطوعة",
+    "km": "كم",
+    "viewDetails": "عرض التفاصيل",
+    "toggleFavorite": "تبديل المفضلة",
+    "favoriteLoginRequired": "يرجى تسجيل الدخول لإضافة السيارات إلى المفضلة.",
+    "rentNow": "احجز الآن",
+    "buyNow": "شراء الآن",
+    "badgeAvailable": "متاحة",
+    "badgeUnavailable": "غير متاحة",
+    "noCarsFound": "لا توجد سيارات تطابق الفلاتر المحددة.",
+    "emptyHint": "جرب تعديل الفلاتر أو كلمة البحث.",
+    "loadErrorTitle": "تعذر تحميل السيارات",
+    "loadErrorDescription": "خادم الباك إند لا يستجيب الآن. شغل الخادم ثم حاول مرة أخرى.",
+    "retry": "حاول مرة أخرى",
+    "detailsTitle": "تفاصيل السيارة",
+    "backToRent": "العودة لصفحة الإيجار",
+    "backToSale": "العودة لصفحة البيع",
+    "brandModel": "الماركة والموديل",
+    "rating": "التقييم",
+    "availability": "حالة التوفر",
+    "description": "الوصف",
+    "rentPrice": "سعر الإيجار",
+    "salePrice": "سعر البيع",
+    "specs": "المواصفات والتفاصيل",
+    "locationPlaceholder": "ابحث عن مدينة...",
+    "prev": "السابق",
+    "next": "التالي",
+    "page": "صفحة"
+  },
+  "About": {
+    "eyebrow": "عن Rento",
+    "title": "منصة حديثة لتأجير وبيع السيارات في مصر",
+    "description": "تربط Rento العملاء بملاك السيارات والتجار الموثوقين لتجعل تجربة التأجير والشراء أسهل وأكثر أمانًا وشفافية.",
+    "cards": {
+      "title": "لماذا تختار Rento؟",
+      "trust": {
+        "title": "تجربة موثوقة",
+        "desc": "سيارات موثقة وأسعار واضحة وتجربة حجز سلسة."
+      },
+      "cars": {
+        "title": "تأجير وشراء",
+        "desc": "اعثر على سيارات للإيجار أو الشراء من منصة واحدة."
+      },
+      "users": {
+        "title": "مصممة لمصر",
+        "desc": "مصممة للمدن المصرية والعملاء وتجار السيارات المحليين."
+      }
+    },
+    "mission": {
+      "title": "مهمتنا",
+      "subtitle": "نقود مستقبل التنقل في مصر",
+      "desc1": "نحن نؤمن بأن استئجار أو شراء سيارة يجب أن يكون بسيطًا مثل حجز رحلة طيران. لا مزيد من الرسوم الخفية، الأوراق المعقدة، أو التجار غير الموثوقين.",
+      "desc2": "من خلال بناء سوق شفاف ورقمي بالكامل، نقوم بتمكين الآلاف من المصريين للعثور على سيارتهم المثالية بثقة وسهولة."
+    },
+    "stats": {
+      "users": "+10k",
+      "usersLabel": "عميل سعيد",
+      "cars": "+500",
+      "carsLabel": "سيارة متاحة",
+      "cities": "+15",
+      "citiesLabel": "مدينة مغطاة"
+    },
+    "cta": {
+      "title": "مستعد للانطلاق؟",
+      "desc": "انضم إلى آلاف المستخدمين الذين وجدوا سيارتهم المثالية على Rento.",
+      "buttonRent": "تصفح سيارات للإيجار",
+      "buttonBuy": "تصفح سيارات للبيع"
+    }
+  },
+  "Contact": {
+    "eyebrow": "تواصل معنا",
+    "title": "نحن هنا لمساعدتك",
+    "description": "لديك سؤال حول التأجير أو البيع أو إضافة سيارة؟ أرسل لنا رسالة وسيتواصل معك فريقنا.",
+    "info": {
+      "phone": {
+        "title": "الهاتف",
+        "value": "+20 100 000 0000"
+      },
+      "email": {
+        "title": "البريد الإلكتروني",
+        "value": "info@rento.com"
+      },
+      "address": {
+        "title": "العنوان",
+        "value": "القاهرة، مصر"
+      }
+    },
+    "form": {
+      "name": "اسمك",
+      "email": "البريد الإلكتروني",
+      "message": "رسالتك",
+      "submit": "إرسال الرسالة"
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "q1": "ما مدى سرعة الرد؟",
+      "a1": "عادة ما يقوم فريقنا بالرد خلال 2-4 ساعات في أوقات العمل الرسمية.",
+      "q2": "هل لديكم مكاتب فعلية؟",
+      "a2": "نعم، مقرنا الرئيسي في القاهرة، لكن خدماتنا تغطي المدن الكبرى في جميع أنحاء مصر.",
+      "q3": "هل يمكنني التواصل عبر الواتساب؟",
+      "a3": "بالتأكيد! يمكنك التواصل مع رقم الدعم الفني عبر الواتساب للحصول على مساعدة أسرع."
+    },
+    "social": {
+      "title": "تابعنا"
+    }
+  },
+  "UserAccount": {
+    "auth": {
+      "checking": "جاري التحقق من صلاحية الحساب..."
+    },
+    "actions": {
+      "viewDetails": "عرض التفاصيل",
+      "removeFavorite": "إزالة من المفضلة",
+      "cancel": "إلغاء",
+      "keepOrder": "الاحتفاظ بالطلب"
+    },
+    "fields": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "gender": "النوع",
+      "role": "الدور",
+      "joinedAt": "تاريخ الانضمام"
+    },
+    "gender": {
+      "Male": "ذكر",
+      "Female": "أنثى"
+    },
+    "role": {
+      "User": "عميل",
+      "Trader": "تاجر",
+      "Admin": "مدير"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "معلق",
+      "confirmed": "مؤكد",
+      "accepted": "مقبول",
+      "rejected": "مرفوض",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "processing": "قيد التنفيذ",
+      "paid": "مدفوع",
+      "refunded": "مسترد"
+    },
+    "paymentStatus": {
+      "pending": "معلق",
+      "paid": "مدفوع",
+      "refunded": "مسترد"
+    },
+    "carType": {
+      "rent": "إيجار",
+      "sale": "بيع"
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "description": "إدارة معلوماتك الشخصية ونظرة عامة على حسابك.",
+      "editProfile": "تعديل الملف",
+      "personalInfo": "المعلومات الشخصية",
+      "editDescription": "حدّث الاسم ورقم الهاتف والنوع.",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "summary": {
+        "bookings": "الحجوزات",
+        "orders": "الطلبات",
+        "favorites": "المفضلة"
+      }
+    },
+    "bookings": {
+      "title": "حجوزاتي",
+      "description": "تابع حجوزات الإيجار وتفاصيل الرحلات.",
+      "pickupDate": "تاريخ الاستلام",
+      "returnDate": "تاريخ الإرجاع",
+      "totalDays": "إجمالي الأيام",
+      "totalPrice": "السعر الإجمالي",
+      "daysValue": "{count} أيام",
+      "empty": "لا توجد حجوزات بعد.",
+      "browseRentals": "تصفح الحجوزات"
+    },
+    "orders": {
+      "title": "طلباتي",
+      "description": "راجع طلبات الشراء وحالة الدفع.",
+      "salePrice": "سعر البيع",
+      "orderDate": "تاريخ الطلب",
+      "paymentStatus": "حالة الدفع",
+      "orderStatus": "حالة الطلب",
+      "loading": "جاري تحميل الطلبات...",
+      "empty": "لا توجد طلبات بعد.",
+      "error": "تعذر تحميل طلباتك. حاول مرة أخرى.",
+      "unknownCar": "سيارة",
+      "cancellationReasonPrompt": "لماذا تريد إلغاء هذا الطلب؟ اختياري.",
+      "cancelTitle": "إلغاء الطلب",
+      "cancelDescription": "يمكنك إضافة سبب لإلغاء هذا الطلب. لا يمكن التراجع بعد التأكيد.",
+      "cancellationReason": "سبب الإلغاء",
+      "cancellationReasonPlaceholder": "اكتب السبب، اختياري",
+      "cancelSuccess": "تم إلغاء الطلب بنجاح",
+      "cancelError": "فشل إلغاء الطلب"
+    },
+    "favorites": {
+      "title": "المفضلة",
+      "description": "اعرض وأدر السيارات التي حفظتها.",
+      "location": "الموقع",
+      "price": "السعر",
+      "empty": "لا توجد سيارات محفوظة بعد.",
+      "error": "تعذر تحميل السيارات المحفوظة. حاول مرة أخرى."
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "description": "تحكم في تفضيلات الحساب والإشعارات واللغة والمظهر.",
+      "profileDescription": "حدّث بيانات ملفك الشخصي عند توفر تعديل الحساب.",
+      "securityDescription": "إدارة كلمة المرور وخيارات أمان الحساب.",
+      "notificationsDescription": "اختر كيف يمكن لـ Rento التواصل معك.",
+      "languageDescription": "بدّل بين العربية والإنجليزية.",
+      "themeDescription": "بدّل بين الوضع الفاتح والداكن.",
+      "dangerDescription": "ستظهر إجراءات الحساب الحساسة هنا.",
+      "manageProfile": "إدارة الملف",
+      "changePassword": "تغيير كلمة المرور",
+      "emailNotifications": "إشعارات البريد الإلكتروني",
+      "smsNotifications": "إشعارات الرسائل",
+      "marketingNotifications": "إشعارات تسويقية",
+      "enabled": "مفعل",
+      "disabled": "غير مفعل",
+      "deleteAccount": "حذف الحساب",
+      "sections": {
+        "profile": "إعدادات الملف",
+        "security": "الأمان",
+        "notifications": "الإشعارات",
+        "language": "اللغة",
+        "theme": "المظهر",
+        "dangerZone": "منطقة الخطر"
+      }
+    }
+  },
+  "AdminDashboard": {
+    "auth": {
+      "checking": "جار التحقق من صلاحية المدير..."
+    },
+    "topbar": {
+      "title": "نظرة عامة",
+      "toggleMenu": "تبديل القائمة",
+      "notifications": "الإشعارات",
+      "collapseSidebar": "طي القائمة الجانبية",
+      "expandSidebar": "توسيع القائمة الجانبية"
+    },
+    "sidebar": {
+      "overview": "نظرة عامة",
+      "users": "المستخدمون",
+      "traders": "التجار",
+      "rentalCars": "سيارات الإيجار",
+      "saleCars": "سيارات للبيع",
+      "bookings": "الحجوزات",
+      "orders": "الطلبات",
+      "reviews": "التقييمات",
+      "reports": "البلاغات",
+      "payments": "المدفوعات",
+      "verifications": "طلبات التحقق",
+      "notifications": "الإشعارات",
+      "categories": "التصنيفات",
+      "locations": "المواقع",
+      "promotions": "العروض",
+      "settings": "الإعدادات"
+    },
+    "pages": {
+      "overview": {
+        "title": "لوحة المدير",
+        "description": "تابع نمو المنصة والبلاغات والإيرادات وآخر النشاطات."
+      },
+      "users": {
+        "title": "المستخدمون",
+        "description": "إدارة حسابات العملاء وحالة الوصول والنشاط."
+      },
+      "traders": {
+        "title": "التجار",
+        "description": "مراجعة حسابات التجار وحالة التحقق والسيارات والأرباح."
+      },
+      "rentalCars": {
+        "title": "سيارات الإيجار",
+        "description": "إدارة إعلانات الإيجار عبر التجار والتصنيفات والمواقع."
+      },
+      "saleCars": {
+        "title": "سيارات للبيع",
+        "description": "إدارة إعلانات البيع وحالة توفرها في السوق."
+      },
+      "bookings": {
+        "title": "الحجوزات",
+        "description": "متابعة حجوزات الإيجار بين العملاء والتجار."
+      },
+      "orders": {
+        "title": "الطلبات",
+        "description": "متابعة طلبات الشراء والمدفوعات وحالة الطلب."
+      },
+      "reviews": {
+        "title": "التقييمات",
+        "description": "مراجعة تقييمات العملاء على مستوى المنصة."
+      },
+      "reports": {
+        "title": "البلاغات",
+        "description": "حل بلاغات المحتوى والحسابات من المجتمع."
+      },
+      "payments": {
+        "title": "المدفوعات",
+        "description": "مراجعة الإيرادات والعمولات والسحوبات والمعاملات."
+      },
+      "verifications": {
+        "title": "طلبات التحقق",
+        "description": "قبول أو رفض مستندات التجار قبل تفعيل الوصول للسوق."
+      },
+      "notifications": {
+        "title": "الإشعارات",
+        "description": "إنشاء رسائل عامة ومراجعة سجل الإشعارات."
+      },
+      "categories": {
+        "title": "التصنيفات",
+        "description": "إدارة تصنيفات السيارات والماركات والموديلات."
+      },
+      "locations": {
+        "title": "المواقع",
+        "description": "إدارة الدول والمدن المتاحة في المنصة."
+      },
+      "promotions": {
+        "title": "العروض",
+        "description": "إدارة الكوبونات والخصومات والسيارات والتجار المميزين."
+      },
+      "settings": {
+        "title": "الإعدادات",
+        "description": "ضبط المنصة والأمان والمدفوعات والعمولة واللغة."
+      }
+    },
+    "stats": {
+      "totalUsers": "إجمالي المستخدمين",
+      "totalTraders": "إجمالي التجار",
+      "activeRentalCars": "سيارات الإيجار النشطة",
+      "carsForSale": "سيارات للبيع",
+      "totalBookings": "إجمالي الحجوزات",
+      "totalOrders": "إجمالي الطلبات",
+      "monthlyRevenue": "إيراد الشهر",
+      "platformCommission": "عمولة المنصة",
+      "pendingVerifications": "طلبات تحقق معلقة",
+      "openReports": "بلاغات مفتوحة"
+    },
+    "charts": {
+      "revenue": "رسم الإيرادات",
+      "revenueDescription": "إجمالي إيرادات السوق شهريا.",
+      "bookings": "رسم الحجوزات",
+      "bookingsDescription": "حجم حجوزات الإيجار حسب الشهر.",
+      "orders": "رسم الطلبات",
+      "ordersDescription": "حجم طلبات الشراء حسب الشهر."
+    },
+    "months": {
+      "jan": "يناير",
+      "feb": "فبراير",
+      "mar": "مارس",
+      "apr": "أبريل",
+      "may": "مايو",
+      "jun": "يونيو"
+    },
+    "sections": {
+      "latestUsers": "أحدث المستخدمين",
+      "latestTraders": "أحدث التجار",
+      "latestBookings": "أحدث الحجوزات",
+      "latestOrders": "أحدث الطلبات",
+      "recentReports": "أحدث البلاغات",
+      "quickActions": "إجراءات سريعة",
+      "quickActionsDescription": "مهام إدارية جاهزة لربطها لاحقا بالواجهة الخلفية.",
+      "notificationHistory": "سجل الإشعارات"
+    },
+    "filters": {
+      "search": "ابحث بالاسم أو البريد أو السيارة أو التاجر...",
+      "status": "الحالة",
+      "apply": "تطبيق الفلاتر"
+    },
+    "pagination": {
+      "summary": "عرض نتائج تجريبية 1-10",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "tables": {
+      "avatar": "الصورة",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "status": "الحالة",
+      "createdAt": "تاريخ الإنشاء",
+      "totalBookings": "إجمالي الحجوزات",
+      "totalOrders": "إجمالي الطلبات",
+      "actions": "الإجراءات",
+      "business": "النشاط",
+      "owner": "المالك",
+      "verification": "التحقق",
+      "carsCount": "عدد السيارات",
+      "earnings": "الأرباح",
+      "joinedAt": "تاريخ الانضمام",
+      "car": "السيارة",
+      "trader": "التاجر",
+      "category": "التصنيف",
+      "price": "السعر",
+      "bookingId": "رقم الحجز",
+      "orderId": "رقم الطلب",
+      "customer": "العميل",
+      "pickup": "الاستلام",
+      "return": "الإرجاع",
+      "paymentStatus": "حالة الدفع",
+      "orderStatus": "حالة الطلب",
+      "rating": "التقييم",
+      "review": "المراجعة",
+      "date": "التاريخ",
+      "reporter": "المبلغ",
+      "target": "الهدف",
+      "reason": "السبب",
+      "transactionId": "رقم المعاملة",
+      "type": "النوع",
+      "amount": "المبلغ",
+      "submittedAt": "تاريخ الإرسال",
+      "documents": "المستندات",
+      "title": "العنوان",
+      "message": "الرسالة",
+      "audience": "الجمهور",
+      "value": "القيمة",
+      "endsAt": "تاريخ الانتهاء",
+      "recipient": "المستلم"
+    },
+    "actions": {
+      "view": "عرض",
+      "suspend": "إيقاف",
+      "activate": "تفعيل",
+      "delete": "حذف",
+      "approve": "قبول",
+      "reject": "رفض",
+      "viewProfile": "عرض الملف",
+      "edit": "تعديل",
+      "cancel": "إلغاء",
+      "hide": "إخفاء",
+      "resolve": "حل",
+      "dismiss": "تجاهل",
+      "deleteContent": "حذف المحتوى",
+      "viewDocuments": "عرض المستندات",
+      "createNotification": "إنشاء إشعار",
+      "broadcast": "إرسال عام",
+      "addItem": "إضافة عنصر",
+      "createPromotion": "إنشاء عرض",
+      "reviewReports": "مراجعة البلاغات"
+    },
+    "users": {
+      "deleteTitle": "حذف المستخدم؟",
+      "deleteDescription": "هل أنت متأكد أنك تريد حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف المستخدم بنجاح",
+      "deleteError": "تعذر حذف المستخدم",
+      "banSuccess": "تم حظر المستخدم بنجاح",
+      "banError": "تعذر حظر المستخدم",
+      "unbanSuccess": "تم تفعيل المستخدم بنجاح",
+      "unbanError": "تعذر تفعيل المستخدم"
+    },
+    "traders": {
+      "deleteTitle": "حذف التاجر؟",
+      "deleteDescription": "هل أنت متأكد أنك تريد حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف التاجر بنجاح",
+      "deleteError": "تعذر حذف التاجر",
+      "banSuccess": "تم حظر التاجر بنجاح",
+      "banError": "تعذر حظر التاجر",
+      "unbanSuccess": "تم تفعيل التاجر بنجاح",
+      "unbanError": "تعذر تفعيل التاجر",
+      "approveSuccess": "تم قبول التاجر بنجاح",
+      "approveError": "تعذر قبول التاجر"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "banned": "محظور",
+      "pending": "معلق",
+      "suspended": "موقوف",
+      "approved": "مقبول",
+      "rejected": "مرفوض",
+      "resolved": "محلول",
+      "accepted": "مقبول",
+      "open": "مفتوح",
+      "hidden": "مخفي",
+      "cancelled": "ملغي",
+      "completed": "مكتمل",
+      "paid": "مدفوع",
+      "failed": "فشل",
+      "sold": "مباع",
+      "confirmed": "مؤكد",
+      "processing": "قيد المعالجة",
+      "dismissed": "متجاهل",
+      "sent": "مرسل",
+      "draft": "مسودة",
+      "read": "مقروء"
+    },
+    "targetType": {
+      "car": "سيارة",
+      "review": "تقييم",
+      "trader": "تاجر",
+      "user": "مستخدم"
+    },
+    "transactionType": {
+      "booking": "حجز",
+      "order": "طلب",
+      "withdrawal": "سحب",
+      "commission": "عمولة"
+    },
+    "audience": {
+      "all": "الكل",
+      "users": "المستخدمون",
+      "traders": "التجار",
+      "user": "مستخدم",
+      "trader": "تاجر"
+    },
+    "dictionaryType": {
+      "category": "تصنيف",
+      "brand": "ماركة",
+      "model": "موديل",
+      "country": "دولة",
+      "city": "مدينة"
+    },
+    "promotionType": {
+      "coupon": "كوبون",
+      "discount": "خصم",
+      "featuredCar": "سيارة مميزة",
+      "featuredTrader": "تاجر مميز"
+    },
+    "payments": {
+      "totalRevenue": "إجمالي الإيرادات",
+      "platformCommission": "عمولة المنصة",
+      "pendingWithdrawals": "سحوبات معلقة",
+      "completedWithdrawals": "سحوبات مكتملة",
+      "gatewayFormSubtitle": "سوف تكمل الدفعات بطرق احتياطية من Paymob",
+      "sessionGatewayFormSubtitle": "سوف تكمل رسوم الجلسة بطرق احتياطية من Paymob"
+    },
+    "notifications": {
+      "createTitle": "إنشاء إشعار",
+      "createDescription": "جهز إشعارا للمنصة للمستخدمين أو التجار أو الجميع.",
+      "titlePlaceholder": "عنوان الإشعار",
+      "messagePlaceholder": "نص الإشعار",
+      "createSuccess": "تم إرسال الإشعار بنجاح",
+      "createError": "تعذر إرسال الإشعار"
+    },
+    "settings": {
+      "general": "عام",
+      "platform": "المنصة",
+      "security": "الأمان",
+      "email": "البريد",
+      "notifications": "الإشعارات",
+      "payments": "المدفوعات",
+      "commission": "العمولة",
+      "localization": "اللغة"
+    },
+    "settingsDescriptions": {
+      "general": "اسم التطبيق والهوية العامة.",
+      "platform": "وضع تشغيل السوق وإعداداته.",
+      "security": "إعدادات المراجعة والحماية.",
+      "email": "إعدادات بريد الدعم والرسائل.",
+      "notifications": "تفضيلات إشعارات المنصة.",
+      "payments": "قواعد المدفوعات والسحوبات.",
+      "commission": "نسبة عمولة السوق.",
+      "localization": "اللغات المدعومة واتجاه الواجهة."
+    },
+    "validation": {
+      "required": "هذا الحقل مطلوب",
+      "email": "أدخل بريدا إلكترونيا صحيحا"
+    },
+    "cars": {
+      "detailsTitle": "تفاصيل سيارة الإيجار",
+      "detailsEmpty": "تعذر تحميل تفاصيل سيارة الإيجار.",
+      "loadingDetails": "جاري تحميل تفاصيل السيارة...",
+      "deleteTitle": "حذف سيارة الإيجار؟",
+      "deleteDescription": "هل أنت متأكد أنك تريد حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف سيارة الإيجار بنجاح",
+      "deleteError": "تعذر حذف سيارة الإيجار",
+      "suspendSuccess": "تم إيقاف سيارة الإيجار بنجاح",
+      "suspendError": "تعذر إيقاف سيارة الإيجار"
+    },
+    "bookings": {
+      "detailsTitle": "تفاصيل الحجز",
+      "detailsEmpty": "تعذر تحميل تفاصيل الحجز.",
+      "loadingDetails": "جاري تحميل تفاصيل الحجز...",
+      "cancelSuccess": "تم إلغاء الحجز بنجاح",
+      "cancelError": "تعذر إلغاء الحجز"
+    },
+    "orders": {
+      "detailsTitle": "تفاصيل الطلب",
+      "detailsEmpty": "تعذر تحميل تفاصيل الطلب.",
+      "loadingDetails": "جاري تحميل تفاصيل الطلب...",
+      "cancelSuccess": "تم إلغاء الطلب بنجاح",
+      "cancelError": "تعذر إلغاء الطلب"
+    },
+    "reviews": {
+      "deleteSuccess": "تم حذف التقييم بنجاح",
+      "deleteError": "تعذر حذف التقييم"
+    }
+  },
+  "TraderDashboard": {
+    "auth": {
+      "checking": "جارٍ التحقق من صلاحية الوصول إلى لوحة التحكم..."
+    },
+    "topbar": {
+      "toggleMenu": "تبديل القائمة",
+      "notifications": "الإشعارات",
+      "collapseSidebar": "طي القائمة الجانبية",
+      "expandSidebar": "توسيع القائمة الجانبية"
+    },
+    "sidebar": {
+      "overview": "نظرة عامة",
+      "rentalCars": "سيارات الإيجار",
+      "saleCars": "سيارات للبيع",
+      "bookings": "الحجوزات",
+      "orders": "الطلبات",
+      "customers": "العملاء",
+      "reviews": "التقييمات",
+      "recentActivity": "النشاط الأخير",
+      "messages": "الرسائل",
+      "analytics": "التحليلات",
+      "earnings": "الأرباح",
+      "settings": "الإعدادات"
+    },
+    "pages": {
+      "overview": {
+        "title": "نظرة عامة",
+        "description": "تابع الإيرادات والطلب وآخر أنشطة العملاء.",
+        "recentBookings": "أحدث الحجوزات",
+        "recentOrders": "أحدث الطلبات",
+        "recentActivity": "النشاط الأخير"
+      },
+      "rentalCars": {
+        "title": "سيارات الإيجار",
+        "description": "إدارة السيارات المتاحة للإيجار اليومي."
+      },
+      "saleCars": {
+        "title": "سيارات للبيع",
+        "description": "إدارة السيارات المعروضة للبيع."
+      },
+      "bookings": {
+        "title": "الحجوزات",
+        "description": "متابعة طلبات الإيجار وحالة الحجوزات."
+      },
+      "orders": {
+        "title": "الطلبات",
+        "description": "مراجعة عروض الشراء ومتابعة عمليات البيع."
+      },
+      "customers": {
+        "title": "العملاء",
+        "description": "عرض نشاط العملاء عبر الحجوزات والطلبات."
+      },
+      "reviews": {
+        "title": "التقييمات",
+        "description": "اطلع على آراء العملاء حول سياراتك."
+      },
+      "recentActivity": {
+        "title": "النشاط الأخير",
+        "description": "تابع أحدث أنشطة الإيجار والشراء على سياراتك."
+      },
+      "messages": {
+        "title": "الرسائل",
+        "description": "ستظهر هنا محادثات العملاء."
+      },
+      "analytics": {
+        "title": "التحليلات",
+        "description": "ستظهر هنا الرسوم البيانية وتحليلات الأداء."
+      },
+      "earnings": {
+        "title": "الأرباح",
+        "description": "تابع الأرباح المتاحة والمعلقة وإجمالي الأرباح."
+      },
+      "settings": {
+        "title": "الإعدادات",
+        "description": "راجع بيانات حساب التاجر الخاص بك."
+      }
+    },
+    "stats": {
+      "totalRevenue": "إجمالي الإيرادات",
+      "activeRentals": "الإيجارات النشطة",
+      "pendingBookings": "الحجوزات المعلقة",
+      "completedOrders": "الطلبات المكتملة",
+      "totalCustomers": "إجمالي العملاء",
+      "averageRating": "متوسط التقييم",
+      "ratingValue": "{value} / 5"
+    },
+    "filters": {
+      "searchCars": "ابحث باسم السيارة أو الموديل أو الموقع...",
+      "searchOrders": "ابحث بالعميل أو السيارة أو رقم الطلب...",
+      "searchCustomers": "ابحث بالاسم أو البريد أو الهاتف...",
+      "allStatuses": "كل الحالات",
+      "allLocations": "كل المواقع",
+      "minPrice": "أقل سعر",
+      "maxPrice": "أعلى سعر",
+      "minOrders": "أقل طلبات",
+      "minSpent": "أقل إنفاق"
+    },
+    "pagination": {
+      "summary": "عرض {current}-{end} من {total} سيارة",
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "صفحة {page} من {totalPages}"
+    },
+    "tables": {
+      "customer": "العميل",
+      "car": "السيارة",
+      "total": "الإجمالي",
+      "offer": "العرض",
+      "status": "الحالة",
+      "location": "الموقع",
+      "price": "السعر",
+      "salePrice": "سعر البيع",
+      "specs": "المواصفات",
+      "specsValue": "{transmission} / {fuelType} / {seats} مقاعد",
+      "specsValueShort": "{transmission} / {seats} مقاعد",
+      "dates": "التواريخ",
+      "dateRange": "{start} - {end}",
+      "createdAt": "تاريخ الإنشاء",
+      "phone": "رقم الهاتف",
+      "activity": "النشاط",
+      "customerActivity": "{bookings} حجوزات / {orders} طلبات",
+      "totalSpent": "إجمالي الإنفاق",
+      "rating": "التقييم",
+      "comment": "التعليق",
+      "notAvailable": "غير متاح",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "active": "نشطة",
+      "maintenance": "قيد الصيانة",
+      "sold": "تم البيع",
+      "inactive": "غير نشطة",
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "rejected": "مرفوض",
+      "negotiating": "قيد التفاوض",
+      "accepted": "مقبول",
+      "failed": "فشل"
+    },
+    "empty": {
+      "cars": {
+        "title": "لا توجد سيارات",
+        "description": "ستظهر السيارات هنا بعد إضافتها."
+      },
+      "bookings": {
+        "title": "لا توجد حجوزات بعد",
+        "description": "ستظهر حجوزات الإيجار هنا عند حجز العملاء لسياراتك."
+      },
+      "orders": {
+        "title": "لا توجد طلبات بعد",
+        "description": "ستظهر عروض الشراء هنا عندما يتواصل معك العملاء."
+      },
+      "customers": {
+        "title": "لا يوجد عملاء بعد",
+        "description": "سيظهر العملاء هنا بعد إنشاء حجوزات أو طلبات."
+      },
+      "reviews": {
+        "title": "لا توجد تقييمات بعد",
+        "description": "ستظهر تقييمات العملاء هنا بعد اكتمال الرحلات أو عمليات الشراء."
+      },
+      "messages": {
+        "title": "الرسائل قريبًا",
+        "description": "هذا القسم جاهز لإضافة نظام المراسلة."
+      },
+      "analytics": {
+        "title": "التحليلات قريبًا",
+        "description": "هذا القسم جاهز لإضافة الرسوم البيانية وتحليلات الأداء."
+      },
+      "earnings": {
+        "title": "لا توجد بيانات أرباح",
+        "description": "ستظهر الأرباح هنا بعد توفر المعاملات."
+      },
+      "activity": {
+        "title": "لا يوجد نشاط حديث",
+        "description": "سيظهر نشاط الإيجار والشراء الحديث هنا."
+      },
+      "settings": {
+        "title": "لا توجد بيانات للحساب",
+        "description": "ستظهر بيانات الحساب بعد تحميل الملف الشخصي."
+      }
+    },
+    "actions": {
+      "addCar": "إضافة سيارة",
+      "updateCar": "تحديث السيارة",
+      "deleteCar": "حذف السيارة",
+      "accept": "قبول",
+      "reject": "رفض",
+      "cancel": "إلغاء",
+      "noActions": "لا توجد إجراءات",
+      "rejectOrderTitle": "رفض الطلب",
+      "rejectOrderDescription": "أضف سبب الرفض قبل رفض طلب الشراء.",
+      "rejectBookingTitle": "رفض الحجز",
+      "rejectBookingDescription": "أضف سبب الرفض قبل رفض طلب الحجز.",
+      "rejectionReasonPrompt": "لماذا تريد رفض هذا الطلب؟",
+      "rejectionReasonLabel": "سبب الرفض",
+      "rejectionReasonPlaceholder": "اكتب السبب بوضوح للعميل...",
+      "rejectionReasonRequired": "سبب الرفض مطلوب.",
+      "bookingStatusUpdated": "تم تحديث حالة الحجز",
+      "bookingStatusUpdateFailed": "فشل تحديث حالة الحجز",
+      "orderStatusUpdated": "تم تحديث حالة الطلب",
+      "orderStatusUpdateFailed": "فشل تحديث حالة الطلب"
+    },
+    "carForm": {
+      "addTitle": "إضافة سيارة",
+      "editTitle": "تحديث السيارة",
+      "rentDescription": "أضف أو حدّث سيارة متاحة للإيجار.",
+      "saleDescription": "أضف أو حدّث سيارة معروضة للبيع.",
+      "name": "اسم السيارة",
+      "model": "الموديل",
+      "year": "السنة",
+      "location": "الموقع",
+      "rentPrice": "سعر الإيجار",
+      "salePrice": "سعر البيع",
+      "transmission": "ناقل الحركة",
+      "fuel": "نوع الوقود",
+      "bodyType": "نوع الهيكل",
+      "seats": "المقاعد",
+      "distance": "المسافة",
+      "images": "الصور",
+      "uploadImages": "ارفع صور السيارة",
+      "uploadImagesHint": "اختر صورة واحدة أو أكثر لمعاينتها قبل الحفظ.",
+      "imagePreview": "معاينة صورة السيارة",
+      "removeImage": "حذف الصورة",
+      "transmissionOptions": {
+        "automatic": "أوتوماتيك",
+        "manual": "يدوي"
+      },
+      "fuelOptions": {
+        "petrol": "بنزين",
+        "diesel": "ديزل",
+        "electric": "كهرباء",
+        "hybrid": "هجين"
+      },
+      "bodyOptions": {
+        "sedan": "سيدان",
+        "suv": "دفع رباعي",
+        "hatchback": "هاتشباك",
+        "coupe": "كوبيه",
+        "pickup": "بيك أب",
+        "van": "فان",
+        "convertible": "مكشوفة"
+      }
+    },
+    "earnings": {
+      "availableBalance": "الرصيد المتاح",
+      "pendingBalance": "الرصيد المعلق",
+      "totalEarnings": "إجمالي الأرباح",
+      "earned": "المكتسب",
+      "pending": "المعلق",
+      "breakdown": {
+        "rent": "أرباح الإيجار",
+        "buy": "أرباح البيع"
+      }
+    },
+    "activity": {
+      "title": "أحدث نشاط على المنصة",
+      "type": {
+        "buy_order": "طلب شراء",
+        "rent_order": "طلب إيجار"
+      }
+    },
+    "analytics": {
+      "revenueTrend": "اتجاه الإيرادات",
+      "revenueMix": "توزيع الإيرادات",
+      "bookingVolume": "حجم الحجوزات",
+      "topCars": "السيارات الأعلى أداءً",
+      "carMeta": "{views} مشاهدة / {conversion}% معدل التحويل",
+      "carBookings": "{count} حجوزات",
+      "carSales": "{count} مبيعات",
+      "kpis": {
+        "monthlyRevenue": "الإيرادات الشهرية",
+        "monthlyRevenueHelper": "استنادًا إلى بيانات الإيجارات والمبيعات",
+        "totalRentRevenue": "إيرادات الإيجار",
+        "totalRentRevenueHelper": "إجمالي إيرادات حجوزات الإيجار",
+        "totalBuyRevenue": "إيرادات البيع",
+        "totalBuyRevenueHelper": "إجمالي إيرادات طلبات الشراء",
+        "totalViews": "مشاهدات الإعلانات",
+        "totalViewsHelper": "عبر جميع الإعلانات النشطة",
+        "conversionRate": "معدل التحويل",
+        "conversionRateHelper": "متوسط معدل تحويل الاستفسارات إلى صفقات",
+        "completedDemand": "الطلبات المفتوحة",
+        "completedDemandHelper": "إجمالي الحجوزات المعلقة والطلبات المكتملة"
+      },
+      "months": {
+        "jan": "يناير",
+        "feb": "فبراير",
+        "mar": "مارس",
+        "apr": "أبريل",
+        "may": "مايو",
+        "jun": "يونيو"
+      },
+      "sources": {
+        "rentals": "إيرادات الإيجار",
+        "sales": "إيرادات البيع",
+        "returningCustomers": "العملاء العائدون"
+      }
+    },
+    "reviews": {
+      "ratingCount": "تقييمات {rating} نجوم"
+    },
+    "settings": {
+      "accountInformation": "معلومات الحساب",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "role": "الدور"
+    },
+    "validation": {
+      "titleMin": "يجب أن يتكون العنوان من 3 أحرف على الأقل",
+      "required": "هذا الحقل مطلوب",
+      "invalidYear": "أدخل سنة صحيحة",
+      "positivePrice": "يجب أن يكون السعر أكبر من صفر",
+      "positiveSeats": "يجب أن يكون عدد المقاعد أكبر من صفر",
+      "descriptionMin": "يجب أن يتكون الوصف من 10 أحرف على الأقل",
+      "imagesMin": "أضف صورة واحدة على الأقل"
+    }
+  },
+  "CarDetails": {
+    "available": "متوفر",
+    "condition": "الحالة",
+    "excellent": "ممتازة",
+    "type": "النوع",
+    "year": "السنة",
+    "modelLabel": "الموديل",
+    "brand": "الماركة",
+    "seats": "المقاعد",
+    "featuresTitle": "المميزات والخدمات",
+    "features": {
+      "ac": "تكييف قوي",
+      "fuelSaver": "موفر للوقود",
+      "gps": "خرائط GPS",
+      "bluetooth": "بلوتوث",
+      "smartEntry": "دخول ذكي"
+    },
+    "chat": "محادثة",
+    "toggleFavorite": "تبديل المفضلة",
+    "favoriteLoginRequired": "يرجى تسجيل الدخول لإضافة هذه السيارة إلى المفضلة.",
+    "bookingLoginRequired": "يجب تسجيل الدخول لحجز هذه السيارة.",
+    "buyLoginRequired": "يجب تسجيل الدخول لشراء هذه السيارة.",
+    "visitProfile": "زيارة الملف الشخصي",
+    "locationTitle": "موقع السيارة",
+    "mapPlaceholder": "الخريطة قادمة قريباً",
+    "reviewsTitle": "آراء العملاء",
+    "viewAll": "عرض الكل",
+    "salePrice": "سعر البيع",
+    "egp": "ج.م",
+    "buyNow": "اشتري الآن",
+    "booking": "الحجز ...",
+    "bookNow": "احجز الآن",
+    "noChargeNote": "لن يتم خصم أي مبالغ الآن",
+    "preferredDate": "التاريخ المفضل",
+    "perDay": "يوم",
+    "days": "أيام",
+    "serviceFee": "رسوم الخدمة",
+    "total": "الإجمالي",
+    "legend": {
+      "selected": "محدد",
+      "reserved": "محجوز",
+      "available": "متاح"
+    },
+    "errorLoading": "فشل تحميل تفاصيل السيارة",
+    "goBack": "العودة للسيارات",
+    "reviews": "تقييم",
+    "breadcrumb": {
+      "home": "الرئيسية",
+      "rentCars": "سيارات للإيجار",
+      "saleCars": "سيارات للبيع"
+    }
+  },
+  "Payment": {
+    "pageTitle": "أكمل الدفع",
+    "pageSubtitle": "دفع آمن لتأكيد الحجز",
+    "sessionPageTitle": "فتح جلسة محادثة",
+    "sessionPageSubtitle": "ادفع رسوماً لمرة واحدة للتواصل مع البائع",
+    "formTitle": "تفاصيل الدفع",
+    "formSubtitle": "أدخل بيانات بطاقتك لإتمام الحجز",
+    "sessionFormSubtitle": "أدخل بيانات بطاقتك لفتح جلسة محادثة",
+    "gatewayFormSubtitle": "ستكمل الدفع بأمان من خلال Paymob",
+    "sessionGatewayFormSubtitle": "ستكمل رسوم الجلسة بأمان من خلال Paymob",
+    "gatewayTitle": "دفع آمن عبر Paymob",
+    "gatewaySubtitle": "أكمل الدفع داخل إطار الدفع الآمن بالأسفل",
+    "openGateway": "فتح صفحة الدفع",
+    "sessionNotice": "بدفع رسوم 300 ج.م، ستفتح جلسة محادثة خاصة مع مالك السيارة لمناقشة تفاصيل الشراء والاتفاق على الشروط.",
+    "cardName": "اسم حامل البطاقة",
+    "cardNamePlaceholder": "الاسم على البطاقة",
+    "cardNumber": "رقم البطاقة",
+    "expiry": "تاريخ الانتهاء",
+    "cvv": "CVV",
+    "payNow": "ادفع",
+    "processing": "جاري المعالجة...",
+    "secure": "آمن",
+    "secureNote": "دفعتك مشفرة وآمنة",
+    "egp": "ج.م",
+    "days": "أيام",
+    "serviceFee": "رسوم الخدمة",
+    "totalDue": "الإجمالي المستحق",
+    "sessionFeeNote": "رسوم جلسة لمرة واحدة للتواصل مع البائع",
+    "sessionFeeDesc": "تفتح هذه الرسوم محادثة خاصة مع مالك السيارة",
+    "successTitle": "تم تأكيد الحجز!",
+    "successMessage": "تم حجز {car} لك من {from} إلى {to}. إجمالي المدفوع: {amount} ج.م",
+    "sessionSuccessTitle": "تم فتح الجلسة!",
+    "sessionSuccessMessage": "جلسة المحادثة مع مالك {car} نشطة الآن. يمكنك مناقشة تفاصيل الشراء مباشرة.",
+    "returnSuccessTitle": "تم قبول الدفع",
+    "returnSuccessMessage": "تم إتمام عملية الدفع بنجاح.",
+    "returnFailedTitle": "لم يكتمل الدفع",
+    "returnFailedMessage": "لم نتمكن من تأكيد عملية الدفع. حاول مرة أخرى.",
+    "viewOrders": "عرض الطلبات",
+    "backHome": "العودة للرئيسية",
+    "paidAmount": "المبلغ المدفوع",
+    "transactionId": "رقم العملية",
+    "redirecting": "جاري إعادة التوجيه...",
+    "errorLoading": "فشل تحميل تفاصيل الطلب",
+    "startChatWith": "ابدا المحادثة",
+    "goBack": "العودة للسيارات",
+    "breadcrumb": {
+      "home": "الرئيسية",
+      "rentCars": "سيارات للإيجار",
+      "saleCars": "سيارات للبيع",
+      "payment": "الدفع"
+    },
+    "errors": {
+      "nameRequired": "اسم حامل البطاقة مطلوب",
+      "cardRequired": "أدخل رقم بطاقة صالح مكون من 16 رقم",
+      "expiryRequired": "أدخل تاريخ انتهاء صالح",
+      "cvvRequired": "أدخل CVV صالح",
+      "gatewayFailed": "فشل بدء عملية الدفع. حاول مرة أخرى."
+    }
+  },
+  "NotFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها أو أن الرابط لم يعد صالحًا.",
+    "home": "الصفحة الرئيسية",
+    "browseCars": "تصفح السيارات"
+  },
+  "Chat": {
+    "title": "المحادثات",
+    "conversations": "المحادثات",
+    "selectConversation": "اختر محادثة لبدء الدردشة",
+    "selectRoomHint": "اختر غرفة من القائمة على اليمين لعرض الرسائل",
+    "newChat": "محادثة جديدة",
+    "selectContacts": "اختر الأشخاص لبدء محادثة خاصة أو إنشاء مجموعة",
+    "create": "إنشاء",
+    "cancel": "إلغاء",
+    "searchPlaceholder": "البحث عن محادثة...",
+    "all": "الكل",
+    "open": "مفتوحة",
+    "unread": "غير مقروءة",
+    "resolved": "تم حلها",
+    "typing": "يكتب الآن...",
+    "typeMessage": "اكتب رسالتك هنا...",
+    "markAsResolved": "تمييز كـ 'تم الحل'",
+    "activeBooking": "حجز نشط",
+    "rentBooking": "حجز إيجار",
+    "buyBooking": "طلب شراء",
+    "online": "متصل الآن",
+    "offline": "غير متصل",
+    "noActiveRoom": "اختر محادثة لبدء الدردشة",
+    "noMessagesYet": "لا توجد رسائل بعد",
+    "groupChat": "محادثة مجموعة",
+    "groupName": "اسم المجموعة",
+    "selectAtLeastOne": "الرجاء اختيار شخص واحد على الأقل.",
+    "socketNotConnected": "السوكيت غير متصل. أعد تحميل الصفحة.",
+    "createRoomFailed": "فشل إنشاء غرفة الدردشة. حاول مرة أخرى.",
+    "startChatWith": "محادثة مع {name}",
+    "noRooms": "لم يتم العثور على محادثات"
   }
 }

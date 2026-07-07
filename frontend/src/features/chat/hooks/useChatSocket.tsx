@@ -1,0 +1,534 @@
+"use client";
+
+import React, {
+  useCallback,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
+import { io, Socket } from "socket.io-client";
+import { useAppSelector } from "@/store/hooks";
+import { tokenStorage } from "@/features/auth/utils";
+import { getRoomsApi, getRoomMessagesApi } from "../api/chat.api";
+import type { Room, Message, ChatUser } from "../types";
+import type { AuthUser } from "@/features/auth/types";
+import { ROLES } from "@/constants";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { env } from "@/config/env";
+
+interface ChatContextType {
+  socket: Socket | null;
+  rooms: Room[];
+  messages: Message[];
+  activeRoomId: string | null;
+  activeRoom: Room | null;
+  typingUsers: { userId: string; userName: string }[];
+  onlineUsers: Set<string>;
+  isLoadingRooms: boolean;
+  isLoadingMessages: boolean;
+  selectRoom: (roomId: string) => Promise<void>;
+  sendMessage: (
+    content: string,
+    attachment?: { url: string; type: "image" | "file" | "video" },
+  ) => void;
+  sendTypingStart: () => void;
+  sendTypingStop: () => void;
+  createPrivateChat: (targetUserId: string) => void;
+  markAsRead: (roomId: string) => void;
+  unreadCounts: Record<string, number>;
+}
+
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
+
+const getIdValue = (value: unknown): string => {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  if (typeof value === "number") return String(value);
+  if (typeof value === "object") {
+    const objectValue = value as {
+      _id?: unknown;
+      id?: unknown;
+      toString?: () => string;
+    };
+    if (objectValue._id) return getIdValue(objectValue._id);
+    if (objectValue.id) return getIdValue(objectValue.id);
+    if (typeof objectValue.toString === "function") {
+      const stringValue = objectValue.toString();
+      if (stringValue && stringValue !== "[object Object]") return stringValue;
+    }
+  }
+  return "";
+};
+
+const getUserIdValue = (userLike?: ChatUser | string | null) => {
+  if (!userLike) return "";
+  if (typeof userLike === "string") return userLike;
+  return getIdValue(userLike);
+};
+
+const getAuthUserId = (userLike: AuthUser | null) => getIdValue(userLike);
+
+const sortRoomsByActivity = (rooms: Room[]) =>
+  [...rooms].sort(
+    (a, b) =>
+      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+  );
+
+const buildUnreadCounts = (rooms: Room[]) =>
+  rooms.reduce<Record<string, number>>((counts, room) => {
+    counts[room._id] = room.unreadCount ?? 0;
+    return counts;
+  }, {});
+
+export function ChatProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const locale = useLocale();
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [activeRoomId, setActiveRoomId] = useState<string | null>(null);
+  const [typingUsers, setTypingUsers] = useState<
+    { userId: string; userName: string }[]
+  >([]);
+  const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
+  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
+
+  const [isLoadingRooms, setIsLoadingRooms] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+
+  const socketRef = useRef<Socket | null>(null);
+  const activeRoomIdRef = useRef<string | null>(null);
+  const roomsRef = useRef<Room[]>([]);
+  const joinedRoomsRef = useRef<Set<string>>(new Set());
+  const receivedMessageIdsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    activeRoomIdRef.current = activeRoomId;
+  }, [activeRoomId]);
+
+  useEffect(() => {
+    roomsRef.current = rooms;
+  }, [rooms]);
+
+  const joinRoom = useCallback((roomId: string) => {
+    const currentSocket = socketRef.current;
+    if (!currentSocket || joinedRoomsRef.current.has(roomId)) return;
+
+    currentSocket.emit("room:join", { roomId });
+    joinedRoomsRef.current.add(roomId);
+  }, []);
+
+  const joinKnownRooms = useCallback(() => {
+    roomsRef.current.forEach((room) => joinRoom(room._id));
+  }, [joinRoom]);
+
+  // 1. Fetch Rooms Rest API
+  const fetchRooms = useCallback(async () => {
+    if (!isAuthenticated) return;
+    setIsLoadingRooms(true);
+    try {
+      const data = await getRoomsApi();
+      setRooms(sortRoomsByActivity(data));
+      setUnreadCounts(buildUnreadCounts(data));
+    } catch (err) {
+      console.error("Error fetching rooms", err);
+    } finally {
+      setIsLoadingRooms(false);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      void Promise.resolve().then(fetchRooms);
+    } else {
+      queueMicrotask(() => {
+        setRooms([]);
+        setMessages([]);
+        setActiveRoomId(null);
+        setUnreadCounts({});
+        setOnlineUsers(new Set());
+        joinedRoomsRef.current.clear();
+        receivedMessageIdsRef.current.clear();
+      });
+    }
+  }, [fetchRooms, isAuthenticated]);
+
+  useEffect(() => {
+    if (!socket) return;
+    joinKnownRooms();
+  }, [joinKnownRooms, rooms, socket]);
+
+  // 2. Manage Socket.io Connection
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+        queueMicrotask(() => setSocket(null));
+      }
+      return;
+    }
+
+    const token = tokenStorage.getAccessToken();
+    if (!token) return;
+
+    const newSocket = io(env.apiBaseUrl, {
+      auth: { token },
+      transports: ["websocket", "polling"],
+    });
+
+    newSocket.on("connect", () => {
+      console.log("Socket connected");
+      joinedRoomsRef.current.clear();
+      joinKnownRooms();
+    });
+
+    newSocket.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+
+    newSocket.on("error", (error) => {
+      console.error("Socket error:", error);
+    });
+
+    // Real-time events
+    newSocket.on(
+      "room:created",
+      ({ room, isNew }: { room: Room; isNew?: boolean }) => {
+        setRooms((prev) => {
+          const exists = prev.some((r) => r._id === room._id);
+          if (exists) return prev;
+          return sortRoomsByActivity([room, ...prev]);
+        });
+        joinRoom(room._id);
+
+        // If server created a new private room (e.g. owner accepted an order)
+        // and the current user is the non-trader (customer), redirect them
+        // to the chat page so they can see the new conversation.
+        try {
+          const isMember = room.members?.some?.((m: ChatUser | string) => {
+            if (!m) return false;
+            // member may be object or id string
+            const memberId = typeof m === "string" ? m : m._id;
+            return memberId.toString() === user?.id;
+          });
+
+          if (isNew && isMember && user?.role !== ROLES.TRADER) {
+            const redirectPath = `/${locale}/chat?roomId=${room._id}`;
+            router.push(redirectPath);
+          }
+        } catch (err) {
+          // ignore navigation errors
+          console.warn("room:created handler error", err);
+        }
+      },
+    );
+
+    newSocket.on(
+      "message:receive",
+      (message: Message & { totalMembers?: number }) => {
+        if (receivedMessageIdsRef.current.has(message._id)) return;
+        receivedMessageIdsRef.current.add(message._id);
+
+        const currentRoomId = activeRoomIdRef.current;
+        const messageRoomId = getIdValue(message.room);
+        const currentUserId = getAuthUserId(user);
+        const senderId = getUserIdValue(message.sender);
+        const isOwnMessage = currentUserId !== "" && senderId === currentUserId;
+
+        // Update room lastMessage in rooms list
+        setRooms((prev) => {
+          const roomIdx = prev.findIndex((r) => r._id === messageRoomId);
+          if (roomIdx === -1) {
+            // If room not in list, we could trigger refetch rooms
+            void fetchRooms();
+            return prev;
+          }
+          const updatedRooms = [...prev];
+          const nextUnreadCount =
+            messageRoomId === currentRoomId || isOwnMessage
+              ? 0
+              : (updatedRooms[roomIdx].unreadCount ?? 0) + 1;
+
+          updatedRooms[roomIdx] = {
+            ...updatedRooms[roomIdx],
+            lastMessage: { ...message, room: messageRoomId },
+            unreadCount: nextUnreadCount,
+            updatedAt: message.createdAt,
+          };
+          return sortRoomsByActivity(updatedRooms);
+        });
+
+        // Handle message streaming to active room viewport
+        if (messageRoomId === currentRoomId) {
+          setMessages((prev) => {
+            const exists = prev.some((m) => m._id === message._id);
+            if (exists) return prev;
+            const withoutOptimisticDuplicate = prev.filter((existingMessage) => {
+              if (!existingMessage._id.startsWith("optimistic-")) return true;
+              const existingSenderId = getUserIdValue(existingMessage.sender);
+              return !(
+                isOwnMessage &&
+                existingMessage.room === messageRoomId &&
+                existingMessage.content === message.content &&
+                existingSenderId === senderId
+              );
+            });
+            return [...withoutOptimisticDuplicate, { ...message, room: messageRoomId }];
+          });
+          // Emit mark as read
+          newSocket.emit("message:read", { roomId: messageRoomId });
+        } else if (!isOwnMessage) {
+          // Increment unread count for other rooms
+          setUnreadCounts((prev) => ({
+            ...prev,
+            [messageRoomId]: (prev[messageRoomId] || 0) + 1,
+          }));
+        }
+      },
+    );
+
+    newSocket.on(
+      "message:read",
+      ({ roomId, userId }: { roomId: string; userId: string }) => {
+        if (roomId === activeRoomIdRef.current) {
+          setMessages((prev) =>
+            prev.map((msg) => {
+              if (!msg.readBy.includes(userId)) {
+                return { ...msg, readBy: [...msg.readBy, userId] };
+              }
+              return msg;
+            }),
+          );
+        }
+      },
+    );
+
+    newSocket.on(
+      "typing:start",
+      ({
+        userId,
+        userName,
+        roomId,
+      }: {
+        userId: string;
+        userName: string;
+        roomId: string;
+      }) => {
+        if (roomId === activeRoomIdRef.current) {
+          setTypingUsers((prev) => {
+            const exists = prev.some((u) => u.userId === userId);
+            if (exists) return prev;
+            return [...prev, { userId, userName }];
+          });
+        }
+      },
+    );
+
+    newSocket.on(
+      "typing:stop",
+      ({ userId, roomId }: { userId: string; roomId: string }) => {
+        if (roomId === activeRoomIdRef.current) {
+          setTypingUsers((prev) => prev.filter((u) => u.userId !== userId));
+        }
+      },
+    );
+
+    newSocket.on(
+      "users:onlineList",
+      ({ onlineUsers: list, userIds }: { onlineUsers?: string[]; userIds?: string[] }) => {
+        const payload = list ?? userIds ?? [];
+        setOnlineUsers(new Set(payload.map(getIdValue).filter(Boolean)));
+      },
+    );
+
+    newSocket.on("user:online", ({ userId }: { userId: string }) => {
+      setOnlineUsers((prev) => {
+        const next = new Set(prev);
+        const normalizedUserId = getIdValue(userId);
+        if (normalizedUserId) next.add(normalizedUserId);
+        return next;
+      });
+    });
+
+    newSocket.on("user:offline", ({ userId }: { userId: string }) => {
+      setOnlineUsers((prev) => {
+        const next = new Set(prev);
+        next.delete(getIdValue(userId));
+        return next;
+      });
+    });
+
+    socketRef.current = newSocket;
+    setSocket(newSocket);
+    const joinedRooms = joinedRoomsRef.current;
+    const receivedMessageIds = receivedMessageIdsRef.current;
+
+    return () => {
+      newSocket.disconnect();
+      if (socketRef.current === newSocket) {
+        socketRef.current = null;
+      }
+      joinedRooms.clear();
+      receivedMessageIds.clear();
+      setSocket(null);
+    };
+  }, [fetchRooms, isAuthenticated, joinKnownRooms, joinRoom, locale, router, user]);
+
+  // 3. Mark active room unread as 0 on activation
+  const markAsRead = (roomId: string) => {
+    if (socket) {
+      socket.emit("message:read", { roomId });
+    }
+    setUnreadCounts((prev) => ({
+      ...prev,
+      [roomId]: 0,
+    }));
+    setRooms((prev) =>
+      prev.map((room) =>
+        room._id === roomId ? { ...room, unreadCount: 0 } : room,
+      ),
+    );
+  };
+
+  // 4. Select / Join active room
+  const selectRoom = async (roomId: string) => {
+    if (!socket) return;
+    setIsLoadingMessages(true);
+    setActiveRoomId(roomId);
+    setTypingUsers([]);
+    try {
+      socket.emit("room:join", { roomId });
+      const msgs = await getRoomMessagesApi(roomId);
+      msgs.forEach((message) => receivedMessageIdsRef.current.add(message._id));
+      setMessages(msgs);
+      markAsRead(roomId);
+    } catch (err) {
+      console.error("Error getting room messages", err);
+    } finally {
+      setIsLoadingMessages(false);
+    }
+  };
+
+  // 5. Send message
+  const sendMessage = (
+    content: string,
+    attachment?: { url: string; type: "image" | "file" | "video" },
+  ) => {
+    if (!socket || !activeRoomId) return;
+    const trimmedContent = content.trim();
+    const currentUserId = getAuthUserId(user);
+    const optimisticId = `optimistic-${Date.now()}`;
+    const optimisticMessage: Message = {
+      _id: optimisticId,
+      room: activeRoomId,
+      sender: {
+        _id: currentUserId,
+        userName: user?.userName ?? "",
+        email: user?.email ?? "",
+      },
+      content: trimmedContent,
+      attachment,
+      readBy: currentUserId ? [currentUserId] : [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    receivedMessageIdsRef.current.add(optimisticId);
+    setMessages((prev) => [...prev, optimisticMessage]);
+    setRooms((prev) =>
+      sortRoomsByActivity(
+        prev.map((room) =>
+          room._id === activeRoomId
+            ? {
+                ...room,
+                lastMessage: optimisticMessage,
+                updatedAt: optimisticMessage.createdAt,
+              }
+            : room,
+        ),
+      ),
+    );
+
+    socket.emit("message:send", {
+      roomId: activeRoomId,
+      content: trimmedContent,
+      attachment,
+    });
+  };
+
+  // 6. Typing notifications
+  const sendTypingStart = () => {
+    if (!socket || !activeRoomId) return;
+    socket.emit("typing:start", { roomId: activeRoomId });
+  };
+
+  const sendTypingStop = () => {
+    if (!socket || !activeRoomId) return;
+    socket.emit("typing:stop", { roomId: activeRoomId });
+  };
+
+  // 7. Start Private Chat (from profile, order, or bookings)
+  const createPrivateChat = (targetUserId: string) => {
+    if (!socket) return;
+
+    const handleRoomCreated = ({ room }: { room: Room }) => {
+      setRooms((prev) => {
+        const exists = prev.some((r) => r._id === room._id);
+        if (exists) return prev;
+        return [room, ...prev];
+      });
+
+      const redirectPath =
+        user?.role === ROLES.TRADER
+          ? `/${locale}/dashboard/messages?roomId=${room._id}`
+          : `/${locale}/chat?roomId=${room._id}`;
+
+      router.push(redirectPath);
+      socket.off("room:created", handleRoomCreated);
+    };
+
+    socket.once("room:created", handleRoomCreated);
+    socket.emit("room:createPrivate", { targetUserId });
+  };
+
+  const activeRoom = rooms.find((r) => r._id === activeRoomId) || null;
+
+  return (
+    <ChatContext.Provider
+      value={{
+        socket,
+        rooms,
+        messages,
+        activeRoomId,
+        activeRoom,
+        typingUsers,
+        onlineUsers,
+        isLoadingRooms,
+        isLoadingMessages,
+        selectRoom,
+        sendMessage,
+        sendTypingStart,
+        sendTypingStop,
+        createPrivateChat,
+        markAsRead,
+        unreadCounts,
+      }}
+    >
+      {children}
+    </ChatContext.Provider>
+  );
+}
+
+export function useChatSocket() {
+  const context = useContext(ChatContext);
+  if (context === undefined) {
+    throw new Error("useChatSocket must be used within a ChatProvider");
+  }
+  return context;
+}
