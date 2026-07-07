@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import { Calendar, Clock, MapPin, Tag } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -26,11 +25,15 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
   const image = order.car.carimage?.[0]?.secure_url;
 
   const isRent = mode === "rent";
-  const totalAmount = isRent ? order.totalPrice : SESSION_FEE;
+  const totalDays = order.totalDays ?? 0;
+  const pricePerDay = order.priceperDay ?? order.car.carprice ?? 0;
+  const rentSubtotal = pricePerDay * totalDays;
+  const rentTotal = order.totalPrice ?? rentSubtotal;
+  const totalAmount = isRent ? rentTotal : SESSION_FEE;
+  const hasDateRange = Boolean(order.startDate && order.endDate);
 
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl overflow-hidden shadow-sm">
-      {/* Car image */}
       {image && (
         <div className="relative h-48 w-full">
           <Image
@@ -53,20 +56,21 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
       )}
 
       <div className="p-5 flex flex-col gap-4">
-        {/* Order meta */}
         <div className="flex flex-col gap-2">
           {isRent ? (
             <>
-              <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <Calendar className="size-4 text-primary shrink-0" />
-                <span className="font-medium">
-                  {formatDate(order.startDate)} → {formatDate(order.endDate)}
-                </span>
-              </div>
+              {hasDateRange && (
+                <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                  <Calendar className="size-4 text-primary shrink-0" />
+                  <span className="font-medium">
+                    {formatDate(order.startDate!)} - {formatDate(order.endDate!)}
+                  </span>
+                </div>
+              )}
               <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                 <Clock className="size-4 text-primary shrink-0" />
                 <span className="font-medium">
-                  {order.totalDays} {t("days")}
+                  {totalDays} {t("days")}
                 </span>
               </div>
             </>
@@ -78,26 +82,22 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
           )}
         </div>
 
-        {/* Price breakdown */}
         <div className="border-t border-slate-100 dark:border-slate-800 pt-4 flex flex-col gap-2">
           {isRent ? (
             <>
               <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
                 <span>
-                  {order.priceperDay.toLocaleString()} {t("egp")} ×{" "}
-                  {order.totalDays} {t("days")}
+                  {pricePerDay.toLocaleString()} {t("egp")} x {totalDays}{" "}
+                  {t("days")}
                 </span>
                 <span className="font-semibold">
-                  {(order.priceperDay * order.totalDays).toLocaleString()}
+                  {rentSubtotal.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
                 <span>{t("serviceFee")}</span>
                 <span className="font-semibold">
-                  {(
-                    order.totalPrice -
-                    order.priceperDay * order.totalDays
-                  ).toLocaleString()}
+                  {(rentTotal - rentSubtotal).toLocaleString()}
                 </span>
               </div>
             </>
