@@ -170,7 +170,7 @@ export function BookingCard({
         <button
           onClick={handleBuyNow}
           disabled={isPending}
-          className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+          className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-(--primary-dark) text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
         >
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
@@ -217,7 +217,7 @@ export function BookingCard({
           onClick={() => setSelectingFrom(true)}
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             selectingFrom
-              ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
+              ? "border-[var(--primary)] text-primary bg-primary/5"
               : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
@@ -231,7 +231,7 @@ export function BookingCard({
           onClick={() => setSelectingFrom(false)}
           className={`flex-1 flex items-center gap-2 text-xs font-semibold rounded-xl border px-3 py-2.5 transition-all ${
             !selectingFrom
-              ? "border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/5"
+              ? "border-[var(--primary)] text-primary bg-primary/5"
               : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
@@ -260,16 +260,15 @@ export function BookingCard({
           modifiersClassNames={{
             booked:
               "bg-slate-100 dark:bg-slate-800 text-slate-400 line-through cursor-not-allowed",
-            inRange:
-              "bg-[var(--primary)]/10 text-[var(--primary)] rounded-none",
+            inRange: "bg-primary/10 text-primary rounded-none",
             rangeStart:
               locale === "ar"
-                ? "bg-[var(--primary)] text-white rounded-r-full"
-                : "bg-[var(--primary)] text-white rounded-l-full",
+                ? "bg-primary text-white rounded-r-full"
+                : "bg-primary text-white rounded-l-full",
             rangeEnd:
               locale === "ar"
-                ? "bg-[var(--primary)] text-white rounded-l-full"
-                : "bg-[var(--primary)] text-white rounded-r-full",
+                ? "bg-primary text-white rounded-l-full"
+                : "bg-primary text-white rounded-r-full",
           }}
           className="w-full"
         />
@@ -322,7 +321,7 @@ export function BookingCard({
       <button
         onClick={handleBookNow}
         disabled={isPending}
-        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-[var(--primary-dark)] text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-(--primary-dark) text-white font-bold text-sm py-4 rounded-2xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
       >
         {isPending ? (
           <Loader2 className="size-4 animate-spin" />

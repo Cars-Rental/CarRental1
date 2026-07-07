@@ -3,7 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Search, MessageSquare, Send, Paperclip, Smile, CheckCheck, Check, Sparkles } from "lucide-react";
+import {
+  Search,
+  MessageSquare,
+  Send,
+  Paperclip,
+  Smile,
+  CheckCheck,
+  Check,
+  Sparkles,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { useAppSelector } from "@/store/hooks";
@@ -15,7 +24,10 @@ interface ChatLayoutProps {
   isDashboard?: boolean;
 }
 
-export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutProps) {
+export function ChatLayout({
+  initialRoomId,
+  isDashboard = false,
+}: ChatLayoutProps) {
   const t = useTranslations("Chat");
   const locale = useLocale();
   const { user } = useAppSelector((state) => state.auth);
@@ -37,7 +49,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   } = useChatSocket();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "open" | "unread" | "resolved">("all");
+  const [activeTab, setActiveTab] = useState<
+    "all" | "open" | "unread" | "resolved"
+  >("all");
   const [inputText, setInputText] = useState("");
   const [resolvedRooms, setResolvedRooms] = useState<string[]>([]);
 
@@ -105,7 +119,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
 
   const toggleResolved = (roomId: string) => {
     setResolvedRooms((prev) =>
-      prev.includes(roomId) ? prev.filter((id) => id !== roomId) : [...prev, roomId],
+      prev.includes(roomId)
+        ? prev.filter((id) => id !== roomId)
+        : [...prev, roomId],
     );
   };
 
@@ -127,7 +143,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   });
 
   return (
-    <div dir={locale === "ar" ? "rtl" : "ltr"} className="flex min-h-[70vh] gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950">
+    <div
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className="flex min-h-[70vh] gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950"
+    >
       <div className="w-full max-w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
         <div className="p-4 border-b border-slate-100 dark:border-slate-800/80">
           <div className="relative">
@@ -136,7 +155,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary"
             />
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           </div>
@@ -150,7 +169,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               className={cn(
                 "rounded-2xl px-3 py-1.5 text-xs font-bold transition",
                 activeTab === tab
-                  ? "bg-[var(--primary)] text-white"
+                  ? "bg-primary text-white"
                   : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800",
               )}
             >
@@ -161,7 +180,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
         <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
           {isLoadingRooms ? (
             Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="flex items-center gap-3 p-4 animate-pulse">
+              <div
+                key={index}
+                className="flex items-center gap-3 p-4 animate-pulse"
+              >
                 <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800" />
                 <div className="flex-1 space-y-2">
                   <div className="h-3 w-24 rounded bg-slate-100 dark:bg-slate-800" />
@@ -186,7 +208,8 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                 .slice(0, 2)
                 .toUpperCase();
               const unread = unreadCounts[room._id] || 0;
-              const lastMessage = room.lastMessage?.content || t("noMessagesYet");
+              const lastMessage =
+                room.lastMessage?.content || t("noMessagesYet");
 
               return (
                 <button
@@ -195,11 +218,12 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                   onClick={() => selectRoom(room._id)}
                   className={cn(
                     "flex w-full items-center gap-3 p-4 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/40",
-                    isSelected && "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-[var(--primary)]",
+                    isSelected &&
+                      "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-[var(--primary)]",
                   )}
                 >
                   <div className="relative shrink-0">
-                    <div className="h-12 w-12 grid place-items-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)] font-bold dark:bg-emerald-400/10 dark:text-emerald-400">
+                    <div className="h-12 w-12 grid place-items-center rounded-full bg-primary/10 text-primary font-bold dark:bg-emerald-400/10 dark:text-emerald-400">
                       {initials}
                     </div>
                     {onlineUsers.has(participant._id) && (
@@ -222,7 +246,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                     </p>
                   </div>
                   {unread > 0 && (
-                    <span className="h-5 w-5 grid place-items-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-white">
+                    <span className="h-5 w-5 grid place-items-center rounded-full bg-primary text-[10px] font-bold text-white">
                       {unread}
                     </span>
                   )}
@@ -239,7 +263,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               {t("conversations")}
             </p>
             <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              {activeRoom ? getParticipant(activeRoom)?.userName : t("selectConversation")}
+              {activeRoom
+                ? getParticipant(activeRoom)?.userName
+                : t("selectConversation")}
             </h1>
           </div>
           {activeRoom && (
@@ -250,7 +276,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                 "rounded-2xl px-4 py-2 text-xs font-bold transition border",
                 resolvedRooms.includes(activeRoom._id)
                   ? "bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-800 dark:border-slate-700"
-                  : "bg-[var(--primary)]/10 border-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/20",
+                  : "bg-primary/10 border-(--primary)/20 text-primary hover:bg-primary/20",
               )}
             >
               {t("markAsResolved")}
@@ -262,7 +288,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
             <>
               {messages.map((message, index) => {
                 const isMe = message.sender._id === user?.id;
-                const showDate = index === 0 || formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt);
+                const showDate =
+                  index === 0 ||
+                  formatDate(messages[index - 1].createdAt) !==
+                    formatDate(message.createdAt);
                 return (
                   <React.Fragment key={message._id}>
                     {showDate && (
@@ -272,31 +301,38 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                         </span>
                       </div>
                     )}
-                    <div className={cn(
-                      "flex gap-3 max-w-[80%]",
-                      isMe ? "ml-auto flex-row-reverse" : "",
-                    )}>
+                    <div
+                      className={cn(
+                        "flex gap-3 max-w-[80%]",
+                        isMe ? "ml-auto flex-row-reverse" : "",
+                      )}
+                    >
                       <div className="flex flex-col">
-                        <div className={cn(
-                          "rounded-3xl px-4 py-3 text-xs leading-6",
-                          isMe
-                            ? "bg-[var(--primary)] text-white rounded-te-none"
-                            : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-ts-none",
-                        )}>
+                        <div
+                          className={cn(
+                            "rounded-3xl px-4 py-3 text-xs leading-6",
+                            isMe
+                              ? "bg-primary text-white rounded-te-none"
+                              : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-ts-none",
+                          )}
+                        >
                           {message.content}
                         </div>
-                        <div className={cn(
-                          "mt-1 flex items-center gap-2 text-[9px] font-medium",
-                          isMe ? "justify-end text-slate-400" : "justify-start text-slate-500 dark:text-slate-400",
-                        )}>
+                        <div
+                          className={cn(
+                            "mt-1 flex items-center gap-2 text-[9px] font-medium",
+                            isMe
+                              ? "justify-end text-slate-400"
+                              : "justify-start text-slate-500 dark:text-slate-400",
+                          )}
+                        >
                           <span>{formatTime(message.createdAt)}</span>
-                          {isMe && (
-                            message.readBy.length > 1 ? (
+                          {isMe &&
+                            (message.readBy.length > 1 ? (
                               <CheckCheck className="h-3 w-3 text-emerald-400" />
                             ) : (
                               <Check className="h-3 w-3 text-slate-300 dark:text-slate-600" />
-                            )
-                          )}
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -305,8 +341,11 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               })}
               {typingUsers.length > 0 && (
                 <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 animate-pulse">
-                  <Sparkles className="h-3 w-3 text-[var(--primary)]" />
-                  <span>{typingUsers.map((u) => u.userName).join(", ")} {t("typing")}</span>
+                  <Sparkles className="h-3 w-3 text-primary" />
+                  <span>
+                    {typingUsers.map((u) => u.userName).join(", ")}{" "}
+                    {t("typing")}
+                  </span>
                 </div>
               )}
               <div ref={messagesEndRef} />
@@ -316,7 +355,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               <MessageSquare className="mb-4 h-16 w-16 text-slate-300 dark:text-slate-700" />
               <div>
                 <p className="text-sm font-bold">{t("noActiveRoom")}</p>
-                <p className="mt-2 text-xs text-slate-400">{t("selectRoomHint")}</p>
+                <p className="mt-2 text-xs text-slate-400">
+                  {t("selectRoomHint")}
+                </p>
               </div>
             </div>
           )}
@@ -335,13 +376,13 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               placeholder={t("typeMessage")}
-              className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] dark:border-slate-700/70 dark:bg-slate-800 dark:text-slate-100"
+              className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary dark:border-slate-700/70 dark:bg-slate-800 dark:text-slate-100"
             />
             <button
               type="button"
               onClick={handleSend}
               disabled={!inputText.trim()}
-              className="rounded-3xl bg-[var(--primary)] px-4 py-3 text-white transition hover:bg-[var(--primary-dark)] disabled:opacity-50"
+              className="rounded-3xl bg-primary px-4 py-3 text-white transition hover:bg-(--primary-dark) disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
             </button>

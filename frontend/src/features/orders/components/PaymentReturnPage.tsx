@@ -26,7 +26,9 @@ export function PaymentReturnPage({ params }: PaymentReturnPageProps) {
   const approvedCode = getParam(params, "txn_response_code") === "APPROVED";
   const isApproved = success || approvedMessage || approvedCode;
   const amountCents =
-    Number(getParam(params, "amount_cents_int") ?? getParam(params, "amount_cents")) || 0;
+    Number(
+      getParam(params, "amount_cents_int") ?? getParam(params, "amount_cents"),
+    ) || 0;
   const transactionId = getParam(params, "id") ?? getParam(params, "order");
 
   useEffect(() => {
@@ -85,7 +87,7 @@ export function PaymentReturnPage({ params }: PaymentReturnPageProps) {
         <div className="mt-7 flex w-full flex-col gap-3 sm:flex-row">
           <Link
             href={`/${locale}${ROUTES.ORDERS}`}
-            className="inline-flex flex-1 items-center justify-center rounded-2xl bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--primary-dark)]"
+            className="inline-flex flex-1 items-center justify-center rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-(--primary-dark)"
           >
             {t("viewOrders")}
           </Link>

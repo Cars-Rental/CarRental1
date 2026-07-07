@@ -171,13 +171,13 @@ export function BrandCombobox({
                     onClick={() => toggleBrand(brand)}
                     className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors ${
                       isSelected
-                        ? "bg-emerald-50/50 dark:bg-emerald-950/20 text-[var(--primary)] dark:text-emerald-400"
+                        ? "bg-emerald-50/50 dark:bg-emerald-950/20 text-primary dark:text-emerald-400"
                         : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
                     }`}
                   >
                     <span>{brand}</span>
                     {isSelected && (
-                      <Check className="size-4 text-[var(--primary)] dark:text-emerald-400 font-bold" />
+                      <Check className="size-4 text-primary dark:text-emerald-400 font-bold" />
                     )}
                   </div>
                 );

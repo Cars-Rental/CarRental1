@@ -8,7 +8,7 @@ export function StatsSection() {
 
   return (
     <div
-      className="bg-[var(--primary)] text-white py-6 shadow-md relative z-30 -mt-10 max-w-4xl mx-auto rounded-2xl border border-white/10"
+      className="bg-primary text-white py-6 shadow-md relative z-30 -mt-10 max-w-4xl mx-auto rounded-2xl border border-white/10"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container-main">

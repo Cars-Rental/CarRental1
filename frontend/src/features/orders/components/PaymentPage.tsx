@@ -59,7 +59,7 @@ function PaymentRoute({ orderId, mode }: PaymentPageProps) {
           </p>
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="text-[var(--primary)] text-sm font-bold hover:underline"
+            className="text-primary text-sm font-bold hover:underline"
           >
             {t("goBack")}
           </Link>
@@ -75,14 +75,14 @@ function PaymentRoute({ orderId, mode }: PaymentPageProps) {
         <nav className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-8 font-medium flex-wrap">
           <Link
             href={`/${locale}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-primary transition-colors"
           >
             {t("breadcrumb.home")}
           </Link>
           <ChevronRight className="size-3 shrink-0" />
           <Link
             href={`/${locale}${mode === "rent" ? ROUTES.CARS.RENT : ROUTES.CARS.SALE}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-primary transition-colors"
           >
             {mode === "rent"
               ? t("breadcrumb.rentCars")
@@ -91,7 +91,7 @@ function PaymentRoute({ orderId, mode }: PaymentPageProps) {
           <ChevronRight className="size-3 shrink-0" />
           <Link
             href={`/${locale}/cars/${order.car._id}?mode=${mode}`}
-            className="hover:text-[var(--primary)] transition-colors"
+            className="hover:text-primary transition-colors"
           >
             {order.car.carname}
           </Link>

@@ -65,7 +65,7 @@ export function CarImageGallery({
           priority
         />
         {isAvailable && (
-          <span className="absolute top-4 start-4 flex items-center gap-1.5 bg-[var(--primary)] text-white text-xs font-bold py-1.5 px-3 rounded-full shadow">
+          <span className="absolute top-4 start-4 flex items-center gap-1.5 bg-primary text-white text-xs font-bold py-1.5 px-3 rounded-full shadow">
             <span className="size-1.5 rounded-full bg-white inline-block" />
             {t("available")}
           </span>

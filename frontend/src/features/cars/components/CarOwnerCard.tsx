@@ -52,7 +52,7 @@ export function CarOwnerCard({ owner }: CarOwnerCardProps) {
           <MessageCircle className="size-3.5" />
           {t("chat")}
         </button>
-        <button className="flex items-center gap-1.5 text-xs font-bold text-white bg-primary hover:bg-[var(--primary-dark)] rounded-xl px-3 py-2 transition-colors">
+        <button className="flex items-center gap-1.5 text-xs font-bold text-white bg-primary hover:bg-(--primary-dark) rounded-xl px-3 py-2 transition-colors">
           <UserCircle2 className="size-3.5" />
           {t("visitProfile")}
         </button>

@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import { Search, MapPin, Calendar, CircleDollarSign, Filter, RefreshCw } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Calendar,
+  CircleDollarSign,
+  Filter,
+  RefreshCw,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -16,7 +23,12 @@ import {
   setSaleSearch,
 } from "../store";
 import { BrandCombobox } from "./BrandCombobox";
-import type { BodyType, CarsFilterState, FuelType, Transmission } from "../types/cars-api.types";
+import type {
+  BodyType,
+  CarsFilterState,
+  FuelType,
+  Transmission,
+} from "../types/cars-api.types";
 
 const YEAR_OPTIONS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
@@ -24,7 +36,7 @@ export function FiltersSidebar() {
   const t = useTranslations("Cars");
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMarketplaceMode);
-  
+
   const rentState = useAppSelector(selectRentState);
   const saleState = useAppSelector(selectSaleState);
 
@@ -58,8 +70,23 @@ export function FiltersSidebar() {
   };
 
   const transmissions: (Transmission | "")[] = ["", "automatic", "manual"];
-  const fuelTypes: (FuelType | "")[] = ["", "petrol", "diesel", "electric", "hybrid"];
-  const bodyTypes: (BodyType | "")[] = ["", "sedan", "suv", "hatchback", "coupe", "pickup", "van", "convertible"];
+  const fuelTypes: (FuelType | "")[] = [
+    "",
+    "petrol",
+    "diesel",
+    "electric",
+    "hybrid",
+  ];
+  const bodyTypes: (BodyType | "")[] = [
+    "",
+    "sedan",
+    "suv",
+    "hatchback",
+    "coupe",
+    "pickup",
+    "van",
+    "convertible",
+  ];
   const seatOptions = [0, 4, 5, 7];
 
   return (
@@ -67,14 +94,14 @@ export function FiltersSidebar() {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
         <div className="flex items-center gap-2">
-          <Filter className="size-4.5 text-[var(--primary)]" />
+          <Filter className="size-4.5 text-primary" />
           <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
             {t("filters")}
           </h2>
         </div>
         <button
           onClick={handleReset}
-          className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-[var(--primary)] dark:text-slate-400 dark:hover:text-emerald-400 transition-colors py-1 px-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/40"
+          className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-emerald-400 transition-colors py-1 px-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/40"
         >
           <RefreshCw className="size-3" />
           {t("clearFilters")}
@@ -94,7 +121,7 @@ export function FiltersSidebar() {
             onChange={handleSearchChange}
             className="w-full h-11 ps-10 pe-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none transition-colors"
           />
-          <Search className="absolute top-1/2 start-3.5 -translate-y-1/2 size-4 text-slate-400 dark:text-slate-500" />
+          <Search className="absolute top-1/2 inset-s-3.5 -translate-y-1/2 size-4 text-slate-400 dark:text-slate-500" />
         </div>
       </div>
 
@@ -117,7 +144,7 @@ export function FiltersSidebar() {
             onChange={(e) => updateFilters({ location: e.target.value })}
             className="w-full h-11 ps-10 pe-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none transition-colors"
           />
-          <MapPin className="absolute top-1/2 start-3.5 -translate-y-1/2 size-4 text-slate-400 dark:text-slate-500" />
+          <MapPin className="absolute top-1/2 inset-s-3.5 -translate-y-1/2 size-4 text-slate-400 dark:text-slate-500" />
         </div>
       </div>
 
@@ -135,7 +162,10 @@ export function FiltersSidebar() {
               value={filters.priceRange.min || ""}
               onChange={(e) =>
                 updateFilters({
-                  priceRange: { ...filters.priceRange, min: Number(e.target.value) },
+                  priceRange: {
+                    ...filters.priceRange,
+                    min: Number(e.target.value),
+                  },
                 })
               }
               className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
@@ -148,7 +178,10 @@ export function FiltersSidebar() {
               value={filters.priceRange.max || ""}
               onChange={(e) =>
                 updateFilters({
-                  priceRange: { ...filters.priceRange, max: Number(e.target.value) },
+                  priceRange: {
+                    ...filters.priceRange,
+                    max: Number(e.target.value),
+                  },
                 })
               }
               className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
@@ -168,7 +201,10 @@ export function FiltersSidebar() {
             value={filters.yearRange.min}
             onChange={(e) =>
               updateFilters({
-                yearRange: { ...filters.yearRange, min: Number(e.target.value) },
+                yearRange: {
+                  ...filters.yearRange,
+                  min: Number(e.target.value),
+                },
               })
             }
             className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
@@ -183,7 +219,10 @@ export function FiltersSidebar() {
             value={filters.yearRange.max}
             onChange={(e) =>
               updateFilters({
-                yearRange: { ...filters.yearRange, max: Number(e.target.value) },
+                yearRange: {
+                  ...filters.yearRange,
+                  max: Number(e.target.value),
+                },
               })
             }
             className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
@@ -229,11 +268,17 @@ export function FiltersSidebar() {
         </label>
         <select
           value={filters.fuelType}
-          onChange={(e) => updateFilters({ fuelType: e.target.value as FuelType | "" })}
+          onChange={(e) =>
+            updateFilters({ fuelType: e.target.value as FuelType | "" })
+          }
           className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
         >
           {fuelTypes.map((type) => (
-            <option key={type} value={type} className="bg-white dark:bg-slate-900">
+            <option
+              key={type}
+              value={type}
+              className="bg-white dark:bg-slate-900"
+            >
               {type === "" ? t("any") : t(type)}
             </option>
           ))}
@@ -247,11 +292,17 @@ export function FiltersSidebar() {
         </label>
         <select
           value={filters.bodyType}
-          onChange={(e) => updateFilters({ bodyType: e.target.value as BodyType | "" })}
+          onChange={(e) =>
+            updateFilters({ bodyType: e.target.value as BodyType | "" })
+          }
           className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:border-emerald-500/50 focus:outline-none"
         >
           {bodyTypes.map((type) => (
-            <option key={type} value={type} className="bg-white dark:bg-slate-900">
+            <option
+              key={type}
+              value={type}
+              className="bg-white dark:bg-slate-900"
+            >
               {type === "" ? t("any") : t(type)}
             </option>
           ))}

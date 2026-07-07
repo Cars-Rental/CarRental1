@@ -64,7 +64,7 @@ export function WhyChooseUs() {
             <ul className="space-y-3.5 pt-4">
               {checklist.map((item, i) => (
                 <li key={i} className="flex items-center gap-3">
-                  <CheckCircle2 className="size-5 text-[var(--primary)] shrink-0" />
+                  <CheckCircle2 className="size-5 text-primary shrink-0" />
                   <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                     {item}
                   </span>
@@ -94,7 +94,7 @@ export function WhyChooseUs() {
                       className={`p-2 rounded-xl shrink-0 ${
                         feat.isSpecial
                           ? "bg-[#0d9e8f] text-white"
-                          : "bg-slate-200/60 dark:bg-slate-800 text-[var(--primary)] dark:text-emerald-400"
+                          : "bg-slate-200/60 dark:bg-slate-800 text-primary dark:text-emerald-400"
                       }`}
                     >
                       <Icon className="size-5" />

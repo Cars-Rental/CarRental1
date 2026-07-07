@@ -54,7 +54,7 @@ export function CarReviews({ carId }: CarReviewsProps) {
         <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
           {t("reviewsTitle")}
         </h3>
-        <button className="text-xs font-bold text-[var(--primary)] hover:underline">
+        <button className="text-xs font-bold text-primary hover:underline">
           {t("viewAll")}
         </button>
       </div>

@@ -14,8 +14,8 @@ export default async function NotFoundPage() {
     >
       <section className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 text-center shadow-2xl shadow-slate-950/10 dark:shadow-slate-950/50 sm:p-10">
         <div className="absolute inset-x-0 top-0 h-1 bg-[#005C55]" />
-        <div className="absolute -top-24 -end-24 size-48 rounded-full border border-[#005C55]/10 dark:border-[#005C55]/20" />
-        <div className="absolute -bottom-28 -start-28 size-56 rounded-full border border-slate-200 dark:border-slate-800" />
+        <div className="absolute -top-24 -inset-e-24 size-48 rounded-full border border-[#005C55]/10 dark:border-[#005C55]/20" />
+        <div className="absolute -bottom-28 -inset-s-28 size-56 rounded-full border border-slate-200 dark:border-slate-800" />
 
         <div className="relative mx-auto mb-7 flex size-24 items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
           <span className="absolute inset-0 rounded-full bg-[#005C55]/10 animate-ping" />

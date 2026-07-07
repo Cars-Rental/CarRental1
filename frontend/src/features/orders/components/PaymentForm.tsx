@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, CreditCard, ExternalLink, Loader2, Lock } from "lucide-react";
+import {
+  AlertCircle,
+  CreditCard,
+  ExternalLink,
+  Loader2,
+  Lock,
+} from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ROUTES } from "@/config/routes";
 import type { Order } from "../types/order.types";
@@ -56,8 +62,11 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
         },
         onError: (error: unknown) => {
           const message =
-            (error as { response?: { data?: { message?: string; error?: string } } })
-              ?.response?.data?.message ??
+            (
+              error as {
+                response?: { data?: { message?: string; error?: string } };
+              }
+            )?.response?.data?.message ??
             (error as { response?: { data?: { error?: string } } })?.response
               ?.data?.error ??
             t("errors.gatewayFailed");
@@ -71,8 +80,8 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
     return (
       <div className="flex flex-col gap-4 rounded-3xl border border-slate-200/60 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
         <div className="flex items-start gap-3 px-2 pt-2">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[var(--primary)]/10">
-            <Lock className="size-5 text-[var(--primary)]" />
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10">
+            <Lock className="size-5 text-primary" />
           </div>
           <div>
             <h2 className="text-base font-extrabold text-slate-800 dark:text-slate-100">
@@ -86,7 +95,7 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
             href={iframeUrl}
             target="_blank"
             rel="noreferrer"
-            className="ms-auto inline-flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-[var(--primary)] dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+            className="ms-auto inline-flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-primary dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             aria-label={t("openGateway")}
           >
             <ExternalLink className="size-4" />
@@ -106,15 +115,17 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
   return (
     <div className="flex flex-col gap-5 rounded-3xl border border-slate-200/60 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
       <div className="flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--primary)]/10">
-          <CreditCard className="size-5 text-[var(--primary)]" />
+        <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10">
+          <CreditCard className="size-5 text-primary" />
         </div>
         <div>
           <h2 className="text-base font-extrabold text-slate-800 dark:text-slate-100">
             {t("formTitle")}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            {isRent ? t("gatewayFormSubtitle") : t("sessionGatewayFormSubtitle")}
+            {isRent
+              ? t("gatewayFormSubtitle")
+              : t("sessionGatewayFormSubtitle")}
           </p>
         </div>
         <div className="ms-auto flex items-center gap-1 text-[10px] font-medium text-slate-400 dark:text-slate-500">
@@ -151,7 +162,7 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
         type="button"
         onClick={handleCreatePayment}
         disabled={createPayment.isPending}
-        className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--primary)] py-4 text-sm font-bold text-white shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.01] hover:bg-[var(--primary-dark)] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60"
+        className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-bold text-white shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.01] hover:bg-(--primary-dark) active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60"
       >
         {createPayment.isPending ? (
           <Loader2 className="size-4 animate-spin" />
