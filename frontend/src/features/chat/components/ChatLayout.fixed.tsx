@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { useAppSelector } from "@/store/hooks";
 import type { ChatUser, Room } from "../types";
-import { useUserOrders } from "@/features/user-account/hooks/useUserOrders";
 
 interface ChatLayoutProps {
   initialRoomId?: string | null;
@@ -25,7 +24,6 @@ interface ChatLayoutProps {
 
 export function ChatLayout({
   initialRoomId,
-  isDashboard = false,
 }: ChatLayoutProps) {
   const t = useTranslations("Chat");
   const locale = useLocale();
@@ -39,7 +37,6 @@ export function ChatLayout({
     typingUsers,
     onlineUsers,
     isLoadingRooms,
-    isLoadingMessages,
     selectRoom,
     sendMessage,
     sendTypingStart,
@@ -56,7 +53,6 @@ export function ChatLayout({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { data: userOrders } = useUserOrders();
 
   useEffect(() => {
     if (initialRoomId && activeRoomId !== initialRoomId) {

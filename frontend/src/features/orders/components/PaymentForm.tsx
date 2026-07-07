@@ -26,9 +26,7 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
   const locale = useLocale();
   const createPayment = useCreatePayment();
   const isRent = mode === "rent";
-  const totalAmount = isRent
-    ? (order.totalPrice ?? 0)
-    : (order.carprice ?? SESSION_FEE);
+  const totalAmount = isRent ? (order.totalPrice ?? 0) : SESSION_FEE;
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -105,7 +103,7 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
         <iframe
           src={iframeUrl}
           title={t("gatewayTitle")}
-          className="h-[620px] w-full rounded-2xl border border-slate-200 bg-white dark:border-slate-800"
+          className="h-155 w-full rounded-2xl border border-slate-200 bg-white dark:border-slate-800"
           allow="payment *"
         />
       </div>
@@ -162,7 +160,7 @@ export function PaymentForm({ order, mode }: PaymentFormProps) {
         type="button"
         onClick={handleCreatePayment}
         disabled={createPayment.isPending}
-        className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-bold text-white shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.01] hover:bg-(--primary-dark) active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60"
+        className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-bold text-white shadow-md shadow-(--primary)/20 transition-all hover:scale-[1.01] hover:bg-(--primary-dark) active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60"
       >
         {createPayment.isPending ? (
           <Loader2 className="size-4 animate-spin" />

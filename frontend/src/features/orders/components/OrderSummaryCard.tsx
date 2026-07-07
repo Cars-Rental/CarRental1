@@ -43,8 +43,8 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 40vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          <div className="absolute bottom-4 start-4">
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+          <div className="absolute bottom-4 inset-s-4">
             <p className="text-white font-extrabold text-lg leading-tight">
               {order.car.carname}
             </p>

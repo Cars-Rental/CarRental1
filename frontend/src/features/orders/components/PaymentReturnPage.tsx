@@ -20,11 +20,16 @@ const getParam = (
 
 export function PaymentReturnPage({ params }: PaymentReturnPageProps) {
   const t = useTranslations("Payment");
+  const navigationT = useTranslations("Navigation");
   const locale = useLocale();
+  const mode = getParam(params, "mode");
   const success = getParam(params, "success") === "true";
   const approvedMessage = getParam(params, "data.message") === "Approved";
   const approvedCode = getParam(params, "txn_response_code") === "APPROVED";
   const isApproved = success || approvedMessage || approvedCode;
+  const detailsRoute = mode === "rent" ? ROUTES.BOOKINGS : ROUTES.ORDERS;
+  const detailsLabel =
+    mode === "rent" ? navigationT("bookings") : t("viewOrders");
   const amountCents =
     Number(
       getParam(params, "amount_cents_int") ?? getParam(params, "amount_cents"),
@@ -86,10 +91,10 @@ export function PaymentReturnPage({ params }: PaymentReturnPageProps) {
 
         <div className="mt-7 flex w-full flex-col gap-3 sm:flex-row">
           <Link
-            href={`/${locale}${ROUTES.ORDERS}`}
+            href={`/${locale}${detailsRoute}`}
             className="inline-flex flex-1 items-center justify-center rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-(--primary-dark)"
           >
-            {t("viewOrders")}
+            {detailsLabel}
           </Link>
           <Link
             href={`/${locale}${ROUTES.HOME}`}

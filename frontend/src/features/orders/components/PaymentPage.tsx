@@ -25,8 +25,8 @@ function PaymentSkeleton() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="h-4 w-48 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse mb-8" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="h-[420px] bg-slate-100 dark:bg-slate-800 rounded-3xl animate-pulse" />
-          <div className="h-[480px] bg-slate-100 dark:bg-slate-800 rounded-3xl animate-pulse" />
+          <div className="h-105 bg-slate-100 dark:bg-slate-800 rounded-3xl animate-pulse" />
+          <div className="h-120 bg-slate-100 dark:bg-slate-800 rounded-3xl animate-pulse" />
         </div>
       </div>
     </div>
