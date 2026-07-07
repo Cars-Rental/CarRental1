@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Star, Settings, Fuel, Gauge, MapPin, Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
 import { useDirection } from "@/lib";
 import type { RawCar } from "@/features/cars/types/cars-api.types";
 import {
@@ -32,8 +33,18 @@ export function CarCard({ car, mode }: CarCardProps) {
   const isFavorite = favorites.some((favorite) => favorite.id === car._id);
   const isFavoritePending = addFavorite.isPending || removeFavorite.isPending;
 
+  const fallbackImage = "/assets/images/landing/car1.png";
   const image =
-    car.carimage?.[0]?.secure_url ?? "/assets/images/landing/car1.png";
+    car.carimage?.find((img) => img.secure_url?.trim())?.secure_url ??
+    fallbackImage;
+  const [imageSrc, setImageSrc] = useState(image);
+  const isRemoteImage = useMemo(() => {
+    try {
+      return new URL(imageSrc).hostname === "res.cloudinary.com";
+    } catch {
+      return false;
+    }
+  }, [imageSrc]);
 
   return (
     <div
@@ -46,12 +57,18 @@ export function CarCard({ car, mode }: CarCardProps) {
           className="block w-full h-full"
         >
           <Image
-            src={image}
+            src={imageSrc}
             alt={car.carname}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
+            unoptimized={isRemoteImage}
+            onError={() => {
+              if (imageSrc !== fallbackImage) {
+                setImageSrc(fallbackImage);
+              }
+            }}
           />
         </Link>
 
