@@ -10,7 +10,7 @@ export function AuthHeader() {
 
   return (
     <header className="sticky top-0 inset-x-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 py-3">
-      <nav className="container mx-auto px-4 flex items-center justify-between">
+      <nav className="container max-w-7xl mx-auto px-4 flex items-center justify-between">
         <Logo />
 
         <div className="flex items-center gap-2">

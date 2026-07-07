@@ -18,7 +18,7 @@ export function Footer() {
       dir={isRTL ? "rtl" : "ltr"}
     >
       {/* Main Footer */}
-      <div className="container mx-auto py-16">
+      <div className="container max-w-7xl mx-auto py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-6">
@@ -134,7 +134,7 @@ export function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800 bg-slate-950/30">
-        <div className="container mx-auto py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="container max-w-7xl mx-auto py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p className="font-medium">
             {t("copyright", { year: new Date().getFullYear() })}
           </p>
