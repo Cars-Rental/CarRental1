@@ -12,6 +12,8 @@ export function useGetAllRentCars() {
   const query = useQuery({
     queryKey: ["cars", "rent"],
     queryFn: getAllRentCarsApi,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
   const allCars = query.data?.data ?? [];
@@ -32,6 +34,8 @@ export function useGetAllSaleCars() {
   const query = useQuery({
     queryKey: ["cars", "sale"],
     queryFn: getAllSaleCarsApi,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
   const allCars = query.data?.data ?? [];

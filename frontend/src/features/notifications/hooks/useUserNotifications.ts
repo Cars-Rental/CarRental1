@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { io } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 
 import { QUERY_KEYS, ROLES } from "@/constants";
 import { env } from "@/config/env";
@@ -89,55 +89,59 @@ export function useUserNotifications() {
     const token = tokenStorage.getAccessToken();
     if (!token) return;
 
-    const socket = io(env.apiBaseUrl, {
-      auth: { token },
-      transports: ["websocket", "polling"],
-    });
+    let socket: Socket | null = null;
+    const connectTimer = window.setTimeout(() => {
+      socket = io(env.apiBaseUrl, {
+        auth: { token },
+        transports: ["websocket", "polling"],
+      });
 
-    socket.on("unread_notifications", ({ notifications, count }) => {
-      queryClient.setQueryData<NotificationsResponse>(
-        QUERY_KEYS.NOTIFICATIONS.UNREAD,
-        { notifications, count }
-      );
-    });
+      socket.on("unread_notifications", ({ notifications, count }) => {
+        queryClient.setQueryData<NotificationsResponse>(
+          QUERY_KEYS.NOTIFICATIONS.UNREAD,
+          { notifications, count }
+        );
+      });
 
-    socket.on("new_notification", (notification: NotificationItem) => {
-      queryClient.setQueryData<NotificationsResponse>(
-        QUERY_KEYS.NOTIFICATIONS.UNREAD,
-        (current) =>
-          current
-            ? {
-                notifications: upsertNotification(
-                  current.notifications,
-                  notification
-                ),
-                count: current.notifications.some(
-                  (item) => item._id === notification._id
-                )
-                  ? current.count
-                  : current.count + 1,
-              }
-            : { notifications: [notification], count: 1 }
-      );
-    });
+      socket.on("new_notification", (notification: NotificationItem) => {
+        queryClient.setQueryData<NotificationsResponse>(
+          QUERY_KEYS.NOTIFICATIONS.UNREAD,
+          (current) =>
+            current
+              ? {
+                  notifications: upsertNotification(
+                    current.notifications,
+                    notification
+                  ),
+                  count: current.notifications.some(
+                    (item) => item._id === notification._id
+                  )
+                    ? current.count
+                    : current.count + 1,
+                }
+              : { notifications: [notification], count: 1 }
+        );
+      });
 
-    socket.on("mark_notification_read", ({ notificationId }) => {
-      queryClient.setQueryData<NotificationsResponse>(
-        QUERY_KEYS.NOTIFICATIONS.UNREAD,
-        (current) =>
-          current
-            ? {
-                notifications: current.notifications.filter(
-                  (item) => item._id !== notificationId
-                ),
-                count: Math.max(0, current.count - 1),
-              }
-            : current
-      );
-    });
+      socket.on("mark_notification_read", ({ notificationId }) => {
+        queryClient.setQueryData<NotificationsResponse>(
+          QUERY_KEYS.NOTIFICATIONS.UNREAD,
+          (current) =>
+            current
+              ? {
+                  notifications: current.notifications.filter(
+                    (item) => item._id !== notificationId
+                  ),
+                  count: Math.max(0, current.count - 1),
+                }
+              : current
+        );
+      });
+    }, 0);
 
     return () => {
-      socket.disconnect();
+      window.clearTimeout(connectTimer);
+      socket?.disconnect();
     };
   }, [enabled, queryClient]);
 

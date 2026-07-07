@@ -14,10 +14,15 @@ export default function RentCarsPage() {
     dispatch(setMode("rent"));
   }, [dispatch]);
 
-  const { cars, total, isLoading } = useGetAllRentCars();
+  const { cars, total, isLoading, isError, refetch } = useGetAllRentCars();
 
   return (
-    <MarketplaceLayout totalCount={total} isLoading={isLoading}>
+    <MarketplaceLayout
+      totalCount={total}
+      isLoading={isLoading}
+      isError={isError}
+      onRetry={() => void refetch()}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {cars.map((car) => (
           <CarCard key={car._id} car={car} mode="rent" />

@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from "react";
 import {
   ThemeToggle,
   LanguageToggle,
@@ -10,14 +11,23 @@ import { NavbarActionsSkeleton } from "./NavbarActionsSkeleton";
 import { ROLES } from "@/constants";
 import { UserNotificationBell } from "@/features/notifications";
 
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function NavbarActions() {
   const {user, isLoading} = useAppSelector((state) => state.auth);
+  const isMounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   return (
     <div className="flex items-center gap-2.5">
       <ThemeToggle />
       <LanguageToggle />
-      {isLoading ? (
+      {!isMounted || isLoading ? (
         <NavbarActionsSkeleton />
       ) : user ? (
         <>

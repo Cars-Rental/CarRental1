@@ -40,7 +40,7 @@ export function HeroSection() {
       />
       {/* Soft gradient overlay for text readability */}
       <div
-        className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/40 to-slate-950/50"
+        className="absolute inset-0 bg-linear-to-t from-slate-950/70 via-slate-900/40 to-slate-950/50"
         aria-hidden="true"
       />
 
@@ -65,7 +65,7 @@ export function HeroSection() {
           <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/40 rounded-3xl p-4 shadow-2xl md:flex md:items-center md:gap-4 md:divide-x md:divide-slate-200/50 dark:md:divide-slate-800/50 md:rtl:divide-x-reverse">
             {/* City Field */}
             <div className="flex-1 flex items-center gap-3 p-3 text-start">
-              <MapPin className="text-[var(--primary)] size-5 shrink-0" />
+              <MapPin className="text-primary size-5 shrink-0" />
               <div className="flex-1">
                 <label className="block text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                   {t("cityLabel")}
@@ -84,7 +84,7 @@ export function HeroSection() {
 
             {/* Date Field */}
             <div className="flex-1 flex items-center gap-3 p-3 text-start md:border-t-0 border-t border-slate-200/30 dark:border-slate-800/30">
-              <Calendar className="text-[var(--primary)] size-5 shrink-0" />
+              <Calendar className="text-primary size-5 shrink-0" />
               <div className="flex-1">
                 <label className="block text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                   {t("dateLabel")}
@@ -93,14 +93,15 @@ export function HeroSection() {
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({ ...form, date: e.target.value })}
-                  className="w-full bg-transparent border-none text-slate-800 dark:text-slate-100 font-medium text-sm focus:outline-none placeholder:text-slate-400 [color-scheme:light] dark:[color-scheme:dark]"
+                  className="w-full bg-transparent border-none text-slate-800 dark:text-slate-100 font-medium text-sm focus:outline-none placeholder:text-slate-400 scheme-light dark:scheme-dark"
+                  suppressHydrationWarning
                 />
               </div>
             </div>
 
             {/* Car Type Field */}
             <div className="flex-1 flex items-center gap-3 p-3 text-start md:border-t-0 border-t border-slate-200/30 dark:border-slate-800/30">
-              <Car className="text-[var(--primary)] size-5 shrink-0" />
+              <Car className="text-primary size-5 shrink-0" />
               <div className="flex-1">
                 <label className="block text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                   {t("typeLabel")}
@@ -144,7 +145,7 @@ export function HeroSection() {
             <div className="p-2 md:border-t-0 border-t border-slate-200/30 dark:border-slate-800/30 shrink-0">
               <button
                 onClick={handleSearch}
-                className="w-full md:w-auto bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white text-sm font-bold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/30 hover:scale-[1.02] transition-all duration-200"
+                className="w-full md:w-auto bg-primary hover:bg-(--primary-dark) text-white text-sm font-bold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-(--primary)/20 hover:shadow-(--primary)/30 hover:scale-[1.02] transition-all duration-200"
               >
                 <Search className="size-4" />
                 <span>{t("searchBtn")}</span>

@@ -5,7 +5,9 @@ import {
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
+  RefreshCw,
   SlidersHorizontal,
+  WifiOff,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
@@ -33,12 +35,16 @@ interface MarketplaceLayoutProps {
   children: React.ReactNode;
   totalCount: number;
   isLoading: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
 }
 
 export function MarketplaceLayout({
   children,
   totalCount,
   isLoading,
+  isError = false,
+  onRetry,
 }: MarketplaceLayoutProps) {
   const t = useTranslations("Cars");
   const { isRTL } = useDirection();
@@ -156,7 +162,7 @@ export function MarketplaceLayout({
             <div className="w-80 h-full bg-white dark:bg-slate-950 p-6 overflow-y-auto shadow-2xl relative animate-in slide-in-from-right duration-250 border-s border-slate-200 dark:border-slate-800">
               <button
                 onClick={() => setMobileSidebarOpen(false)}
-                className="absolute top-4 end-4 p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
+                className="absolute top-4 inset-e-4 p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
               >
                 &times;
               </button>
@@ -181,8 +187,9 @@ export function MarketplaceLayout({
               {[...Array(6)].map((_, idx) => (
                 <div
                   key={idx}
-                  className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl h-96 animate-pulse overflow-hidden flex flex-col"
+                  className="relative bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl h-96 animate-pulse overflow-hidden flex flex-col"
                 >
+                  <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-linear-to-r from-transparent via-white/45 to-transparent dark:via-white/5" />
                   <div className="h-48 bg-slate-200 dark:bg-slate-800 w-full" />
                   <div className="p-5 flex-1 flex flex-col justify-between">
                     <div className="space-y-3">
@@ -195,9 +202,34 @@ export function MarketplaceLayout({
                 </div>
               ))}
             </div>
+          ) : isError ? (
+            <div className="bg-white dark:bg-slate-900 border border-rose-200/80 dark:border-rose-900/50 rounded-3xl p-10 sm:p-12 text-center flex flex-col items-center justify-center min-h-85 shadow-sm animate-in fade-in slide-in-from-bottom-3 duration-300">
+              <div className="relative mb-5">
+                <span className="absolute inset-0 rounded-full bg-rose-400/20 animate-ping" />
+                <div className="relative size-16 bg-rose-50 dark:bg-rose-950/30 rounded-full flex items-center justify-center text-rose-600 dark:text-rose-300 border border-rose-100 dark:border-rose-900/50">
+                  <WifiOff className="size-8" />
+                </div>
+              </div>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
+                {t("loadErrorTitle")}
+              </h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-sm">
+                {t("loadErrorDescription")}
+              </p>
+              {onRetry && (
+                <button
+                  type="button"
+                  onClick={onRetry}
+                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white shadow-md shadow-(--primary)/15 transition-all duration-200 hover:bg-(--primary-dark) hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <RefreshCw className="size-4" />
+                  <span>{t("retry")}</span>
+                </button>
+              )}
+            </div>
           ) : totalCount === 0 ? (
             /* Empty State */
-            <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-75">
               <div className="size-16 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-500 mb-4 border border-slate-100 dark:border-slate-700">
                 <SlidersHorizontal className="size-8" />
               </div>
@@ -205,7 +237,7 @@ export function MarketplaceLayout({
                 {t("noCarsFound")}
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm">
-                Try adjustment of selection filters or keyword search.
+                {t("emptyHint")}
               </p>
             </div>
           ) : (
@@ -240,7 +272,7 @@ export function MarketplaceLayout({
                     onClick={() => handlePageChange(pageNum)}
                     className={`size-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all cursor-pointer ${
                       isActive
-                        ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/10"
+                        ? "bg-primary text-white shadow-md shadow-(--primary)/10"
                         : "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
                     }`}
                   >

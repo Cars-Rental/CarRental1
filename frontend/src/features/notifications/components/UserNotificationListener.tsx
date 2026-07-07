@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { io } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 import { toast } from "sonner";
 
 import { env } from "@/config/env";
@@ -42,41 +42,46 @@ export function UserNotificationListener() {
     const token = tokenStorage.getAccessToken();
     if (!token) return;
 
-    const socket = io(env.apiBaseUrl, {
-      auth: { token },
-      transports: ["websocket", "polling"],
-    });
+    let socket: Socket | null = null;
+    const connectTimer = window.setTimeout(() => {
+      socket = io(env.apiBaseUrl, {
+        auth: { token },
+        transports: ["websocket", "polling"],
+      });
 
-    socket.on("room:created", ({ room }: { room?: Room }) => {
-      if (room?._id) {
-        latestRoomIdRef.current = room._id;
-      }
-    });
-
-    socket.on("new_notification", (notification: SocketNotification) => {
-      if (!ACCEPTED_NOTIFICATION_TYPES.has(notification.type)) return;
-
-      const roomId = notification.metadata?.roomId ?? latestRoomIdRef.current;
-      const isBuyOrder = notification.type === "ORDER_BUY_ACCEPTED";
-
-      toast.success(
-        isBuyOrder ? t("buyAcceptedTitle") : t("rentAcceptedTitle"),
-        {
-          description: isBuyOrder
-            ? t("buyAcceptedDescription")
-            : t("rentAcceptedDescription"),
-          action: roomId
-            ? {
-                label: t("openChat"),
-                onClick: () => router.push(`/${locale}/chat?roomId=${roomId}`),
-              }
-            : undefined,
+      socket.on("room:created", ({ room }: { room?: Room }) => {
+        if (room?._id) {
+          latestRoomIdRef.current = room._id;
         }
-      );
-    });
+      });
+
+      socket.on("new_notification", (notification: SocketNotification) => {
+        if (!ACCEPTED_NOTIFICATION_TYPES.has(notification.type)) return;
+
+        const roomId = notification.metadata?.roomId ?? latestRoomIdRef.current;
+        const isBuyOrder = notification.type === "ORDER_BUY_ACCEPTED";
+
+        toast.success(
+          isBuyOrder ? t("buyAcceptedTitle") : t("rentAcceptedTitle"),
+          {
+            description: isBuyOrder
+              ? t("buyAcceptedDescription")
+              : t("rentAcceptedDescription"),
+            action: roomId
+              ? {
+                  label: t("openChat"),
+                  onClick: () =>
+                    router.push(`/${locale}/chat?roomId=${roomId}`),
+                }
+              : undefined,
+          }
+        );
+      });
+    }, 0);
 
     return () => {
-      socket.disconnect();
+      window.clearTimeout(connectTimer);
+      socket?.disconnect();
     };
   }, [isAuthenticated, locale, router, t, user]);
 
