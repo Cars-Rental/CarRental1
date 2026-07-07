@@ -213,7 +213,10 @@
       "bookNow": "احجز الآن",
       "buyNow": "شراء الآن",
       "badgeAvailable": "متاح",
-      "badgePremium": "مميز"
+      "badgePremium": "مميز",
+      "loadErrorTitle": "السيارات غير متاحة الآن",
+      "loadErrorDescription": "تعذر الاتصال بالخادم. تأكد أن الباك إند يعمل ثم حاول مرة أخرى.",
+      "retry": "حاول مرة أخرى"
     },
     "whyUs": {
       "title": "لماذا يختار الآلاف Rento؟",
@@ -296,6 +299,10 @@
     "badgeAvailable": "متاحة",
     "badgeUnavailable": "غير متاحة",
     "noCarsFound": "لا توجد سيارات تطابق الفلاتر المحددة.",
+    "emptyHint": "جرب تعديل الفلاتر أو كلمة البحث.",
+    "loadErrorTitle": "تعذر تحميل السيارات",
+    "loadErrorDescription": "خادم الباك إند لا يستجيب الآن. شغل الخادم ثم حاول مرة أخرى.",
+    "retry": "حاول مرة أخرى",
     "detailsTitle": "تفاصيل السيارة",
     "backToRent": "العودة لصفحة الإيجار",
     "backToSale": "العودة لصفحة البيع",
@@ -1064,7 +1071,14 @@
       "reject": "رفض",
       "cancel": "إلغاء",
       "noActions": "لا توجد إجراءات",
-      "rejectionReasonPrompt": "لماذا تريد رفض هذا الطلب؟ اختياري.",
+      "rejectOrderTitle": "رفض الطلب",
+      "rejectOrderDescription": "أضف سبب الرفض قبل رفض طلب الشراء.",
+      "rejectBookingTitle": "رفض الحجز",
+      "rejectBookingDescription": "أضف سبب الرفض قبل رفض طلب الحجز.",
+      "rejectionReasonPrompt": "لماذا تريد رفض هذا الطلب؟",
+      "rejectionReasonLabel": "سبب الرفض",
+      "rejectionReasonPlaceholder": "اكتب السبب بوضوح للعميل...",
+      "rejectionReasonRequired": "سبب الرفض مطلوب.",
       "bookingStatusUpdated": "تم تحديث حالة الحجز",
       "bookingStatusUpdateFailed": "فشل تحديث حالة الحجز",
       "orderStatusUpdated": "تم تحديث حالة الطلب",
@@ -1295,6 +1309,12 @@
       "cvvRequired": "أدخل CVV صالح",
       "gatewayFailed": "فشل بدء عملية الدفع. حاول مرة أخرى."
     }
+  },
+  "NotFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها أو أن الرابط لم يعد صالحًا.",
+    "home": "الصفحة الرئيسية",
+    "browseCars": "تصفح السيارات"
   },
   "Chat": {
     "title": "المحادثات",

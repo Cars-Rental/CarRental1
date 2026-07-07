@@ -45,6 +45,7 @@ export function SharedFAQSection({
               <button
                 onClick={() => toggleFaq(index)}
                 className="flex w-full items-center justify-between px-6 py-5 text-left font-semibold text-slate-900 transition-colors hover:bg-slate-50 focus:outline-none dark:text-slate-100 dark:hover:bg-slate-800/60"
+                suppressHydrationWarning
               >
                 <span className="text-lg">{faq.q}</span>
                 <ChevronDown

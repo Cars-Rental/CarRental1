@@ -1,11 +1,16 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/config/routes";
 import { NAV_LINKS } from "@/features/landing/constants/landing.constants";
 import { useAppSelector } from "@/store/hooks";
+
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 type MobileNavProps = {
   isOpen: boolean;
@@ -16,7 +21,12 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
   const t = useTranslations("Navigation");
   const pathname = usePathname();
   const { user, isLoading } = useAppSelector((state) => state.auth);
-  const showAuthButtons = !isLoading && !user;
+  const isMounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+  const showAuthButtons = isMounted && !isLoading && !user;
 
   if (!isOpen) return null;
 

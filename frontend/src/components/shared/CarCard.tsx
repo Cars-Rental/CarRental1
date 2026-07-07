@@ -81,6 +81,7 @@ export function CarCard({ car, mode }: CarCardProps) {
               : "bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:scale-110"
           }`}
           aria-label={t("toggleFavorite")}
+          suppressHydrationWarning
         >
           <Heart className={`size-4.5 ${isFavorite ? "fill-current" : ""}`} />
         </button>

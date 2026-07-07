@@ -13,6 +13,7 @@ import { DashboardEmptyState } from "./DashboardEmptyState";
 import { DashboardPageHeader } from "./DashboardPageHeader";
 import { DashboardStatusBadge } from "./DashboardStatusBadge";
 import { DashboardTable } from "./DashboardTable";
+import { RejectionReasonDialog } from "./RejectionReasonDialog";
 
 export function TraderBookingsPage() {
   const locale = useLocale();
@@ -27,6 +28,7 @@ export function TraderBookingsPage() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [rejectingBookingId, setRejectingBookingId] = useState<string | null>(null);
   const pageSize = 5;
 
   const filteredBookings = useMemo(() => {
@@ -71,15 +73,13 @@ export function TraderBookingsPage() {
     updateBookingStatus.mutate({ id: bookingId, status: "accepted" });
   }
 
-  function rejectBooking(bookingId: string) {
-    const rejectionReason = window.prompt(t("actions.rejectionReasonPrompt"));
-
-    if (rejectionReason === null) return;
-
+  function rejectBooking(bookingId: string, rejectionReason: string) {
     updateBookingStatus.mutate({
       id: bookingId,
       status: "rejected",
-      rejectionReason: rejectionReason?.trim() || undefined,
+      rejectionReason,
+    }, {
+      onSuccess: () => setRejectingBookingId(null),
     });
   }
 
@@ -228,7 +228,7 @@ export function TraderBookingsPage() {
                       variant="outline"
                       className="gap-1 text-destructive hover:text-destructive"
                       disabled={isMutatingThisBooking}
-                      onClick={() => rejectBooking(booking.id)}
+                      onClick={() => setRejectingBookingId(booking.id)}
                     >
                       <XCircle className="size-4" />
                       {t("actions.reject")}
@@ -249,6 +249,27 @@ export function TraderBookingsPage() {
           />
         </>
       )}
+      <RejectionReasonDialog
+        key={rejectingBookingId ?? "closed-booking-rejection"}
+        open={rejectingBookingId !== null}
+        title={t("actions.rejectBookingTitle")}
+        description={t("actions.rejectBookingDescription")}
+        label={t("actions.rejectionReasonLabel")}
+        placeholder={t("actions.rejectionReasonPlaceholder")}
+        errorMessage={t("actions.rejectionReasonRequired")}
+        cancelLabel={t("actions.cancel")}
+        confirmLabel={t("actions.reject")}
+        isSubmitting={updateBookingStatus.isPending}
+        onOpenChange={(open) => {
+          if (!open && !updateBookingStatus.isPending) {
+            setRejectingBookingId(null);
+          }
+        }}
+        onConfirm={(reason) => {
+          if (!rejectingBookingId) return;
+          rejectBooking(rejectingBookingId, reason);
+        }}
+      />
     </div>
   );
 }

@@ -213,7 +213,10 @@
       "bookNow": "Book Now",
       "buyNow": "Buy Now",
       "badgeAvailable": "Available",
-      "badgePremium": "Premium"
+      "badgePremium": "Premium",
+      "loadErrorTitle": "Cars are not available right now",
+      "loadErrorDescription": "We could not reach the server. Please check that the backend is running and try again.",
+      "retry": "Try Again"
     },
     "whyUs": {
       "title": "Why Thousands Choose Rento?",
@@ -296,6 +299,10 @@
     "badgeAvailable": "Available",
     "badgeUnavailable": "Unavailable",
     "noCarsFound": "No cars match your filters.",
+    "emptyHint": "Try adjusting your filters or search keyword.",
+    "loadErrorTitle": "Could not load cars",
+    "loadErrorDescription": "The backend server is not responding right now. Start the server and try again.",
+    "retry": "Try Again",
     "detailsTitle": "Car Details",
     "backToRent": "Back to Rent Page",
     "backToSale": "Back to Sale Page",
@@ -1065,7 +1072,14 @@
       "reject": "Reject",
       "cancel": "Cancel",
       "noActions": "No actions",
-      "rejectionReasonPrompt": "Why do you want to reject this order? Optional.",
+      "rejectOrderTitle": "Reject order",
+      "rejectOrderDescription": "Add the rejection reason before rejecting this purchase request.",
+      "rejectBookingTitle": "Reject booking",
+      "rejectBookingDescription": "Add the rejection reason before rejecting this booking request.",
+      "rejectionReasonPrompt": "Why do you want to reject this request?",
+      "rejectionReasonLabel": "Rejection reason",
+      "rejectionReasonPlaceholder": "Write the reason clearly for the customer...",
+      "rejectionReasonRequired": "Rejection reason is required.",
       "bookingStatusUpdated": "Booking status updated",
       "bookingStatusUpdateFailed": "Failed to update booking status",
       "orderStatusUpdated": "Order status updated",
@@ -1297,6 +1311,12 @@
       "cvvRequired": "Enter a valid CVV",
       "gatewayFailed": "Failed to start payment. Please try again."
     }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist, may have moved, or the link is no longer valid.",
+    "home": "Go Home",
+    "browseCars": "Browse Cars"
   },
   "Chat": {
     "title": "Conversations",

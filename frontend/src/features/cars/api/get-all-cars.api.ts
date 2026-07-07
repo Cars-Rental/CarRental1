@@ -2,12 +2,15 @@ import { axiosInstance } from "@/services";
 import { API_ENDPOINTS } from "@/constants/api";
 import type { GetAllCarsRawResponse } from "../types/cars-api.types";
 
+const CARS_REQUEST_TIMEOUT = 8000;
+
 async function fetchAllPages(
   endpoint: string,
   limit = 9,
 ): Promise<GetAllCarsRawResponse> {
   const first = await axiosInstance.get<GetAllCarsRawResponse>(endpoint, {
     params: { page: 1, limit },
+    timeout: CARS_REQUEST_TIMEOUT,
   });
   const firstData = first.data;
 
@@ -22,6 +25,7 @@ async function fetchAllPages(
     remainingPages.map((page) =>
       axiosInstance.get<GetAllCarsRawResponse>(endpoint, {
         params: { page, limit },
+        timeout: CARS_REQUEST_TIMEOUT,
       }),
     ),
   );

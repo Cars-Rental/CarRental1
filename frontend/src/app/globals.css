@@ -503,9 +503,22 @@ html[lang="en"] {
   }
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
 
-@media (min-width: 96rem) {
-    .container {
-        max-width: 90%;
-    }
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  50% {
+    transform: translateX(80%);
+  }
+
+  100% {
+    transform: translateX(220%);
+  }
 }
