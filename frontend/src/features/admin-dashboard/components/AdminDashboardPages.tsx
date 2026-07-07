@@ -168,11 +168,11 @@ function SearchToolbar({ t }: { t: AdminTranslation }) {
     <Card className="mb-6">
       <CardContent className="grid gap-3 p-4 md:grid-cols-[1fr_180px_140px]">
         <div className="relative">
-          <Search className="absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute inset-s-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input className="ps-9" placeholder={t("filters.search")} />
         </div>
         <Input placeholder={t("filters.status")} />
-        <Button variant="outline">{t("filters.apply")}</Button>
+        <Button variant="outline" className="h-12">{t("filters.apply")}</Button>
       </CardContent>
     </Card>
   );

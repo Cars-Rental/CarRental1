@@ -13,6 +13,7 @@ import { DashboardEmptyState } from "./DashboardEmptyState";
 import { DashboardPageHeader } from "./DashboardPageHeader";
 import { DashboardStatusBadge } from "./DashboardStatusBadge";
 import { DashboardTable } from "./DashboardTable";
+import { RejectionReasonDialog } from "./RejectionReasonDialog";
 
 export function TraderOrdersPage() {
   const locale = useLocale();
@@ -27,6 +28,7 @@ export function TraderOrdersPage() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [rejectingOrderId, setRejectingOrderId] = useState<string | null>(null);
   const pageSize = 5;
 
   const filteredOrders = useMemo(() => {
@@ -71,15 +73,13 @@ export function TraderOrdersPage() {
     updateOrderStatus.mutate({ id: orderId, status: "accepted" });
   }
 
-  function rejectOrder(orderId: string) {
-    const rejectionReason = window.prompt(t("actions.rejectionReasonPrompt"));
-
-    if (rejectionReason === null) return;
-
+  function rejectOrder(orderId: string, rejectionReason: string) {
     updateOrderStatus.mutate({
       id: orderId,
       status: "rejected",
-      rejectionReason: rejectionReason?.trim() || undefined,
+      rejectionReason,
+    }, {
+      onSuccess: () => setRejectingOrderId(null),
     });
   }
 
@@ -224,7 +224,7 @@ export function TraderOrdersPage() {
                       variant="outline"
                       className="gap-1 text-destructive hover:text-destructive"
                       disabled={isMutatingThisOrder}
-                      onClick={() => rejectOrder(order.id)}
+                      onClick={() => setRejectingOrderId(order.id)}
                     >
                       <XCircle className="size-4" />
                       {t("actions.reject")}
@@ -245,6 +245,27 @@ export function TraderOrdersPage() {
           />
         </>
       )}
+      <RejectionReasonDialog
+        key={rejectingOrderId ?? "closed-order-rejection"}
+        open={rejectingOrderId !== null}
+        title={t("actions.rejectOrderTitle")}
+        description={t("actions.rejectOrderDescription")}
+        label={t("actions.rejectionReasonLabel")}
+        placeholder={t("actions.rejectionReasonPlaceholder")}
+        errorMessage={t("actions.rejectionReasonRequired")}
+        cancelLabel={t("actions.cancel")}
+        confirmLabel={t("actions.reject")}
+        isSubmitting={updateOrderStatus.isPending}
+        onOpenChange={(open) => {
+          if (!open && !updateOrderStatus.isPending) {
+            setRejectingOrderId(null);
+          }
+        }}
+        onConfirm={(reason) => {
+          if (!rejectingOrderId) return;
+          rejectOrder(rejectingOrderId, reason);
+        }}
+      />
     </div>
   );
 }

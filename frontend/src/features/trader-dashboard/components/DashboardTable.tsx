@@ -37,7 +37,7 @@ export function DashboardTable<T>({
     <Card className="border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90">
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[720px] text-sm">
+          <table className="w-full text-sm">
             <thead className="border-b border-border bg-muted/50 text-muted-foreground dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400">
               <tr>
                 {columns.map((column) => (

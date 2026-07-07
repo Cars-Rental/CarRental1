@@ -13,6 +13,7 @@ import { useAppSelector } from "@/store/hooks";
 import { tokenStorage } from "@/features/auth/utils";
 import { getRoomsApi, getRoomMessagesApi } from "../api/chat.api";
 import type { Room, Message, ChatUser } from "../types";
+import type { AuthUser } from "@/features/auth/types";
 import { ROLES } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -42,11 +43,33 @@ interface ChatContextType {
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
+const getIdValue = (value: unknown): string => {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  if (typeof value === "number") return String(value);
+  if (typeof value === "object") {
+    const objectValue = value as {
+      _id?: unknown;
+      id?: unknown;
+      toString?: () => string;
+    };
+    if (objectValue._id) return getIdValue(objectValue._id);
+    if (objectValue.id) return getIdValue(objectValue.id);
+    if (typeof objectValue.toString === "function") {
+      const stringValue = objectValue.toString();
+      if (stringValue && stringValue !== "[object Object]") return stringValue;
+    }
+  }
+  return "";
+};
+
 const getUserIdValue = (userLike?: ChatUser | string | null) => {
   if (!userLike) return "";
   if (typeof userLike === "string") return userLike;
-  return (userLike as ChatUser & { id?: string })._id ?? (userLike as ChatUser & { id?: string }).id ?? "";
+  return getIdValue(userLike);
 };
+
+const getAuthUserId = (userLike: AuthUser | null) => getIdValue(userLike);
 
 const sortRoomsByActivity = (rooms: Room[]) =>
   [...rooms].sort(
@@ -213,13 +236,14 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         receivedMessageIdsRef.current.add(message._id);
 
         const currentRoomId = activeRoomIdRef.current;
-        const currentUserId = user?.id ?? (user as { _id?: string } | null)?._id ?? "";
+        const messageRoomId = getIdValue(message.room);
+        const currentUserId = getAuthUserId(user);
         const senderId = getUserIdValue(message.sender);
         const isOwnMessage = currentUserId !== "" && senderId === currentUserId;
 
         // Update room lastMessage in rooms list
         setRooms((prev) => {
-          const roomIdx = prev.findIndex((r) => r._id === message.room);
+          const roomIdx = prev.findIndex((r) => r._id === messageRoomId);
           if (roomIdx === -1) {
             // If room not in list, we could trigger refetch rooms
             void fetchRooms();
@@ -227,13 +251,13 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
           }
           const updatedRooms = [...prev];
           const nextUnreadCount =
-            message.room === currentRoomId || isOwnMessage
+            messageRoomId === currentRoomId || isOwnMessage
               ? 0
               : (updatedRooms[roomIdx].unreadCount ?? 0) + 1;
 
           updatedRooms[roomIdx] = {
             ...updatedRooms[roomIdx],
-            lastMessage: message,
+            lastMessage: { ...message, room: messageRoomId },
             unreadCount: nextUnreadCount,
             updatedAt: message.createdAt,
           };
@@ -241,19 +265,29 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         });
 
         // Handle message streaming to active room viewport
-        if (message.room === currentRoomId) {
+        if (messageRoomId === currentRoomId) {
           setMessages((prev) => {
             const exists = prev.some((m) => m._id === message._id);
             if (exists) return prev;
-            return [...prev, message];
+            const withoutOptimisticDuplicate = prev.filter((existingMessage) => {
+              if (!existingMessage._id.startsWith("optimistic-")) return true;
+              const existingSenderId = getUserIdValue(existingMessage.sender);
+              return !(
+                isOwnMessage &&
+                existingMessage.room === messageRoomId &&
+                existingMessage.content === message.content &&
+                existingSenderId === senderId
+              );
+            });
+            return [...withoutOptimisticDuplicate, { ...message, room: messageRoomId }];
           });
           // Emit mark as read
-          newSocket.emit("message:read", { roomId: message.room });
+          newSocket.emit("message:read", { roomId: messageRoomId });
         } else if (!isOwnMessage) {
           // Increment unread count for other rooms
           setUnreadCounts((prev) => ({
             ...prev,
-            [message.room]: (prev[message.room] || 0) + 1,
+            [messageRoomId]: (prev[messageRoomId] || 0) + 1,
           }));
         }
       },
@@ -309,14 +343,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       "users:onlineList",
       ({ onlineUsers: list, userIds }: { onlineUsers?: string[]; userIds?: string[] }) => {
         const payload = list ?? userIds ?? [];
-        setOnlineUsers(new Set(payload));
+        setOnlineUsers(new Set(payload.map(getIdValue).filter(Boolean)));
       },
     );
 
     newSocket.on("user:online", ({ userId }: { userId: string }) => {
       setOnlineUsers((prev) => {
         const next = new Set(prev);
-        next.add(userId);
+        const normalizedUserId = getIdValue(userId);
+        if (normalizedUserId) next.add(normalizedUserId);
         return next;
       });
     });
@@ -324,7 +359,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     newSocket.on("user:offline", ({ userId }: { userId: string }) => {
       setOnlineUsers((prev) => {
         const next = new Set(prev);
-        next.delete(userId);
+        next.delete(getIdValue(userId));
         return next;
       });
     });
@@ -386,9 +421,43 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     attachment?: { url: string; type: "image" | "file" | "video" },
   ) => {
     if (!socket || !activeRoomId) return;
+    const trimmedContent = content.trim();
+    const currentUserId = getAuthUserId(user);
+    const optimisticId = `optimistic-${Date.now()}`;
+    const optimisticMessage: Message = {
+      _id: optimisticId,
+      room: activeRoomId,
+      sender: {
+        _id: currentUserId,
+        userName: user?.userName ?? "",
+        email: user?.email ?? "",
+      },
+      content: trimmedContent,
+      attachment,
+      readBy: currentUserId ? [currentUserId] : [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    receivedMessageIdsRef.current.add(optimisticId);
+    setMessages((prev) => [...prev, optimisticMessage]);
+    setRooms((prev) =>
+      sortRoomsByActivity(
+        prev.map((room) =>
+          room._id === activeRoomId
+            ? {
+                ...room,
+                lastMessage: optimisticMessage,
+                updatedAt: optimisticMessage.createdAt,
+              }
+            : room,
+        ),
+      ),
+    );
+
     socket.emit("message:send", {
       roomId: activeRoomId,
-      content,
+      content: trimmedContent,
       attachment,
     });
   };
