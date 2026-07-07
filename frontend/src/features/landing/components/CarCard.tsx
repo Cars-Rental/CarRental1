@@ -1,11 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Star,
-  Users,
-  Sparkles,
-  Settings,
-} from "lucide-react";
+import { Star, Users, Sparkles, Settings } from "lucide-react";
 import type { Car } from "../types/landing.types";
 import { useLocale, useTranslations } from "next-intl";
 import { useDirection } from "@/lib";
@@ -64,7 +59,7 @@ export function CarCard({ car, mode }: CarCardProps) {
             {car.brand}
           </p>
           <div className="flex justify-between items-start gap-2">
-            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 group-hover:text-[var(--primary)] transition-colors duration-200 line-clamp-1">
+            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors duration-200 line-clamp-1">
               {car.name}
             </h3>
 
@@ -81,20 +76,20 @@ export function CarCard({ car, mode }: CarCardProps) {
         {/* Specs Ribbon */}
         <div className="grid grid-cols-2 gap-3 mb-6 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-800/40 text-xs text-slate-500 dark:text-slate-400 font-medium">
           <div className="flex items-center gap-2">
-            <Users className="size-4 text-[var(--primary)]" />
+            <Users className="size-4 text-primary" />
             <span>
               {car.seats} {t("seats")}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Settings className="size-4 text-[var(--primary)]" />
+            <Settings className="size-4 text-primary" />
             <span>{transmissionLabel[car.transmission]}</span>
           </div>
 
           {car.category && (
             <div className="flex items-center gap-2 col-span-2 border-t border-slate-200/30 dark:border-slate-800/30 pt-2.5 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               <span className="capitalize">
                 {car.category === "economy"
                   ? isRTL
@@ -134,7 +129,7 @@ export function CarCard({ car, mode }: CarCardProps) {
 
           <Link
             href={`/${locale}/${mode === "rent" ? "cars" : "buy"}/${car.id}`}
-            className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-[var(--primary)]/10 hover:shadow-[var(--primary)]/20 hover:scale-[1.02] transition-all duration-200 shrink-0"
+            className="bg-primary hover:bg-(--primary-dark) text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-[var(--primary)]/10 hover:shadow-[var(--primary)]/20 hover:scale-[1.02] transition-all duration-200 shrink-0"
           >
             {mode === "rent" ? t("bookNow") : t("buyNow")}
           </Link>

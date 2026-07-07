@@ -155,7 +155,7 @@ export function CarCard({ car, mode }: CarCardProps) {
           <div className="flex gap-2 w-full">
             <Link
               href={`/${locale}/cars/${car._id}?mode=${mode}`}
-              className="flex-1 bg-primary hover:bg-[var(--primary-dark)] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
+              className="flex-1 bg-primary hover:bg-(--primary-dark) text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center"
             >
               {mode === "rent" ? t("rentNow") : t("buyNow")}
             </Link>

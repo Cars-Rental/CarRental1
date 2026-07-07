@@ -37,7 +37,7 @@ export function CarSpecsBar({
           key={label}
           className="flex flex-col items-center gap-1.5 bg-slate-50 dark:bg-slate-900/80 border border-slate-100 dark:border-slate-800 rounded-2xl px-4 py-3 min-w-[80px]"
         >
-          <Icon className="size-5 text-[var(--primary)] dark:text-emerald-400" />
+          <Icon className="size-5 text-primary dark:text-emerald-400" />
           <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wide">
             {label}
           </span>

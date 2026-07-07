@@ -2,7 +2,17 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Search, MessageSquare, Send, Paperclip, Smile, CheckCheck, Check, Sparkles, Plus } from "lucide-react";
+import {
+  Search,
+  MessageSquare,
+  Send,
+  Paperclip,
+  Smile,
+  CheckCheck,
+  Check,
+  Sparkles,
+  Plus,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatSocket } from "../hooks/useChatSocket";
 import { useAppSelector } from "@/store/hooks";
@@ -26,7 +36,10 @@ interface ChatLayoutProps {
   isDashboard?: boolean;
 }
 
-export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutProps) {
+export function ChatLayout({
+  initialRoomId,
+  isDashboard = false,
+}: ChatLayoutProps) {
   const t = useTranslations("Chat");
   const locale = useLocale();
   const { user } = useAppSelector((state) => state.auth);
@@ -49,7 +62,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   } = useChatSocket();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "open" | "unread" | "resolved">("all");
+  const [activeTab, setActiveTab] = useState<
+    "all" | "open" | "unread" | "resolved"
+  >("all");
   const [inputText, setInputText] = useState("");
   const [resolvedRooms, setResolvedRooms] = useState<string[]>([]);
 
@@ -88,7 +103,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   const getParticipant = (room: Room): ChatUser | null => {
     if (!user) return null;
     return (
-      room.members.find((member) => !isSamePerson(member)) as ChatUser | undefined) || null;
+      (room.members.find((member) => !isSamePerson(member)) as
+        | ChatUser
+        | undefined) || null
+    );
   };
 
   const isUserOnline = (chatUser: ChatUser | null) =>
@@ -139,7 +157,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
 
   const toggleResolved = (roomId: string) => {
     setResolvedRooms((prev) =>
-      prev.includes(roomId) ? prev.filter((id) => id !== roomId) : [...prev, roomId],
+      prev.includes(roomId)
+        ? prev.filter((id) => id !== roomId)
+        : [...prev, roomId],
     );
   };
 
@@ -165,7 +185,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     0,
   );
   const activeParticipant =
-    activeRoom && activeRoom.type === "private" ? getParticipant(activeRoom) : null;
+    activeRoom && activeRoom.type === "private"
+      ? getParticipant(activeRoom)
+      : null;
   const activeParticipantOnline = isUserOnline(activeParticipant);
 
   // new UI: create chat (private/group)
@@ -185,18 +207,26 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   };
 
   const handleToggleUser = (id: string) => {
-    setSelectedUserIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
+    setSelectedUserIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+    );
   };
 
   const handleCreate = () => {
     setCreateError(null);
     if (selectedUserIds.length === 0) {
-      setCreateError(t("selectAtLeastOne") || "Please select at least one contact to start chat.");
+      setCreateError(
+        t("selectAtLeastOne") ||
+          "Please select at least one contact to start chat.",
+      );
       return;
     }
 
     if (!socket) {
-      setCreateError(t("socketNotConnected") || "Socket is not connected. Please refresh the page.");
+      setCreateError(
+        t("socketNotConnected") ||
+          "Socket is not connected. Please refresh the page.",
+      );
       return;
     }
 
@@ -204,7 +234,11 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
       // private chat
       const targetUserId = selectedUserIds[0];
       const handleError = (error: { message?: string }) => {
-        setCreateError(error?.message || t("createRoomFailed") || "Failed to create the room.");
+        setCreateError(
+          error?.message ||
+            t("createRoomFailed") ||
+            "Failed to create the room.",
+        );
         socket.off("error", handleError);
       };
 
@@ -227,7 +261,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
     };
 
     const handleError = (error: { message?: string }) => {
-      setCreateError(error?.message || t("createRoomFailed") || "Failed to create the room.");
+      setCreateError(
+        error?.message || t("createRoomFailed") || "Failed to create the room.",
+      );
       socket.off("room:created", handleRoomCreated);
       socket.off("error", handleError);
     };
@@ -242,8 +278,11 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
   };
 
   return (
-    <div dir={locale === "ar" ? "rtl" : "ltr"} className="h-full flex min-h-0 gap-4 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950">
-      <div className="h-full w-full max-w-[360px] flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
+    <div
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className="h-full flex min-h-0 overflow-hidden rounded-3xl bg-slate-50 p-0 dark:bg-slate-950"
+    >
+      <div className="h-full w-full max-w-90 flex flex-col border-e border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900">
         <div className="p-4 border-b border-slate-100 dark:border-slate-800/80">
           <div className="relative">
             <input
@@ -251,7 +290,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary"
             />
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             {/* floating + moved to bottom-right for better UX */}
@@ -266,7 +305,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               className={cn(
                 "rounded-2xl px-3 py-1.5 text-xs font-bold transition",
                 activeTab === tab
-                  ? "bg-[var(--primary)] text-white"
+                  ? "bg-primary text-white"
                   : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800",
               )}
             >
@@ -279,7 +318,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
         <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
           {isLoadingRooms ? (
             Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="flex items-center gap-3 p-4 animate-pulse">
+              <div
+                key={index}
+                className="flex items-center gap-3 p-4 animate-pulse"
+              >
                 <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800" />
                 <div className="flex-1 space-y-2">
                   <div className="h-3 w-24 rounded bg-slate-100 dark:bg-slate-800" />
@@ -288,7 +330,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               </div>
             ))
           ) : filteredRooms.length === 0 ? (
-            <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 p-6 text-slate-400">
+            <div className="flex min-h-60 flex-col items-center justify-center gap-3 p-6 text-slate-400">
               <MessageSquare className="h-10 w-10 stroke-[1.5]" />
               <p className="text-xs font-bold">{t("noRooms")}</p>
             </div>
@@ -304,7 +346,8 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                 .slice(0, 2)
                 .toUpperCase();
               const unread = unreadCounts[room._id] || 0;
-              const lastMessage = room.lastMessage?.content || t("noMessagesYet");
+              const lastMessage =
+                room.lastMessage?.content || t("noMessagesYet");
               const participantOnline = isUserOnline(participant);
 
               return (
@@ -314,17 +357,20 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                   onClick={() => selectRoom(room._id)}
                   className={cn(
                     "flex w-full items-center gap-3 p-4 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/40",
-                    isSelected && "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-[var(--primary)]",
+                    isSelected &&
+                      "bg-slate-50 dark:bg-slate-800/60 border-s-4 border-primary",
                   )}
                 >
                   <div className="relative shrink-0">
-                    <div className="h-12 w-12 grid place-items-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)] font-bold dark:bg-emerald-400/10 dark:text-emerald-400">
+                    <div className="h-12 w-12 grid place-items-center rounded-full bg-(--primary)/10 text-primary font-bold dark:bg-emerald-400/10 dark:text-emerald-400">
                       {initials}
                     </div>
                     <span
                       className={cn(
                         "absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-slate-900",
-                        participantOnline ? "bg-emerald-400" : "bg-slate-300 dark:bg-slate-600",
+                        participantOnline
+                          ? "bg-emerald-400"
+                          : "bg-slate-300 dark:bg-slate-600",
                       )}
                     />
                   </div>
@@ -344,7 +390,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                     </p>
                   </div>
                   {unread > 0 && (
-                    <span className="h-5 w-5 grid place-items-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-white">
+                    <span className="h-5 w-5 grid place-items-center rounded-full bg-primary text-[10px] font-bold text-white">
                       {unread}
                     </span>
                   )}
@@ -357,9 +403,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
       <div className="flex-1 flex min-h-0 flex-col bg-slate-50 dark:bg-slate-950">
         <div className="h-16 flex items-center justify-between gap-4 border-b border-slate-200/60 bg-white px-6 dark:border-slate-800/60 dark:bg-slate-900">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+            {/* <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
               {t("conversations")}
-            </p>
+            </p> */}
             <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">
               {activeRoom
                 ? activeRoom.type === "group"
@@ -372,7 +418,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                 <span
                   className={cn(
                     "size-2 rounded-full",
-                    activeParticipantOnline ? "bg-emerald-400" : "bg-slate-300 dark:bg-slate-600",
+                    activeParticipantOnline
+                      ? "bg-emerald-400"
+                      : "bg-slate-300 dark:bg-slate-600",
                   )}
                 />
                 {activeParticipantOnline ? t("online") : t("offline")}
@@ -387,7 +435,7 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                 "rounded-2xl px-4 py-2 text-xs font-bold transition border",
                 resolvedRooms.includes(activeRoom._id)
                   ? "bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-800 dark:border-slate-700"
-                  : "bg-[var(--primary)]/10 border-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/20",
+                  : "bg-(--primary)/10 border-(--primary)/20 text-primary hover:bg-(--primary)/20",
               )}
             >
               {t("markAsResolved")}
@@ -404,7 +452,10 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                   (message.sender as ChatUser & { id?: string }).id ??
                   "";
                 const isMe = senderId === userId;
-                const showDate = index === 0 || formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt);
+                const showDate =
+                  index === 0 ||
+                  formatDate(messages[index - 1].createdAt) !==
+                    formatDate(message.createdAt);
                 return (
                   <React.Fragment key={message._id}>
                     {showDate && (
@@ -414,49 +465,61 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                         </span>
                       </div>
                     )}
-                    <div className={cn(
-                      "flex items-end gap-3",
-                      isMe ? "justify-end" : "justify-start",
-                    )}>
-                      <div className={cn(
-                        "max-w-[80%] rounded-3xl px-4 py-3 text-xs leading-6 shadow-sm",
-                        isMe
-                          ? "bg-[var(--primary)] text-white rounded-br-none"
-                          : "bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-bl-none",
-                      )}>
+                    <div
+                      className={cn(
+                        "flex items-end gap-3",
+                        isMe ? "justify-end" : "justify-start",
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "max-w-[80%] rounded-3xl px-4 py-3 text-xs leading-6 shadow-sm",
+                          isMe
+                            ? "bg-primary text-white rounded-br-none"
+                            : "bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200/70 dark:border-slate-700/70 rounded-bl-none",
+                        )}
+                      >
                         {message.content}
                       </div>
                     </div>
-                    <div className={cn(
-                      "flex items-center gap-2 text-[10px] font-medium",
-                      isMe ? "justify-end text-slate-400" : "justify-start text-slate-500 dark:text-slate-400",
-                    )}>
+                    <div
+                      className={cn(
+                        "flex items-center gap-2 text-[10px] font-medium",
+                        isMe
+                          ? "justify-end text-slate-400"
+                          : "justify-start text-slate-500 dark:text-slate-400",
+                      )}
+                    >
                       <span>{formatTime(message.createdAt)}</span>
-                      {isMe && (
-                        message.readBy.length > 1 ? (
+                      {isMe &&
+                        (message.readBy.length > 1 ? (
                           <CheckCheck className="h-3 w-3 text-emerald-400" />
                         ) : (
                           <Check className="h-3 w-3 text-slate-300 dark:text-slate-600" />
-                        )
-                      )}
+                        ))}
                     </div>
                   </React.Fragment>
                 );
               })}
               {typingUsers.length > 0 && (
                 <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 animate-pulse">
-                  <Sparkles className="h-3 w-3 text-[var(--primary)]" />
-                  <span>{typingUsers.map((u) => u.userName).join(", ")} {t("typing")}</span>
+                  <Sparkles className="h-3 w-3 text-primary" />
+                  <span>
+                    {typingUsers.map((u) => u.userName).join(", ")}{" "}
+                    {t("typing")}
+                  </span>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </>
           ) : (
-            <div className="grid min-h-[320px] place-items-center text-center text-slate-500 dark:text-slate-400">
+            <div className="grid min-h-80 place-items-center text-center text-slate-500 dark:text-slate-400">
               <MessageSquare className="mb-4 h-16 w-16 text-slate-300 dark:text-slate-700" />
               <div>
                 <p className="text-sm font-bold">{t("noActiveRoom")}</p>
-                <p className="mt-2 text-xs text-slate-400">{t("selectRoomHint")}</p>
+                <p className="mt-2 text-xs text-slate-400">
+                  {t("selectRoomHint")}
+                </p>
               </div>
             </div>
           )}
@@ -475,13 +538,13 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               placeholder={t("typeMessage")}
-              className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] dark:border-slate-700/70 dark:bg-slate-800 dark:text-slate-100"
+              className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary dark:border-slate-700/70 dark:bg-slate-800 dark:text-slate-100"
             />
             <button
               type="button"
               onClick={handleSend}
               disabled={!inputText.trim()}
-              className="rounded-3xl bg-[var(--primary)] px-4 py-3 text-white transition hover:bg-[var(--primary-dark)] disabled:opacity-50"
+              className="rounded-3xl bg-primary px-4 py-3 text-white transition hover:bg-(--primary-dark) disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
             </button>
@@ -490,12 +553,27 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
       </div>
       {/* Floating action button for new chat */}
       <div className="fixed bottom-6 right-6 z-50">
-        <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (open) fetchUsers(); }}>
-          <DialogTrigger render={<Button className="rounded-full p-3 bg-[var(--primary)] text-white shadow-lg hover:opacity-90"><Plus className="h-5 w-5" /></Button>} />
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={(open) => {
+            setIsDialogOpen(open);
+            if (open) fetchUsers();
+          }}
+        >
+          <DialogTrigger
+            render={
+              <Button className="rounded-full p-3 bg-primary text-white shadow-lg hover:opacity-90">
+                <Plus className="h-5 w-5" />
+              </Button>
+            }
+          />
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{t("newChat") || "New Chat"}</DialogTitle>
-              <DialogDescription>{t("selectContacts") || "Select contacts to start chat or create group"}</DialogDescription>
+              <DialogDescription>
+                {t("selectContacts") ||
+                  "Select contacts to start chat or create group"}
+              </DialogDescription>
             </DialogHeader>
 
             <div className="max-h-64 overflow-auto grid gap-2 py-2">
@@ -506,10 +584,15 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                     key={u._id}
                     className="flex items-center gap-3 px-2 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded"
                   >
-                    <Checkbox checked={selectedUserIds.includes(u._id)} onCheckedChange={() => handleToggleUser(u._id)} />
+                    <Checkbox
+                      checked={selectedUserIds.includes(u._id)}
+                      onCheckedChange={() => handleToggleUser(u._id)}
+                    />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium truncate">{u.userName}</span>
+                        <span className="text-sm font-medium truncate">
+                          {u.userName}
+                        </span>
                         <span
                           className={cn(
                             "h-2.5 w-2.5 rounded-full",
@@ -518,7 +601,9 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
                           aria-hidden="true"
                         />
                       </div>
-                      <div className="text-xs text-slate-400 truncate">{u.email}</div>
+                      <div className="text-xs text-slate-400 truncate">
+                        {u.email}
+                      </div>
                     </div>
                   </label>
                 );
@@ -526,12 +611,19 @@ export function ChatLayout({ initialRoomId, isDashboard = false }: ChatLayoutPro
             </div>
 
             {createError && (
-              <p className="text-sm text-danger-foreground mt-2">{createError}</p>
+              <p className="text-sm text-danger-foreground mt-2">
+                {createError}
+              </p>
             )}
 
             {selectedUserIds.length > 1 && (
               <div className="mt-2">
-                <input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder={t("groupName") || "Group name"} className="w-full rounded-md border px-3 py-2" />
+                <input
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                  placeholder={t("groupName") || "Group name"}
+                  className="w-full rounded-md border px-3 py-2"
+                />
               </div>
             )}
 

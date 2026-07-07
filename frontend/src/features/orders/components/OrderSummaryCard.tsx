@@ -58,13 +58,13 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
           {isRent ? (
             <>
               <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <Calendar className="size-4 text-[var(--primary)] shrink-0" />
+                <Calendar className="size-4 text-primary shrink-0" />
                 <span className="font-medium">
                   {formatDate(order.startDate)} → {formatDate(order.endDate)}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <Clock className="size-4 text-[var(--primary)] shrink-0" />
+                <Clock className="size-4 text-primary shrink-0" />
                 <span className="font-medium">
                   {order.totalDays} {t("days")}
                 </span>
@@ -72,7 +72,7 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
             </>
           ) : (
             <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-              <MapPin className="size-4 text-[var(--primary)] shrink-0" />
+              <MapPin className="size-4 text-primary shrink-0" />
               <span className="font-medium">{t("sessionFeeNote")}</span>
             </div>
           )}
@@ -103,7 +103,7 @@ export function OrderSummaryCard({ order, mode }: OrderSummaryCardProps) {
             </>
           ) : (
             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-              <Tag className="size-3.5 text-[var(--primary)]" />
+              <Tag className="size-3.5 text-primary" />
               <span>{t("sessionFeeDesc")}</span>
             </div>
           )}
